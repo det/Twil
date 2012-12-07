@@ -1,0 +1,7 @@
+Build/
+Scripts/
+CMakeLists.txt.user
+*.kdev4
+*.kate-swp
+*~
+
