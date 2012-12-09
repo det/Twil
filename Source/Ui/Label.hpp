@@ -33,8 +33,11 @@ class Label :
 	public:
 	Label(Theme::Manager &, Ui::WindowControl &);
 
+	// Drawable
 	virtual void handleResized(unsigned short, unsigned short);
 	virtual void handleMoved(short, short);
+	virtual unsigned short getFitWidth();
+	virtual unsigned short getFitHeight();
 	virtual void draw();
 
 	void setText(std::u32string const &);
@@ -75,6 +78,18 @@ void Label<T>::handleMoved(short Width, short Height)
 	auto X = mLayout.getX(LabelWidth);
 	auto Y = mLayout.getY(LabelHeight);
 	mThemeLabel.move(X, Y);
+}
+
+template<typename T>
+unsigned short Label<T>::getFitWidth()
+{
+	return mThemeLabel.getWidth();
+}
+
+template<typename T>
+unsigned short Label<T>::getFitHeight()
+{
+	return mThemeLabel.getHeight();
 }
 
 template<typename T>

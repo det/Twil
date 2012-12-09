@@ -17,13 +17,13 @@ int main(void)
 	MyApplication Application;
 	MyWindow & Window = Application.getChild();
 	MyButton & Button = Window.getChild();
-	MyLabel & label = Button.getChild();
+	MyLabel & Label = Button.getChild();
 
-//	label.setText(U"nymphs blitz quick vex dwarf jog");
-	label.setText(U"Hello");
+	Label.setText(U"nymphs blitz quick vex dwarf jog");
+//	Label.setText(U"Hello");
 	Button.Clicked += [&]() { std::cout << "Hello world\n"; };
 	Window.Deleted += [&]() { Application.stop(); };
-
+	Window.fitChild(8, 16);
+	Window.show();
 	Application.run();
-	return 0;
 }

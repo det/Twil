@@ -21,7 +21,10 @@ class Window
 
 	void makeCurrent();
 	void swapBuffers();
+	void show();
+	void hide();
 	void setFullscreen(bool);
+	void resize(unsigned short, unsigned short);
 };
 
 }

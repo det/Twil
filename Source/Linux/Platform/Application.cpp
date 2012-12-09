@@ -60,7 +60,7 @@ Application::Application() :
 
 	int ContextAttribs[] = {
 		GLX_CONTEXT_MAJOR_VERSION_ARB, 3,
-		GLX_CONTEXT_MINOR_VERSION_ARB, 1,
+		GLX_CONTEXT_MINOR_VERSION_ARB, 3,
 		0 //XXX: None
 	};
  

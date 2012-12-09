@@ -173,5 +173,15 @@ unsigned short Button::getChildHeight()
 	return mHeight - 4;
 }
 
+unsigned short Button::getFitWidth(unsigned short Width)
+{
+	return Width + 4;
+}
+
+unsigned short Button::getFitHeight(unsigned short Height)
+{
+	return Height + 4;
+}
+
 }
 }

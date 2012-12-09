@@ -29,29 +29,29 @@ Manager::Manager() :
 	FT_Pos Right = 10 * 64;
 	FT_Pos Top = 10 * 64;
 
-	FT_Vector a{Left + Roundness, Bottom};
-	FT_Vector b{Left, Bottom};
-	FT_Vector c{Left, Bottom + Roundness};
-	FT_Vector d{Left, Top - Roundness};
-	FT_Vector e{Left, Top};
-	FT_Vector f{Left + Roundness, Top};
-	FT_Vector g{Right - Roundness, Top};
-	FT_Vector h{Right, Top};
-	FT_Vector i{Right, Top - Roundness};
-	FT_Vector j{Right, Bottom + Roundness};
-	FT_Vector k{Right, Bottom};
-	FT_Vector l{Right - Roundness, Bottom};
+	FT_Vector A{Left + Roundness, Bottom};
+	FT_Vector B{Left, Bottom};
+	FT_Vector C{Left, Bottom + Roundness};
+	FT_Vector D{Left, Top - Roundness};
+	FT_Vector E{Left, Top};
+	FT_Vector F{Left + Roundness, Top};
+	FT_Vector G{Right - Roundness, Top};
+	FT_Vector H{Right, Top};
+	FT_Vector I{Right, Top - Roundness};
+	FT_Vector J{Right, Bottom + Roundness};
+	FT_Vector K{Right, Bottom};
+	FT_Vector L{Right - Roundness, Bottom};
 
 	mOutline.clear();
-	mOutline.beginPath(a);
-	mOutline.addQuadratic(b, c);
-	mOutline.addLine(d);
-	mOutline.addQuadratic(e, f);
-	mOutline.addLine(g);
-	mOutline.addQuadratic(h, i);
-	mOutline.addLine(j);
-	mOutline.addQuadratic(k, l);
-	mOutline.addLine(a);
+	mOutline.beginPath(A);
+	mOutline.addQuadratic(B, C);
+	mOutline.addLine(D);
+	mOutline.addQuadratic(E, F);
+	mOutline.addLine(G);
+	mOutline.addQuadratic(H, I);
+	mOutline.addLine(J);
+	mOutline.addQuadratic(K, L);
+	mOutline.addLine(A);
 	mOutline.endPath();
 
 	// Button inside

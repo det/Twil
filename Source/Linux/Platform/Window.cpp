@@ -17,14 +17,13 @@ Window::Window(Application & application2) :
 
 	mId = XCreateWindow(
 		mApplication.mDisplay, RootWindow(mApplication.mDisplay, mApplication.mVisual->screen),
-		0, 0, 96, 48, 0, mApplication.mVisual->depth, InputOutput,
+		0, 0, 640, 480, 0, mApplication.mVisual->depth, InputOutput,
 		mApplication.mVisual->visual, CWBorderPixel | CWColormap | CWEventMask, &mApplication.mWindowAttributes
 	);
 
 	if (mId == 0) throw std::runtime_error{"Unable to create window"};
 
 	XStoreName(mApplication.mDisplay, mId, "OpenGL Window");
-	XMapWindow(mApplication.mDisplay, mId);
 	XSetWMProtocols(mApplication.mDisplay, mId, &mApplication.mWmDeleteWindow, 1);
 	XSync(mApplication.mDisplay, False);
 
@@ -57,6 +56,21 @@ void Window::setFullscreen(bool isFullscreen)
 	Event.xclient.data.l[1] = long(mApplication.mWmFullScreen);
 	Event.xclient.data.l[2] = 0;
 	XSendEvent(mApplication.mDisplay, DefaultRootWindow(mApplication.mDisplay), False, SubstructureNotifyMask, &Event);
+}
+
+void Window::show()
+{
+	XMapWindow(mApplication.mDisplay, mId);
+}
+
+void Window::hide()
+{
+	XUnmapWindow(mApplication.mDisplay, mId);
+}
+
+void Window::resize(unsigned short Width, unsigned short Height)
+{
+	XResizeWindow(mApplication.mDisplay, mId, Width, Height);
 }
 
 }

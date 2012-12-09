@@ -8,7 +8,8 @@ namespace Ui {
 class WindowControl;
 
 template<typename T>
-class Form : public Widget
+class Form :
+	public Widget
 {
 	private:
 	T mChild;

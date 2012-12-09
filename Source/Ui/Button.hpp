@@ -31,6 +31,14 @@ class Button :
 
 	T & getChild();
 
+	// Drawable
+	virtual void handleResized(unsigned short, unsigned short);
+	virtual void handleMoved(short, short);
+	virtual unsigned short getFitWidth();
+	virtual unsigned short getFitHeight();
+	virtual void draw();
+
+	// Widget
 	virtual void handleMouseEnter(int, int);
 	virtual void handleMouseLeave(int, int);
 	virtual void handleButtonPressed(int, int, unsigned);
@@ -38,10 +46,6 @@ class Button :
 	virtual void handleMouseMotion(int, int) {}
 	virtual void handleKeyPressed(Platform::Key) {}
 	virtual void handleKeyReleased(Platform::Key) {}
-
-	virtual void handleResized(unsigned short, unsigned short);
-	virtual void handleMoved(short, short);
-	virtual void draw();
 };
 
 template<typename T>
@@ -119,6 +123,20 @@ void Button<T>::handleMoved(short Width, short Height)
 	auto ChildX = mThemeButton.getChildX();
 	auto ChildY = mThemeButton.getChildY();
 	mChild.handleMoved(ChildX, ChildY);
+}
+
+template<typename T>
+unsigned short Button<T>::getFitWidth()
+{
+	auto Width = mChild.getFitWidth();
+	return mThemeButton.getFitWidth(Width);
+}
+
+template<typename T>
+unsigned short Button<T>::getFitHeight()
+{
+	auto Height = mChild.getFitHeight();
+	return mThemeButton.getFitHeight(Height);
 }
 
 template<typename T>

@@ -10,7 +10,6 @@ namespace Ft {
 Stroker::Stroker(Ft::Library & Library)
 {
 	FT_Stroker_New(Library.mId, &mId);
-
 }
 
 Stroker::~Stroker()

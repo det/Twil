@@ -45,8 +45,12 @@ class Window
 	void handleDeleted();
 
 	void draw();
+	void show();
+	void hide();
 	void update();
 	void toggleFullscreen();
+	void resize(unsigned short, unsigned short);
+	void fitChild(unsigned short, unsigned short);
 };
 
 template <typename T>
@@ -143,6 +147,33 @@ void Window<T>::toggleFullscreen()
 {
 	mIsFullscreen = !mIsFullscreen;
 	mWindow.setFullscreen(mIsFullscreen);
+}
+
+template <typename T>
+void Window<T>::fitChild(unsigned short PadWidth, unsigned short PadHeight)
+{
+	auto Width = mChild.getFitWidth();
+	auto Height = mChild.getFitHeight();
+	mWindow.resize(Width + PadWidth, Height + PadHeight);
+}
+
+
+template <typename T>
+void Window<T>::show()
+{
+	mWindow.show();
+}
+
+template <typename T>
+void Window<T>::hide()
+{
+	mWindow.hide();
+}
+
+template <typename T>
+void Window<T>::resize(unsigned short Width, unsigned short Height)
+{
+	mWindow.resize(Width, Height);
 }
 
 template <typename T>

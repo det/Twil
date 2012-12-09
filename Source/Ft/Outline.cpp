@@ -114,7 +114,6 @@ void Outline::addCubic(FT_Vector B, FT_Vector C, FT_Vector D)
 
 void Outline::add(Stroker const & Stroker, FT_StrokerBorder Border)
 {
-
 	FT_UInt NumStrokePoints = 0;
 	FT_UInt NumStrokeContours = 0;
 	FT_Stroker_GetBorderCounts(Stroker.mId, Border, &NumStrokePoints, &NumStrokeContours);
@@ -125,7 +124,6 @@ void Outline::add(Stroker const & Stroker, FT_StrokerBorder Border)
 
 void Outline::add(Stroker const & Stroker)
 {
-
 	FT_UInt NumStrokePoints = 0;
 	FT_UInt NumStrokeContours = 0;
 	FT_Stroker_GetCounts(Stroker.mId, &NumStrokePoints, &NumStrokeContours);
