@@ -9,7 +9,8 @@ namespace Program {
 
 #undef FillSolid
 
-class FillSolid {
+class FillSolid
+{
 	private:
 	Gl::Program mProgram;
 	GLint mModelViewLoc;

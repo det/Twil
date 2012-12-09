@@ -5,7 +5,8 @@
 namespace Twil {
 namespace Math {
 
-struct Vector4 {
+struct Vector4
+{
 	float X;
 	float Y;
 	float Z;

@@ -11,7 +11,8 @@ class Outline;
 class Face;
 class Stroker;
 
-class Library {
+class Library
+{
 	friend class Ft::Bitmap;
 	friend class Ft::Face;
 	friend class Ft::Outline;

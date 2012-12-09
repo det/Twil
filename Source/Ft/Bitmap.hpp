@@ -15,7 +15,8 @@ class Outline;
 class Face;
 class SubBitmapIterator;
 
-class Bitmap {
+class Bitmap
+{
 	private:
 	Ft::Library & mLibrary;
 	FT_Bitmap mId;

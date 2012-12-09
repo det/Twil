@@ -3,7 +3,8 @@
 namespace Twil {
 namespace Ui {
 
-class WindowControl {
+class WindowControl
+{
 	private:
 	bool mNeedsRedraw;
 

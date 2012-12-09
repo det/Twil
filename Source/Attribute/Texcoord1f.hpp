@@ -5,7 +5,8 @@
 namespace Twil {
 namespace Attribute {
 
-struct Texcoord1f {
+struct Texcoord1f
+{
 	GLfloat S;
 
 	static void setup(GLuint, GLsizei, GLvoid const *);

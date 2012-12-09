@@ -1,5 +1,6 @@
 #include "Ui/Application.hpp"
 #include "Ui/Button.hpp"
+#include "Ui/Centered.hpp"
 #include "Ui/Label.hpp"
 #include "Ui/Window.hpp"
 
@@ -7,21 +8,22 @@
 
 int main(void)
 {	
-	using Label = Twil::Ui::Label;
-	using Button = Twil::Ui::Button<Label>;
-	using Window = Twil::Ui::Window<Button>;
-	using Application = Twil::Ui::Application<Window>;
+	using MyCentered = Twil::Ui::Centered;
+	using MyLabel = Twil::Ui::Label<MyCentered>;
+	using MyButton = Twil::Ui::Button<MyLabel>;
+	using MyWindow = Twil::Ui::Window<MyButton>;
+	using MyApplication = Twil::Ui::Application<MyWindow>;
 
-	Application application;
-	Window & window = application.getChild();
-	Button & button = window.getChild();
-	Label & label = button.getChild();
+	MyApplication Application;
+	MyWindow & Window = Application.getChild();
+	MyButton & Button = Window.getChild();
+	MyLabel & label = Button.getChild();
 
-	label.setText(U"nymphs blitz quick vex dwarf jog");
-//	label.setText(U"Cancel");
-	button.Clicked += [&]() { std::cout << "Hello world\n"; };
-	window.Deleted += [&]() { application.stop(); };
+//	label.setText(U"nymphs blitz quick vex dwarf jog");
+	label.setText(U"Hello");
+	Button.Clicked += [&]() { std::cout << "Hello world\n"; };
+	Window.Deleted += [&]() { Application.stop(); };
 
-	application.run();
+	Application.run();
 	return 0;
 }

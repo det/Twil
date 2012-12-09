@@ -5,7 +5,8 @@
 namespace Twil {
 namespace Math {
 
-struct Matrix4 {
+struct Matrix4
+{
 	Math::Vector4 X;
 	Math::Vector4 Y;
 	Math::Vector4 Z;

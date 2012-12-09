@@ -6,7 +6,10 @@
 namespace Twil {
 namespace Ui {
 
-class Widget : public Drawable {
+class Widget :
+	public Drawable
+{
+
 	public:
 	virtual void handleMouseEnter(int, int) = 0;
 	virtual void handleMouseLeave(int, int) = 0;

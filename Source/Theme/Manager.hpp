@@ -27,17 +27,20 @@ class Button;
 class Label;
 class Window;
 
-struct GlyphEntry {
-	FT_Vector Size;
+struct GlyphEntry
+{
 	FT_Vector Bearings;
 	FT_Vector Advance;
 	FT_UInt Index;
 	FT_Pos LsbDelta;
 	FT_Pos RsbDelta;
-	std::size_t Offset;
+	unsigned int Offset;
+	unsigned short Width;
+	unsigned short Height;
 };
 
-class Manager {
+class Manager
+{
 	friend class Button;
 	friend class Label;
 

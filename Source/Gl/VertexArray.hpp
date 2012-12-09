@@ -5,7 +5,8 @@
 namespace Twil {
 namespace Gl {
 
-class VertexArray {
+class VertexArray
+{
 	private:
 	GLuint mId;
 

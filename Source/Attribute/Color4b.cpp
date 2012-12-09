@@ -16,12 +16,12 @@ Attribute::Color4b mix(Attribute::Color4b const & A, Attribute::Color4b const & 
 	unsigned char Weight2 = (ValB * 255 / ValA * 255) / 255;
 	unsigned char Weight1 = 255 - Weight2;
 
-	return {
-		GLubyte((A.Red * Weight1 + B.Red * Weight2) / 255),
-		GLubyte((A.Green * Weight1 + B.Green * Weight2) / 255),
-		GLubyte((A.Blue * Weight1 + B.Blue * Weight2) / 255),
-		GLubyte((A.Alpha * Weight1 + B.Alpha * Weight2) / 255)
-	};
+	GLubyte Red = (A.Red * Weight1 + B.Red * Weight2) / 255;
+	GLubyte Green = (A.Green * Weight1 + B.Green * Weight2) / 255;
+	GLubyte Blue = (A.Blue * Weight1 + B.Blue * Weight2) / 255;
+	GLubyte Alpha = (A.Alpha * Weight1 + B.Alpha * Weight2) / 255;
+
+	return {Red, Green, Blue, Alpha};
 }
 
 }

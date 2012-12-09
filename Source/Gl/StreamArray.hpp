@@ -11,7 +11,8 @@ namespace Twil {
 namespace Gl {
 
 template<typename T>
-class StreamArray {
+class StreamArray
+{
 	private:
 	Gl::Buffer mBuffer;
 	Gl::VertexArray mArray;

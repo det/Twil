@@ -13,7 +13,8 @@
 namespace Twil {
 namespace Platform {
 
-class Application {
+class Application
+{
 	friend class Platform::Window;
 
 	private:

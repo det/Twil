@@ -20,8 +20,6 @@ class Button :
 	Ui::WindowControl & mControl;
 	Theme::Button mThemeButton;
 	T mChild;
-	unsigned short mWidth;
-	unsigned short mHeight;
 	bool mIsPressed;
 	bool mHasMouse;
 
@@ -42,6 +40,7 @@ class Button :
 	virtual void handleKeyReleased(Platform::Key) {}
 
 	virtual void handleResized(unsigned short, unsigned short);
+	virtual void handleMoved(short, short);
 	virtual void draw();
 };
 
@@ -52,7 +51,8 @@ Button<T>::Button(Theme::Manager & Theme, Ui::WindowControl & Control) :
 	mChild{Theme, mControl},
 	mIsPressed{false},
 	mHasMouse{false}
-{	
+{
+	mChild.handleMoved(2, 2);
 }
 
 template<typename T>
@@ -65,7 +65,7 @@ void Button<T>::handleMouseEnter(int, int)
 {
 	mHasMouse = true;
 	if (mIsPressed) {
-		mThemeButton.update(mWidth, mHeight, true);
+		mThemeButton.setIsDown(true);
 		mControl.setNeedsRedraw(true);
 	}
 }
@@ -75,7 +75,7 @@ void Button<T>::handleMouseLeave(int, int)
 {
 	mHasMouse = false;
 	if (mIsPressed) {
-		mThemeButton.update(mWidth, mHeight, false);
+		mThemeButton.setIsDown(false);
 		mControl.setNeedsRedraw(true);
 	}
 }
@@ -85,7 +85,7 @@ void Button<T>::handleButtonPressed(int, int, unsigned Button)
 {
 	if (Button == 1) {
 		mIsPressed = true;
-		mThemeButton.update(mWidth, mHeight, true);
+		mThemeButton.setIsDown(true);
 		mControl.setNeedsRedraw(true);
 	}
 }
@@ -95,7 +95,7 @@ void Button<T>::handleButtonReleased(int, int, unsigned Button)
 {
 	if (Button == 1) {
 		if (mHasMouse) {
-			mThemeButton.update(mWidth, mHeight, false);
+			mThemeButton.setIsDown(false);
 			Clicked();
 		}
 		mIsPressed = false;
@@ -106,10 +106,19 @@ void Button<T>::handleButtonReleased(int, int, unsigned Button)
 template<typename T>
 void Button<T>::handleResized(unsigned short Width, unsigned short Height)
 {
-	mWidth = Width;
-	mHeight = Height;
-	mThemeButton.update(mWidth, mHeight, mIsPressed);
-	mChild.handleResized(mWidth, mHeight);
+	mThemeButton.resize(Width, Height);
+	auto ChildWidth = mThemeButton.getChildWidth();
+	auto ChildHeight = mThemeButton.getChildHeight();
+	mChild.handleResized(ChildWidth, ChildHeight);
+}
+
+template<typename T>
+void Button<T>::handleMoved(short Width, short Height)
+{
+	mThemeButton.move(Width, Height);
+	auto ChildX = mThemeButton.getChildX();
+	auto ChildY = mThemeButton.getChildY();
+	mChild.handleMoved(ChildX, ChildY);
 }
 
 template<typename T>

@@ -441,7 +441,9 @@ DECLARE_HANDLE(HPVIDEODEV);
 DECLARE_HANDLE(HPGPUNV);
 DECLARE_HANDLE(HGPUNV);
 
-typedef struct _GPU_DEVICE {
+typedef struct _GPU_DEVICE
+{
+
     DWORD  cb;
     CHAR   DeviceName[32];
     CHAR   DeviceString[128];

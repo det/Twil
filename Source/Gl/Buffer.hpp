@@ -5,7 +5,8 @@
 namespace Twil {
 namespace Gl {
 
-class Buffer {
+class Buffer
+{
 	private:
 	GLuint mId;
 

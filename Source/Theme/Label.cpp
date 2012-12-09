@@ -15,9 +15,7 @@ void Label::setText(std::u32string const & Text)
 	auto & Face = mManager.mLabelFace;
 	Face.setActiveSize(mManager.mLabelSize);
 
-	auto PenY = (30 * 64 - Face.getHeight() / 4 - 2 * 64 - 6 * 64) / 2;
-
-	FT_Vector Pen{8 * 64, PenY};
+	FT_Vector Pen{0, -mManager.mLabelSize.getDescender()};
 	Theme::GlyphEntry PreviousEntry{}; // Zero-initialize
 
 	for (auto Codepoint : Text) {
@@ -30,13 +28,13 @@ void Label::setText(std::u32string const & Text)
 		Pen.x += Delta.x;
 		Pen.y += Delta.y;
 
-		GLshort X = (Pen.x + Entry.Bearings.x) / 64;
-		GLshort Y = (Pen.y + Entry.Bearings.y) / 64;
+		GLshort X = mX + (Pen.x + Entry.Bearings.x) / 64;
+		GLshort Y = mY + (Pen.y + Entry.Bearings.y) / 64;
 		Vertex::FillSolid Vertex;
 		Vertex.Color = {0, 0, 0, 255};
-		Vertex.Offset = {GLuint(Entry.Offset)};
+		Vertex.Offset = {Entry.Offset};
 		Vertex.Position = {X, Y};
-		Vertex.Size = {GLushort(Entry.Size.x), GLushort(Entry.Size.y)};
+		Vertex.Size = {Entry.Width, Entry.Height};
 		mVertices.push_back(Vertex);
 
 		Pen.x += Entry.Advance.x;
@@ -45,6 +43,22 @@ void Label::setText(std::u32string const & Text)
 		PreviousEntry = Entry;
 	}
 
+	mWidth = Pen.x / 64;
+	mHeight = mManager.mLabelSize.getHeight() / 64;
+}
+
+void Label::move(signed short X, signed short Y)
+{
+	auto DeltaX = X - mX;
+	auto DeltaY = Y - mY;
+
+	for (auto & Vertex : mVertices) {
+		Vertex.Position.X += DeltaX;
+		Vertex.Position.Y += DeltaY;
+	}
+
+	mX = X;
+	mY = Y;
 }
 
 void Label::render()

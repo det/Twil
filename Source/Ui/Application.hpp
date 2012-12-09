@@ -7,7 +7,8 @@ namespace Twil {
 namespace Ui {
 
 template<typename T>
-class Application {
+class Application
+{
 	private:
 	Platform::Application mApplication;
 	T mChild;

@@ -5,7 +5,8 @@
 namespace Twil {
 namespace Attribute {
 
-struct Color4b {
+struct Color4b
+{
 	GLubyte Red;
 	GLubyte Green;
 	GLubyte Blue;

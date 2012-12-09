@@ -12,7 +12,8 @@ class Library;
 class Size;
 class Stroker;
 
-class Face {
+class Face
+{
 	friend class Ft::Bitmap;
 	friend class Ft::Size;
 	friend class Ft::Stroker;
@@ -31,7 +32,6 @@ class Face {
 	FT_Vector getAdvance();
 	FT_Pos getLsbDelta();
 	FT_Pos getRsbDelta();
-	FT_Short getHeight();
 	FT_Vector getKerning(FT_UInt, FT_UInt);
 
 	void loadGlyph(FT_UInt);

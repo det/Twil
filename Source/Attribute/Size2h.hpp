@@ -5,7 +5,8 @@
 namespace Twil {
 namespace Attribute {
 
-struct Size2h {
+struct Size2h
+{
 	GLushort Width;
 	GLushort Height;
 

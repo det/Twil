@@ -16,7 +16,8 @@ namespace Gl {
 
 class Shader;
 
-class Program {
+class Program
+{
 	private:
 	GLuint mId;
 

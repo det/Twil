@@ -13,7 +13,7 @@ Manager::Manager() :
 	mBitmap{mLibrary},
 	mOutline{mLibrary},
 	mStroker{mLibrary},
-	mLabelFace{mLibrary, "Font/DejaVuSans.ttf", 0},
+	mLabelFace{mLibrary, "Font/DejaVuSans-Bold.ttf", 0},
 	mLabelSize{mLabelFace, 13.75 * 64}
 {
 	// Default GL state
@@ -99,19 +99,18 @@ Theme::GlyphEntry const & Manager::loadGlyphEntry(Ft::Face & Face, char32_t Code
 	auto Advance = Face.getAdvance();
 	auto LsbDelta = Face.getLsbDelta();
 	auto RsbDelta = Face.getRsbDelta();
-	FT_Pos Width = Box.xMax - Box.xMin;
-	FT_Pos Height = Box.yMax - Box.yMin;
-	FT_Vector Size{Width / 64, Height / 64};
+	unsigned short Width = (Box.xMax - Box.xMin) / 64;
+	unsigned short Height = (Box.yMax - Box.yMin) / 64;
 	FT_Vector Bearings{Box.xMin, Box.yMin};
 
 	Face.translate(-Box.xMin, -Box.yMin);
 
-	mBitmap.resize(Size.x, Size.y);
+	mBitmap.resize(Width, Height);
 	mBitmap.render(Face);
-	auto Offset = mTexture.add(mBitmap.begin(), mBitmap.end());
+	unsigned int Offset = mTexture.add(mBitmap.begin(), mBitmap.end());
 
 	// Return entry
-	Theme::GlyphEntry Entry{Size, Bearings, Advance, Index, LsbDelta, RsbDelta, Offset};
+	Theme::GlyphEntry Entry{Bearings, Advance, Index, LsbDelta, RsbDelta, Offset, Width, Height};
 	auto Pair = mFontEntries.insert({Codepoint, Entry});
 	return Pair.first->second;
 }

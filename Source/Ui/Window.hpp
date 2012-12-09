@@ -15,15 +15,16 @@ namespace Twil {
 namespace Ui {
 
 template <typename T>
-class Window {
+class Window
+{
 	private:
 	Platform::Window mWindow;
 	Theme::Manager mThemeManager;
 	Ui::WindowControl mControl;
 	T mChild;
-	int mWidth;
-	int mHeight;
-	bool mIsFullscreen;
+	int mWidth = 0;
+	int mHeight = 0;
+	bool mIsFullscreen = false;
 
 	public:
 	Ui::Event<> Deleted;
@@ -51,10 +52,7 @@ class Window {
 template <typename T>
 Window<T>::Window(Platform::Application & Application) :
 	mWindow{Application},
-	mChild{mThemeManager, mControl},
-	mWidth{0},
-	mHeight{0},
-	mIsFullscreen{false}
+	mChild{mThemeManager, mControl}
 {
 }
 

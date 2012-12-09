@@ -11,7 +11,8 @@ class Face;
 class Library;
 class Outline;
 
-class Stroker {
+class Stroker
+{
 	friend class Ft::Outline;
 
 	private:

@@ -17,7 +17,7 @@ Window::Window(Application & application2) :
 
 	mId = XCreateWindow(
 		mApplication.mDisplay, RootWindow(mApplication.mDisplay, mApplication.mVisual->screen),
-		0, 0, 320, 30, 0, mApplication.mVisual->depth, InputOutput,
+		0, 0, 96, 48, 0, mApplication.mVisual->depth, InputOutput,
 		mApplication.mVisual->visual, CWBorderPixel | CWColormap | CWEventMask, &mApplication.mWindowAttributes
 	);
 

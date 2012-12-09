@@ -5,7 +5,8 @@
 namespace Twil {
 namespace Gl {
 
-class Texture {
+class Texture
+{
 	private:
 	public:
 	GLuint mId;

@@ -7,7 +7,8 @@
 namespace Twil {
 namespace Program {
 
-class OutlineGradient {
+class OutlineGradient
+{
 	private:
 	Gl::Program mProgram;
 	GLint mModelViewLoc;

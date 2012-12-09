@@ -10,7 +10,8 @@
 namespace Twil {
 namespace Vertex {
 
-struct OutlineGradient {
+struct OutlineGradient
+{
 	Attribute::Color4b BorderColor;
 	Attribute::Color4b TopColor;
 	Attribute::Color4b BottomColor;

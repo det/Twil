@@ -7,7 +7,9 @@ namespace Twil {
 namespace Gl {
 
 template<GLenum Target, GLenum Unit>
-class TextureBind {
+class TextureBind
+{
+
 	public:
 	TextureBind(Gl::Texture &);
 	~TextureBind();

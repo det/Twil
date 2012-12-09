@@ -13,7 +13,8 @@ class Library;
 class Path;
 class Stroker;
 
-class Outline {
+class Outline
+{
 	friend class Bitmap;
 	friend class Stroker;
 

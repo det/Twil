@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Math/Vector2.hpp"
 #include "Ui/Widget.hpp"
 
 namespace Twil {
@@ -9,7 +8,8 @@ namespace Ui {
 class WindowControl;
 
 template<typename T>
-class Form : public Widget {
+class Form : public Widget
+{
 	private:
 	T mChild;
 
@@ -17,7 +17,8 @@ class Form : public Widget {
 	T & getChild();
 
 	Form(Ui::WindowControl &);
-	virtual void handleResized(Math::Vector2 const &);
+	virtual void handleResized(unsigned short, unsigned short);
+	virtual void handleMoved(signed short, signed short);
 	virtual void draw();
 	virtual void handleMouseEnter(int, int);
 	virtual void handleMouseLeave(int, int);
@@ -42,57 +43,63 @@ Form<T>::Form(Ui::WindowControl & Control) :
 
 
 template<typename T>
-void Form<T>::handleResized(Math::Vector2 const & Size)
+void Form<T>::handleResized(unsigned short Width, unsigned short Height)
 {
-	mChild.GetWidget().Resize(Size);
+	mChild.GetWidget().handleResized(Width, Height);
+}
+
+template<typename T>
+void Form<T>::handleMoved(signed short X, signed short Y)
+{
+	mChild.GetWidget().handleMoved(X, Y);
 }
 
 template<typename T>
 void Form<T>::draw()
 {
-	mChild.GetWidget().Draw();
+	mChild.GetWidget().draw();
 }
 
 template<typename T>
 void Form<T>::handleMouseEnter(int X, int Y)
 {
-	mChild.GetWidget().OnMouseEnter(X, Y);
+	mChild.GetWidget().handleMouseEnter(X, Y);
 }
 
 template<typename T>
 void Form<T>::handleMouseLeave(int X, int Y)
 {
-	mChild.GetWidget().OnMouseLeave(X, Y);
+	mChild.GetWidget().handleMouseLeave(X, Y);
 }
 
 template<typename T>
 void Form<T>::handleMouseMotion(int X, int Y)
 {
-	mChild.GetWidget().OnMouseMotion(X, Y);
+	mChild.GetWidget().handleMouseMotion(X, Y);
 }
 
 template<typename T>
 void Form<T>::handleButtonPressed(int X, int Y, unsigned Button)
 {
-	mChild.GetWidget().OnButtonPressed(X, Y, Button);
+	mChild.GetWidget().handleButtonPressed(X, Y, Button);
 }
 
 template<typename T>
 void Form<T>::handleButtonReleased(int X, int Y, unsigned Button)
 {
-	mChild.GetWidget().OnButtonReleased(X, Y, Button);
+	mChild.GetWidget().handleButtonReleased(X, Y, Button);
 }
 
 template<typename T>
 void Form<T>::handleKeyPressed(Platform::Key Key)
 {
-	mChild.GetWidget().OnKeyPressed(Key);
+	mChild.GetWidget().handleKeyPressed(Key);
 }
 
 template<typename T>
 void Form<T>::handleKeyReleased(Platform::Key Key)
 {
-	mChild.GetWidget().OnKeyReleased(Key);
+	mChild.GetWidget().handleKeyReleased(Key);
 }
 
 }

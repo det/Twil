@@ -7,7 +7,8 @@ namespace Platform {
 
 class Application;
 
-class Window {
+class Window
+{
 	private:
 	Platform::Application & mApplication;
 	::Window mId;

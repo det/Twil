@@ -5,7 +5,8 @@
 namespace Twil {
 namespace Attribute {
 
-struct Color1f {
+struct Color1f
+{
 	GLfloat Red;
 
 	static void setup(GLuint, GLsizei, GLvoid const *);

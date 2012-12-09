@@ -5,7 +5,7 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 	set (standard "-stdlib=libc++ -std=c++11")
 	set (math "-msse2") # -ffast-math
 	set (warning "-pedantic -Wall -Wextra -Wglobal-constructors -Wnon-virtual-dtor -Wshadow -Wnewline-eof") # -Wsign-conversion
-	set (debug "-ggdb -fsanitize=bounds -fsanitize=undefined -fcolor-diagnostics")
+	set (debug "-ggdb -fsanitize=bounds -fsanitize=undefined")
 	set (release "-DNDEBUG -O4")
 	set (symbol "-fno-rtti -fdata-sections -ffunction-sections -fvisibility=hidden -fvisibility-inlines-hidden")
 	set (linker_symbol "-Wl,--gc-sections")
@@ -77,6 +77,7 @@ set (sources
 	Theme/Manager.cpp
 	Ui/Application.cpp
 	Ui/Button.cpp
+	Ui/Centered.cpp
 	Ui/Drawable.cpp
 	Ui/Event.cpp
 	Ui/Form.cpp

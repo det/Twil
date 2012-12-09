@@ -540,7 +540,8 @@ void glTextureStorage3DEXT(GLuint, GLenum, GLsizei, GLenum, GLsizei, GLsizei, GL
 namespace Twil {
 namespace Gl {
 
-struct Context {
+struct Context
+{
 	PFNGLCULLFACEPROC CullFace;
 	PFNGLFRONTFACEPROC FrontFace;
 	PFNGLHINTPROC Hint;

@@ -8,7 +8,8 @@
 namespace Twil {
 namespace Platform {
 
-class SymbolLoader {
+class SymbolLoader
+{
 	public:
 	template<typename T>
 	void loadSymbol(T &, std::string const &);

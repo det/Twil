@@ -26,5 +26,20 @@ Size::~Size()
 	FT_Done_Size(mId);
 }
 
+FT_Short Size::getHeight()
+{
+	return mId->metrics.height;
+}
+
+FT_Short Size::getDescender()
+{
+	return mId->metrics.descender;
+}
+
+FT_Short Size::getAscender()
+{
+	return mId->metrics.ascender;
+}
+
 }
 }

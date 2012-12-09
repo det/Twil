@@ -7,7 +7,8 @@
 namespace Twil {
 namespace Attribute {
 
-struct Position2f {
+struct Position2f
+{
 	GLfloat X;
 	GLfloat Y;
 

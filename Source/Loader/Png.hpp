@@ -7,7 +7,8 @@
 namespace Twil {
 namespace Loader {
 
-class Png {
+class Png
+{
 	private:
 	GLuint mId;
 

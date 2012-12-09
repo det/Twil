@@ -7,7 +7,8 @@
 namespace Twil {
 namespace Attribute {
 
-struct Position2h {
+struct Position2h
+{
 	GLshort X;
 	GLshort Y;
 

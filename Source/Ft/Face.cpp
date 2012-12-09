@@ -47,11 +47,6 @@ FT_Pos Face::getLsbDelta()
 	return mId->glyph->lsb_delta;
 }
 
-FT_Short Face::getHeight()
-{
-	return mId->size->metrics.height;
-}
-
 FT_Pos Face::getRsbDelta()
 {
 	return mId->glyph->rsb_delta;

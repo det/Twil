@@ -8,7 +8,8 @@
 namespace Twil {
 namespace Gl {
 
-class TextureArray {
+class TextureArray
+{
 	private:
 	Gl::Buffer mBuffer;
 	Gl::Texture mTexture;

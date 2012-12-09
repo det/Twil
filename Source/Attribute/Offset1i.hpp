@@ -5,7 +5,8 @@
 namespace Twil {
 namespace Attribute {
 
-struct Offset1i {
+struct Offset1i
+{
 	GLuint Value;
 
 	static void setup(GLuint, GLsizei, GLvoid const *);

@@ -6,7 +6,8 @@
 namespace Twil {
 namespace Math {
 
-class BarycentricInterpolator {
+class BarycentricInterpolator
+{
 	private:
 	Math::Vector2 mA;
 	Math::Vector2 mB;

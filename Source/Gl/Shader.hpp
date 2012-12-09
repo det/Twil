@@ -8,7 +8,8 @@ namespace Gl {
 
 class Program;
 
-class Shader {
+class Shader
+{
 	friend class Gl::Program;
 
 	private:

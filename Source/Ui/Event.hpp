@@ -7,7 +7,8 @@ namespace Twil {
 namespace Ui {
 
 template<typename... Args>
-class Event {
+class Event
+{
 	typedef std::function<void(Args...)> Function;
 
 	private:

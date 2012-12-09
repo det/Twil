@@ -12,7 +12,8 @@
 namespace Twil {
 namespace Vertex {
 
-struct FillSolid {
+struct FillSolid
+{
 	Attribute::Color4b Color;
 	Attribute::Offset1i Offset;
 	Attribute::Position2h Position;
