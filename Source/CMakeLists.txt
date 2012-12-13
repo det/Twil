@@ -35,7 +35,6 @@ set (fonts
 )
 
 set (sources
-	Hello.cpp
 	Attribute/Color1f.cpp
 	Attribute/Color4b.cpp
 	Attribute/Offset1i.cpp
@@ -77,13 +76,18 @@ set (sources
 	Theme/Manager.cpp
 	Ui/Application.cpp
 	Ui/Button.cpp
+	Ui/Event.cpp
 	Ui/Centered.cpp
 	Ui/Drawable.cpp
-	Ui/Event.cpp
-	Ui/Form.cpp
+	Ui/DrawableContainer.cpp
+	Ui/HorizontalBox.cpp
+	Ui/KeyboardHandler.cpp
 	Ui/Label.cpp
+	Ui/MouseHandler.cpp
+	Ui/Tuple.cpp
+	Ui/WindowBase.cpp
 	Ui/Widget.cpp
-	Ui/WindowControl.cpp
+	Ui/WidgetContainer.cpp
 	Ui/Window.cpp
 	Vertex/FillSolid.cpp
 	Vertex/OutlineGradient.cpp
@@ -99,8 +103,9 @@ set (shaders
 )
 
 add_executable (hello
-	${shaders}
+	Hello.cpp
 	${sources}
+	${shaders}
 )
 
 find_package (Freetype REQUIRED)

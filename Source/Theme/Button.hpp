@@ -33,6 +33,10 @@ class Button
 	unsigned short getChildHeight();
 	unsigned short getFitWidth(unsigned short);
 	unsigned short getFitHeight(unsigned short);
+	signed short getX();
+	signed short getY();
+	unsigned short getWidth();
+	unsigned short getHeight();
 };
 
 }

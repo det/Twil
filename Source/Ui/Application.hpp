@@ -25,8 +25,7 @@ class Application
 template<typename T>
 Application<T>::Application() :
 	mChild{mApplication}
-{
-}
+{}
 
 template<typename T>
 void Application<T>::run()

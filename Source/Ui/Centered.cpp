@@ -25,6 +25,5 @@ unsigned short Centered::getY(unsigned short Height)
 	return mY + (mHeight - Height) / 2;
 }
 
-
 }
 }

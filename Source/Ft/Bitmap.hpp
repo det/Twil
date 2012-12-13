@@ -44,6 +44,7 @@ class Bitmap
 class SubBitmapIterator : public std::iterator<std::input_iterator_tag, unsigned char>
 {
 	friend class Ft::Bitmap;
+
 	private:
 	unsigned char const * mPointer;
 	std::size_t mRowAdvance;

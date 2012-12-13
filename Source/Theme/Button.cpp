@@ -183,5 +183,25 @@ unsigned short Button::getFitHeight(unsigned short Height)
 	return Height + 4;
 }
 
+signed short Button::getX()
+{
+	return mX;
+}
+
+signed short Button::getY()
+{
+	return mY;
+}
+
+unsigned short Button::getWidth()
+{
+	return mWidth;
+}
+
+unsigned short Button::getHeight()
+{
+	return mHeight;
+}
+
 }
 }

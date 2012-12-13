@@ -203,7 +203,6 @@ enum class Key
 
 enum class Mod
 {
-
 	Button1 = Button1Mask,
 	Button2 = Button2Mask,
 	Button3 = Button3Mask,

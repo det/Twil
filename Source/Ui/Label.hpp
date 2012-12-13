@@ -4,8 +4,9 @@
 #include "Ft/Library.hpp"
 #include "Ft/Size.hpp"
 #include "Ui/Drawable.hpp"
+#include "Ui/DrawableContainer.hpp"
+#include "Ui/WindowBase.hpp"
 #include "Theme/Label.hpp"
-#include "Ui/WindowControl.hpp"
 
 #include <iostream>
 #include <memory>
@@ -18,44 +19,47 @@ class Manager;
 }
 
 namespace Ui {
-class WindowControl;
+class WindowBase;
+
 
 template<typename T>
 class Label :
 	public Drawable
 {
 	private:
-	Ui::WindowControl & mControl;
+	Ui::DrawableContainer & mParent;
+	Ui::WindowBase & mBase;
 	Theme::Label mThemeLabel;
 	T mLayout;
 	std::u32string mText;
 
 	public:
-	Label(Theme::Manager &, Ui::WindowControl &);
+	Label(Ui::DrawableContainer &, Theme::Manager &, Ui::WindowBase &);
 
 	// Drawable
-	virtual void handleResized(unsigned short, unsigned short);
-	virtual void handleMoved(short, short);
-	virtual unsigned short getFitWidth();
-	virtual unsigned short getFitHeight();
-	virtual void draw();
+	virtual void handleResized(unsigned short, unsigned short) override;
+	virtual void handleMoved(short, short) override;
+	virtual unsigned short getFitWidth() override;
+	virtual unsigned short getFitHeight() override;
+	virtual void draw() override;
 
+	// Label
 	void setText(std::u32string const &);
 };
 
 template<typename T>
-Label<T>::Label(Theme::Manager & Theme, Ui::WindowControl & Control) :
-	mControl{Control},
+Label<T>::Label(Ui::DrawableContainer & Parent, Theme::Manager & Theme, Ui::WindowBase & Base) :
+	mParent{Parent},
+	mBase{Base},
 	mThemeLabel{Theme}
-{
-}
+{}
 
 template<typename T>
 void Label<T>::setText(std::u32string const & Text)
 {
 	mText = Text;
 	mThemeLabel.setText(Text);
-	mControl.setNeedsRedraw(true);
+	mBase.markNeedsRedraw();
 }
 
 template<typename T>

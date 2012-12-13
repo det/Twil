@@ -55,6 +55,9 @@ void StreamArray<T>::add(std::vector<T> const & Vertices)
 template<typename T>
 void StreamArray<T>::upload()
 {
+	// You cant map a buffer of size 0
+	if (mSize == 0) return;
+
 	glBindBuffer(GL_ARRAY_BUFFER, mBuffer);
 
 	// If the buffer is too small, resize it

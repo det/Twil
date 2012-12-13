@@ -9,7 +9,6 @@
 #include "Math/Matrix3.hpp"
 #include "Program/FillSolid.hpp"
 #include "Program/OutlineGradient.hpp"
-#include "Gl/Buffer.hpp"
 #include "Gl/Context.hpp"
 #include "Gl/StreamArray.hpp"
 #include "Gl/TextureArray.hpp"
@@ -41,8 +40,8 @@ struct GlyphEntry
 
 class Manager
 {
-	friend class Button;
-	friend class Label;
+	friend class Theme::Button;
+	friend class Theme::Label;
 
 	private:
 	Ft::Library mLibrary;

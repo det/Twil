@@ -1,6 +1,5 @@
 #pragma once
 
-#include "Ui/Widget.hpp"
 #include "Platform/Window.hpp"
 #include "Platform/Key.hpp"
 
@@ -51,41 +50,37 @@ void Application::run(T & Window)
 		switch (Event.type) {
 
 		case EnterNotify: {
-			Window.handleMouseEnter(Event.xmotion.x, Event.xmotion.y);
+			Window.sendMouseEnterWindow(Event.xmotion.x, Event.xmotion.y);
 		} break;
 
 		case LeaveNotify: {
-			Window.handleMouseLeave(Event.xmotion.x, Event.xmotion.y);
+			Window.sendMouseLeaveWindow(Event.xmotion.x, Event.xmotion.y);
 		} break;
 
 		case MotionNotify: {
-			Window.handleMouseMotion(Event.xmotion.x, Event.xmotion.y);
+			Window.sendMouseMotion(Event.xmotion.x, Event.xmotion.y);
 		} break;
 
 		case ButtonPress: {
-			Window.handleButtonPressed(Event.xbutton.x, Event.xbutton.y, Event.xbutton.button);
+			Window.sendButtonPress(Event.xbutton.x, Event.xbutton.y, Event.xbutton.button);
 		} break;
 
 		case ButtonRelease: {
-			Window.handleButtonReleased(Event.xbutton.x, Event.xbutton.y, Event.xbutton.button);
+			Window.sendButtonRelease(Event.xbutton.x, Event.xbutton.y, Event.xbutton.button);
 		} break;
 
 		case KeyPress: {
 			auto Keysym = XLookupKeysym(&Event.xkey, 0);
-			Window.handleKeyPressed((Key) Keysym);
+			Window.sendKeyPress((Key) Keysym);
 		} break;
 
 		case KeyRelease: {
 			auto Keysym = XLookupKeysym(&Event.xkey, 0);
-			Window.handleKeyReleased((Key) Keysym);
+			Window.sendKeyRelease((Key) Keysym);
 		} break;
 
 		case ConfigureNotify: {
-			assert(Event.xconfigure.width > 0 && Event.xconfigure.width < 65536);
-			assert(Event.xconfigure.height > 0 && Event.xconfigure.height < 65536);
-			auto Width = static_cast<unsigned short>(Event.xconfigure.width);
-			auto Height = static_cast<unsigned short>(Event.xconfigure.height);
-			Window.handleResized(Width, Height);
+			Window.handleResize(Event.xconfigure.width, Event.xconfigure.height);
 		} break;
 
 		case Expose: {
@@ -94,11 +89,11 @@ void Application::run(T & Window)
 
 		case ClientMessage: {
 			if (static_cast<Atom>(Event.xclient.data.l[0]) == mWmDeleteWindow) Window.handleDeleted();
-	    } break;
+		} break;
 
 		}
 
-		Window.update();
+		if (XPending(mDisplay) == 0) Window.update();
 	}
 }
 

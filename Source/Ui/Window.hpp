@@ -2,10 +2,14 @@
 
 #include "Gl/Context.hpp"
 #include "Math/Matrix3.hpp"
-#include "Ui/Event.hpp"
 #include "Theme/Manager.hpp"
-#include "Ui/WindowControl.hpp"
 #include "Ui/Application.hpp"
+#include "Ui/Event.hpp"
+#include "Ui/KeyboardHandler.hpp"
+#include "Ui/MouseHandler.hpp"
+#include "Ui/WidgetContainer.hpp"
+#include "Ui/WindowBase.hpp"
+
 
 #include <iostream>
 #include <stdexcept>
@@ -15,15 +19,18 @@ namespace Twil {
 namespace Ui {
 
 template <typename T>
-class Window
+class Window :
+	public Ui::KeyboardHandler,
+	public Ui::MouseHandler,
+	public Ui::WidgetContainer,
+	public Ui::WindowBase
 {
 	private:
 	Platform::Window mWindow;
 	Theme::Manager mThemeManager;
-	Ui::WindowControl mControl;
 	T mChild;
-	int mWidth = 0;
-	int mHeight = 0;
+	unsigned short mWidth = 0;
+	unsigned short mHeight = 0;
 	bool mIsFullscreen = false;
 
 	public:
@@ -31,89 +38,76 @@ class Window
 
 	Window(Platform::Application &);
 
-	T & getChild();
+	// Mousehandler
+	virtual void handleMouseEnterWindow(signed short, signed short) override;
+	virtual void handleMouseMotion(signed short, signed short) override;
 
-	void handleMouseEnter(int, int);
-	void handleMouseLeave(int, int);
-	void handleMouseMotion(int, int);
-	void handleButtonPressed(int, int, unsigned);
-	void handleButtonReleased(int, int, unsigned);
-	void handleKeyPressed(Platform::Key);
-	void handleKeyReleased(Platform::Key);
-	void handleResized(unsigned short, unsigned short);
+	// WidgetContainer
+	virtual void releaseMouse(signed short, signed short) override;
+
+	// Window
 	void handleExposed();
 	void handleDeleted();
-
+	void handleResize(unsigned short, unsigned short);
 	void draw();
 	void show();
 	void hide();
 	void update();
 	void toggleFullscreen();
 	void resize(unsigned short, unsigned short);
-	void fitChild(unsigned short, unsigned short);
+	void fitChild(signed short, signed short);
+
+	T & getChild();
 };
 
 template <typename T>
 Window<T>::Window(Platform::Application & Application) :
+	Ui::WindowBase{this, this},
 	mWindow{Application},
-	mChild{mThemeManager, mControl}
+	mChild{*this, mThemeManager, *this}
+{}
+
+// MouseHandler
+
+template <typename T>
+void Window<T>::handleMouseMotion(signed short X, signed short Y)
 {
+	if (X >= 0 && X <= mWidth && Y >= 0 && Y <= mHeight) mChild.aquireMouse(X, Y);
 }
 
 template <typename T>
-void Window<T>::handleMouseEnter(int X, int Y)
+void Window<T>::handleMouseEnterWindow(signed short X, signed short Y)
 {
-	mChild.handleMouseEnter(X, Y);
+	mChild.aquireMouse(X, Y);
 }
 
-template <typename T>
-void Window<T>::handleMouseLeave(int X, int Y)
-{
-	mChild.handleMouseLeave(X, Y);
-}
+// WidgetContainer
 
 template <typename T>
-void Window<T>::handleMouseMotion(int X, int Y)
+void Window<T>::releaseMouse(signed short, signed short)
 {
-	mChild.handleMouseMotion(X, Y);
+	setMouseHandler(*this);
 }
 
-template <typename T>
-void Window<T>::handleButtonPressed(int X, int Y, unsigned Button)
-{
-	mChild.handleButtonPressed(X, Y, Button);
-}
+// Window
 
 template <typename T>
-void Window<T>::handleButtonReleased(int X, int Y, unsigned Button)
+void Window<T>::update()
 {
-	mChild.handleButtonReleased(X, Y, Button);
-}
-
-template <typename T>
-void Window<T>::handleKeyPressed(Platform::Key Key)
-{
-	mChild.handleKeyPressed(Key);
-}
-
-template <typename T>
-void Window<T>::handleKeyReleased(Platform::Key Key)
-{
-	mChild.handleKeyReleased(Key);
-}
-
-template <typename T>
-void Window<T>::handleResized(unsigned short Width, unsigned short Height)
-{
-	mWidth = Width;
-	mHeight = Height;
-	mChild.handleResized(mWidth, mHeight);
+	if (mNeedsResize) {
+		mChild.handleResized(mWidth, mHeight);
+		mNeedsResize = false;
+	}
+	if (mNeedsRedraw) {
+		draw();
+		mNeedsRedraw = false;
+	}
 }
 
 template <typename T>
 void Window<T>::handleExposed()
 {
-	mControl.setNeedsRedraw(true);
+	mNeedsRedraw = true;
 }
 
 template <typename T>
@@ -123,18 +117,16 @@ void Window<T>::handleDeleted()
 }
 
 template <typename T>
-void Window<T>::update()
+void Window<T>::handleResize(unsigned short Width, unsigned short Height)
 {
-	if (!mControl.getNeedsRedraw()) return;
-	draw();
-	mControl.setNeedsRedraw(false);
+	mWidth = Width;
+	mHeight = Height;
+	mNeedsResize = true;
 }
 
 template <typename T>
 void Window<T>::draw()
 {
-	if (mWidth == 0 || mHeight == 0) return;
-
 	mThemeManager.beginRender(mWidth, mHeight);
 	mThemeManager.renderWindow();
 	mChild.draw();
@@ -150,13 +142,12 @@ void Window<T>::toggleFullscreen()
 }
 
 template <typename T>
-void Window<T>::fitChild(unsigned short PadWidth, unsigned short PadHeight)
+void Window<T>::fitChild(signed short PadWidth, signed short PadHeight)
 {
 	auto Width = mChild.getFitWidth();
 	auto Height = mChild.getFitHeight();
 	mWindow.resize(Width + PadWidth, Height + PadHeight);
 }
-
 
 template <typename T>
 void Window<T>::show()

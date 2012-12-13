@@ -1,9 +1,5 @@
 #include "Theme/Manager.hpp"
 
-#include "Ft/Size.hpp"
-#include "Math/Matrix2.hpp"
-#include "Math/Matrix3.hpp"
-
 #include <iostream>
 
 namespace Twil {
