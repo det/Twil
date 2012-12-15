@@ -28,9 +28,9 @@ class WindowBase
 	void sendMouseLeaveWindow(unsigned short, unsigned short);
 	void sendKeyPress(Platform::Key);
 	void sendKeyRelease(Platform::Key);
-	void sendMouseMotion(int, int);
-	void sendButtonPress(int, int, unsigned);
-	void sendButtonRelease(int, int, unsigned);
+	void sendMouseMotion(signed short, signed short);
+	void sendButtonPress(signed short, signed short, unsigned char);
+	void sendButtonRelease(signed short, signed short, unsigned char);
 };
 
 }

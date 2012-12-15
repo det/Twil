@@ -175,12 +175,12 @@ unsigned short Button::getChildHeight()
 
 unsigned short Button::getFitWidth(unsigned short Width)
 {
-	return Width + 4;
+	return Width + 12;
 }
 
 unsigned short Button::getFitHeight(unsigned short Height)
 {
-	return Height + 4;
+	return Height + 12;
 }
 
 signed short Button::getX()

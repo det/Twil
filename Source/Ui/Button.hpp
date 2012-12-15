@@ -46,6 +46,10 @@ class Button :
 	virtual unsigned short getFitWidth() override;
 	virtual unsigned short getFitHeight() override;
 	virtual void draw() override;
+	unsigned short getX() override { return mThemeButton.getX(); }
+	unsigned short getY() override { return mThemeButton.getY(); }
+	unsigned short getWidth() override { return mThemeButton.getWidth(); }
+	unsigned short getHeight() override { return mThemeButton.getHeight(); }
 
 	// MouseHandler
 	virtual void handleButtonPress(signed short, signed short, unsigned char) override;
@@ -81,6 +85,7 @@ void Button<T>::aquireMouse(signed short, signed short)
 
 
 // Drawable
+
 template<typename T>
 void Button<T>::handleResized(unsigned short Width, unsigned short Height)
 {

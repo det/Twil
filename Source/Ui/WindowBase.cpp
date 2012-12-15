@@ -44,17 +44,17 @@ void WindowBase::sendKeyRelease(Platform::Key Key)
 	mKeyboardHandler->handleKeyRelease(Key);
 }
 
-void WindowBase::sendMouseMotion(int X, int Y)
+void WindowBase::sendMouseMotion(signed short X, signed short Y)
 {
 	mMouseHandler->handleMouseMotion(X, Y);
 }
 
-void WindowBase::sendButtonPress(int X, int Y , unsigned Button)
+void WindowBase::sendButtonPress(signed short X, signed short Y , unsigned char Button)
 {
 	mMouseHandler->handleButtonPress(X, Y, Button);
 }
 
-void WindowBase::sendButtonRelease(int X, int Y, unsigned Button)
+void WindowBase::sendButtonRelease(signed short X, signed short Y, unsigned char Button)
 {
 	mMouseHandler->handleButtonRelease(X, Y, Button);
 }

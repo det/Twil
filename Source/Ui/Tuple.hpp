@@ -29,6 +29,12 @@ struct Tuple<First, Second, Rest...>
 		Function(Head);
 		Tail.iterate(Function);
 	}
+
+	template<typename F>
+	void iterateUntil(F Function)
+	{
+		if (Function(Head)) Tail.iterateUntil(Function);
+	}
 };
 
 template<typename First, typename Second>
@@ -51,6 +57,12 @@ struct Tuple<First, Second>
 	{
 		Function(Head);
 		Function(Tail);
+	}
+
+	template<typename F>
+	void iterateUntil(F Function)
+	{
+		if (Function(Head)) Function(Tail);
 	}
 };
 

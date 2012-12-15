@@ -21,6 +21,7 @@ class Label
 
 	public:
 	Label(Theme::Manager &);
+
 	void setText(std::u32string const &);
 	void move(signed short, signed short);
 	void render();

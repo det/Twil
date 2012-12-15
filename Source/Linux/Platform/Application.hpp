@@ -50,23 +50,23 @@ void Application::run(T & Window)
 		switch (Event.type) {
 
 		case EnterNotify: {
-			Window.sendMouseEnterWindow(Event.xmotion.x, Event.xmotion.y);
+			Window.sendMouseEnterWindow(Event.xmotion.x,  Window.getHeight() - Event.xmotion.y);
 		} break;
 
 		case LeaveNotify: {
-			Window.sendMouseLeaveWindow(Event.xmotion.x, Event.xmotion.y);
+			Window.sendMouseLeaveWindow(Event.xmotion.x,  Window.getHeight() - Event.xmotion.y);
 		} break;
 
 		case MotionNotify: {
-			Window.sendMouseMotion(Event.xmotion.x, Event.xmotion.y);
+			Window.sendMouseMotion(Event.xmotion.x,  Window.getHeight() - Event.xmotion.y);
 		} break;
 
 		case ButtonPress: {
-			Window.sendButtonPress(Event.xbutton.x, Event.xbutton.y, Event.xbutton.button);
+			Window.sendButtonPress(Event.xbutton.x,  Window.getHeight() - Event.xbutton.y, Event.xbutton.button);
 		} break;
 
 		case ButtonRelease: {
-			Window.sendButtonRelease(Event.xbutton.x, Event.xbutton.y, Event.xbutton.button);
+			Window.sendButtonRelease(Event.xbutton.x, Window.getHeight() - Event.xbutton.y, Event.xbutton.button);
 		} break;
 
 		case KeyPress: {

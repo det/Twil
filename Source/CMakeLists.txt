@@ -5,7 +5,8 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 	set (standard "-stdlib=libc++ -std=c++11")
 	set (math "-msse2") # -ffast-math
 	set (warning "-pedantic -Wall -Wextra -Wglobal-constructors -Wnon-virtual-dtor -Wshadow -Wnewline-eof") # -Wsign-conversion
-	set (debug "-ggdb -fsanitize=bounds -fsanitize=undefined")
+	set (debug "-ggdb")
+	set (debug_runtime "-fsanitize=bounds -fsanitize=undefined")
 	set (release "-DNDEBUG -O4")
 	set (symbol "-fno-rtti -fdata-sections -ffunction-sections -fvisibility=hidden -fvisibility-inlines-hidden")
 	set (linker_symbol "-Wl,--gc-sections")
@@ -14,6 +15,7 @@ elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 	set (math "-mfpmath=sse -msse2 -ffast-math")
 	set (warning "-pedantic -Wall -Wextra -Wnon-virtual-dtor -Wshadow") # -Wsign-conversion
 	set (debug "-ggdb")
+	set (debug_runtime)
 	set (release "-DNDEBUG -O3 -flto")
 	set (symbol "-fno-rtti -fdata-sections -ffunction-sections -fvisibility=hidden -fvisibility-inlines-hidden")
 	set (linker_symbol "-Wl,--gc-sections")
@@ -22,7 +24,7 @@ else ()
 endif ()
 
 set (CMAKE_CXX_FLAGS "${standard} ${math} ${warning}")
-set (CMAKE_CXX_FLAGS_DEBUG "${debug}")
+set (CMAKE_CXX_FLAGS_DEBUG "${debug} ${debug_runtime}")
 set (CMAKE_CXX_FLAGS_RELEASE "${release} ${symbol}")
 set (CMAKE_EXE_LINKER_FLAGS_RELEASE "${linker_symbol}")
 set (CMAKE_CXX_FLAGS_RELWITHDEBINFO "${release} ${symbol} ${debug}")
@@ -80,7 +82,7 @@ set (sources
 	Ui/Centered.cpp
 	Ui/Drawable.cpp
 	Ui/DrawableContainer.cpp
-	Ui/HorizontalBox.cpp
+	Ui/PartitionBox.cpp
 	Ui/KeyboardHandler.cpp
 	Ui/Label.cpp
 	Ui/MouseHandler.cpp

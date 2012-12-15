@@ -56,6 +56,8 @@ class Window :
 	void toggleFullscreen();
 	void resize(unsigned short, unsigned short);
 	void fitChild(signed short, signed short);
+	unsigned short getWidth() { return mWidth; }
+	unsigned short getHeight() { return mHeight; }
 
 	T & getChild();
 };

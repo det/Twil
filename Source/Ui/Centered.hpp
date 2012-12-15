@@ -14,8 +14,14 @@ class Centered
 	public:
 	void resize(unsigned short, unsigned short);
 	void move(signed short, signed short);
-	unsigned short getX(unsigned short);
-	unsigned short getY(unsigned short);
+	unsigned short getLayoutX(unsigned short);
+	unsigned short getLayoutY(unsigned short);
+
+	unsigned short getWidth() { return mWidth; }
+	unsigned short getHeight() { return mHeight; }
+	unsigned short getX() { return mX; }
+	unsigned short getY() { return mY; }
+
 };
 
 }

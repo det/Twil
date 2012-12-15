@@ -15,12 +15,12 @@ void Centered::move(signed short X, signed short Y)
 	mY = Y;
 }
 
-unsigned short Centered::getX(unsigned short Width)
+unsigned short Centered::getLayoutX(unsigned short Width)
 {
 	return mX + (mWidth - Width) / 2;
 }
 
-unsigned short Centered::getY(unsigned short Height)
+unsigned short Centered::getLayoutY(unsigned short Height)
 {
 	return mY + (mHeight - Height) / 2;
 }

@@ -6,10 +6,10 @@
 namespace Twil {
 namespace Ui {
 
-template<typename... Args>
+template<typename... As>
 class Event
 {
-	typedef std::function<void(Args...)> Function;
+	typedef std::function<void(As...)> Function;
 
 	private:
 	std::vector<Function> mCallbacks;
@@ -20,9 +20,9 @@ class Event
 		mCallbacks.push_back(f);
 	}
 
-	void operator()(Args &&... args) const
+	void operator()(As &&... Args) const
 	{
-		for (auto Callback : mCallbacks) Callback(std::forward<Args>(args)...);
+		for (auto Callback : mCallbacks) Callback(std::forward<As>(Args)...);
 	}
 };
 

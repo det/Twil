@@ -19,8 +19,8 @@ class Manager;
 }
 
 namespace Ui {
-class WindowBase;
 
+class WindowBase;
 
 template<typename T>
 class Label :
@@ -42,6 +42,11 @@ class Label :
 	virtual unsigned short getFitWidth() override;
 	virtual unsigned short getFitHeight() override;
 	virtual void draw() override;
+
+	virtual unsigned short getWidth() override { return mLayout.getWidth(); }
+	virtual unsigned short getHeight() override { return mLayout.getHeight(); }
+	virtual unsigned short getX() override { return mLayout.getX(); }
+	virtual unsigned short getY() override { return mLayout.getY(); }
 
 	// Label
 	void setText(std::u32string const &);
@@ -68,8 +73,8 @@ void Label<T>::handleResized(unsigned short Width, unsigned short Height)
 	mLayout.resize(Width, Height);
 	auto LabelWidth = mThemeLabel.getWidth();
 	auto LabelHeight = mThemeLabel.getHeight();
-	auto X = mLayout.getX(LabelWidth);
-	auto Y = mLayout.getY(LabelHeight);
+	auto X = mLayout.getLayoutX(LabelWidth);
+	auto Y = mLayout.getLayoutY(LabelHeight);
 	mThemeLabel.move(X, Y);
 }
 
@@ -79,8 +84,8 @@ void Label<T>::handleMoved(short Width, short Height)
 	mLayout.move(Width, Height);
 	auto LabelWidth = mThemeLabel.getWidth();
 	auto LabelHeight = mThemeLabel.getHeight();
-	auto X = mLayout.getX(LabelWidth);
-	auto Y = mLayout.getY(LabelHeight);
+	auto X = mLayout.getLayoutX(LabelWidth);
+	auto Y = mLayout.getLayoutY(LabelHeight);
 	mThemeLabel.move(X, Y);
 }
 
