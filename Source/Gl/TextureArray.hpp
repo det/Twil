@@ -24,25 +24,19 @@ class TextureArray
 	void upload();
 
 	template<typename T>
-	std::size_t add(T, T);
+	std::size_t add(T First, T Last)
+	{
+		auto Index = mBytes.size();
+		mBytes.insert(end(mBytes), First, Last);
+		return Index;
+	}
 
 	template<typename T>
-	std::size_t add(std::pair<T, T>);
+	std::size_t add(std::pair<T, T> Pair)
+	{
+		return add(Pair.first, Pair.second);
+	}
 };
-
-template<typename T>
-std::size_t TextureArray::add(T First, T Last)
-{
-	auto Index = mBytes.size();
-	mBytes.insert(end(mBytes), First, Last);
-	return Index;
-}
-
-template<typename T>
-std::size_t TextureArray::add(std::pair<T, T> Pair)
-{
-	return add(Pair.first, Pair.second);
-}
 
 }
 }

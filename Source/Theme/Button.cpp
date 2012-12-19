@@ -25,6 +25,7 @@ Button::Button(Theme::Manager & Manager) :
 void Button::setIsDown(bool IsPressed)
 {
 	mIsDown = IsPressed;
+	if (mHeight == 0 || mWidth == 0) return;
 
 	Attribute::Color4b Color1;
 	Attribute::Color4b Color2;
@@ -74,8 +75,10 @@ void Button::resize(unsigned short Width, unsigned short Height)
 	GLshort Right = mX + Width - 5;
 	GLshort Bottom = mY + 0;
 	GLshort Top = mY + Height - 5;
-	GLushort ScaleX = Width - 10;
-	GLushort ScaleY = Height - 10;
+	GLushort ScaleX = 0;
+	if (Width >= 10) ScaleX = Width - 10;
+	GLushort ScaleY = 0;
+	if (Height >= 10) ScaleY = Height - 10;
 
 	mVertices[0].InsideOffset = {mManager.mButtonSwInside};
 	mVertices[0].OutsideOffset = {mManager.mButtonSwOutside};
@@ -150,6 +153,7 @@ void Button::move(signed short X, signed short Y)
 
 void Button::render()
 {
+	if (mHeight == 0 || mWidth == 0) return;
 	mManager.mOutlineArray.add(mVertices);
 }
 
@@ -165,12 +169,14 @@ signed short Button::getChildY()
 
 unsigned short Button::getChildWidth()
 {
-	return mWidth - 4;
+	if (mWidth >= 4) return mWidth - 4;
+	else return 0;
 }
 
 unsigned short Button::getChildHeight()
 {
-	return mHeight - 4;
+	if (mHeight >= 4) return mHeight - 4;
+	else return 0;
 }
 
 unsigned short Button::getFitWidth(unsigned short Width)

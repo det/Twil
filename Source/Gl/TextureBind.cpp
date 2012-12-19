@@ -1,2 +1,0 @@
-#include "Gl/TextureBind.hpp"
-

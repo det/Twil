@@ -14,36 +14,25 @@ class Application
 	T mChild;
 
 	public:
-	Application();
+	Application() :
+		mChild{mApplication}
+	{}
 
-	void run();
-	void stop();
+	void run()
+	{
+		mApplication.run(mChild);
+	}
 
-	T & getChild();
+	void stop()
+	{
+		mApplication.stop();
+	}
+
+	T & getChild()
+	{
+		return mChild;
+	}
 };
-
-template<typename T>
-Application<T>::Application() :
-	mChild{mApplication}
-{}
-
-template<typename T>
-void Application<T>::run()
-{
-	mApplication.run(mChild);
-}
-
-template<typename T>
-void Application<T>::stop()
-{
-	mApplication.stop();
-}
-
-template<typename T>
-T & Application<T>::getChild()
-{
-	return mChild;
-}
 
 }
 }

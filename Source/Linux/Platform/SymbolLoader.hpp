@@ -12,22 +12,17 @@ class SymbolLoader
 {
 	public:
 	template<typename T>
-	void loadSymbol(T &, std::string const &);
+	void loadSymbol(T & Pointer, std::string const & Symbol)
+	{
+		Pointer = reinterpret_cast<T>(glXGetProcAddressARB((GLubyte const *) Symbol.c_str()));
+	}
+
 	template<typename T>
-	void loadSymbolGL(T &, std::string const &);
+	void loadSymbolGL(T & Pointer, std::string const & Symbol)
+	{
+		Pointer = reinterpret_cast<T>(glXGetProcAddressARB((GLubyte const *) Symbol.c_str()));
+	}
 };
-
-template<typename T>
-void SymbolLoader::loadSymbol(T & pointer, std::string const & symbol)
-{
-	pointer = reinterpret_cast<T>(glXGetProcAddressARB((GLubyte const *) symbol.c_str()));
-}
-
-template<typename T>
-void SymbolLoader::loadSymbolGL(T & pointer, std::string const & symbol)
-{
-	pointer = reinterpret_cast<T>(glXGetProcAddressARB((GLubyte const *) symbol.c_str()));
-}
 
 }
 }

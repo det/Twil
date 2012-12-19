@@ -34,146 +34,114 @@ class Window :
 	bool mIsFullscreen = false;
 
 	public:
+	// Window
 	Ui::Event<> Deleted;
 
-	Window(Platform::Application &);
+	Window(Platform::Application & Application) :
+		Ui::WindowBase{this, this},
+		mWindow{Application},
+		mChild{*this, mThemeManager, *this}
+	{}
 
 	// Mousehandler
-	virtual void handleMouseEnterWindow(signed short, signed short) override;
-	virtual void handleMouseMotion(signed short, signed short) override;
+	virtual void handleMouseEnterWindow(signed short X, signed short Y) override
+	{
+		mChild.aquireMouse(X, Y);
+	}
+
+	virtual void handleMouseMotion(signed short X, signed short Y) override
+	{
+		if (X >= 0 && X <= mWidth && Y >= 0 && Y <= mHeight) mChild.aquireMouse(X, Y);
+	}
 
 	// WidgetContainer
-	virtual void releaseMouse(signed short, signed short) override;
+	virtual void releaseMouse(signed short, signed short) override
+	{
+		setMouseHandler(*this);
+	}
 
 	// Window
-	void handleExposed();
-	void handleDeleted();
-	void handleResize(unsigned short, unsigned short);
-	void draw();
-	void show();
-	void hide();
-	void update();
-	void toggleFullscreen();
-	void resize(unsigned short, unsigned short);
-	void fitChild(signed short, signed short);
-	unsigned short getWidth() { return mWidth; }
-	unsigned short getHeight() { return mHeight; }
+	void handleExposed()
+	{
+		mNeedsRedraw = true;
+	}
 
-	T & getChild();
+	void handleDeleted()
+	{
+		Deleted();
+	}
+
+	void handleResize(unsigned short Width, unsigned short Height)
+	{
+		mWidth = Width;
+		mHeight = Height;
+		mNeedsResize = true;
+	}
+
+	void draw()
+	{
+		mThemeManager.beginRender(mWidth, mHeight);
+		mThemeManager.renderWindow();
+		mChild.draw();
+		mThemeManager.finishRender();
+		mWindow.swapBuffers();
+	}
+
+	void show()
+	{
+		mWindow.show();
+	}
+
+	void hide()
+	{
+		mWindow.hide();
+	}
+
+	void update()
+	{
+		if (mNeedsResize) {
+			mChild.handleResized(mWidth, mHeight);
+			mNeedsResize = false;
+		}
+		if (mNeedsRedraw) {
+			draw();
+			mNeedsRedraw = false;
+		}
+	}
+
+	void toggleFullscreen()
+	{
+		mIsFullscreen = !mIsFullscreen;
+		mWindow.setFullscreen(mIsFullscreen);
+	}
+
+	void resize(unsigned short Width, unsigned short Height)
+	{
+		mWindow.resize(Width, Height);
+	}
+
+	void fitChild(signed short PadWidth, signed short PadHeight)
+	{
+		auto Width = mChild.getFitWidth();
+		auto Height = mChild.getFitHeight();
+		mWindow.resize(Width + PadWidth, Height + PadHeight);
+	}
+
+	unsigned short getWidth()
+	{
+		return mWidth;
+	}
+
+	unsigned short getHeight()
+	{
+		return mHeight;
+	}
+
+	T & getChild()
+	{
+		return mChild;
+	}
 };
-
-template <typename T>
-Window<T>::Window(Platform::Application & Application) :
-	Ui::WindowBase{this, this},
-	mWindow{Application},
-	mChild{*this, mThemeManager, *this}
-{}
-
-// MouseHandler
-
-template <typename T>
-void Window<T>::handleMouseMotion(signed short X, signed short Y)
-{
-	if (X >= 0 && X <= mWidth && Y >= 0 && Y <= mHeight) mChild.aquireMouse(X, Y);
-}
-
-template <typename T>
-void Window<T>::handleMouseEnterWindow(signed short X, signed short Y)
-{
-	mChild.aquireMouse(X, Y);
-}
-
-// WidgetContainer
-
-template <typename T>
-void Window<T>::releaseMouse(signed short, signed short)
-{
-	setMouseHandler(*this);
-}
-
-// Window
-
-template <typename T>
-void Window<T>::update()
-{
-	if (mNeedsResize) {
-		mChild.handleResized(mWidth, mHeight);
-		mNeedsResize = false;
-	}
-	if (mNeedsRedraw) {
-		draw();
-		mNeedsRedraw = false;
-	}
-}
-
-template <typename T>
-void Window<T>::handleExposed()
-{
-	mNeedsRedraw = true;
-}
-
-template <typename T>
-void Window<T>::handleDeleted()
-{
-	Deleted();
-}
-
-template <typename T>
-void Window<T>::handleResize(unsigned short Width, unsigned short Height)
-{
-	mWidth = Width;
-	mHeight = Height;
-	mNeedsResize = true;
-}
-
-template <typename T>
-void Window<T>::draw()
-{
-	mThemeManager.beginRender(mWidth, mHeight);
-	mThemeManager.renderWindow();
-	mChild.draw();
-	mThemeManager.finishRender();
-	mWindow.swapBuffers();
-}
-
-template <typename T>
-void Window<T>::toggleFullscreen()
-{
-	mIsFullscreen = !mIsFullscreen;
-	mWindow.setFullscreen(mIsFullscreen);
-}
-
-template <typename T>
-void Window<T>::fitChild(signed short PadWidth, signed short PadHeight)
-{
-	auto Width = mChild.getFitWidth();
-	auto Height = mChild.getFitHeight();
-	mWindow.resize(Width + PadWidth, Height + PadHeight);
-}
-
-template <typename T>
-void Window<T>::show()
-{
-	mWindow.show();
-}
-
-template <typename T>
-void Window<T>::hide()
-{
-	mWindow.hide();
-}
-
-template <typename T>
-void Window<T>::resize(unsigned short Width, unsigned short Height)
-{
-	mWindow.resize(Width, Height);
-}
-
-template <typename T>
-T & Window<T>::getChild()
-{
-	return mChild;
-}
 
 }
 }

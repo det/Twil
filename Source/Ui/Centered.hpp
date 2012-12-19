@@ -21,7 +21,6 @@ class Centered
 	unsigned short getHeight() { return mHeight; }
 	unsigned short getX() { return mX; }
 	unsigned short getY() { return mY; }
-
 };
 
 }
