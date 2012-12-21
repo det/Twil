@@ -115,18 +115,18 @@ class Button :
 	virtual void handleButtonPress(signed short, signed short, unsigned char Button) override
 	{
 		if (Button == 1) {
-			if (mHasMouse && !mIsPressed) {
-				mIsPressed = true;
-				mThemeButton.setIsDown(true);
-				mBase.markNeedsRedraw();
-			}
+			mIsPressed = true;
+			mThemeButton.setIsDown(true);
+			mBase.markNeedsRedraw();
 		}
 	}
 
 	virtual void handleButtonRelease(signed short X, signed short Y, unsigned char Button) override
 	{
+
 		if (Button == 1) {
-			if (mHasMouse && mIsPressed) {
+			if (!mIsPressed) return;
+			if (mHasMouse) {
 				mIsPressed = false;
 				mThemeButton.setIsDown(false);
 				mBase.markNeedsRedraw();

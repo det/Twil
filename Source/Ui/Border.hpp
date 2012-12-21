@@ -9,8 +9,8 @@
 namespace Twil {
 namespace Ui {
 
-template<unsigned short Spacing, typename T>
-class Spacer :
+template<unsigned short SpaceX, unsigned short SpaceY, typename T>
+class Border :
 	public Ui::MouseHandler,
 	public Ui::Widget,
 	public Ui::WidgetContainer
@@ -26,7 +26,7 @@ class Spacer :
 
 	public:
 	// SplitBox
-	Spacer(Ui::WidgetContainer & Parent, Theme::Manager & Theme, Ui::WindowBase & Base) :
+	Border(Ui::WidgetContainer & Parent, Theme::Manager & Theme, Ui::WindowBase & Base) :
 		mParent{Parent},
 		mBase{Base},
 		mChild{*this, Theme, Base}
@@ -44,10 +44,10 @@ class Spacer :
 		mHeight = Height;
 		unsigned short ChildWidth = 0;
 		unsigned short ChildHeight = 0;
-		if (mWidth >= Spacing + Spacing) ChildWidth = mWidth - Spacing - Spacing;
-		if (mHeight >= Spacing + Spacing) ChildHeight = mHeight - Spacing - Spacing;
+		if (mWidth >= SpaceX + SpaceX) ChildWidth = mWidth - SpaceX - SpaceX;
+		if (mHeight >= SpaceY + SpaceY) ChildHeight = mHeight - SpaceY - SpaceY;
 		mChild.handleResized(ChildWidth, ChildHeight);
-		mChild.handleMoved(mX + Spacing, mY + Spacing);
+		mChild.handleMoved(mX + SpaceX, mY + SpaceY);
 	}
 
 	virtual void handleMoved(signed short X, signed short Y) override
@@ -61,12 +61,12 @@ class Spacer :
 
 	virtual unsigned short getFitWidth() override
 	{
-		return mChild.getFitWidth() + Spacing + Spacing;
+		return mChild.getFitWidth() + SpaceX + SpaceX;
 	}
 
 	virtual unsigned short getFitHeight() override
 	{
-		return mChild.getFitHeight() + Spacing + Spacing;
+		return mChild.getFitHeight() + SpaceY + SpaceY;
 	}
 
 	virtual void draw() override

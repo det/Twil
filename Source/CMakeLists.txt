@@ -86,7 +86,7 @@ set (sources
 	Ui/KeyboardHandler.cpp
 	Ui/Label.cpp
 	Ui/MouseHandler.cpp
-	Ui/Spacer.cpp
+	Ui/Border.cpp
 	Ui/SplitBox.cpp
 	Ui/Tuple.cpp
 	Ui/WindowBase.cpp
