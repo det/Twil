@@ -20,11 +20,11 @@ class WindowBase;
 
 template<bool IsHorizontal, typename... Args>
 class PartitionBox :
-	public Ui::Widget,
-	public Ui::WidgetContainer
+	public Ui::Widget<true, true>,
+	public Ui::WidgetContainer<true, true>
 {
 	private:
-	Ui::WidgetContainer & mParent;
+	Ui::WidgetContainer<true, true> & mParent;
 	Ui::Tuple<Args...> mChildren;
 	signed short mX = 0;
 	signed short mY = 0;
@@ -35,8 +35,8 @@ class PartitionBox :
 
 	public:
 	// PartitionBox
-	PartitionBox(Ui::WidgetContainer & Parent, Theme::Manager & Theme, Ui::WindowBase & Base) :
-		mParent{Parent},
+	PartitionBox(Ui::WidgetContainer<true, true> & Parent, Theme::Manager & Theme, Ui::WindowBase & Base) :
+		mParent(Parent), // Gcc bug prevents brace initialization syntax here
 		mChildren{*this, Theme, Base}
 	{}
 
@@ -47,12 +47,48 @@ class PartitionBox :
 	}
 
 	// Drawable
-	struct ResizeHorizontalFunctor
+	struct SetXFunctor
+	{
+		signed short DeltaX;
+
+		template<typename T>
+		void operator()(T & Child)
+		{
+			auto ChildX = Child.getX();
+			Child.setX(ChildX + DeltaX);
+		}
+	};
+
+	virtual void setX(signed short X) override
+	{
+		signed short DeltaX = X - mX;
+		mX = X;
+		mChildren.iterate(SetXFunctor{DeltaX});
+	}
+
+	struct SetYFunctor
+	{
+		signed short DeltaY;
+
+		template<typename T>
+		void operator()(T & Child)
+		{
+			auto ChildY = Child.getY();
+			Child.setY(ChildY + DeltaY);
+		}
+	};
+
+	virtual void setY(signed short Y) override
+	{
+		signed short DeltaY = Y - mY;
+		mY = Y;
+		mChildren.iterate(SetYFunctor{DeltaY});
+	}
+
+	struct PartitionWidthFunctor
 	{
 		signed short X;
-		signed short Y;
 		unsigned short BoxWidth;
-		unsigned short Height;
 		unsigned short Mod;
 
 		template<typename T>
@@ -63,17 +99,15 @@ class PartitionBox :
 				++Width;
 				--Mod;
 			}
-			Child.handleResized(Width, Height);
-			Child.handleMoved(X, Y);
+			Child.setWidth(Width);
+			Child.setX(X);
 			X += Width;
 		}
 	};
 
-	struct ResizeVerticalFunctor
+	struct PartitionHeightFunctor
 	{
-		signed short X;
 		signed short Y;
-		unsigned short Width;
 		unsigned short BoxHeight;
 		unsigned short Mod;
 
@@ -85,50 +119,65 @@ class PartitionBox :
 				++Height;
 				--Mod;
 			}
-			Child.handleResized(Width, Height);
-			Child.handleMoved(X, Y);
+			Child.setHeight(Height);
+			Child.setY(Y);
 			Y += Height;
 		}
 	};
 
-	virtual void handleResized(unsigned short Width, unsigned short Height) override
+	struct SetWidthFunctor
 	{
-		mWidth = Width;
-		mHeight = Height;
-		if (IsHorizontal) {
-			unsigned short BoxWidth = Width / mSize;
-			unsigned short Mod = Width % mSize;
-			mChildren.iterate(ResizeHorizontalFunctor{mX, mY, BoxWidth, Height, Mod});
-		}
-		else {
-			unsigned short BoxHeight = Height / mSize;
-			unsigned short Mod = Height % mSize;
-			mChildren.iterate(ResizeVerticalFunctor{mX, mY, Width, BoxHeight, Mod});
-		}
-	}
-
-	struct MoveFunctor
-	{
-		signed short DeltaX;
-		signed short DeltaY;
+		unsigned short Width;
 
 		template<typename T>
 		void operator()(T & Child)
 		{
-			auto X = Child.getX();
-			auto Y = Child.getY();
-			Child.handleMoved(X + DeltaX, Y + DeltaY);
+			Child.setWidth(Width);
 		}
 	};
 
-	virtual void handleMoved(signed short X, signed short Y) override
+	struct SetHeightFunctor
 	{
-		signed short DeltaX = X - mX;
-		signed short DeltaY = Y - mY;
-		mX = X;
-		mY = Y;
-		mChildren.iterate(MoveFunctor{DeltaX, DeltaY});
+		unsigned short Height;
+
+		template<typename T>
+		void operator()(T & Child)
+		{
+			Child.setHeight(Height);
+		}
+	};
+
+	virtual void setWidth(unsigned short Width) override
+	{
+		mWidth = Width;
+		if (IsHorizontal) {
+			unsigned short BoxWidth = mWidth / mSize;
+			unsigned short Mod = mWidth % mSize;
+			mChildren.iterate(PartitionWidthFunctor{mX, BoxWidth, Mod});
+		}
+		else {
+			mChildren.iterate(SetWidthFunctor{mWidth});
+		}
 	}
+
+	virtual void setHeight(unsigned short Height) override
+	{
+		mHeight = Height;
+		if (IsHorizontal) {
+			mChildren.iterate(SetHeightFunctor{mHeight});
+		}
+		else {
+			unsigned short BoxHeight = mHeight / mSize;
+			unsigned short Mod = mHeight % mSize;
+			mChildren.iterate(PartitionHeightFunctor{mY, BoxHeight, Mod});
+		}
+	}
+
+	virtual void setClipX(signed short, signed short) override
+	{}
+
+	virtual void setClipY(signed short, signed short) override
+	{}
 
 	struct MaxWidthFunctor
 	{
@@ -182,20 +231,6 @@ class PartitionBox :
 		}
 	}
 
-	struct DrawFunctor
-	{
-		template<typename T>
-		void operator()(T & Child)
-		{
-			Child.draw();
-		}
-	};
-
-	virtual void draw() override
-	{
-		mChildren.iterate(DrawFunctor{});
-	}
-
 	unsigned short getX() override
 	{
 		return mX;
@@ -214,6 +249,20 @@ class PartitionBox :
 	unsigned short getHeight() override
 	{
 		return mHeight;
+	}
+
+	struct DrawFunctor
+	{
+		template<typename T>
+		void operator()(T & Child)
+		{
+			Child.draw();
+		}
+	};
+
+	virtual void draw() override
+	{
+		mChildren.iterate(DrawFunctor{});
 	}
 
 	// Widget

@@ -22,7 +22,7 @@ template <typename T>
 class Window :
 	public Ui::KeyboardHandler,
 	public Ui::MouseHandler,
-	public Ui::WidgetContainer,
+	public Ui::WidgetContainer<true, true>,
 	public Ui::WindowBase
 {
 	private:
@@ -100,7 +100,8 @@ class Window :
 	void update()
 	{
 		if (mNeedsResize) {
-			mChild.handleResized(mWidth, mHeight);
+			mChild.setWidth(mWidth);
+			mChild.setHeight(mHeight);
 			mNeedsResize = false;
 		}
 		if (mNeedsRedraw) {

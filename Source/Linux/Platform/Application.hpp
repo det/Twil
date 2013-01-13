@@ -37,7 +37,7 @@ class Application
 	void stop();
 
 	template<typename T>
-	void run(T & Window)
+	void run(T & Object)
 	{
 		mRunning = true;
 		while (mRunning)  {
@@ -47,50 +47,50 @@ class Application
 			switch (Event.type) {
 
 			case EnterNotify: {
-				Window.sendMouseEnterWindow(Event.xmotion.x,  Window.getHeight() - Event.xmotion.y);
+				Object.sendMouseEnterWindow(Event.xmotion.x,  Object.getHeight() - Event.xmotion.y);
 			} break;
 
 			case LeaveNotify: {
-				Window.sendMouseLeaveWindow(Event.xmotion.x,  Window.getHeight() - Event.xmotion.y);
+				Object.sendMouseLeaveWindow(Event.xmotion.x,  Object.getHeight() - Event.xmotion.y);
 			} break;
 
 			case MotionNotify: {
-				Window.sendMouseMotion(Event.xmotion.x,  Window.getHeight() - Event.xmotion.y);
+				Object.sendMouseMotion(Event.xmotion.x,  Object.getHeight() - Event.xmotion.y);
 			} break;
 
 			case ButtonPress: {
-				Window.sendButtonPress(Event.xbutton.x,  Window.getHeight() - Event.xbutton.y, Event.xbutton.button);
+				Object.sendButtonPress(Event.xbutton.x,  Object.getHeight() - Event.xbutton.y, Event.xbutton.button);
 			} break;
 
 			case ButtonRelease: {
-				Window.sendButtonRelease(Event.xbutton.x, Window.getHeight() - Event.xbutton.y, Event.xbutton.button);
+				Object.sendButtonRelease(Event.xbutton.x, Object.getHeight() - Event.xbutton.y, Event.xbutton.button);
 			} break;
 
 			case KeyPress: {
 				auto Keysym = XLookupKeysym(&Event.xkey, 0);
-				Window.sendKeyPress((Key) Keysym);
+				Object.sendKeyPress((Key) Keysym);
 			} break;
 
 			case KeyRelease: {
 				auto Keysym = XLookupKeysym(&Event.xkey, 0);
-				Window.sendKeyRelease((Key) Keysym);
+				Object.sendKeyRelease((Key) Keysym);
 			} break;
 
 			case ConfigureNotify: {
-				Window.handleResize(Event.xconfigure.width, Event.xconfigure.height);
+				Object.handleResize(Event.xconfigure.width, Event.xconfigure.height);
 			} break;
 
 			case Expose: {
-				if (Event.xexpose.count == 0) Window.handleExposed();
+				if (Event.xexpose.count == 0) Object.handleExposed();
 			} break;
 
 			case ClientMessage: {
-				if (static_cast<Atom>(Event.xclient.data.l[0]) == mWmDeleteWindow) Window.handleDeleted();
+				if (static_cast<Atom>(Event.xclient.data.l[0]) == mWmDeleteWindow) Object.handleDeleted();
 			} break;
 
 			}
 
-			if (XPending(mDisplay) == 0) Window.update();
+			if (XPending(mDisplay) == 0) Object.update();
 		}
 	}
 

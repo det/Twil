@@ -23,9 +23,16 @@ class Label
 	Label(Theme::Manager &);
 
 	void setText(std::u32string const &);
-	void move(signed short, signed short);
 	void render();
 
+	void setX(signed short);
+	void setY(signed short);
+	void setHeight(unsigned short);
+	void setWidth(unsigned short);
+	void setClipX(signed short, signed short);
+	void setClipY(signed short, signed short);
+	signed short getX();
+	signed short getY();
 	unsigned short getWidth();
 	unsigned short getHeight();
 };

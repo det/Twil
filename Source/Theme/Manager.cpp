@@ -10,7 +10,7 @@ Manager::Manager() :
 	mOutline{mLibrary},
 	mStroker{mLibrary},
 	mLabelFace{mLibrary, "Font/DejaVuSans-Bold.ttf", 0},
-	mLabelSize{mLabelFace, 13.75 * 64}
+	mLabelSize{mLabelFace, 880}
 {
 	// Default GL state
 	glEnable(GL_BLEND);

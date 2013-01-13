@@ -36,13 +36,13 @@ void Shader::loadFile(std::string const & Path)
 	if (Pos < 0) throw std::runtime_error{"Unable to read shader"};
 	auto Length = static_cast<std::size_t>(Pos);
 	File.seekg(0, std::ios_base::beg);
-	std::basic_string<GLchar> Data(Length, '\0');
-	File.read(&Data[0], Pos);
+	std::vector<GLchar> Data(Length);
+	File.read(Data.data(), Pos);
 	File.close();
 
-	std::vector<GLchar const *> Sources{&Data[0]};
-	std::vector<GLint> Lengths{Length};
-	glShaderSource(mId, 1, &Sources[0], &Lengths[0]);
+	GLchar const * Sources = Data.data();
+	GLint const Lengths = Length;
+	glShaderSource(mId, 1, &Sources, &Lengths);
 }
 
 void Shader::compile()

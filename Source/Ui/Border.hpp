@@ -12,11 +12,10 @@ namespace Ui {
 template<unsigned short SpaceX, unsigned short SpaceY, typename T>
 class Border :
 	public Ui::MouseHandler,
-	public Ui::Widget,
-	public Ui::WidgetContainer
+	public Ui::Widget<true, true>,
+	public Ui::WidgetContainer<true, true>
 {
-
-	Ui::WidgetContainer & mParent;
+	Ui::WidgetContainer<true, true> & mParent;
 	Ui::WindowBase & mBase;
 	T mChild;
 	signed short mX = 0;
@@ -26,9 +25,9 @@ class Border :
 
 	public:
 	// SplitBox
-	Border(Ui::WidgetContainer & Parent, Theme::Manager & Theme, Ui::WindowBase & Base) :
-		mParent{Parent},
-		mBase{Base},
+	Border(Ui::WidgetContainer<true, true> & Parent, Theme::Manager & Theme, Ui::WindowBase & Base) :
+		mParent(Parent), // Gcc bug prevents brace initialization syntax here
+		mBase(Base), // Gcc bug prevents brace initialization syntax here
 		mChild{*this, Theme, Base}
 	{}
 
@@ -38,26 +37,45 @@ class Border :
 	}
 
 	// Drawable
-	virtual void handleResized(unsigned short Width, unsigned short Height) override
-	{
-		mWidth = Width;
-		mHeight = Height;
-		unsigned short ChildWidth = 0;
-		unsigned short ChildHeight = 0;
-		if (mWidth >= SpaceX + SpaceX) ChildWidth = mWidth - SpaceX - SpaceX;
-		if (mHeight >= SpaceY + SpaceY) ChildHeight = mHeight - SpaceY - SpaceY;
-		mChild.handleResized(ChildWidth, ChildHeight);
-		mChild.handleMoved(mX + SpaceX, mY + SpaceY);
-	}
-
-	virtual void handleMoved(signed short X, signed short Y) override
+	virtual void setX(signed short X) override
 	{
 		signed short DeltaX = X - mX;
-		signed short DeltaY = Y - mY;
 		mX = X;
-		mY = Y;
-		mChild.handleMoved(mChild.getX() + DeltaX, mChild.getY() + DeltaY);
+		signed short ChildX = mChild.getX();
+		mChild.setX(ChildX + DeltaX);
 	}
+
+	virtual void setY(signed short Y) override
+	{
+		signed short DeltaY = Y - mY;
+		mY = Y;
+		signed short ChildY = mChild.getY();
+		mChild.setY(ChildY + DeltaY);
+	}
+
+	virtual void setWidth(unsigned short Width) override
+	{
+		mWidth = Width;
+		unsigned short ChildWidth = 0;
+		if (mWidth >= SpaceX + SpaceX) ChildWidth = mWidth - SpaceX - SpaceX;
+		mChild.setWidth(ChildWidth);
+		mChild.setX(mX + SpaceX);
+	}
+
+	virtual void setHeight(unsigned short Height) override
+	{
+		mHeight = Height;
+		unsigned short ChildHeight = 0;
+		if (mHeight >= SpaceY + SpaceY) ChildHeight = mHeight - SpaceY - SpaceY;
+		mChild.setHeight(ChildHeight);
+		mChild.setY(mY + SpaceY);
+	}
+
+	virtual void setClipX(signed short, signed short) override
+	{}
+
+	virtual void setClipY(signed short, signed short) override
+	{}
 
 	virtual unsigned short getFitWidth() override
 	{
@@ -67,11 +85,6 @@ class Border :
 	virtual unsigned short getFitHeight() override
 	{
 		return mChild.getFitHeight() + SpaceY + SpaceY;
-	}
-
-	virtual void draw() override
-	{
-		mChild.draw();
 	}
 
 	virtual unsigned short getX() override
@@ -92,6 +105,11 @@ class Border :
 	virtual unsigned short getHeight() override
 	{
 		return mHeight;
+	}
+
+	virtual void draw() override
+	{
+		mChild.draw();
 	}
 
 	// MouseHandler

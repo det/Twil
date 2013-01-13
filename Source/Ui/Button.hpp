@@ -17,12 +17,12 @@ class WindowBase;
 
 template<typename T>
 class Button :
-	public Ui::DrawableContainer,
+	public Ui::DrawableContainer<true, true>,
 	public Ui::MouseHandler,
-	public Ui::Widget
+	public Ui::Widget<true, true>
 {
 	private:
-	Ui::WidgetContainer & mParent;
+	Ui::WidgetContainer<true, true> & mParent;
 	Ui::WindowBase & mBase;
 	Theme::Button mThemeButton;
 	T mChild;
@@ -33,15 +33,16 @@ class Button :
 	//Button
 	Event<> Clicked;
 
-	Button(Ui::WidgetContainer & Parent, Theme::Manager & Theme, Ui::WindowBase & Base) :
-		mParent{Parent},
-		mBase{Base},
+	Button(Ui::WidgetContainer<true, true> & Parent, Theme::Manager & Theme, Ui::WindowBase & Base) :
+		mParent(Parent), // Gcc bug prevents brace initialization syntax here
+		mBase(Base), // Gcc bug prevents brace initialization syntax here
 		mThemeButton{Theme},
 		mChild{*this, Theme, mBase},
 		mIsPressed{false},
 		mHasMouse{false}
 	{
-		mChild.handleMoved(2, 2);
+//		mChild.setX(2);
+//		mChild.setY(2);
 	}
 
 	T & getChild()
@@ -57,20 +58,31 @@ class Button :
 	}
 
 	// Drawable
-	virtual void handleResized(unsigned short Width, unsigned short Height) override
+	virtual void setWidth(unsigned short Width) override
 	{
-		mThemeButton.resize(Width, Height);
+		mThemeButton.setWidth(Width);
 		auto ChildWidth = mThemeButton.getChildWidth();
+		mChild.setWidth(ChildWidth);
+	}
+	virtual void setHeight(unsigned short Height) override
+	{
+		mThemeButton.setHeight(Height);
 		auto ChildHeight = mThemeButton.getChildHeight();
-		mChild.handleResized(ChildWidth, ChildHeight);
+		mChild.setHeight(ChildHeight);
 	}
 
-	virtual void handleMoved(signed short X, signed short Y) override
+	virtual void setX(signed short X) override
 	{
-		mThemeButton.move(X, Y);
+		mThemeButton.setX(X);
 		auto ChildX = mThemeButton.getChildX();
+		mChild.setX(ChildX);
+	}
+
+	virtual void setY(signed short Y) override
+	{
+		mThemeButton.setY(Y);
 		auto ChildY = mThemeButton.getChildY();
-		mChild.handleMoved(ChildX, ChildY);
+		mChild.setY(ChildY);
 	}
 
 	virtual unsigned short getFitWidth() override
@@ -111,20 +123,26 @@ class Button :
 		return mThemeButton.getHeight();
 	}
 
+	virtual void setClipX(signed short, signed short) override
+	{}
+
+	virtual void setClipY(signed short, signed short) override
+	{}
+
 	// MouseHandler
-	virtual void handleButtonPress(signed short, signed short, unsigned char Button) override
+	virtual void handleButtonPress(signed short, signed short, unsigned char Index) override
 	{
-		if (Button == 1) {
+		if (Index == 1) {
 			mIsPressed = true;
 			mThemeButton.setIsDown(true);
 			mBase.markNeedsRedraw();
 		}
 	}
 
-	virtual void handleButtonRelease(signed short X, signed short Y, unsigned char Button) override
+	virtual void handleButtonRelease(signed short X, signed short Y, unsigned char Index) override
 	{
 
-		if (Button == 1) {
+		if (Index == 1) {
 			if (!mIsPressed) return;
 			if (mHasMouse) {
 				mIsPressed = false;

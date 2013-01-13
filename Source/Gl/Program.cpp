@@ -10,6 +10,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <string>
+#include <vector>
 #include <GL3/gl3.h>
 
 namespace Twil {
@@ -43,9 +44,9 @@ void Program::link()
 	if (!IsLinked) {
 		GLint LogLength = 0;
 		glGetProgramiv(mId, GL_INFO_LOG_LENGTH , &LogLength);
-		std::basic_string<GLchar> Log((std::basic_string<GLchar>::size_type) LogLength, '\0');
-		glGetProgramInfoLog(mId, LogLength, &LogLength, &Log[0]);
-		std::cout << Log;
+		std::vector<GLchar> Log(LogLength);
+		glGetProgramInfoLog(mId, LogLength, &LogLength, Log.data());
+		std::cout << Log.data();
 		throw std::runtime_error{"Program link error"};
 	}
 }

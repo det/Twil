@@ -18,6 +18,8 @@ struct FillSolid
 	Attribute::Offset1i Offset;
 	Attribute::Position2h Position;
 	Attribute::Size2h Size;
+	Attribute::Size2h ClipMin;
+	Attribute::Size2h ClipMax;
 
 	static void setup();
 };

@@ -3,11 +3,26 @@
 namespace Twil {
 namespace Ui {
 
-class DrawableContainer {
+template<bool, bool>
+class DrawableContainer;
+
+template<>
+class DrawableContainer<true, true>
+{
 	public:
 	virtual ~DrawableContainer() {}
-//	virtual void updateLayout() = 0;
 };
+
+
+template<>
+class DrawableContainer<false, false>
+{
+	public:
+	virtual ~DrawableContainer() {}
+	virtual void handleChildWidthChanged() = 0;
+	virtual void handleChildHeightChanged() = 0;
+};
+
 
 }
 }

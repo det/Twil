@@ -23,9 +23,16 @@ class Button
 	public:
 	Button(Theme::Manager &);
 	void setIsDown(bool);
-	void resize(unsigned short, unsigned short);
-	void move(signed short, signed short);
 	void render();
+
+	void setX(signed short);
+	void setY(signed short);
+	void setHeight(unsigned short);
+	void setWidth(unsigned short);
+	signed short getX();
+	signed short getY();
+	unsigned short getWidth();
+	unsigned short getHeight();
 
 	short getChildX();
 	short getChildY();
@@ -33,10 +40,6 @@ class Button
 	unsigned short getChildHeight();
 	unsigned short getFitWidth(unsigned short);
 	unsigned short getFitHeight(unsigned short);
-	signed short getX();
-	signed short getY();
-	unsigned short getWidth();
-	unsigned short getHeight();
 };
 
 }

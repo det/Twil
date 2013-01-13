@@ -34,7 +34,7 @@ namespace Twil {
 namespace Ft {
 
 Bitmap::Bitmap(Ft::Library & Library) :
-	mLibrary{Library},
+	mLibrary(Library), // Gcc bug prevents brace initialization syntax here
 	mId{}, // Zero initialize
 	mCapacity{0}
 {

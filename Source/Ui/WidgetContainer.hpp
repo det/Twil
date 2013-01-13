@@ -5,8 +5,12 @@
 namespace Twil {
 namespace Ui {
 
-class WidgetContainer :
-	public DrawableContainer
+template<bool, bool>
+class WidgetContainer;
+
+template<>
+class WidgetContainer<true, true> :
+	public DrawableContainer<true, true>
 {
 	public:
 	virtual ~WidgetContainer() {}

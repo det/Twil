@@ -3,13 +3,14 @@
 #include "Ft/Library.hpp"
 #include "Ft/Stroker.hpp"
 
+#include <algorithm>
 #include <iostream>
 
 namespace Twil {
 namespace Ft {
 
 Outline::Outline(Ft::Library const & Library) :
-	mLibrary{Library},
+	mLibrary(Library), // Gcc bug prevents brace initialization syntax here
 	mId{}, // zero-initialize
 	mPointCapacity{0},
 	mContourCapacity{0}

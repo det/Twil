@@ -5,8 +5,9 @@
 namespace Twil {
 namespace Ui {
 
+template<bool W, bool V>
 class Widget :
-	public Ui::Drawable
+	public Ui::Drawable<W, V>
 {
 	public:
 	virtual ~Widget() {}

@@ -12,8 +12,9 @@
 class Hello
 {
 	private:
-	using Label = Twil::Ui::Label<Twil::Ui::Centered>;
-	using Button = Twil::Ui::Button<Label>;
+	using Label = Twil::Ui::Label;
+	using CenteredLabel = Twil::Ui::Centered<Label>;
+	using Button = Twil::Ui::Button<CenteredLabel>;
 	using SpacedButton = Twil::Ui::Border<4, 4, Button>;
 	using Column = Twil::Ui::PartitionBox<false, SpacedButton, SpacedButton, SpacedButton>;
 	using Grid = Twil::Ui::PartitionBox<true, Column, Column, Column>;
@@ -42,17 +43,17 @@ class Hello
 	Button & getButton12() { return getColumn2().getChild<1>().getChild(); }
 	Button & getButton22() { return getColumn2().getChild<2>().getChild(); }
 	Button & getTopButton() { return getVerticalBox1().getChild1().getChild(); }
-	Label & getBottomLabel() { return getBottomButton().getChild(); }
-	Label & getLabel00() { return getButton00().getChild(); }
-	Label & getLabel10() { return getButton10().getChild(); }
-	Label & getLabel20() { return getButton20().getChild(); }
-	Label & getLabel01() { return getButton01().getChild(); }
-	Label & getLabel11() { return getButton11().getChild(); }
-	Label & getLabel21() { return getButton21().getChild(); }
-	Label & getLabel02() { return getButton02().getChild(); }
-	Label & getLabel12() { return getButton12().getChild(); }
-	Label & getLabel22() { return getButton22().getChild(); }
-	Label & getTopLabel() { return getTopButton().getChild(); }
+	Label & getBottomLabel() { return getBottomButton().getChild().getChild(); }
+	Label & getLabel00() { return getButton00().getChild().getChild(); }
+	Label & getLabel10() { return getButton10().getChild().getChild(); }
+	Label & getLabel20() { return getButton20().getChild().getChild(); }
+	Label & getLabel01() { return getButton01().getChild().getChild(); }
+	Label & getLabel11() { return getButton11().getChild().getChild(); }
+	Label & getLabel21() { return getButton21().getChild().getChild(); }
+	Label & getLabel02() { return getButton02().getChild().getChild(); }
+	Label & getLabel12() { return getButton12().getChild().getChild(); }
+	Label & getLabel22() { return getButton22().getChild().getChild(); }
+	Label & getTopLabel() { return getTopButton().getChild().getChild(); }
 
 	public:
 	Hello()
@@ -70,7 +71,7 @@ class Hello
 		getTopLabel().setText(U"Top");
 		getWindow().resize(320, 240);
 		getWindow().show();
-		getButton00().Clicked += [&]() { std::cout << "0\n"; };
+		getButton00().Clicked += [&]() { getLabel00().setText(U"Clicked"); };
 		getWindow().Deleted += [&]() { getApplication().stop(); };
 	}
 

@@ -7,14 +7,15 @@ in GeometryData {
 	flat vec4 Color;
 	flat vec4 Position;
 	flat vec2 PositionSize;
-	flat ivec2 Size;
+	flat ivec2 TextureSize;
+	flat int Pitch;
 	flat int Offset;
 } Geometry[];
 
 out FragmentData {
 	flat vec4 Color;
 	flat int Offset;
-	flat ivec2 Size;
+	flat int Pitch;
 	smooth vec2 Texcoord;
 } Fragment;
 
@@ -28,8 +29,8 @@ void main()
 	float PosHeight = Geometry[0].PositionSize.y;
 	float TexX = 0.0;
 	float TexY = 0.0;
-	float TexWidth = Geometry[0].Size.x;
-	float TexHeight = Geometry[0].Size.y;
+	float TexWidth = Geometry[0].TextureSize.x;
+	float TexHeight = Geometry[0].TextureSize.y;
 
 	gl_Position = vec4(PosX, PosY, PosZ, PosW);
 	Fragment.Texcoord = vec2(TexX, TexY);
@@ -43,13 +44,13 @@ void main()
 	Fragment.Color = Geometry[0].Color;
 	Fragment.Texcoord = vec2(TexX, TexY + TexHeight);
 	Fragment.Offset = Geometry[0].Offset;
-	Fragment.Size = Geometry[0].Size;
+	Fragment.Pitch = Geometry[0].Pitch;
 	EmitVertex();
 
 	gl_Position = vec4(PosX + PosWidth, PosY + PosHeight, PosZ, PosW);
 	Fragment.Color = Geometry[0].Color;
 	Fragment.Texcoord = vec2(TexX + TexWidth, TexY + TexHeight);
 	Fragment.Offset = Geometry[0].Offset;
-	Fragment.Size = Geometry[0].Size;
+	Fragment.Pitch = Geometry[0].Pitch;
 	EmitVertex();
 }

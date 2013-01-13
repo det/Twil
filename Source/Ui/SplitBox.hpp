@@ -10,11 +10,11 @@ namespace Ui {
 
 template<typename A, typename B>
 class SplitBoxBase :
-	public Ui::Widget,
-	public Ui::WidgetContainer
+	public Ui::Widget<true, true>,
+	public Ui::WidgetContainer<true, true>
 {
 	protected:
-	Ui::WidgetContainer & mParent;
+	Ui::WidgetContainer<true, true> & mParent;
 	A mA;
 	B mB;
 	signed short mX = 0;
@@ -24,8 +24,8 @@ class SplitBoxBase :
 
 	public:
 	// SplitBox
-	SplitBoxBase(Ui::WidgetContainer & Parent, Theme::Manager & Theme, Ui::WindowBase & Base) :
-		mParent{Parent},
+	SplitBoxBase(Ui::WidgetContainer<true, true> & Parent, Theme::Manager & Theme, Ui::WindowBase & Base) :
+		mParent(Parent), // Gcc bug prevents brace initialization syntax here
 		mA{*this, Theme, Base},
 		mB{*this, Theme, Base}
 	{}
@@ -41,15 +41,31 @@ class SplitBoxBase :
 	}
 
 	// Drawable
-	virtual void handleMoved(signed short X, signed short Y) override
+	virtual void setX(signed short X) override
 	{
 		signed short DeltaX = X - mX;
-		signed short DeltaY = Y - mY;
 		mX = X;
-		mY = Y;
-		mA.handleMoved(mA.getX() + DeltaX, mA.getY() + DeltaY);
-		mB.handleMoved(mB.getX() + DeltaX, mB.getY() + DeltaY);
+		signed short ChildAX = mA.getX();
+		signed short ChildBX = mB.getX();
+		mA.setX(ChildAX + DeltaX);
+		mB.setX(ChildBX + DeltaX);
 	}
+
+	virtual void setY(signed short Y) override
+	{
+		signed short DeltaY = Y - mY;
+		mY = Y;
+		signed short ChildAY = mA.getY();
+		signed short ChildBY = mB.getY();
+		mA.setY(ChildAY + DeltaY);
+		mB.setY(ChildBY + DeltaY);
+	}
+
+	virtual void setClipX(signed short, signed short) override
+	{}
+
+	virtual void setClipY(signed short, signed short) override
+	{}
 
 	virtual void draw() override
 	{
@@ -98,7 +114,7 @@ class SplitBoxHorizontal :
 	using Ui::SplitBoxBase<A, B>::mB;
 
 	public:
-	SplitBoxHorizontal(Ui::WidgetContainer & Parent, Theme::Manager & Theme, Ui::WindowBase & Base) :
+	SplitBoxHorizontal(Ui::WidgetContainer<true, true> & Parent, Theme::Manager & Theme, Ui::WindowBase & Base) :
 		Ui::SplitBoxBase<A, B>{Parent, Theme, Base}
 	{}
 
@@ -130,12 +146,11 @@ class SplitBoxVertical :
 	public Ui::SplitBoxBase<A, B>
 {
 	protected:
-	// This is neccesary because of C++'s two phase compilation
 	using Ui::SplitBoxBase<A, B>::mA;
 	using Ui::SplitBoxBase<A, B>::mB;
 
 	public:
-	SplitBoxVertical(Ui::WidgetContainer & Parent, Theme::Manager & Theme, Ui::WindowBase & Base) :
+	SplitBoxVertical(Ui::WidgetContainer<true, true> & Parent, Theme::Manager & Theme, Ui::WindowBase & Base) :
 		Ui::SplitBoxBase<A, B>{Parent, Theme, Base}
 	{}
 
@@ -179,30 +194,35 @@ class SplitBox<false, false, A, B> :
 
 	public:
 	// SplitBox
-	SplitBox(Ui::WidgetContainer & Parent, Theme::Manager & Theme, Ui::WindowBase & Base) :
+	SplitBox(Ui::WidgetContainer<true, true> & Parent, Theme::Manager & Theme, Ui::WindowBase & Base) :
 		Ui::SplitBoxVertical<A, B>{Parent, Theme, Base}
 	{}
 
 	// Drawable
-	virtual void handleResized(unsigned short Width, unsigned short Height) override
+	virtual void setWidth(unsigned short Width) override
 	{
 		mWidth = Width;
-		mHeight = Height;
+		mA.setWidth(mWidth);
+		mB.setWidth(mWidth);
+	}
 
+	virtual void setHeight(unsigned short Height) override
+	{
+		mHeight = Height;
 
 		unsigned short FitHeightB = mB.getFitHeight();
 		if (mHeight >= FitHeightB) {
 			unsigned short ExtraSpace = mHeight - FitHeightB;
-			mA.handleResized(mWidth, ExtraSpace);
-			mB.handleResized(mWidth, FitHeightB);
-			mA.handleMoved(mX, mY);
-			mB.handleMoved(mX, mY + ExtraSpace);
+			mA.setHeight(ExtraSpace);
+			mB.setHeight(FitHeightB);
+			mA.setY(mY);
+			mB.setY(mY + ExtraSpace);
 		}
 		else {
-			mA.handleResized(mWidth, 0);
-			mB.handleResized(mWidth, mHeight);
-			mA.handleMoved(mX, mY);
-			mB.handleMoved(mX, mY + 0);
+			mA.setHeight(0);
+			mB.setHeight(mHeight);
+			mA.setY(mY);
+			mB.setY(mY + 0);
 		}
 	}
 };
@@ -221,27 +241,33 @@ class SplitBox<false, true, A, B> :
 
 	public:
 	// SplitBox
-	SplitBox(Ui::WidgetContainer & Parent, Theme::Manager & Theme, Ui::WindowBase & Base) :
+	SplitBox(Ui::WidgetContainer<true, true> & Parent, Theme::Manager & Theme, Ui::WindowBase & Base) :
 		Ui::SplitBoxVertical<A, B>{Parent, Theme, Base}
 	{}
 
 	// Drawable
-	virtual void handleResized(unsigned short Width, unsigned short Height) override
+	virtual void setWidth(unsigned short Width) override
 	{
 		mWidth = Width;
+		mA.setWidth(mWidth);
+		mB.setWidth(mWidth);
+	}
+
+	virtual void setHeight(unsigned short Height) override
+	{
 		mHeight = Height;
 
 		unsigned short FitHeightA = mA.getFitHeight();
 		if (mHeight >= FitHeightA) {
 			unsigned short ExtraSpace = mHeight - FitHeightA;
-			mA.handleResized(mWidth, FitHeightA);
-			mB.handleResized(mWidth, ExtraSpace);
-			mB.handleMoved(mX, mY + FitHeightA);
+			mA.setHeight(FitHeightA);
+			mB.setHeight(ExtraSpace);
+			mB.setY(mY + FitHeightA);
 		}
 		else {
-			mA.handleResized(mWidth, mHeight);
-			mB.handleResized(mWidth, 0);
-			mB.handleMoved(mX, mY + mHeight);
+			mA.setHeight(mHeight);
+			mB.setHeight(0);
+			mB.setY(mY + mHeight);
 		}
 	}
 };
@@ -260,28 +286,34 @@ class SplitBox<true, false, A, B> :
 
 	public:
 	// SplitBox
-	SplitBox(Ui::WidgetContainer & Parent, Theme::Manager & Theme, Ui::WindowBase & Base) :
+	SplitBox(Ui::WidgetContainer<true, true> & Parent, Theme::Manager & Theme, Ui::WindowBase & Base) :
 		Ui::SplitBoxHorizontal<A, B>{Parent, Theme, Base}
 	{}
 
 	// Drawable
-	virtual void handleResized(unsigned short Width, unsigned short Height) override
+	virtual void setWidth(unsigned short Width) override
 	{
 		mWidth = Width;
-		mHeight = Height;
 
 		unsigned short FitWidthB = mB.getFitWidth();
 		if (mWidth >= FitWidthB) {
 			unsigned short ExtraSpace = mWidth - FitWidthB;
-			mA.handleResized(ExtraSpace, mHeight);
-			mB.handleResized(FitWidthB, mHeight);
-			mB.handleMoved(mX + ExtraSpace, mY);
+			mA.setWidth(ExtraSpace);
+			mB.setWidth(FitWidthB);
+			mB.setX(mX + ExtraSpace);
 		}
 		else {
-			mA.handleResized(0, mHeight);
-			mB.handleResized(mWidth, mHeight);
-			mB.handleMoved(mX + 0, mY);
+			mA.setWidth(0);
+			mB.setWidth(mWidth);
+			mB.setX(mX + 0);
 		}
+	}
+
+	virtual void setHeight(unsigned short Height) override
+	{
+		mHeight = Height;
+		mA.setHeight(mHeight);
+		mB.setHeight(mHeight);
 	}
 };
 
@@ -299,28 +331,34 @@ class SplitBox<true, true, A, B> :
 
 	public:
 	// SplitBox
-	SplitBox(Ui::WidgetContainer & Parent, Theme::Manager & Theme, Ui::WindowBase & Base) :
+	SplitBox(Ui::WidgetContainer<true, true> & Parent, Theme::Manager & Theme, Ui::WindowBase & Base) :
 		Ui::SplitBoxHorizontal<A, B>{Parent, Theme, Base}
 	{}
 
 	// Drawable
-	virtual void handleResized(unsigned short Width, unsigned short Height) override
+	virtual void setWidth(unsigned short Width) override
 	{
 		mWidth = Width;
-		mHeight = Height;
 
 		unsigned short FitWidthA = mA.getFitWidth();
 		if (mWidth >= FitWidthA) {
 			unsigned short ExtraSpace = mWidth - FitWidthA;
-			mA.handleResized(FitWidthA, mHeight);
-			mB.handleResized(ExtraSpace, mHeight);
-			mB.handleMoved(mX + FitWidthA, mY);
+			mA.setWidth(FitWidthA);
+			mB.setWidth(ExtraSpace);
+			mB.setX(mX + FitWidthA);
 		}
 		else {
-			mA.handleResized(mWidth, mHeight);
-			mB.handleResized(0, mHeight);
-			mB.handleMoved(mX + mWidth, mY);
+			mA.setWidth(mWidth);
+			mB.setWidth(0);
+			mB.setX(mX + mWidth);
 		}
+	}
+
+	virtual void setHeight(unsigned short Height) override
+	{
+		mHeight = Height;
+		mA.setHeight(mHeight);
+		mB.setHeight(mHeight);
 	}
 };
 

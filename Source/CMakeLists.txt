@@ -13,7 +13,7 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 	set (standard "-std=c++11")
 	set (math "-mfpmath=sse -msse2 -ffast-math")
-	set (warning "-pedantic -Wall -Wextra -Wnon-virtual-dtor -Wshadow") # -Wsign-conversion
+	set (warning "-pedantic -Wall -Wextra -Wnon-virtual-dtor -Wshadow -Wno-missing-field-initializers")
 	set (debug "-ggdb")
 	set (debug_runtime)
 	set (release "-DNDEBUG -O3 -flto")
@@ -37,6 +37,10 @@ set (fonts
 )
 
 set (sources
+        ${CMAKE_SYSTEM_NAME}/Platform/Key.cpp
+        ${CMAKE_SYSTEM_NAME}/Platform/Application.cpp
+        ${CMAKE_SYSTEM_NAME}/Platform/SymbolLoader.cpp
+        ${CMAKE_SYSTEM_NAME}/Platform/Window.cpp
 	Attribute/Color1f.cpp
 	Attribute/Color4b.cpp
 	Attribute/Offset1i.cpp
@@ -67,16 +71,13 @@ set (sources
 	Math/Vector2.cpp
 	Math/Vector3.cpp
 	Math/Vector4.cpp
-	${CMAKE_SYSTEM_NAME}/Platform/Key.cpp
-	${CMAKE_SYSTEM_NAME}/Platform/Application.cpp
-	${CMAKE_SYSTEM_NAME}/Platform/SymbolLoader.cpp
-	${CMAKE_SYSTEM_NAME}/Platform/Window.cpp
 	Program/FillSolid.cpp
 	Program/OutlineGradient.cpp
 	Theme/Button.cpp
 	Theme/Label.cpp
 	Theme/Manager.cpp
 	Ui/Application.cpp
+        Ui/Border.cpp
 	Ui/Button.cpp
 	Ui/Event.cpp
 	Ui/Centered.cpp
@@ -85,8 +86,8 @@ set (sources
 	Ui/PartitionBox.cpp
 	Ui/KeyboardHandler.cpp
 	Ui/Label.cpp
-	Ui/MouseHandler.cpp
-	Ui/Border.cpp
+        Ui/MouseHandler.cpp
+        Ui/Resizable.cpp
 	Ui/SplitBox.cpp
 	Ui/Tuple.cpp
 	Ui/WindowBase.cpp
@@ -129,7 +130,6 @@ include_directories (
 )
 
 target_link_libraries (hello
-	-lc++abi
 	${FREETYPE_LIBRARIES}
 	${OPENAL_LIBRARIES}
 	${OPENGL_LIBRARIES}

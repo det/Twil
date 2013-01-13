@@ -12,7 +12,7 @@ namespace Twil {
 namespace Platform {
 
 Window::Window(Application & application2) :
-	mApplication{application2}
+	mApplication(application2) // Gcc bug prevents brace initialization syntax here
 {
 
 	mId = XCreateWindow(

@@ -13,7 +13,7 @@ namespace Twil {
 namespace Ft {
 
 Face::Face(Ft::Library & Library, std::string const & Path, FT_Long Index) :
-	mLibrary{Library},
+	mLibrary(Library), // Gcc bug prevents brace initialization syntax here
 	mId{nullptr}
 {
 	auto Error = FT_New_Face(mLibrary.mId, Path.c_str(), Index, &mId);
