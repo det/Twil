@@ -1,21 +1,21 @@
-#include "Gl/VertexArray.hpp"
+#include "VertexArray.hpp"
 
-#include "Gl/Context.hpp"
+#include "Context.hpp"
 
 namespace Twil {
 namespace Gl {
 
-VertexArray::VertexArray()
+VertexArrayT::VertexArrayT()
 {
 	glGenVertexArrays(1, &mId);
 }
 
-VertexArray::~VertexArray()
+VertexArrayT::~VertexArrayT()
 {
 	glDeleteVertexArrays(1, &mId);
 }
 
-VertexArray::operator GLuint() const
+VertexArrayT::operator GLuint() const
 {
 	return mId;
 }

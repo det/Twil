@@ -4,41 +4,49 @@
 #include <GL3/gl3.h>
 
 namespace Twil {
-
-namespace Math {
-struct Matrix3;
-struct Matrix4;
-struct Vector2;
-struct Vector4;
-}
-
 namespace Gl {
 
-class Shader;
+class ShaderT;
 
-class Program
+/// \brief Container for an OpenGL Program.
+class ProgramT
 {
 	private:
 	GLuint mId;
 
-	public:
-	Program();
-	~Program();
+	// Non copyable
+	ProgramT(ProgramT &) = delete;
+	ProgramT & operator=(ProgramT &) = delete;
 
+	public:
+	ProgramT();
+	~ProgramT();
+
+	/// \brief Implicit conversion operator so it can be used in gl* functions.
 	operator GLuint() const;
 
-	void attach(Gl::Shader const &);
-	void link();
-	void bindAttribLocation(GLuint, std::string const &);
-	void bindFragDataLocationIndexed(GLuint, GLuint, std::string const &);
-	static void setUniform(GLint, GLboolean, Math::Matrix3 const &);
-	static void setUniform(GLint, GLboolean, Math::Matrix4 const &);
-	static void setUniform(GLint, float, float, float, float);
-	static void setUniform(GLint, float, float);
-	static void setUniform(GLint, float);
-	static void setUniform(GLint, int);
+	/// \brief Attach a shader.
+	void attach(ShaderT const & Shader);
 
-	GLint getLocation(std::string const &) const;
+	/// \brief Link the program.
+	///
+	/// \throws std::runtime_error on error.
+	void link();
+
+	/// \brief Sets a uniform int.
+	static void setUniform(GLint Location, int X);
+
+	/// \brief Sets a uniform float.
+	static void setUniform(GLint Location, float X);
+
+	/// \brief Sets a uniform vec2.
+	static void setUniform(GLint Location, float X, float Y);
+
+	/// \brief Sets a uniform vec4.
+	static void setUniform(GLint Location, float X, float Y, float Z, float W);
+
+	/// \returns The Location of a uniform.
+	GLint getLocation(char const * String) const;
 };
 
 }

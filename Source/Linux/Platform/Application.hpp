@@ -1,7 +1,7 @@
 #pragma once
 
-#include "Platform/Window.hpp"
-#include "Platform/Key.hpp"
+#include "Window.hpp"
+#include "Key.hpp"
 
 #include <cassert>
 #include <stdexcept>
@@ -12,9 +12,10 @@
 namespace Twil {
 namespace Platform {
 
-class Application
+/// \brief A Linux application.
+class ApplicationT
 {
-	friend class Platform::Window;
+	friend class WindowT;
 
 	private:
 	::Display * mDisplay;
@@ -29,71 +30,81 @@ class Application
 	bool mRunning;
 
 	public:
-	Application();
-	~Application();
-	Application(Application &) = delete;
-	Application & operator=(Application &) = delete;
+	/// \throws std::runtime_error on error.
+	ApplicationT();
+	~ApplicationT();
+	ApplicationT(ApplicationT &) = delete;
+	ApplicationT & operator=(ApplicationT &) = delete;
 
-	void stop();
-
+	/// \brief Run the event loop.
+	///
+	/// \param Window Object to dispatch events to.
 	template<typename T>
-	void run(T & Object)
+	void run(T & Window)
 	{
+		assert(mRunning == false);
+
 		mRunning = true;
 		while (mRunning)  {
+
 			XEvent Event;
 			XNextEvent(mDisplay, &Event);
+			auto Y = Window.getHeight() - Event.xbutton.y;
 
 			switch (Event.type) {
 
 			case EnterNotify: {
-				Object.sendMouseEnterWindow(Event.xmotion.x,  Object.getHeight() - Event.xmotion.y);
+				Window.sendMouseEnterWindow(Event.xmotion.x, Y);
 			} break;
 
 			case LeaveNotify: {
-				Object.sendMouseLeaveWindow(Event.xmotion.x,  Object.getHeight() - Event.xmotion.y);
+				Window.sendMouseLeaveWindow(Event.xmotion.x, Y);
 			} break;
 
 			case MotionNotify: {
-				Object.sendMouseMotion(Event.xmotion.x,  Object.getHeight() - Event.xmotion.y);
+				Window.sendMouseMotion(Event.xmotion.x, Y);
 			} break;
 
 			case ButtonPress: {
-				Object.sendButtonPress(Event.xbutton.x,  Object.getHeight() - Event.xbutton.y, Event.xbutton.button);
+				Window.sendButtonPress(Event.xbutton.x, Y, Event.xbutton.button);
 			} break;
 
 			case ButtonRelease: {
-				Object.sendButtonRelease(Event.xbutton.x, Object.getHeight() - Event.xbutton.y, Event.xbutton.button);
+				Window.sendButtonRelease(Event.xbutton.x, Y, Event.xbutton.button);
 			} break;
 
 			case KeyPress: {
 				auto Keysym = XLookupKeysym(&Event.xkey, 0);
-				Object.sendKeyPress((Key) Keysym);
+				Window.sendKeyPress(static_cast<KeyT>(Keysym));
 			} break;
 
 			case KeyRelease: {
 				auto Keysym = XLookupKeysym(&Event.xkey, 0);
-				Object.sendKeyRelease((Key) Keysym);
+				Window.sendKeyRelease(static_cast<KeyT>(Keysym));
 			} break;
 
 			case ConfigureNotify: {
-				Object.handleResize(Event.xconfigure.width, Event.xconfigure.height);
+				if (Event.xconfigure.send_event != True) break; // FIXME: Is this correct?
+				Window.handleResize(Event.xconfigure.width, Event.xconfigure.height);
 			} break;
 
 			case Expose: {
-				if (Event.xexpose.count == 0) Object.handleExposed();
+				Window.handleExposed();
 			} break;
 
 			case ClientMessage: {
-				if (static_cast<Atom>(Event.xclient.data.l[0]) == mWmDeleteWindow) Object.handleDeleted();
+				auto WindowAtom = static_cast<Atom>(Event.xclient.data.l[0]);
+				if (WindowAtom == mWmDeleteWindow) Window.handleDeleted();
 			} break;
 
 			}
 
-			if (XPending(mDisplay) == 0) Object.update();
+			if (XPending(mDisplay) == 0) Window.update();
 		}
 	}
 
+	/// \brief Stop the event loop
+	void stop();
 };
 
 }

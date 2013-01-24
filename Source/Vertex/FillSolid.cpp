@@ -1,4 +1,4 @@
-#include "Vertex/FillSolid.hpp"
+#include "FillSolid.hpp"
 
 #include "Gl/Context.hpp"
 
@@ -7,22 +7,27 @@
 namespace Twil {
 namespace Vertex {
 
-void FillSolid::setup()
+void FillSolidT::setup()
 {
-	auto Stride = sizeof(FillSolid);
-	auto ColorOffset = (GLvoid const *) offsetof(FillSolid, Color);
-	auto OffsetOffset = (GLvoid const *) offsetof(FillSolid, Offset);
-	auto PositionOffset = (GLvoid const *) offsetof(FillSolid, Position);
-	auto SizeOffset = (GLvoid const *) offsetof(FillSolid, Size);
-	auto ClipMinOffset = (GLvoid const *) offsetof(FillSolid, ClipMin);
-	auto ClipMaxOffset = (GLvoid const *) offsetof(FillSolid, ClipMax);
+	using VertexT = FillSolidT;
+	using PointerT = GLvoid const *;
 
-	Attribute::Color4b::setup(0, Stride, ColorOffset);
-	Attribute::Offset1i::setup(1, Stride, OffsetOffset);
-	Attribute::Position2h::setup(2, Stride, PositionOffset);
-	Attribute::Size2h::setup(3, Stride, SizeOffset);
-	Attribute::Size2h::setup(4, Stride, ClipMinOffset);
-	Attribute::Size2h::setup(5, Stride, ClipMaxOffset);
+	auto Stride = sizeof(VertexT);
+	auto ColorOffset = reinterpret_cast<PointerT>(offsetof(VertexT, Color));
+	auto ClipMinOffset = reinterpret_cast<PointerT>(offsetof(VertexT, ClipMin));
+	auto ClipMaxOffset = reinterpret_cast<PointerT>(offsetof(VertexT, ClipMax));
+	auto PositionMinOffset = reinterpret_cast<PointerT>(offsetof(VertexT, PositionMin));
+	auto PositionMaxOffset = reinterpret_cast<PointerT>(offsetof(VertexT, PositionMax));
+	auto TextureSizeOffset = reinterpret_cast<PointerT>(offsetof(VertexT, TextureSize));
+	auto OffsetOffset = reinterpret_cast<PointerT>(offsetof(VertexT, Offset));
+
+	decltype(Color)::setup(0, Stride, ColorOffset);
+	decltype(ClipMin)::setup(1, Stride, ClipMinOffset);
+	decltype(ClipMax)::setup(2, Stride, ClipMaxOffset);
+	decltype(PositionMin)::setup(3, Stride, PositionMinOffset);
+	decltype(PositionMax)::setup(4, Stride, PositionMaxOffset);
+	decltype(TextureSize)::setup(5, Stride, TextureSizeOffset);
+	decltype(Offset)::setup(6, Stride, OffsetOffset);
 }
 
 }

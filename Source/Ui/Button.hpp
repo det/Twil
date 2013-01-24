@@ -1,153 +1,200 @@
 #pragma once
 
+#include "Container.hpp"
+#include "Event.hpp"
+#include "Widget.hpp"
+#include "Window.hpp"
+
 #include "Gl/Context.hpp"
 #include "Theme/Button.hpp"
-#include "Ui/DrawableContainer.hpp"
-#include "Ui/Event.hpp"
-#include "Ui/Widget.hpp"
-#include "Ui/WidgetContainer.hpp"
-#include "Ui/Window.hpp"
 
 #include <stdexcept>
 
 namespace Twil {
 namespace Ui {
 
-class WindowBase;
+class WindowBaseT;
 
+/// \brief A Widget that can be clicked to activate an event.
+/// \param T Type of the child widget.
 template<typename T>
-class Button :
-	public Ui::DrawableContainer<true, true>,
-	public Ui::MouseHandler,
-	public Ui::Widget<true, true>
+class ButtonT :
+	public ContainerT,
+	public MouseHandlerT,
+	public WidgetT
 {
 	private:
-	Ui::WidgetContainer<true, true> & mParent;
-	Ui::WindowBase & mBase;
-	Theme::Button mThemeButton;
+	ContainerT & mParent;
+	WindowBaseT & mWindow;
+	Theme::ButtonT mThemeButton;
 	T mChild;
 	bool mIsPressed;
 	bool mHasMouse;
 
+	bool checkThisContains(signed short X, signed short Y)
+	{
+		return X >= getLeft() && X <= getRight() && Y >= getBottom() && Y <= getTop();
+	}
+
 	public:
 	//Button
-	Event<> Clicked;
+	EventT<> Clicked;
 
-	Button(Ui::WidgetContainer<true, true> & Parent, Theme::Manager & Theme, Ui::WindowBase & Base) :
+	ButtonT(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Theme) :
 		mParent(Parent), // Gcc bug prevents brace initialization syntax here
-		mBase(Base), // Gcc bug prevents brace initialization syntax here
+		mWindow(Window), // Gcc bug prevents brace initialization syntax here
 		mThemeButton{Theme},
-		mChild{*this, Theme, mBase},
+		mChild{*this, Window, Theme},
 		mIsPressed{false},
 		mHasMouse{false}
 	{
-//		mChild.setX(2);
-//		mChild.setY(2);
+		auto LeftMargin = mThemeButton.getLeftMargin();
+		auto RightMargin = mThemeButton.getRightMargin();
+		auto BottomMargin = mThemeButton.getBottomMargin();
+		auto TopMargin = mThemeButton.getTopMargin();
+		mChild.moveX(LeftMargin);
+		mChild.moveY(BottomMargin);
+		mChild.resizeWidth(-LeftMargin + -RightMargin);
+		mChild.resizeHeight(-BottomMargin + -TopMargin);
 	}
 
+	/// \returns A reference to the child widget.
 	T & getChild()
 	{
 		return mChild;
 	}
 
+	/// \returns A const reference to the child widget.
+	T const & getChild() const
+	{
+		return mChild;
+	}
+
 	// Widget
-	virtual void aquireMouse(signed short, signed short) override
+	void moveX(signed short X) final
 	{
-		mBase.setMouseHandler(*this);
-		mHasMouse = true;
+		mThemeButton.moveX(X);
+		mChild.moveX(X);
 	}
 
-	// Drawable
-	virtual void setWidth(unsigned short Width) override
+	void moveY(signed short Y) final
 	{
-		mThemeButton.setWidth(Width);
-		auto ChildWidth = mThemeButton.getChildWidth();
-		mChild.setWidth(ChildWidth);
-	}
-	virtual void setHeight(unsigned short Height) override
-	{
-		mThemeButton.setHeight(Height);
-		auto ChildHeight = mThemeButton.getChildHeight();
-		mChild.setHeight(ChildHeight);
+		mThemeButton.moveY(Y);
+		mChild.moveY(Y);
 	}
 
-	virtual void setX(signed short X) override
+	void resizeWidth(signed short X) final
 	{
-		mThemeButton.setX(X);
-		auto ChildX = mThemeButton.getChildX();
-		mChild.setX(ChildX);
+		mThemeButton.resizeWidth(X);
+		mChild.resizeWidth(X);
 	}
 
-	virtual void setY(signed short Y) override
+	void resizeHeight(signed short Y) final
 	{
-		mThemeButton.setY(Y);
-		auto ChildY = mThemeButton.getChildY();
-		mChild.setY(ChildY);
+		mThemeButton.resizeHeight(Y);
+		mChild.resizeHeight(Y);
 	}
 
-	virtual unsigned short getFitWidth() override
+	void setClipLeft(signed short X) final
 	{
-		auto Width = mChild.getFitWidth();
-		return mThemeButton.getFitWidth(Width);
+		mThemeButton.setClipLeft(X);
+		mChild.setClipLeft(X);
 	}
 
-	virtual unsigned short getFitHeight() override
+	void setClipBottom(signed short Y) final
 	{
-		auto Height = mChild.getFitHeight();
-		return mThemeButton.getFitHeight(Height);
+		mThemeButton.setClipBottom(Y);
+		mChild.setClipBottom(Y);
 	}
 
-	virtual void draw() override
+	void setClipRight(signed short X) final
 	{
-		mThemeButton.render();
+		mThemeButton.setClipRight(X);
+		mChild.setClipRight(X);
+	}
+
+	void setClipTop(signed short Y) final
+	{
+		mThemeButton.setClipTop(Y);
+		mChild.setClipTop(Y);
+	}
+
+	void draw() const final
+	{
+		mThemeButton.draw();
 		mChild.draw();
 	}
 
-	unsigned short getX() override
+	signed short getLeft() const final
 	{
-		return mThemeButton.getX();
+		return mThemeButton.getLeft();
 	}
 
-	unsigned short getY() override
+	signed short getBottom() const final
 	{
-		return mThemeButton.getY();
+		return mThemeButton.getBottom();
 	}
 
-	unsigned short getWidth() override
+	signed short getRight() const final
 	{
-		return mThemeButton.getWidth();
+		return mThemeButton.getRight();
 	}
 
-	unsigned short getHeight() override
+	signed short getTop() const final
 	{
-		return mThemeButton.getHeight();
+		return mThemeButton.getTop();
 	}
 
-	virtual void setClipX(signed short, signed short) override
-	{}
+	signed short getBaseWidth() const final
+	{
+		return mThemeButton.getBaseWidth(mChild.getBaseWidth());
+	}
 
-	virtual void setClipY(signed short, signed short) override
-	{}
+	signed short getBaseHeight() const final
+	{
+		return mThemeButton.getBaseHeight(mChild.getBaseHeight());
+	}
+
+	void delegateMouse(signed short, signed short) final
+	{
+		mWindow.setMouseHandler(*this);
+		mHasMouse = true;
+	}
+
+	// Container
+	void handleChildBaseWidthChanged(void *) final
+	{
+		mParent.handleChildBaseWidthChanged(this);
+	}
+
+	void handleChildBaseHeightChanged(void *) final
+	{
+		mParent.handleChildBaseHeightChanged(this);
+	}
+
+	void releaseMouse(signed short X, signed short Y) final
+	{
+		mParent.releaseMouse(X, Y);
+	}
 
 	// MouseHandler
-	virtual void handleButtonPress(signed short, signed short, unsigned char Index) override
+	void handleButtonPress(signed short, signed short, unsigned char Index) final
 	{
 		if (Index == 1) {
 			mIsPressed = true;
 			mThemeButton.setIsDown(true);
-			mBase.markNeedsRedraw();
+			mWindow.markNeedsDraw();
 		}
 	}
 
-	virtual void handleButtonRelease(signed short X, signed short Y, unsigned char Index) override
+	void handleButtonRelease(signed short X, signed short Y, unsigned char Index) final
 	{
-
 		if (Index == 1) {
 			if (!mIsPressed) return;
 			if (mHasMouse) {
 				mIsPressed = false;
 				mThemeButton.setIsDown(false);
-				mBase.markNeedsRedraw();
+				mWindow.markNeedsDraw();
 				Clicked();
 			}
 			else {
@@ -157,19 +204,15 @@ class Button :
 		}
 	}
 
-	virtual void handleMouseMotion(signed short X, signed short Y) override
+	void handleMouseMotion(signed short X, signed short Y) final
 	{
-		auto MinX = mThemeButton.getX();
-		auto MaxX = MinX + mThemeButton.getWidth();
-		auto MinY = mThemeButton.getY();
-		auto MaxY = MinY + mThemeButton.getHeight();
-		bool HasMouse = X >= MinX && X <= MaxX && Y >= MinY && Y <= MaxY;
+		auto HasMouse = checkThisContains(X, Y);
 
 		if (mHasMouse && !HasMouse) {
 			mHasMouse = false;
 			if (mIsPressed) {
 				mThemeButton.setIsDown(false);
-				mBase.markNeedsRedraw();
+				mWindow.markNeedsDraw();
 			}
 			else mParent.releaseMouse(X, Y);
 		}
@@ -177,7 +220,7 @@ class Button :
 			mHasMouse = true;
 			if (mIsPressed) {
 				mThemeButton.setIsDown(true);
-				mBase.markNeedsRedraw();
+				mWindow.markNeedsDraw();
 			}
 		}
 	}

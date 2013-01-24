@@ -5,26 +5,43 @@
 namespace Twil {
 namespace Platform {
 
-class Application;
+class ApplicationT;
 
-class Window
+/// \brief A Linux window.
+class WindowT
 {
 	private:
-	Platform::Application & mApplication;
+	ApplicationT & mApplication;
 	::Window mId;
 
-	public:
-	Window(Platform::Application &);
-	~Window();
-	Window(Platform::Window &) = delete;
-	Window & operator=(Platform::Window &) = delete;
-
+	protected:
+	/// \brief Make this window the current rendering context.
 	void makeCurrent();
+
+	/// \brief Swap the front and back buffers.
 	void swapBuffers();
+
+	public:
+	/// \throws std::runtime_error on error.
+	WindowT(ApplicationT &);
+	~WindowT();
+	WindowT(WindowT &) = delete;
+	WindowT & operator=(WindowT &) = delete;
+
+	/// \brief Show the window.
 	void show();
+
+	/// \brief Hide the window.
 	void hide();
-	void setFullscreen(bool);
-	void resize(unsigned short, unsigned short);
+
+	/// \brief Set whether the window is fullscreen.
+	void setFullscreen(bool IsFullScreen);
+
+	/// \brief Resize the window.
+	void resize(unsigned short Width, unsigned short Height);
+
+	/// \brief Set the title.
+	void setTitle(char const * String);
 };
 
 }

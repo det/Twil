@@ -1,11 +1,11 @@
-#include "Platform/Application.hpp"
+#include "Application.hpp"
 
 #include "Gl/Context.hpp"
 
 namespace Twil {
 namespace Platform {
 
-Application::Application() :
+ApplicationT::ApplicationT() :
 	mRunning{false}
 {
 	mDisplay = XOpenDisplay(0);
@@ -25,23 +25,25 @@ Application::Application() :
 		GLX_BLUE_SIZE,      8,
 		GLX_ALPHA_SIZE,     8,
 		GLX_DEPTH_SIZE,     16,
-		GLX_STENCIL_SIZE,   8,
-		GLX_SAMPLE_BUFFERS, 1,
-		GLX_SAMPLES,        4,
 		GLX_DOUBLEBUFFER,   True,
 		GLX_FRAMEBUFFER_SRGB_CAPABLE_ARB, True,
-		0 //XXX: None
+		None
 	};
 
 	int FramebufferCount;
-	mFramebufferConfigs = glXChooseFBConfig(mDisplay, DefaultScreen(mDisplay), VisualAttributes, &FramebufferCount);
-	if (mFramebufferConfigs == nullptr) throw std::runtime_error{"Unable to find matching video mode"};
+	auto Screen = DefaultScreen(mDisplay);
+	mFramebufferConfigs = glXChooseFBConfig(mDisplay, Screen, VisualAttributes, &FramebufferCount);
+
+	if (mFramebufferConfigs == nullptr) {
+		throw std::runtime_error{"Unable to find matching video mode"};
+	}
 
 	mVisual = glXGetVisualFromFBConfig(mDisplay, mFramebufferConfigs[0]);
-	mColormap = XCreateColormap(mDisplay, RootWindow(mDisplay, mVisual->screen), mVisual->visual, AllocNone);
+	auto Root = RootWindow(mDisplay, mVisual->screen);
+	mColormap = XCreateColormap(mDisplay, Root, mVisual->visual, AllocNone);
 
 	mWindowAttributes.colormap = mColormap;
-	mWindowAttributes.background_pixmap = 0; //XXX: None;
+	mWindowAttributes.background_pixmap = None;
 	mWindowAttributes.border_pixel = 0;
 	mWindowAttributes.event_mask =
 		EnterWindowMask |
@@ -54,23 +56,28 @@ Application::Application() :
 		StructureNotifyMask |
 		ExposureMask;
 
-	typedef GLXContext (* glXCreateContextAttribsARBProc)(Display *, GLXFBConfig, GLXContext, Bool, int const *);
-	glXCreateContextAttribsARBProc glXCreateContextAttribsARB = 0;
-	glXCreateContextAttribsARB = (glXCreateContextAttribsARBProc) glXGetProcAddressARB((GLubyte const *) "glXCreateContextAttribsARB");
+	using GlXCreateContextAttribsARBProcT = GLXContext (*) (
+		Display *, GLXFBConfig, GLXContext, Bool, int const *
+	);
+
+	auto Symbol = reinterpret_cast<GLubyte const *>("glXCreateContextAttribsARB");
+	auto Function = glXGetProcAddressARB(Symbol);
+	auto glXCreateContextAttribsARB = reinterpret_cast<GlXCreateContextAttribsARBProcT>(Function);
 
 	int ContextAttribs[] = {
 		GLX_CONTEXT_MAJOR_VERSION_ARB, 3,
 		GLX_CONTEXT_MINOR_VERSION_ARB, 3,
-		0 //XXX: None
+		None
 	};
  
-	mContextId = glXCreateContextAttribsARB(mDisplay, mFramebufferConfigs[0], 0, True, ContextAttribs);
+	auto & Config = mFramebufferConfigs[0];
+	mContextId = glXCreateContextAttribsARB(mDisplay, Config, 0, True, ContextAttribs);
 	if (mContextId == 0) throw std::runtime_error{"Unable to create OpenGL context"};
 
-	Gl::Context::initialize();
+	Gl::ContextT::initialize();
 }
 
-Application::~Application()
+ApplicationT::~ApplicationT()
 {
 	glXDestroyContext(mDisplay, mContextId);
 	XFreeColormap(mDisplay, mColormap);
@@ -79,7 +86,7 @@ Application::~Application()
 	XCloseDisplay(mDisplay);
 }
 
-void Application::stop()
+void ApplicationT::stop()
 {
 	mRunning = false;
 }

@@ -5,29 +5,33 @@
 namespace Twil {
 namespace Ui {
 
-class KeyboardHandler;
-class MouseHandler;
+class KeyboardHandlerT;
+class MouseHandlerT;
 
-class WindowBase
+/// \brief A base class for widgets to communicate with the Window class
+class WindowBaseT
 {
 	protected:
-	Ui::KeyboardHandler * mKeyboardHandler;
-	Ui::MouseHandler * mMouseHandler;
-	bool mNeedsRedraw;
-	bool mNeedsResize;
+	KeyboardHandlerT * mKeyboardHandler;
+	MouseHandlerT * mMouseHandler;
+	bool mNeedsDraw;
 
-	WindowBase(Ui::KeyboardHandler *, Ui::MouseHandler *);
+	WindowBaseT(KeyboardHandlerT *, MouseHandlerT *);
 
 	public:
-	void setKeyboardHandler(Ui::KeyboardHandler &);
-	void setMouseHandler(Ui::MouseHandler &);
-	void markNeedsRedraw();
-	void markNeedsResize();
+	/// \brief Set the keyboard handler.
+	void setKeyboardHandler(KeyboardHandlerT &);
 
-	void sendMouseEnterWindow(unsigned short, unsigned short);
-	void sendMouseLeaveWindow(unsigned short, unsigned short);
-	void sendKeyPress(Platform::Key);
-	void sendKeyRelease(Platform::Key);
+	/// \brief Set the mouse handler.
+	void setMouseHandler(MouseHandlerT &);
+
+	/// \brief Tell the window a draw is needs to happen.
+	void markNeedsDraw();
+
+	void sendMouseEnterWindow(signed short, signed short);
+	void sendMouseLeaveWindow(signed short, signed short);
+	void sendKeyPress(Platform::KeyT);
+	void sendKeyRelease(Platform::KeyT);
 	void sendMouseMotion(signed short, signed short);
 	void sendButtonPress(signed short, signed short, unsigned char);
 	void sendButtonRelease(signed short, signed short, unsigned char);

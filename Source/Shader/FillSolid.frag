@@ -2,10 +2,11 @@
 
 uniform samplerBuffer Texture;
 
-in FragmentData {
+in FragmentData
+{
 	flat vec4 Color;
-	flat int Offset;
 	flat int Pitch;
+	flat int Offset;
 	smooth vec2 Texcoord;
 } Fragment;
 

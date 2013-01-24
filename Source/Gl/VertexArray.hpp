@@ -5,15 +5,21 @@
 namespace Twil {
 namespace Gl {
 
-class VertexArray
+/// \brief Container for an OpenGL vertex array.
+class VertexArrayT
 {
 	private:
 	GLuint mId;
 
-	public:
-	VertexArray();
-	~VertexArray();
+	// Non copyable
+	VertexArrayT(VertexArrayT &) = delete;
+	VertexArrayT & operator=(VertexArrayT &) = delete;
 
+	public:
+	VertexArrayT();
+	~VertexArrayT();
+
+	/// \brief Implicit conversion operator so it can be used in gl* functions.
 	operator GLuint() const;
 };
 

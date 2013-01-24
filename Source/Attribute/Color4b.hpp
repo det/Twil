@@ -5,7 +5,7 @@
 namespace Twil {
 namespace Attribute {
 
-struct Color4b
+struct Color4bT
 {
 	GLubyte Red;
 	GLubyte Green;
@@ -15,7 +15,7 @@ struct Color4b
 	static void setup(GLuint, GLsizei, GLvoid const *);
 };
 
-Attribute::Color4b mix(Attribute::Color4b const &, Attribute::Color4b const &, unsigned, unsigned);
+Color4bT mix(Color4bT const &, Color4bT const &, GLushort);
 
 }
 }

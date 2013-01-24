@@ -10,16 +10,18 @@
 namespace Twil {
 namespace Vertex {
 
-struct OutlineGradient
+struct OutlineGradientT
 {
-	Attribute::Color4b BorderColor;
-	Attribute::Color4b TopColor;
-	Attribute::Color4b BottomColor;
-	Attribute::Offset1i InsideOffset;
-	Attribute::Offset1i OutsideOffset;
-	Attribute::Position2h Position;
-	Attribute::Size2h Size;
-	Attribute::Size2h Scale;
+	Attribute::Color4bT BorderColor;
+	Attribute::Color4bT BottomColor;
+	Attribute::Color4bT TopColor;
+	Attribute::Position2hT ClipMin;
+	Attribute::Position2hT ClipMax;
+	Attribute::Position2hT PositionMin;
+	Attribute::Position2hT PositionMax;
+	Attribute::Size2hT TextureSize;
+	Attribute::Offset1iT InsideIndex;
+	Attribute::Offset1iT OutsideIndex;
 
 	static void setup();
 };

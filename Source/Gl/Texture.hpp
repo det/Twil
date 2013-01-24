@@ -5,16 +5,22 @@
 namespace Twil {
 namespace Gl {
 
-class Texture
+/// \brief Container for an OpenGL texture.
+class TextureT
 {
 	private:
 	public:
 	GLuint mId;
 
-	public:
-	Texture();
-	~Texture();
+	// Non copyable
+	TextureT(TextureT &) = delete;
+	TextureT & operator=(TextureT &) = delete;
 
+	public:
+	TextureT();
+	~TextureT();
+
+	/// \brief Implicit conversion operator so it can be used in gl* functions.
 	operator GLuint() const;
 };
 

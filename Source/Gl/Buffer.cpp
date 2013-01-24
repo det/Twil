@@ -1,21 +1,21 @@
-#include "Gl/Buffer.hpp"
+#include "Buffer.hpp"
 
-#include "Gl/Context.hpp"
+#include "Context.hpp"
 
 namespace Twil {
 namespace Gl {
 
-Buffer::Buffer()
+BufferT::BufferT()
 {
 	glGenBuffers(1, &mId);
 }
 
-Buffer::~Buffer()
+BufferT::~BufferT()
 {
 	glDeleteBuffers(1, &mId);
 }
 
-Buffer::operator GLuint() const
+BufferT::operator GLuint() const
 {
 	return mId;
 }

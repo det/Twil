@@ -1,19 +1,18 @@
-#include "Ft/Library.hpp"
+#include "Library.hpp"
 
-#include <iostream>
 #include <stdexcept>
 
 namespace Twil {
 namespace Ft {
 
-Library::Library() :
+LibraryT::LibraryT() :
 	mId{nullptr}
 {
 	auto Error = FT_Init_FreeType(&mId);
 	if (Error) throw std::runtime_error{"Unable to initialize FreeType"};
 }
 
-Library::~Library()
+LibraryT::~LibraryT()
 {
 	FT_Done_FreeType(mId);
 }

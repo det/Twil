@@ -1,25 +1,30 @@
-#include "Theme/Label.hpp"
+#include "Label.hpp"
 
-#include "Theme/Manager.hpp"
+#include "Manager.hpp"
+
+#include <iostream>
 
 namespace Twil {
 namespace Theme {
 
-Label::Label(Theme::Manager & Manager) :
+LabelT::LabelT(ManagerT & Manager) :
 	mManager(Manager) // Gcc bug prevents brace initialization syntax here
 {}
 
-void Label::setText(std::u32string const & Text)
+void LabelT::setText(std::u32string const & Text)
 {
 	mVertices.clear();
 	auto & Face = mManager.mLabelFace;
 	Face.setActiveSize(mManager.mLabelSize);
 
 	FT_Vector Pen{0, -mManager.mLabelSize.getDescender()};
-	Theme::GlyphEntry PreviousEntry{}; // Zero-initialize
+	GlyphEntryT PreviousEntry{}; // Zero-initialize
 
 	for (auto Codepoint : Text) {
 		auto Entry = mManager.loadGlyphEntry(Face, Codepoint);
+
+		// We will hit a divide by 0 in clipping without this check
+		if (Entry.Width == 0 || Entry.Height == 0) continue;
 
 		// Apply characacter pair kerning / Hint advance adjustment
 		auto Delta = Face.getKerning(PreviousEntry.Index, Entry.Index);
@@ -28,15 +33,18 @@ void Label::setText(std::u32string const & Text)
 		Pen.x += Delta.x;
 		Pen.y += Delta.y;
 
-		GLshort X = mX + (Pen.x + Entry.Bearings.x) / 64;
-		GLshort Y = mY + (Pen.y + Entry.Bearings.y) / 64;
-		Vertex::FillSolid Vertex;
+		GLshort Left = mLeft + (Pen.x + Entry.Bearings.x) / 64;
+		GLshort Bottom = mBottom + (Pen.y + Entry.Bearings.y) / 64;
+		GLshort Right = Left + Entry.Width;
+		GLshort Top = Bottom + Entry.Height;
+		Vertex::FillSolidT Vertex;
 		Vertex.Color = {0, 0, 0, 255};
+		Vertex.PositionMin = {Left, Bottom};
+		Vertex.PositionMax = {Right, Top};
+		Vertex.TextureSize = {Entry.Width, Entry.Height};
+		Vertex.ClipMin = {Left, Bottom};
+		Vertex.ClipMax = {Left, Bottom};
 		Vertex.Offset = {Entry.Offset};
-		Vertex.Position = {X, Y};
-		Vertex.Size = {Entry.Width, Entry.Height};
-		Vertex.ClipMin = {0, 0};
-		Vertex.ClipMax = {0, 0};
 		mVertices.push_back(Vertex);
 
 		Pen.x += Entry.Advance.x;
@@ -45,86 +53,114 @@ void Label::setText(std::u32string const & Text)
 		PreviousEntry = Entry;
 	}
 
-	mWidth = Pen.x / 64;
-	mHeight = mManager.mLabelSize.getHeight() / 64;
+	mRight = mLeft + Pen.x / 64;
+	mTop = mBottom + mManager.mLabelSize.getHeight() / 64;
 }
 
-void Label::setClipX(signed short Min, signed short Max)
+void LabelT::setClipLeft(signed short X)
 {
+	mClipLeft = X;
 	for (auto & Vertex : mVertices) {
-		signed short Left = Vertex.Position.X - mX;
-		signed short Right = Left + Vertex.Size.Width;
-
-		if (Right > Max) {
-			if (Left > Max) Vertex.ClipMax.Width = Vertex.Size.Width;
-			else Vertex.ClipMax.Width = Right - Max;
-		}
-		else Vertex.ClipMax.Width = 0;
-
-		if (Left < Min) {
-			if (Right < Min) Vertex.ClipMin.Width = Vertex.Size.Width;
-			else Vertex.ClipMin.Width = Min - Left;
-		}
-		else Vertex.ClipMin.Width = 0;
-	}
-}
-void Label::setClipY(signed short Min, signed short Max)
-{
-	for (auto & Vertex : mVertices) {
-		signed short Bottom = Vertex.Position.Y - mY;
-		signed short Top = Bottom + Vertex.Size.Height;
-
-		if (Top > Max) {
-			if (Bottom > Max) Vertex.ClipMax.Height = Vertex.Size.Height;
-			else Vertex.ClipMax.Height = Top - Max;
-		}
-		else Vertex.ClipMax.Height = 0;
-
-		if (Bottom < Min) {
-			if (Top < Min) Vertex.ClipMin.Height = Vertex.Size.Height;
-			else Vertex.ClipMin.Height = Min - Bottom;
-		}
-		else Vertex.ClipMin.Height = 0;
+		Vertex.ClipMin.X = X;
+		Vertex.ClipMin.X = std::max<signed short>(Vertex.ClipMin.X, Vertex.PositionMin.X);
+		Vertex.ClipMin.X = std::min<signed short>(Vertex.ClipMin.X, Vertex.PositionMax.X);
 	}
 }
 
-void Label::setX(signed short X)
+void LabelT::setClipRight(signed short X)
 {
-	auto DeltaX = X - mX;
-	mX = X;
-	for (auto & Vertex : mVertices) Vertex.Position.X += DeltaX;
+	mClipRight = X;
+	for (auto & Vertex : mVertices) {
+		Vertex.ClipMax.X = X;
+		Vertex.ClipMax.X = std::max<signed short>(Vertex.ClipMax.X, Vertex.PositionMin.X);
+		Vertex.ClipMax.X = std::min<signed short>(Vertex.ClipMax.X, Vertex.PositionMax.X);
+	}
 }
 
-void Label::setY(signed short Y)
+void LabelT::setClipBottom(signed short Y)
 {
-	auto DeltaY = Y - mY;
-	mY = Y;
-	for (auto & Vertex : mVertices) Vertex.Position.Y += DeltaY;
+	mClipBottom = Y;
+	for (auto & Vertex : mVertices) {
+		Vertex.ClipMin.Y = Y;
+		Vertex.ClipMin.Y = std::max<signed short>(Vertex.ClipMin.Y, Vertex.PositionMin.Y);
+		Vertex.ClipMin.Y = std::min<signed short>(Vertex.ClipMin.Y, Vertex.PositionMax.Y);
+	}
 }
 
-void Label::render()
+void LabelT::setClipTop(signed short Y)
 {
-	mManager.mSolidArray.add(mVertices);
+	mClipTop = Y;
+	for (auto & Vertex : mVertices) {
+		Vertex.ClipMax.Y = Y;
+		Vertex.ClipMax.Y = std::max<signed short>(Vertex.ClipMax.Y, Vertex.PositionMin.Y);
+		Vertex.ClipMax.Y = std::min<signed short>(Vertex.ClipMax.Y, Vertex.PositionMax.Y);
+	}
 }
 
-signed short Label::getX()
+void LabelT::draw() const
 {
-	return mX;
+	if (mClipLeft > mClipRight || mClipBottom > mClipTop) return;
+	mManager.mSolidArray.queue(mVertices);
 }
 
-signed short Label::getY()
+void LabelT::moveX(signed short X)
 {
-	return mY;
+	mLeft += X;
+	mRight += X;
+	mClipLeft += X;
+	mClipRight += X;
+
+	for (auto & Vertex : mVertices)	{
+		Vertex.PositionMin.X += X;
+		Vertex.PositionMax.X += X;
+		Vertex.ClipMin.X += X;
+		Vertex.ClipMax.X += X;
+	}
 }
 
-unsigned short Label::getWidth()
+void LabelT::moveY(signed short Y)
 {
-	return mWidth;
+	mBottom += Y;
+	mTop += Y;
+	mClipBottom += Y;
+	mClipTop += Y;
+
+	for (auto & Vertex : mVertices) {
+		Vertex.PositionMin.Y += Y;
+		Vertex.PositionMax.Y += Y;
+		Vertex.ClipMin.Y += Y;
+		Vertex.ClipMax.Y += Y;
+	}
 }
 
-unsigned short Label::getHeight()
+signed short LabelT::getLeft() const
 {
-	return mHeight;
+	return mLeft;
+}
+
+signed short LabelT::getBottom() const
+{
+	return mBottom;
+}
+
+signed short LabelT::getRight() const
+{
+	return mRight;
+}
+
+signed short LabelT::getTop() const
+{
+	return mTop;
+}
+
+signed short LabelT::getBaseWidth() const
+{
+	return mRight - mLeft;
+}
+
+signed short LabelT::getBaseHeight() const
+{
+	return mManager.mLabelSize.getHeight() / 64;
 }
 
 }

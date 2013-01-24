@@ -7,17 +7,17 @@
 namespace Twil {
 namespace Program {
 
-class OutlineGradient
+class OutlineGradientT
 {
 	private:
-	Gl::Program mProgram;
-	GLint mModelViewLoc;
+	Gl::ProgramT mProgram;
+	GLint mScalingLoc;
 
 	public:	
-	OutlineGradient();
+	OutlineGradientT();
 
 	operator GLuint() const;
-	void setModelView(Math::Matrix3 const &);
+	void setScaling(float, float);
 };
 
 }

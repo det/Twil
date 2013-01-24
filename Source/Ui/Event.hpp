@@ -6,23 +6,26 @@
 namespace Twil {
 namespace Ui {
 
-template<typename... As>
-class Event
+/// \brief A multicast event class.
+template<typename ... ArgsT>
+class EventT
 {
-	typedef std::function<void(As...)> Function;
+	typedef std::function<void(ArgsT ...)> FunctionT;
 
 	private:
-	std::vector<Function> mCallbacks;
+	std::vector<FunctionT> mCallbacks;
 
 	public:
-	void operator+=(Function f)
+	/// \brief Append a callback to the event.
+	void operator+=(FunctionT f)
 	{
 		mCallbacks.push_back(f);
 	}
 
-	void operator()(As &&... Args) const
+	/// \brief Call all callbacks.
+	void operator()(ArgsT && ... Args) const
 	{
-		for (auto Callback : mCallbacks) Callback(std::forward<As>(Args)...);
+		for (auto Callback : mCallbacks) Callback(std::forward<ArgsT>(Args) ...);
 	}
 };
 

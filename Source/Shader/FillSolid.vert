@@ -1,35 +1,34 @@
 #version 330
 
-uniform mat3 ModelView;
+uniform vec2 Scaling;
 
 layout(location = 0) in vec4 Color;
-layout(location = 1) in int Offset;
-layout(location = 2) in vec2 Position;
-layout(location = 3) in ivec2 Size;
-layout(location = 4) in ivec2 ClipMin;
-layout(location = 5) in ivec2 ClipMax;
+layout(location = 1) in ivec2 ClipMin;
+layout(location = 2) in ivec2 ClipMax;
+layout(location = 3) in ivec2 PositionMin;
+layout(location = 4) in ivec2 PositionMax;
+layout(location = 5) in ivec2 TextureSize;
+layout(location = 6) in int Offset;
 
-
-out GeometryData {
+out GeometryData
+{
 	flat vec4 Color;
-	flat vec4 Position;
-	flat vec2 PositionSize;
-	flat ivec2 TextureSize;
+	flat vec2 PositionMin;
+	flat vec2 PositionMax;
+	flat vec2 TextureMin;
+	flat vec2 TextureMax;
 	flat int Pitch;
 	flat int Offset;
 } Geometry;
 
 void main(void)
 {
-
-	vec3 Position = vec3(Position + ClipMin, 1.0) * ModelView;
-	vec2 PositionScale = vec2(ModelView[0][0], ModelView[1][1]);
-	ivec2 ShrunkenSize = Size - ClipMin - ClipMax;
-
+	vec2 InverseScale = TextureSize / vec2(PositionMax - PositionMin);
 	Geometry.Color = Color;
-	Geometry.Position = vec4(Position.xy, 0.0, Position.z);
-	Geometry.PositionSize = ShrunkenSize * PositionScale;
-	Geometry.TextureSize = ShrunkenSize;
-	Geometry.Pitch = Size.x;
-	Geometry.Offset = Offset + ClipMin.x + ClipMin.y * Size.x;
+	Geometry.TextureMin = (ClipMin - PositionMin) * InverseScale;
+	Geometry.TextureMax = (ClipMax - PositionMin) * InverseScale;
+	Geometry.PositionMin = ClipMin * Scaling - 1;
+	Geometry.PositionMax = ClipMax * Scaling - 1;
+	Geometry.Pitch = TextureSize.x;
+	Geometry.Offset = Offset;
 }

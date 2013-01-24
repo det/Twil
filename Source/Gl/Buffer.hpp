@@ -5,15 +5,21 @@
 namespace Twil {
 namespace Gl {
 
-class Buffer
+/// \brief Container for an OpenGL buffer.
+class BufferT
 {
 	private:
 	GLuint mId;
 
-	public:
-	Buffer();
-	~Buffer();
+	// Non copyable
+	BufferT(BufferT &) = delete;
+	BufferT & operator=(BufferT &) = delete;
 
+	public:
+	BufferT();
+	~BufferT();
+
+	/// \brief Implicit conversion operator so it can be used in gl* functions.
 	operator GLuint() const;
 };
 

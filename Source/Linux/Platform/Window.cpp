@@ -1,6 +1,6 @@
-#include "Platform/Window.hpp"
+#include "Window.hpp"
 
-#include "Platform/Application.hpp"
+#include "Application.hpp"
 
 #include <cstring>
 #include <stdexcept>
@@ -11,14 +11,14 @@
 namespace Twil {
 namespace Platform {
 
-Window::Window(Application & application2) :
-	mApplication(application2) // Gcc bug prevents brace initialization syntax here
+WindowT::WindowT(ApplicationT & Application) :
+	mApplication(Application) // Gcc bug prevents brace initialization syntax here
 {
 
 	mId = XCreateWindow(
 		mApplication.mDisplay, RootWindow(mApplication.mDisplay, mApplication.mVisual->screen),
-		0, 0, 640, 480, 0, mApplication.mVisual->depth, InputOutput,
-		mApplication.mVisual->visual, CWBorderPixel | CWColormap | CWEventMask, &mApplication.mWindowAttributes
+		0, 0, 640, 480, 0, mApplication.mVisual->depth, InputOutput, mApplication.mVisual->visual,
+		CWBorderPixel | CWColormap | CWEventMask, &mApplication.mWindowAttributes
 	);
 
 	if (mId == 0) throw std::runtime_error{"Unable to create window"};
@@ -30,22 +30,22 @@ Window::Window(Application & application2) :
 	makeCurrent();
 }
 
-Window::~Window()
+WindowT::~WindowT()
 {
 	XDestroyWindow(mApplication.mDisplay, mId);
 }
 
-void Window::makeCurrent()
+void WindowT::makeCurrent()
 {
 	glXMakeCurrent(mApplication.mDisplay, mId, mApplication.mContextId);
 }
 
-void Window::swapBuffers()
+void WindowT::swapBuffers()
 {
 	glXSwapBuffers(mApplication.mDisplay, mId);
 }
 
-void Window::setFullscreen(bool isFullscreen)
+void WindowT::setFullscreen(bool isFullscreen)
 {
 	::XEvent Event{}; // Zero-initialize
 	Event.type = ClientMessage;
@@ -55,22 +55,28 @@ void Window::setFullscreen(bool isFullscreen)
 	Event.xclient.data.l[0] = isFullscreen ? 1 : 0;
 	Event.xclient.data.l[1] = long(mApplication.mWmFullScreen);
 	Event.xclient.data.l[2] = 0;
-	XSendEvent(mApplication.mDisplay, DefaultRootWindow(mApplication.mDisplay), False, SubstructureNotifyMask, &Event);
+	auto Root = DefaultRootWindow(mApplication.mDisplay);
+	XSendEvent(mApplication.mDisplay, Root, False, SubstructureNotifyMask, &Event);
 }
 
-void Window::show()
+void WindowT::show()
 {
 	XMapWindow(mApplication.mDisplay, mId);
 }
 
-void Window::hide()
+void WindowT::hide()
 {
 	XUnmapWindow(mApplication.mDisplay, mId);
 }
 
-void Window::resize(unsigned short Width, unsigned short Height)
+void WindowT::resize(unsigned short Width, unsigned short Height)
 {
 	XResizeWindow(mApplication.mDisplay, mId, Width, Height);
+}
+
+void WindowT::setTitle(char const * String)
+{
+	XStoreName(mApplication.mDisplay, mId, String);
 }
 
 }

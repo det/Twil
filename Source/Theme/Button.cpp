@@ -1,227 +1,430 @@
-#include "Theme/Button.hpp"
+#include "Button.hpp"
 
-#include "Theme/Manager.hpp"
+#include "Manager.hpp"
+
+#include <iostream>
 
 namespace Twil {
 namespace Theme {
 
-Button::Button(Theme::Manager & Manager) :
+namespace {
+
+template<typename T>
+void clipVertexLeft(T & Vertex, signed short X)
+{
+	Vertex.ClipMin.X = X;
+	Vertex.ClipMin.X = std::max<signed short>(Vertex.ClipMin.X, Vertex.PositionMin.X);
+	Vertex.ClipMin.X = std::min<signed short>(Vertex.ClipMin.X, Vertex.PositionMax.X);
+}
+
+template<typename T>
+void clipVertexRight(T & Vertex, signed short X)
+{
+	Vertex.ClipMax.X = X;
+	Vertex.ClipMax.X = std::max<signed short>(Vertex.ClipMax.X, Vertex.PositionMin.X);
+	Vertex.ClipMax.X = std::min<signed short>(Vertex.ClipMax.X, Vertex.PositionMax.X);
+}
+
+template<typename T>
+void clipVertexBottom(T & Vertex, signed short Y)
+{
+	Vertex.ClipMin.Y = Y;
+	Vertex.ClipMin.Y = std::max<signed short>(Vertex.ClipMin.Y, Vertex.PositionMin.Y);
+	Vertex.ClipMin.Y = std::min<signed short>(Vertex.ClipMin.Y, Vertex.PositionMax.Y);
+}
+
+template<typename T>
+void clipVertexTop(T & Vertex, signed short Y)
+{
+	Vertex.ClipMax.Y = Y;
+	Vertex.ClipMax.Y = std::max<signed short>(Vertex.ClipMax.Y, Vertex.PositionMin.Y);
+	Vertex.ClipMax.Y = std::min<signed short>(Vertex.ClipMax.Y, Vertex.PositionMax.Y);
+}
+
+}
+
+ButtonT::ButtonT(ManagerT & Manager) :
 	mManager(Manager), // Gcc bug prevents brace initialization syntax here
 	mVertices{9}
 {
-	Attribute::Color4b BorderColor{127, 127, 127, 255};
+	signed short const BorderSize = 1;
+	signed short const CornerSize = BorderSize + Settings::Button::Roundness;
 
-	mVertices[0].BorderColor = BorderColor;
-	mVertices[0].InsideOffset = {mManager.mButtonSwInside};
-	mVertices[0].OutsideOffset = {mManager.mButtonSwOutside};
-	mVertices[0].Size = {5, 5};
-	mVertices[0].Scale = {1, 1};
-	mVertices[1].BorderColor = BorderColor;
-	mVertices[1].InsideOffset = {mManager.mButtonSeInside};
-	mVertices[1].OutsideOffset = {mManager.mButtonSeOutside};
-	mVertices[1].Size = {5, 5};
-	mVertices[1].Scale = {1, 1};
-	mVertices[2].BorderColor = BorderColor;
-	mVertices[2].InsideOffset = {mManager.mButtonNeInside};
-	mVertices[2].OutsideOffset = {mManager.mButtonNeOutside};
-	mVertices[2].Size = {5, 5};
-	mVertices[2].Scale = {1, 1};
-	mVertices[3].BorderColor = BorderColor;
-	mVertices[3].InsideOffset = {mManager.mButtonNwInside};
-	mVertices[3].OutsideOffset = {mManager.mButtonNwOutside};
-	mVertices[3].Size = {5, 5};
-	mVertices[3].Scale = {1, 1};
-	mVertices[4].BorderColor = BorderColor;
-	mVertices[4].InsideOffset = {mManager.mButtonBottomInside};
-	mVertices[4].OutsideOffset = {mManager.mButtonBottomOutside};
-	mVertices[4].Size = {1, 5};
-	mVertices[4].Scale.Height = 1;
-	mVertices[5].BorderColor = BorderColor;
-	mVertices[5].InsideOffset = {mManager.mButtonTopInside};
-	mVertices[5].OutsideOffset = {mManager.mButtonTopOutside};
-	mVertices[5].Size = {1, 5};
-	mVertices[5].Scale.Height = 1;
-	mVertices[6].BorderColor = BorderColor;
-	mVertices[6].InsideOffset = {mManager.mButtonLeftInside};
-	mVertices[6].OutsideOffset = {mManager.mButtonLeftOutside};
-	mVertices[6].Size = {5, 1};
-	mVertices[6].Scale.Width = 1;
-	mVertices[7].BorderColor = BorderColor;
-	mVertices[7].InsideOffset = {mManager.mButtonRightInside};
-	mVertices[7].OutsideOffset = {mManager.mButtonRightOutside};
-	mVertices[7].Scale.Width = 1;
-	mVertices[7].Size = {5, 1};
-	mVertices[8].BorderColor = BorderColor;
-	mVertices[8].InsideOffset = {mManager.mButtonCenterInside};
-	mVertices[8].OutsideOffset = {mManager.mButtonCenterOutside};
-	mVertices[8].Size = {1, 1};
+	mVertices[0].BorderColor = Settings::Button::BorderColor;
+	mVertices[0].BottomColor = {255, 0, 0, 127};
+	mVertices[0].TopColor = {255, 0, 0, 127};
+	mVertices[0].ClipMin = {0, 0};
+	mVertices[0].ClipMax = {0, 0};
+	mVertices[0].PositionMin = {0, 0};
+	mVertices[0].PositionMax = {CornerSize, CornerSize};
+	mVertices[0].TextureSize = {CornerSize, CornerSize};
+	mVertices[0].InsideIndex = {mManager.mButtonSwInside};
+	mVertices[0].OutsideIndex = {mManager.mButtonSwOutside};
+	mVertices[1].BorderColor = Settings::Button::BorderColor;
+	mVertices[1].BottomColor = {255, 0, 0, 127};
+	mVertices[1].TopColor = {255, 0, 0, 127};
+	mVertices[1].ClipMin = {-CornerSize, 0};
+	mVertices[1].ClipMax = {-CornerSize, 0};
+	mVertices[1].PositionMin = {-CornerSize, 0};
+	mVertices[1].PositionMax = {0, CornerSize};
+	mVertices[1].TextureSize = {CornerSize, CornerSize};
+	mVertices[1].InsideIndex = {mManager.mButtonSeInside};
+	mVertices[1].OutsideIndex = {mManager.mButtonSeOutside};
+	mVertices[2].BorderColor = Settings::Button::BorderColor;
+	mVertices[2].BottomColor = {255, 0, 0, 127};
+	mVertices[2].TopColor = {255, 0, 0, 127};
+	mVertices[2].ClipMin = {-CornerSize, -CornerSize};
+	mVertices[2].ClipMax = {-CornerSize, -CornerSize};
+	mVertices[2].PositionMin = {-CornerSize, -CornerSize};
+	mVertices[2].PositionMax = {0, 0};
+	mVertices[2].TextureSize = {CornerSize, CornerSize};
+	mVertices[2].InsideIndex = {mManager.mButtonNeInside};
+	mVertices[2].OutsideIndex = {mManager.mButtonNeOutside};
+	mVertices[3].BorderColor = Settings::Button::BorderColor;
+	mVertices[3].BottomColor = {255, 0, 0, 127};
+	mVertices[3].TopColor = {255, 0, 0, 127};
+	mVertices[3].ClipMin = {0, -CornerSize};
+	mVertices[3].ClipMax = {0, -CornerSize};
+	mVertices[3].PositionMin = {0, -CornerSize};
+	mVertices[3].PositionMax = {CornerSize, 0};
+	mVertices[3].TextureSize = {CornerSize, CornerSize};
+	mVertices[3].InsideIndex = {mManager.mButtonNwInside};
+	mVertices[3].OutsideIndex = {mManager.mButtonNwOutside};
+	mVertices[4].BorderColor = Settings::Button::BorderColor;
+	mVertices[4].BottomColor = {0, 255, 0, 127};
+	mVertices[4].TopColor = {0, 255, 0, 127};
+	mVertices[4].ClipMin = {CornerSize, 0};
+	mVertices[4].ClipMax = {CornerSize, 0};
+	mVertices[4].PositionMin = {CornerSize, 0};
+	mVertices[4].PositionMax = {-CornerSize, CornerSize};
+	mVertices[4].TextureSize = {BorderSize, CornerSize};
+	mVertices[4].InsideIndex = {mManager.mButtonBottomInside};
+	mVertices[4].OutsideIndex = {mManager.mButtonBottomOutside};
+	mVertices[5].BorderColor = Settings::Button::BorderColor;
+	mVertices[5].BottomColor = {0, 255, 0, 127};
+	mVertices[5].TopColor = {0, 255, 0, 127};
+	mVertices[5].ClipMin = {CornerSize, -CornerSize};
+	mVertices[5].ClipMax = {CornerSize, -CornerSize};
+	mVertices[5].PositionMin = {CornerSize, -CornerSize};
+	mVertices[5].PositionMax = {-CornerSize, 0};
+	mVertices[5].TextureSize = {BorderSize, CornerSize};
+	mVertices[5].InsideIndex = {mManager.mButtonTopInside};
+	mVertices[5].OutsideIndex = {mManager.mButtonTopOutside};
+	mVertices[6].BorderColor = Settings::Button::BorderColor;
+	mVertices[6].BottomColor = {0, 255, 0, 127};
+	mVertices[6].TopColor = {0, 255, 0, 127};
+	mVertices[6].ClipMin = {0, CornerSize};
+	mVertices[6].ClipMax = {0, CornerSize};
+	mVertices[6].PositionMin = {0, CornerSize};
+	mVertices[6].PositionMax = {CornerSize, -CornerSize};
+	mVertices[6].TextureSize = {CornerSize, BorderSize};
+	mVertices[6].InsideIndex = {mManager.mButtonLeftInside};
+	mVertices[6].OutsideIndex = {mManager.mButtonLeftOutside};
+	mVertices[7].BorderColor = Settings::Button::BorderColor;
+	mVertices[7].BottomColor = {0, 255, 0, 127};
+	mVertices[7].TopColor = {0, 255, 0, 127};
+	mVertices[7].ClipMin = {-CornerSize, CornerSize};
+	mVertices[7].ClipMax = {-CornerSize, CornerSize};
+	mVertices[7].PositionMin = {-CornerSize, CornerSize};
+	mVertices[7].PositionMax = {0, -CornerSize};
+	mVertices[7].TextureSize = {CornerSize, BorderSize};
+	mVertices[7].InsideIndex = {mManager.mButtonRightInside};
+	mVertices[7].OutsideIndex = {mManager.mButtonRightOutside};
+	mVertices[8].BorderColor = Settings::Button::BorderColor;
+	mVertices[8].BottomColor = {0, 0, 255, 127};
+	mVertices[8].TopColor = {0, 0, 255, 127};
+	mVertices[8].ClipMin = {CornerSize, CornerSize};
+	mVertices[8].ClipMax = {CornerSize, CornerSize};
+	mVertices[8].PositionMin = {CornerSize, CornerSize};
+	mVertices[8].PositionMax = {-CornerSize, -CornerSize};
+	mVertices[8].TextureSize = {BorderSize, BorderSize};
+	mVertices[8].InsideIndex = {mManager.mButtonCenterInside};
+	mVertices[8].OutsideIndex = {mManager.mButtonCenterOutside};
 }
 
-void Button::setIsDown(bool IsPressed)
+void ButtonT::setIsDown(bool IsDown)
 {
-	mIsDown = IsPressed;
-	if (mHeight == 0 || mWidth == 0) return;
+	//return;
+	mIsDown = IsDown;
+	if (mLeft == mRight || mBottom == mTop) return;
 
-	Attribute::Color4b Color1;
-	Attribute::Color4b Color2;
+	Attribute::Color4bT Color1;
+	Attribute::Color4bT Color2;
 
-	if (IsPressed) {
-		Color1 = {191, 191, 191, 255};
-		Color2 = {111, 111, 111, 255};
+	if (IsDown) {
+		Color1 = Settings::Button::TopDownColor;
+		Color2 = Settings::Button::BottomDownColor;
 	}
 	else {
-		Color1 = {255, 255, 255, 255};
-		Color2 = {159, 159, 159, 255};
+		Color1 = Settings::Button::TopUpColor;
+		Color2 = Settings::Button::BottomUpColor;
 	}
 
-	Attribute::Color4b TopColor1 = mix(Color2, Color1, mHeight, mHeight - 1);
-	Attribute::Color4b TopColor2 = mix(Color2, Color1, mHeight, mHeight - 4);
-	Attribute::Color4b BottomColor2 = mix(Color2, Color1, mHeight, 4);
-	Attribute::Color4b BottomColor1 = mix(Color2, Color1, mHeight, 1);
-
-	mVertices[0].TopColor = BottomColor2;
-	mVertices[0].BottomColor = BottomColor1;
-	mVertices[1].TopColor = BottomColor2;
-	mVertices[1].BottomColor = BottomColor1;
-	mVertices[2].TopColor = TopColor1;
-	mVertices[2].BottomColor = TopColor2;
-	mVertices[3].TopColor = TopColor1;
-	mVertices[3].BottomColor = TopColor2;
-	mVertices[4].TopColor = BottomColor2;
-	mVertices[4].BottomColor = BottomColor1;
-	mVertices[5].TopColor = TopColor1;
-	mVertices[5].BottomColor = TopColor2;
-	mVertices[6].TopColor = TopColor2;
-	mVertices[6].BottomColor = BottomColor2;
-	mVertices[7].TopColor = TopColor2;
-	mVertices[7].BottomColor = BottomColor2;
-	mVertices[8].TopColor = TopColor2;
-	mVertices[8].BottomColor = BottomColor2;
+	signed short Height = mTop - mBottom;
+	for (auto & Vertex : mVertices) {
+		Vertex.BottomColor = mix(Color1, Color2, (Vertex.ClipMin.Y - mBottom) * 65535 / Height);
+		Vertex.TopColor = mix(Color1, Color2, (Vertex.ClipMax.Y - mBottom) * 65535 / Height);
+	}
 }
 
-
-void Button::setWidth(unsigned short Width)
+signed short ButtonT::getLeftMargin() const
 {
-	mWidth = Width;
-	if (mWidth < 10) return; // XXX: Handle small size rendering
-
-	GLshort MiddleX = mX + 5;
-	GLshort Left = mX + 0;
-	GLshort Right = mX + Width - 5;
-	GLushort ScaleX = 0;
-	ScaleX = Width - 10;
-
-	mVertices[0].Position.X = Left;
-	mVertices[1].Position.X = Right;
-	mVertices[2].Position.X = Right;
-	mVertices[3].Position.X = Left;
-	mVertices[4].Position.X = MiddleX;
-	mVertices[4].Scale.Width = ScaleX;
-	mVertices[5].Position.X = MiddleX;
-	mVertices[5].Scale.Width = ScaleX;
-	mVertices[6].Position.X = Left;
-	mVertices[7].Position.X = Right;
-	mVertices[8].Position.X = MiddleX;
-	mVertices[8].Scale.Width = ScaleX;
+	return 3;
 }
 
-void Button::setHeight(unsigned short Height)
+signed short ButtonT::getBottomMargin() const
 {
-	mHeight = Height;
-	if (mHeight < 10) return; // XXX: Handle small size rendering
+	return 3;
+}
 
-	GLshort MiddleY = mY + 5;
-	GLshort Bottom = mY + 0;
-	GLshort Top = mY + Height - 5;
-	GLushort ScaleY = 0;
-	ScaleY = Height - 10;
+signed short ButtonT::getRightMargin() const
+{
+	return 3;
+}
 
-	mVertices[0].Position.Y = Bottom;
-	mVertices[1].Position.Y = Bottom;
-	mVertices[2].Position.Y = Top;
-	mVertices[3].Position.Y = Top;
-	mVertices[4].Position.Y = Bottom;
-	mVertices[5].Position.Y = Top;
-	mVertices[6].Position.Y = MiddleY;
-	mVertices[6].Scale.Height = ScaleY;
-	mVertices[7].Position.Y = MiddleY;
-	mVertices[7].Scale.Height = ScaleY;
-	mVertices[8].Position.Y = MiddleY;
-	mVertices[8].Scale.Height = ScaleY;
+signed short ButtonT::getTopMargin() const
+{
+	return 3;
+}
 
+void ButtonT::moveX(signed short X)
+{
+	mLeft += X;
+	mRight += X;
+	mClipLeft += X;
+	mClipRight += X;
+
+	for (auto & Vertex : mVertices)	{
+		Vertex.ClipMin.X += X;
+		Vertex.ClipMax.X += X;
+		Vertex.PositionMin.X += X;
+		Vertex.PositionMax.X += X;
+	}
+}
+
+void ButtonT::moveY(signed short Y)
+{
+	mBottom += Y;
+	mTop += Y;
+	mClipBottom += Y;
+	mClipTop += Y;
+
+	for (auto & Vertex : mVertices) {
+		Vertex.ClipMin.Y += Y;
+		Vertex.ClipMax.Y += Y;
+		Vertex.PositionMin.Y += Y;
+		Vertex.PositionMax.Y += Y;
+	}
+}
+
+void ButtonT::resizeWidth(signed short X)
+{
+	mRight += X;
+	mClipRight += X;
+
+	signed short const BorderSize = 1;
+	signed short const CornerSize = BorderSize + Settings::Button::Roundness;
+
+	signed short FirstMax = mLeft + CornerSize;
+	signed short SecondMin = FirstMax;
+	signed short SecondMax = mRight - CornerSize;
+	signed short ThirdMin = SecondMax;
+	signed short ThirdMax = mRight;
+
+	SecondMax = std::max(SecondMin, SecondMax);
+
+	mVertices[1].PositionMin.X = ThirdMin;
+	mVertices[1].PositionMax.X = ThirdMax;
+	mVertices[2].PositionMin.X = ThirdMin;
+	mVertices[2].PositionMax.X = ThirdMax;
+	mVertices[4].PositionMax.X = SecondMax;
+	mVertices[5].PositionMax.X = SecondMax;
+	mVertices[7].PositionMin.X = ThirdMin;
+	mVertices[7].PositionMax.X = ThirdMax;
+	mVertices[8].PositionMax.X = SecondMax;
+
+	clipLeftCenter();
+	clipRightCenter();
+	clipRight();
+}
+
+void ButtonT::resizeHeight(signed short Y)
+{
+	mTop += Y;
+	mClipTop += Y;
+
+	signed short const BorderSize = 1;
+	signed short const CornerSize = BorderSize + Settings::Button::Roundness;
+
+	signed short FirstMax = mBottom + CornerSize;
+	signed short SecondMin = FirstMax;
+	signed short SecondMax = mTop - CornerSize;
+	signed short ThirdMin = SecondMax;
+	signed short ThirdMax = mTop;
+
+	SecondMax = std::max(SecondMin, SecondMax);
+
+	mVertices[2].PositionMin.Y = ThirdMin;
+	mVertices[2].PositionMax.Y = ThirdMax;
+	mVertices[3].PositionMin.Y = ThirdMin;
+	mVertices[3].PositionMax.Y = ThirdMax;
+	mVertices[5].PositionMin.Y = ThirdMin;
+	mVertices[5].PositionMax.Y = ThirdMax;
+	mVertices[6].PositionMax.Y = SecondMax;
+	mVertices[7].PositionMax.Y = SecondMax;
+	mVertices[8].PositionMax.Y = SecondMax;
+
+	clipBottomCenter();
+	clipTopCenter();
+	clipTop();
 	setIsDown(mIsDown);
 }
 
-void Button::setX(signed short X)
+void ButtonT::clipLeft()
 {
-	signed short DeltaX = X - mX;
-	mX = X;
-	for (auto & Vertex : mVertices) Vertex.Position.X += DeltaX;
+	clipVertexLeft(mVertices[0], mClipLeft);
+	clipVertexLeft(mVertices[3], mClipLeft);
+	clipVertexLeft(mVertices[4], mClipLeft);
+	clipVertexLeft(mVertices[5], mClipLeft);
+	clipVertexLeft(mVertices[6], mClipLeft);
+	clipVertexLeft(mVertices[8], mClipLeft);
 }
 
-void Button::setY(signed short Y)
+void ButtonT::clipLeftCenter()
 {
-	signed short DeltaY = Y - mY;
-	mY = Y;
-	for (auto & Vertex : mVertices) Vertex.Position.Y += DeltaY;
+	signed short Center = (mRight + mLeft) / 2;
+	signed short CenterClip = std::max(Center, mClipLeft);
+
+	clipVertexLeft(mVertices[1], CenterClip);
+	clipVertexLeft(mVertices[2], CenterClip);
+	clipVertexLeft(mVertices[7], CenterClip);
 }
 
-void Button::render()
+void ButtonT::setClipLeft(signed short X)
 {
-	if (mHeight < 10 || mWidth < 10) return; // XXX: Handle small size rendering
-	mManager.mOutlineArray.add(mVertices);
+	mClipLeft = X;
+	clipLeft();
+	clipLeftCenter();
+
 }
 
-signed short Button::getChildX()
+void ButtonT::clipBottom()
 {
-	return mX + 6;
+	clipVertexBottom(mVertices[0], mClipBottom);
+	clipVertexBottom(mVertices[1], mClipBottom);
+	clipVertexBottom(mVertices[4], mClipBottom);
+	clipVertexBottom(mVertices[6], mClipBottom);
+	clipVertexBottom(mVertices[7], mClipBottom);
+	clipVertexBottom(mVertices[8], mClipBottom);
 }
 
-signed short Button::getChildY()
+void ButtonT::clipBottomCenter()
 {
-	return mY + 6;
+	signed short Center = (mBottom + mTop) / 2;
+	signed short CenterClip = std::max(Center, mClipBottom);
+
+	clipVertexBottom(mVertices[2], CenterClip);
+	clipVertexBottom(mVertices[3], CenterClip);
+	clipVertexBottom(mVertices[5], CenterClip);
 }
 
-unsigned short Button::getChildWidth()
+void ButtonT::setClipBottom(signed short Y)
 {
-	if (mWidth >= 12) return mWidth - 12;
-	else return 0;
+	mClipBottom = Y;
+	clipBottom();
+	clipBottomCenter();
+	setIsDown(mIsDown);
 }
 
-unsigned short Button::getChildHeight()
+void ButtonT::clipRight()
 {
-	if (mHeight >= 12) return mHeight - 12;
-	else return 0;
+	clipVertexRight(mVertices[1], mClipRight);
+	clipVertexRight(mVertices[2], mClipRight);
+	clipVertexRight(mVertices[4], mClipRight);
+	clipVertexRight(mVertices[5], mClipRight);
+	clipVertexRight(mVertices[7], mClipRight);
+	clipVertexRight(mVertices[8], mClipRight);
 }
 
-unsigned short Button::getFitWidth(unsigned short Width)
+void ButtonT::clipRightCenter()
+{
+	signed short Center = (mRight + mLeft) / 2;
+	signed short CenterClip = std::min(Center, mClipRight);
+
+	clipVertexRight(mVertices[0], CenterClip);
+	clipVertexRight(mVertices[3], CenterClip);
+	clipVertexRight(mVertices[6], CenterClip);
+}
+
+void ButtonT::setClipRight(signed short X)
+{
+	mClipRight = X;
+	clipRight();
+	clipRightCenter();
+}
+
+void ButtonT::clipTop()
+{
+	clipVertexTop(mVertices[2], mClipTop);
+	clipVertexTop(mVertices[3], mClipTop);
+	clipVertexTop(mVertices[5], mClipTop);
+	clipVertexTop(mVertices[6], mClipTop);
+	clipVertexTop(mVertices[7], mClipTop);
+	clipVertexTop(mVertices[8], mClipTop);
+}
+
+void ButtonT::clipTopCenter()
+{
+	signed short Center = (mBottom + mTop) / 2;
+	signed short CenterClip = std::min(Center, mClipTop);
+
+	clipVertexTop(mVertices[0], CenterClip);
+	clipVertexTop(mVertices[1], CenterClip);
+	clipVertexTop(mVertices[4], CenterClip);
+}
+
+void ButtonT::setClipTop(signed short Y)
+{
+	mClipTop = Y;
+	clipTop();
+	clipTopCenter();
+	setIsDown(mIsDown);
+}
+
+void ButtonT::draw() const
+{
+	if (mClipLeft > mClipRight || mClipBottom > mClipTop) return;
+	mManager.mOutlineArray.queue(mVertices);
+}
+
+signed short ButtonT::getLeft() const
+{
+	return mLeft;
+}
+
+signed short ButtonT::getBottom() const
+{
+	return mBottom;
+}
+
+signed short ButtonT::getRight() const
+{
+	return mRight;
+}
+
+signed short ButtonT::getTop() const
+{
+	return mTop;
+}
+
+signed short ButtonT::getBaseWidth(signed short Width) const
 {
 	return Width + 12;
 }
 
-unsigned short Button::getFitHeight(unsigned short Height)
+signed short ButtonT::getBaseHeight(signed short Height) const
 {
 	return Height + 12;
-}
-
-signed short Button::getX()
-{
-	return mX;
-}
-
-signed short Button::getY()
-{
-	return mY;
-}
-
-unsigned short Button::getWidth()
-{
-	return mWidth;
-}
-
-unsigned short Button::getHeight()
-{
-	return mHeight;
 }
 
 }

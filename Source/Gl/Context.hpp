@@ -2,6 +2,8 @@
 
 #include <GL3/gl3.h>
 
+// This file was mostly auto generated
+
 extern "C" {
 
 void glCullFace(GLenum);
@@ -540,7 +542,7 @@ void glTextureStorage3DEXT(GLuint, GLenum, GLsizei, GLenum, GLsizei, GLsizei, GL
 namespace Twil {
 namespace Gl {
 
-struct Context
+struct ContextT
 {
 	PFNGLCULLFACEPROC CullFace;
 	PFNGLFRONTFACEPROC FrontFace;

@@ -7,19 +7,17 @@
 namespace Twil {
 namespace Program {
 
-#undef FillSolid
-
-class FillSolid
+class FillSolidT
 {
 	private:
-	Gl::Program mProgram;
-	GLint mModelViewLoc;
+	Gl::ProgramT mProgram;
+	GLint mScalingLoc;
 
 	public:
-	FillSolid();
+	FillSolidT();
 
 	operator GLuint() const;
-	void setModelView(Math::Matrix3 const &);
+	void setScaling(float, float);
 };
 
 }

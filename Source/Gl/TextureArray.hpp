@@ -1,41 +1,54 @@
 #pragma once
 
-#include "Gl/Buffer.hpp"
-#include "Gl/Texture.hpp"
+#include "Buffer.hpp"
+#include "Texture.hpp"
 
 #include <vector>
 
 namespace Twil {
 namespace Gl {
 
-class TextureArray
+/// \brief Container for a dynamicly growing OpenGL buffer texture.
+class TextureArrayT
 {
 	private:
-	Gl::Buffer mBuffer;
-	Gl::Texture mTexture;
+	BufferT mBuffer;
+	TextureT mTexture;
+
+	// Non copyable
+	TextureArrayT(TextureArrayT &) = delete;
+	TextureArrayT & operator=(TextureArrayT &) = delete;
 
 	std::vector<GLubyte> mBytes;
 	std::size_t mSize = 0;
 	std::size_t mCapacity = 0;
 
 	public:
+	TextureArrayT() = default;
+
+	/// \brief Implicit conversion operator so it can be used in gl* functions.
 	operator GLuint();
 
-	void upload();
-
+	/// \brief Copies bytes from a pair of iterators into the local buffer.
+	/// \returns The begin index for the range.
 	template<typename T>
-	std::size_t add(T First, T Last)
+	std::size_t append(T First, T Last)
 	{
 		auto Index = mBytes.size();
 		mBytes.insert(end(mBytes), First, Last);
 		return Index;
 	}
 
+	/// \brief Copies bytes from a pair of iterators into the local buffer.
+	/// \returns The begin index for the range.
 	template<typename T>
-	std::size_t add(std::pair<T, T> Pair)
+	std::size_t append(std::pair<T, T> Pair)
 	{
-		return add(Pair.first, Pair.second);
+		return append(Pair.first, Pair.second);
 	}
+
+	/// \brief Syncs the local buffer with OpenGL.
+	void upload();
 };
 
 }

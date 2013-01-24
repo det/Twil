@@ -1,45 +1,43 @@
-#include "Ft/Outline.hpp"
+#include "Outline.hpp"
 
-#include "Ft/Library.hpp"
-#include "Ft/Stroker.hpp"
+#include "Library.hpp"
+#include "Stroker.hpp"
 
 #include <algorithm>
-#include <iostream>
 
 namespace Twil {
 namespace Ft {
 
-Outline::Outline(Ft::Library const & Library) :
+OutlineT::OutlineT(LibraryT const & Library) :
 	mLibrary(Library), // Gcc bug prevents brace initialization syntax here
 	mId{}, // zero-initialize
 	mPointCapacity{0},
 	mContourCapacity{0}
-{
-}
+{}
 
-void Outline::clear()
+void OutlineT::clear()
 {
 	mId.n_points = 0;
 	mId.n_contours = 0;
 }
 
-void Outline::reverse()
+void OutlineT::reverse()
 {
 	std::reverse(mId.points, mId.points + mId.n_points);
 	std::reverse(mId.contours, mId.contours + mId.n_contours);
 }
 
-void Outline::translate(FT_Pos x, FT_Pos y)
+void OutlineT::translate(FT_Pos x, FT_Pos y)
 {
 	FT_Outline_Translate(&mId, x, y);
 }
 
-void Outline::transform(FT_Matrix const & Matrix)
+void OutlineT::transform(FT_Matrix const & Matrix)
 {
 	FT_Outline_Transform(&mId, &Matrix);
 }
 
-void Outline::reservePoints(short Num)
+void OutlineT::reservePoints(short Num)
 {
 	if (mPointCapacity >= Num) return;
 	if (mPointCapacity == 0) mPointCapacity = 1;
@@ -56,7 +54,7 @@ void Outline::reservePoints(short Num)
 	mId.tags = Tags;
 }
 
-void Outline::reserveContours(short Num)
+void OutlineT::reserveContours(short Num)
 {
 	if (mContourCapacity >= Num) return;
 	if (mContourCapacity == 0) mContourCapacity = 1;
@@ -68,19 +66,19 @@ void Outline::reserveContours(short Num)
 	mId.contours = Contours;
 }
 
-void Outline::beginPath(FT_Vector A)
+void OutlineT::beginContour(FT_Vector A)
 {
 	mA = A;
 }
 
-void Outline::endPath()
+void OutlineT::endContour()
 {
 	reserveContours(mId.n_contours + 1);
 	mId.contours[mId.n_contours] = mId.n_points - 1;
 	mId.n_contours = mId.n_contours + 1;
 }
 
-void Outline::addLine(FT_Vector B)
+void OutlineT::moveLine(FT_Vector B)
 {
 	reservePoints(mId.n_points + 1);
 	mId.points[mId.n_points] = mA;
@@ -89,7 +87,7 @@ void Outline::addLine(FT_Vector B)
 	mA = B;
 }
 
-void Outline::addQuadratic(FT_Vector B, FT_Vector C)
+void OutlineT::moveQuadratic(FT_Vector B, FT_Vector C)
 {
 	reservePoints(mId.n_points + 2);
 	mId.points[mId.n_points] = mA;
@@ -100,7 +98,7 @@ void Outline::addQuadratic(FT_Vector B, FT_Vector C)
 	mA = C;
 }
 
-void Outline::addCubic(FT_Vector B, FT_Vector C, FT_Vector D)
+void OutlineT::moveCubic(FT_Vector B, FT_Vector C, FT_Vector D)
 {
 	reservePoints(mId.n_points + 3);
 	mId.points[mId.n_points] = mA;
@@ -113,7 +111,7 @@ void Outline::addCubic(FT_Vector B, FT_Vector C, FT_Vector D)
 	mA = D;
 }
 
-void Outline::add(Stroker const & Stroker, FT_StrokerBorder Border)
+void OutlineT::append(StrokerT const & Stroker, FT_StrokerBorder Border)
 {
 	FT_UInt NumStrokePoints = 0;
 	FT_UInt NumStrokeContours = 0;
@@ -123,7 +121,7 @@ void Outline::add(Stroker const & Stroker, FT_StrokerBorder Border)
 	FT_Stroker_ExportBorder(Stroker.mId, Border, &mId);
 }
 
-void Outline::add(Stroker const & Stroker)
+void OutlineT::append(StrokerT const & Stroker)
 {
 	FT_UInt NumStrokePoints = 0;
 	FT_UInt NumStrokeContours = 0;
@@ -133,17 +131,11 @@ void Outline::add(Stroker const & Stroker)
 	FT_Stroker_Export(Stroker.mId, &mId);
 }
 
-Outline::~Outline()
+OutlineT::~OutlineT()
 {
 	delete[] mId.points;
 	delete[] mId.tags;
 	delete[] mId.contours;
-}
-
-void Outline::stroke(Ft::Stroker & Stroker)
-{
-	Stroker.set(*this);
-	add(Stroker);
 }
 
 }

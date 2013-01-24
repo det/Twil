@@ -5,7 +5,7 @@
 namespace Twil {
 namespace Attribute {
 
-struct Texcoord2h
+struct Texcoord2hT
 {
 	GLushort S;
 	GLushort T;

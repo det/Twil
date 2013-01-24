@@ -1,6 +1,6 @@
-#include "Gl/Shader.hpp"
+#include "Shader.hpp"
 
-#include "Gl/Context.hpp"
+#include "Context.hpp"
 
 #include <fstream>
 #include <iostream>
@@ -11,22 +11,22 @@
 namespace Twil {
 namespace Gl {
 
-Shader::Shader(GLenum Type)
+ShaderT::ShaderT(GLenum Type)
 {
 	mId = glCreateShader(Type);
 }
 
-Shader::~Shader()
+ShaderT::~ShaderT()
 {
 	glDeleteShader(mId);
 }
 
-Shader::operator GLuint()
+ShaderT::operator GLuint()
 {
 	return mId;
 }
 
-void Shader::loadFile(std::string const & Path)
+void ShaderT::loadFile(char const * Path)
 {
 	std::ifstream File;
 	File.open(Path, std::ios::in);
@@ -45,7 +45,7 @@ void Shader::loadFile(std::string const & Path)
 	glShaderSource(mId, 1, &Sources, &Lengths);
 }
 
-void Shader::compile()
+void ShaderT::compile()
 {
 	glCompileShader(mId);
 	GLint IsCompiled = 0;

@@ -1,7 +1,10 @@
 #pragma once
 
-#include "Ui/Drawable.hpp"
-#include "Ui/DrawableContainer.hpp"
+#include "Container.hpp"
+#include "MouseHandler.hpp"
+#include "WindowBase.hpp"
+#include "Widget.hpp"
+
 #include "Theme/Label.hpp"
 
 #include <iostream>
@@ -10,41 +13,160 @@
 namespace Twil {
 
 namespace Theme {
-class Manager;
+class ManagerT;
 }
 
 namespace Ui {
 
-class WindowBase;
-
-class Label :
-	public Drawable<false, false>
+/// \brief A Widget that draws text on the screen.
+/// \param LayoutT A layout class used for positioning and clipping.
+template<typename LayoutT>
+class LabelT :
+	public MouseHandlerT,
+	public WidgetT
 {
 	private:
-	Ui::DrawableContainer<false, false> & mParent;
-	Ui::WindowBase & mBase;
-	Theme::Label mThemeLabel;
+	ContainerT & mParent;
+	WindowBaseT & mWindow;
+	LayoutT mLayout;
+	Theme::LabelT mThemeLabel;
 	std::u32string mText;
+
+	private:
+	void layoutX()
+	{
+		signed short Delta = mLayout.getLayoutLeft(getBaseWidth()) - mThemeLabel.getLeft();
+		mThemeLabel.moveX(Delta);
+		mThemeLabel.setClipLeft(mLayout.getLayoutClipLeft());
+		mThemeLabel.setClipRight(mLayout.getLayoutClipRight());
+	}
+
+	void layoutY()
+	{
+		signed short Delta = mLayout.getLayoutBottom(getBaseHeight()) - mThemeLabel.getBottom();
+		mThemeLabel.moveY(Delta);
+		mThemeLabel.setClipBottom(mLayout.getLayoutClipBottom());
+		mThemeLabel.setClipTop(mLayout.getLayoutClipTop());
+	}
+
+	bool checkThisContains(signed short X, signed short Y)
+	{
+		return X >= getLeft() && X <= getRight() && Y >= getBottom() && Y <= getTop();
+	}
 
 	public:
 	// Label
-	Label(Ui::DrawableContainer<false, false> &, Theme::Manager &, Ui::WindowBase &);
-	void setText(std::u32string const &);
+	LabelT(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Theme) :
+		mParent(Parent), // Gcc bug prevents brace initialization syntax here
+		mWindow(Window), // Gcc bug prevents brace initialization syntax here
+		mThemeLabel{Theme}
+	{}
 
-	// Drawable
-	virtual void setX(signed short) override;
-	virtual void setY(signed short) override;
-	virtual void setClipX(signed short, signed short) override;
-	virtual void setClipY(signed short, signed short) override;
+	/// \brief Set the text that the label displays.
+	void setText(std::u32string const & Text)
+	{
+		mText = Text;
+		mThemeLabel.setText(Text);
+		mWindow.markNeedsDraw();
+		layoutX();
+		layoutY();
+		mParent.handleChildBaseWidthChanged(this);
+	}
 
-	virtual unsigned short getX() override;
-	virtual unsigned short getY() override;
-	virtual unsigned short getWidth() override;
-	virtual unsigned short getHeight() override;
-	virtual unsigned short getFitWidth() override;
-	virtual unsigned short getFitHeight() override;
+	// Widget
+	void moveX(signed short X) final
+	{
+		mLayout.moveX(X);
+		mThemeLabel.moveX(X);
+	}
 
-	virtual void draw() override;
+	void moveY(signed short Y) final
+	{
+		mLayout.moveY(Y);
+		mThemeLabel.moveY(Y);
+	}
+
+	void resizeWidth(signed short X) final
+	{
+		mLayout.resizeWidth(X);
+		layoutX();
+	}
+
+	void resizeHeight(signed short Y) final
+	{
+		mLayout.resizeHeight(Y);
+		layoutY();
+	}
+
+	void setClipLeft(signed short X) final
+	{
+		mLayout.setClipLeft(X);
+		mThemeLabel.setClipLeft(mLayout.getLayoutClipLeft());
+	}
+
+	void setClipRight(signed short X) final
+	{
+		mLayout.setClipRight(X);
+		mThemeLabel.setClipRight(mLayout.getLayoutClipRight());
+	}
+
+	void setClipBottom(signed short Y) final
+	{
+		mLayout.setClipBottom(Y);
+		mThemeLabel.setClipBottom(mLayout.getLayoutClipBottom());
+	}
+
+	void setClipTop(signed short Y) final
+	{
+		mLayout.setClipTop(Y);
+		mThemeLabel.setClipTop(mLayout.getLayoutClipTop());
+	}
+
+	void draw() const final
+	{
+		mThemeLabel.draw();
+	}
+
+	signed short getLeft() const final
+	{
+		return mLayout.getLeft();
+	}
+
+	signed short getBottom() const final
+	{
+		return mLayout.getBottom();
+	}
+
+	signed short getRight() const final
+	{
+		return mLayout.getRight();
+	}
+
+	signed short getTop() const final
+	{
+		return mLayout.getTop();
+	}
+
+	signed short getBaseWidth() const final
+	{
+		return mThemeLabel.getBaseWidth();
+	}
+
+	signed short getBaseHeight() const final
+	{
+		return mThemeLabel.getBaseHeight();
+	}
+
+	void delegateMouse(signed short, signed short) final
+	{
+		mWindow.setMouseHandler(*this);
+	}
+
+	// MouseHandler
+	void handleMouseMotion(signed short X, signed short Y) final
+	{
+		if (!checkThisContains(X, Y)) mParent.releaseMouse(X, Y);
+	}
 };
 
 }

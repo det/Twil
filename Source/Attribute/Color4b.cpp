@@ -1,25 +1,24 @@
-#include "Attribute/Color4b.hpp"
+#include "Color4b.hpp"
 
 #include "Gl/Context.hpp"
 
 namespace Twil {
 namespace Attribute {
 
-void Color4b::setup(GLuint Index, GLsizei Stride, const GLvoid * Offset)
+void Color4bT::setup(GLuint Index, GLsizei Stride, const GLvoid * Offset)
 {
 	glEnableVertexAttribArray(Index);
 	glVertexAttribPointer(Index, 4, GL_UNSIGNED_BYTE, true, Stride, Offset);
 }
 
-Attribute::Color4b mix(Attribute::Color4b const & A, Attribute::Color4b const & B, unsigned ValA, unsigned ValB)
+Color4bT mix(Color4bT const & A, Color4bT const & B, GLushort Weight1)
 {
-	unsigned char Weight2 = (ValB * 255 / ValA * 255) / 255;
-	unsigned char Weight1 = 255 - Weight2;
+	GLushort Weight2 = 65535 - Weight1;
 
-	GLubyte Red = (A.Red * Weight1 + B.Red * Weight2) / 255;
-	GLubyte Green = (A.Green * Weight1 + B.Green * Weight2) / 255;
-	GLubyte Blue = (A.Blue * Weight1 + B.Blue * Weight2) / 255;
-	GLubyte Alpha = (A.Alpha * Weight1 + B.Alpha * Weight2) / 255;
+	GLubyte Red = (A.Red * Weight1 + B.Red * Weight2) / 65535;
+	GLubyte Green = (A.Green * Weight1 + B.Green * Weight2) / 65535;
+	GLubyte Blue = (A.Blue * Weight1 + B.Blue * Weight2) / 65535;
+	GLubyte Alpha = (A.Alpha * Weight1 + B.Alpha * Weight2) / 65535;
 
 	return {Red, Green, Blue, Alpha};
 }

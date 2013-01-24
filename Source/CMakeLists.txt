@@ -1,20 +1,23 @@
 cmake_minimum_required (VERSION 2.8)
 project (Twil)
 
+INCLUDE(CheckIncludeFileCXX)
+CHECK_INCLUDE_FILE_CXX(iostream IOSTREAMS_HEADER)
+
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 	set (standard "-stdlib=libc++ -std=c++11")
 	set (math "-msse2") # -ffast-math
-	set (warning "-pedantic -Wall -Wextra -Wglobal-constructors -Wnon-virtual-dtor -Wshadow -Wnewline-eof") # -Wsign-conversion
+	set (warning "-pedantic -Wall -Wextra -Wglobal-constructors -Wnon-virtual-dtor -Wshadow -Wnewline-eof -Wno-unused-parameter") # -Wsign-conversion
 	set (debug "-ggdb")
-	set (debug_runtime "-fsanitize=bounds -fsanitize=undefined")
+	set (debug_runtime "-fsanitize=address -fsanitize=bounds -fsanitize=undefined")
 	set (release "-DNDEBUG -O4")
 	set (symbol "-fno-rtti -fdata-sections -ffunction-sections -fvisibility=hidden -fvisibility-inlines-hidden")
 	set (linker_symbol "-Wl,--gc-sections")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 	set (standard "-std=c++11")
 	set (math "-mfpmath=sse -msse2 -ffast-math")
-	set (warning "-pedantic -Wall -Wextra -Wnon-virtual-dtor -Wshadow -Wno-missing-field-initializers")
-	set (debug "-ggdb")
+	set (warning "-pedantic -Wall -Wextra -Wnon-virtual-dtor -Wno-missing-field-initializers -Wno-unused-parameter")
+	set (debug "-ggdb -isystem iostreams")
 	set (debug_runtime)
 	set (release "-DNDEBUG -O3 -flto")
 	set (symbol "-fno-rtti -fdata-sections -ffunction-sections -fvisibility=hidden -fvisibility-inlines-hidden")
@@ -64,35 +67,26 @@ set (sources
 	Gl/TextureArray.cpp
 	Gl/VertexArray.cpp
 	Loader/Png.cpp
-	Math/BarycentricInterpolator.cpp
-	Math/Matrix2.cpp
-	Math/Matrix3.cpp
-	Math/Matrix4.cpp
-	Math/Vector2.cpp
-	Math/Vector3.cpp
-	Math/Vector4.cpp
 	Program/FillSolid.cpp
 	Program/OutlineGradient.cpp
 	Theme/Button.cpp
 	Theme/Label.cpp
 	Theme/Manager.cpp
+	Theme/Settings.cpp
 	Ui/Application.cpp
-        Ui/Border.cpp
+        Ui/Margin.cpp
 	Ui/Button.cpp
 	Ui/Event.cpp
+	Ui/Container.cpp
 	Ui/Centered.cpp
-	Ui/Drawable.cpp
-	Ui/DrawableContainer.cpp
 	Ui/PartitionBox.cpp
 	Ui/KeyboardHandler.cpp
 	Ui/Label.cpp
         Ui/MouseHandler.cpp
-        Ui/Resizable.cpp
 	Ui/SplitBox.cpp
 	Ui/Tuple.cpp
 	Ui/WindowBase.cpp
 	Ui/Widget.cpp
-	Ui/WidgetContainer.cpp
 	Ui/Window.cpp
 	Vertex/FillSolid.cpp
 	Vertex/OutlineGradient.cpp
@@ -120,7 +114,6 @@ find_package (PNG REQUIRED)
 
 include_directories (
 	.
-	Common
 	Header
 	${CMAKE_SYSTEM_NAME}
 	${FREETYPE_INCLUDE_DIRS}

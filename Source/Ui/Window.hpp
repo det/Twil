@@ -1,33 +1,30 @@
 #pragma once
 
+#include "Application.hpp"
+#include "Container.hpp"
+#include "Event.hpp"
+#include "KeyboardHandler.hpp"
+#include "MouseHandler.hpp"
+#include "WindowBase.hpp"
+
 #include "Gl/Context.hpp"
-#include "Math/Matrix3.hpp"
 #include "Theme/Manager.hpp"
-#include "Ui/Application.hpp"
-#include "Ui/Event.hpp"
-#include "Ui/KeyboardHandler.hpp"
-#include "Ui/MouseHandler.hpp"
-#include "Ui/WidgetContainer.hpp"
-#include "Ui/WindowBase.hpp"
-
-
-#include <iostream>
-#include <stdexcept>
-#include <GL3/gl3.h>
 
 namespace Twil {
 namespace Ui {
 
+/// \brief A resizable window that holds a single child widget.
+/// \param T The type of the child widget.
 template <typename T>
-class Window :
-	public Ui::KeyboardHandler,
-	public Ui::MouseHandler,
-	public Ui::WidgetContainer<true, true>,
-	public Ui::WindowBase
+class WindowT :
+	public Platform::WindowT,
+	public WindowBaseT,
+	public ContainerT,
+	public KeyboardHandlerT,
+	public MouseHandlerT
 {
 	private:
-	Platform::Window mWindow;
-	Theme::Manager mThemeManager;
+	Theme::ManagerT mThemeManager;
 	T mChild;
 	unsigned short mWidth = 0;
 	unsigned short mHeight = 0;
@@ -35,35 +32,52 @@ class Window :
 
 	public:
 	// Window
-	Ui::Event<> Deleted;
+	EventT<> Deleted;
 
-	Window(Platform::Application & Application) :
-		Ui::WindowBase{this, this},
-		mWindow{Application},
-		mChild{*this, mThemeManager, *this}
-	{}
-
-	// Mousehandler
-	virtual void handleMouseEnterWindow(signed short X, signed short Y) override
+	WindowT(Platform::ApplicationT & Application) :
+		Platform::WindowT{Application},
+		WindowBaseT{this, this},
+		mChild{*this, *this, mThemeManager}
 	{
-		mChild.aquireMouse(X, Y);
+		glClear(GL_COLOR_BUFFER_BIT);
+		swapBuffers();
 	}
 
-	virtual void handleMouseMotion(signed short X, signed short Y) override
+	/// \brief Toggle the fullscreen status of the window.
+	void toggleFullscreen()
 	{
-		if (X >= 0 && X <= mWidth && Y >= 0 && Y <= mHeight) mChild.aquireMouse(X, Y);
+		mIsFullscreen = !mIsFullscreen;
+		setFullscreen(mIsFullscreen);
 	}
 
-	// WidgetContainer
-	virtual void releaseMouse(signed short, signed short) override
+	/// \returns The width.
+	unsigned short getWidth()
 	{
-		setMouseHandler(*this);
+		return mWidth;
+	}
+
+	/// \returns The height.
+	unsigned short getHeight()
+	{
+		return mHeight;
+	}
+
+	/// \returns A reference to the child.
+	T & getChild()
+	{
+		return mChild;
+	}
+
+	/// \returns A const reference to the child.
+	T const & getChild() const
+	{
+		return mChild;
 	}
 
 	// Window
 	void handleExposed()
 	{
-		mNeedsRedraw = true;
+		mNeedsDraw = true;
 	}
 
 	void handleDeleted()
@@ -75,72 +89,44 @@ class Window :
 	{
 		mWidth = Width;
 		mHeight = Height;
-		mNeedsResize = true;
-	}
-
-	void draw()
-	{
-		mThemeManager.beginRender(mWidth, mHeight);
-		mThemeManager.renderWindow();
-		mChild.draw();
-		mThemeManager.finishRender();
-		mWindow.swapBuffers();
-	}
-
-	void show()
-	{
-		mWindow.show();
-	}
-
-	void hide()
-	{
-		mWindow.hide();
+		auto ChildWidth = mChild.getRight();
+		auto ChildHeight = mChild.getTop();
+		if (Width != ChildWidth) mChild.resizeWidth(mWidth - ChildWidth);
+		if (Height != ChildHeight) mChild.resizeHeight(mHeight - ChildHeight);
+		mNeedsDraw = true;
 	}
 
 	void update()
 	{
-		if (mNeedsResize) {
-			mChild.setWidth(mWidth);
-			mChild.setHeight(mHeight);
-			mNeedsResize = false;
-		}
-		if (mNeedsRedraw) {
-			draw();
-			mNeedsRedraw = false;
+		if (mNeedsDraw) {
+			mChild.draw();
+			mThemeManager.draw(mWidth, mHeight);
+			swapBuffers();
+			mNeedsDraw = false;
 		}
 	}
 
-	void toggleFullscreen()
+	// Container
+	void releaseMouse(signed short, signed short) final
 	{
-		mIsFullscreen = !mIsFullscreen;
-		mWindow.setFullscreen(mIsFullscreen);
+		setMouseHandler(*this);
 	}
 
-	void resize(unsigned short Width, unsigned short Height)
+	void handleChildBaseWidthChanged(void *) final
+	{}
+
+	void handleChildBaseHeightChanged(void *) final
+	{}
+
+	// MouseHandler
+	void handleMouseEnterWindow(signed short X, signed short Y) final
 	{
-		mWindow.resize(Width, Height);
+		mChild.delegateMouse(X, Y);
 	}
 
-	void fitChild(signed short PadWidth, signed short PadHeight)
+	void handleMouseMotion(signed short X, signed short Y) final
 	{
-		auto Width = mChild.getFitWidth();
-		auto Height = mChild.getFitHeight();
-		mWindow.resize(Width + PadWidth, Height + PadHeight);
-	}
-
-	unsigned short getWidth()
-	{
-		return mWidth;
-	}
-
-	unsigned short getHeight()
-	{
-		return mHeight;
-	}
-
-	T & getChild()
-	{
-		return mChild;
+		if (X >= 0 && X <= mWidth && Y >= 0 && Y <= mHeight) mChild.delegateMouse(X, Y);
 	}
 };
 

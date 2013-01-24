@@ -7,30 +7,67 @@
 namespace Twil {
 namespace Ft {
 
-class Face;
-class Library;
-class Outline;
+class FaceT;
+class LibraryT;
+class OutlineT;
 
-class Stroker
+/// \brief A FreeType Stroker.
+///
+/// Represents a stroke of a set of open or closed paths comprised of lines and bezier curves. Can
+/// be rendered into a Twil::Ft::Bitmap.
+class StrokerT
 {
-	friend class Ft::Outline;
+	friend class OutlineT;
 
 	private:
 	FT_Stroker mId;
 
-	public:
-	Stroker(Ft::Library &);
-	~Stroker();
+	// Non copyable
+	StrokerT(StrokerT &) = delete;
+	StrokerT & operator=(StrokerT &) = delete;
 
+	public:
+	StrokerT(LibraryT &);
+	~StrokerT();
+
+	/// \returns Clear all contours.
 	void clear();
-	void setOptions(FT_Fixed, FT_Stroker_LineCap, FT_Stroker_LineJoin, FT_Fixed);
-	void beginPath(FT_Vector, FT_Bool = false);
-	void endPath();
-	void addLine(FT_Vector);
-	void addQuadratic(FT_Vector, FT_Vector);
-	void addCubic(FT_Vector, FT_Vector, FT_Vector);
-	void set(Ft::Outline &);
-	void set(Ft::Face &);
+
+	/// \brief Set rendering options
+	///
+	/// \param Radius The distance to each side of the stroke in 26.6 fix point.
+	/// \param LineCap The style to use when capping open paths.
+	/// \param LineJoin The style the use when joining lines.
+	/// \param MiterLimit TODO: document this
+	void setOptions(
+		FT_Fixed Radius, FT_Stroker_LineCap LineCap,
+		FT_Stroker_LineJoin LineJoin, FT_Fixed MiterLimit
+	);
+
+	/// \brief Begin a new contour.
+	///
+	/// Behaviour is undefined if not terminated with endPath.
+	/// \param A The starting point.
+	/// \param IsOpen Sets if the contour is open or closed.
+	void beginContour(FT_Vector A, FT_Bool IsOpen = false);
+
+	/// \brief End a contour.
+	void endContour();
+
+	/// \brief Move the contour in a line.
+	void moveLine(FT_Vector);
+
+	/// \brief Move the contour in a quadratic bezier curve.
+	void moveQuadratic(FT_Vector, FT_Vector);
+
+	/// \brief Move the contour in a cubic bezier curve.
+	void moveCubic(FT_Vector, FT_Vector, FT_Vector);
+
+	/// \brief Clear all contours and add the contours of an outline.
+	void set(OutlineT &);
+
+	/// \brief Clear all contours and add the contours of a face.
+	void set(FaceT &);
 };
 
 }

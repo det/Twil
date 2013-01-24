@@ -1,38 +1,43 @@
 #version 330
 
-uniform mat3 ModelView;
+uniform vec2 Scaling;
 
 layout(location = 0) in vec4 BorderColor;
-layout(location = 1) in vec4 TopColor;
-layout(location = 2) in vec4 BottomColor;
-layout(location = 3) in int InsideOffset;
-layout(location = 4) in int OutsideOffset;
-layout(location = 5) in vec2 Position;
-layout(location = 6) in ivec2 Size;
-layout(location = 7) in ivec2 Scale;
+layout(location = 1) in vec4 BottomColor;
+layout(location = 2) in vec4 TopColor;
+layout(location = 3) in ivec2 ClipMin;
+layout(location = 4) in ivec2 ClipMax;
+layout(location = 5) in ivec2 PositionMin;
+layout(location = 6) in ivec2 PositionMax;
+layout(location = 7) in ivec2 TextureSize;
+layout(location = 8) in int InsideIndex;
+layout(location = 9) in int OutsideIndex;
 
-out GeometryData {
+out GeometryData
+{
 	flat vec4 BorderColor;
-	flat vec4 TopColor;
 	flat vec4 BottomColor;
-	flat int InsideOffset;
-	flat int OutsideOffset;
-	flat vec4 Position;
-	flat vec2 PositionSize;
-	flat ivec2 Size;
-} geometry;
+	flat vec4 TopColor;
+	flat vec2 PositionMin;
+	flat vec2 PositionMax;
+	flat vec2 TextureMin;
+	flat vec2 TextureMax;
+	flat int Pitch;
+	flat int InsideIndex;
+	flat int OutsideIndex;
+} Geometry;
 
 void main(void)
 {
-	vec3 Position = vec3(Position, 1.0) * ModelView;
-	vec2 PositionScale = vec2(ModelView[0][0], ModelView[1][1]) * Scale;
-
-	geometry.BorderColor = BorderColor;
-	geometry.TopColor = TopColor;
-	geometry.BottomColor = BottomColor;
-	geometry.InsideOffset = InsideOffset;
-	geometry.OutsideOffset = OutsideOffset;
-	geometry.Position = vec4(Position.xy, 0.0, Position.z);
-	geometry.PositionSize = Size * PositionScale;
-	geometry.Size = Size;
+	vec2 InverseScale = TextureSize / vec2(PositionMax - PositionMin);
+	Geometry.BorderColor = BorderColor;
+	Geometry.BottomColor = BottomColor;
+	Geometry.TopColor = TopColor;
+	Geometry.TextureMin = (ClipMin - PositionMin) * InverseScale;
+	Geometry.TextureMax = (ClipMax - PositionMin) * InverseScale;
+	Geometry.PositionMin = ClipMin * Scaling - 1;
+	Geometry.PositionMax = ClipMax * Scaling - 1;
+	Geometry.Pitch = TextureSize.x;
+	Geometry.InsideIndex = InsideIndex;
+	Geometry.OutsideIndex = OutsideIndex;
 }

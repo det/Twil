@@ -1,21 +1,21 @@
-#include "Gl/Texture.hpp"
+#include "Texture.hpp"
 
-#include "Gl/Context.hpp"
+#include "Context.hpp"
 
 namespace Twil {
 namespace Gl {
 
-Texture::Texture()
+TextureT::TextureT()
 {
 	glGenTextures(1, &mId);
 }
 
-Texture::~Texture()
+TextureT::~TextureT()
 {
 	glDeleteTextures(1, &mId);
 }
 
-Texture::operator GLuint() const
+TextureT::operator GLuint() const
 {
 	return mId;
 }

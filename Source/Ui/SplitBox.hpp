@@ -1,364 +1,538 @@
 #pragma once
 
+#include "Container.hpp"
+#include "Widget.hpp"
+#include "WindowBase.hpp"
+
 #include "Theme/Manager.hpp"
-#include "Ui/Widget.hpp"
-#include "Ui/WidgetContainer.hpp"
-#include "Ui/WindowBase.hpp"
 
 namespace Twil {
 namespace Ui {
 
-template<typename A, typename B>
-class SplitBoxBase :
-	public Ui::Widget<true, true>,
-	public Ui::WidgetContainer<true, true>
+/// \brief Functionality shared by all split boxes.
+template<typename FirstT, typename SecondT>
+class SplitBoxBaseT :
+	public ContainerT,
+	public WidgetT
 {
 	protected:
-	Ui::WidgetContainer<true, true> & mParent;
-	A mA;
-	B mB;
-	signed short mX = 0;
-	signed short mY = 0;
-	unsigned short mWidth = 0;
-	unsigned short mHeight = 0;
+	ContainerT & mParent;
+	FirstT mFirst;
+	SecondT mSecond;
+	signed short mLeft = 0;
+	signed short mBottom = 0;
+	signed short mRight = 0;
+	signed short mTop = 0;
+	signed short mClipLeft = 0;
+	signed short mClipRight = 0;
+	signed short mClipBottom = 0;
+	signed short mClipTop = 0;
+
+	/// \returns true if the position is within our bounds.
+	bool checkThisContains(signed short X, signed short Y)
+	{
+		return X >= mLeft && X <= mRight && Y >= mBottom && Y <= mTop;
+	}
 
 	public:
 	// SplitBox
-	SplitBoxBase(Ui::WidgetContainer<true, true> & Parent, Theme::Manager & Theme, Ui::WindowBase & Base) :
+	SplitBoxBaseT(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Theme) :
 		mParent(Parent), // Gcc bug prevents brace initialization syntax here
-		mA{*this, Theme, Base},
-		mB{*this, Theme, Base}
+		mFirst{*this, Window, Theme},
+		mSecond{*this, Window, Theme}
 	{}
 
-	A & getChild0()
+	/// \returns a reference to the first child.
+	FirstT & getFirst()
 	{
-		return mA;
+		return mFirst;
 	}
 
-	B & getChild1()
+	/// \returns a const reference to the first child.
+	FirstT const & getFirst() const
 	{
-		return mB;
+		return mFirst;
 	}
 
-	// Drawable
-	virtual void setX(signed short X) override
+	/// \returns a reference to the second child.
+	SecondT & getSecond()
 	{
-		signed short DeltaX = X - mX;
-		mX = X;
-		signed short ChildAX = mA.getX();
-		signed short ChildBX = mB.getX();
-		mA.setX(ChildAX + DeltaX);
-		mB.setX(ChildBX + DeltaX);
+		return mSecond;
 	}
 
-	virtual void setY(signed short Y) override
+	/// \returns a const reference to the second child.
+	SecondT const & getSecond() const
 	{
-		signed short DeltaY = Y - mY;
-		mY = Y;
-		signed short ChildAY = mA.getY();
-		signed short ChildBY = mB.getY();
-		mA.setY(ChildAY + DeltaY);
-		mB.setY(ChildBY + DeltaY);
+		return mSecond;
 	}
 
-	virtual void setClipX(signed short, signed short) override
+	// Widget
+	void moveX(signed short X) final
+	{
+		mLeft += X;
+		mRight += X;
+		mClipLeft += X;
+		mClipRight += X;
+		mFirst.moveX(X);
+		mSecond.moveX(X);
+	}
+
+	void moveY(signed short Y) final
+	{
+		mBottom += Y;
+		mTop += Y;
+		mClipBottom += Y;
+		mClipTop += Y;
+		mFirst.moveY(Y);
+		mSecond.moveY(Y);
+	}
+
+	void draw() const final
+	{
+		mFirst.draw();
+		mSecond.draw();
+	}
+
+	signed short getLeft() const final
+	{
+		return mLeft;
+	}
+
+	signed short getBottom() const final
+	{
+		return mBottom;
+	}
+
+	signed short getRight() const final
+	{
+		return mRight;
+	}
+
+	signed short getTop() const final
+	{
+		return mTop;
+	}
+};
+
+/// \brief Functionality shared by all horizontal split boxes.
+template<typename FirstT, typename SecondT>
+class SplitBoxHorizontalT :
+	public SplitBoxBaseT<FirstT, SecondT>
+{
+	protected:
+	using SplitBoxBaseT<FirstT, SecondT>::mParent;
+	using SplitBoxBaseT<FirstT, SecondT>::mFirst;
+	using SplitBoxBaseT<FirstT, SecondT>::mSecond;
+	using SplitBoxBaseT<FirstT, SecondT>::mLeft;
+	using SplitBoxBaseT<FirstT, SecondT>::mBottom;
+	using SplitBoxBaseT<FirstT, SecondT>::mRight;
+	using SplitBoxBaseT<FirstT, SecondT>::mTop;
+	using SplitBoxBaseT<FirstT, SecondT>::mClipLeft;
+	using SplitBoxBaseT<FirstT, SecondT>::mClipRight;
+	using SplitBoxBaseT<FirstT, SecondT>::mClipBottom;
+	using SplitBoxBaseT<FirstT, SecondT>::mClipTop;
+	using SplitBoxBaseT<FirstT, SecondT>::checkThisContains;
+
+	public:
+	// SplitBox
+	SplitBoxHorizontalT(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Theme) :
+		SplitBoxBaseT<FirstT, SecondT>{Parent, Window, Theme}
 	{}
 
-	virtual void setClipY(signed short, signed short) override
-	{}
-
-	virtual void draw() override
+	// Widget
+	void resizeHeight(signed short Y) final
 	{
-		mA.draw();
-		mB.draw();
+		mTop += Y;
+		mClipTop += Y;
+		mFirst.resizeHeight(Y);
+		mSecond.resizeHeight(Y);
 	}
 
-	virtual unsigned short getX() override
+	void setClipBottom(signed short Y) final
 	{
-		return mX;
+		mFirst.setClipBottom(Y);
+		mSecond.setClipBottom(Y);
 	}
 
-	virtual unsigned short getY() override {
-		return mY;
+	void setClipTop(signed short Y) final
+	{
+		mFirst.setClipTop(Y);
+		mSecond.setClipTop(Y);
 	}
 
-	virtual unsigned short getWidth() override
+	signed short getBaseWidth() const final
 	{
-		return mWidth;
+		return mFirst.getBaseWidth() + mSecond.getBaseWidth();
 	}
 
-	virtual unsigned short getHeight() override
+	signed short getBaseHeight() const final
 	{
-		return mHeight;
+		return std::max(mFirst.getBaseHeight(), mSecond.getBaseHeight());
 	}
 
-	// WidgetContainer
-	virtual void releaseMouse(signed short X, signed short Y) override
+	void delegateMouse(signed short X, signed short Y) final
 	{
-		auto MinX = mX;
-		auto MaxX = mX + mWidth;
-		auto MinY = mY;
-		auto MaxY = mY + mHeight;
+		if (X < mSecond.getLeft()) mFirst.delegateMouse(X, Y);
+		else mSecond.delegateMouse(X, Y);
+	}
 
-		if (X >= MinX && X <= MaxX && Y >= MinY && Y <= MaxY) aquireMouse(X, Y);
+	// Container
+	void releaseMouse(signed short X, signed short Y) final
+	{
+		if (checkThisContains(X, Y)) delegateMouse(X, Y);
 		else mParent.releaseMouse(X, Y);
 	}
+
+	void handleChildBaseHeightChanged(void *) final
+	{}
 };
 
-template<typename A, typename B>
-class SplitBoxHorizontal :
-	public Ui::SplitBoxBase<A, B>
+/// \brief Functionality shared by all vertical split boxes.
+template<typename FirstT, typename SecondT>
+class SplitBoxVerticalT :
+	public SplitBoxBaseT<FirstT, SecondT>
 {
 	protected:
-	using Ui::SplitBoxBase<A, B>::mA;
-	using Ui::SplitBoxBase<A, B>::mB;
+	using SplitBoxBaseT<FirstT, SecondT>::mParent;
+	using SplitBoxBaseT<FirstT, SecondT>::mFirst;
+	using SplitBoxBaseT<FirstT, SecondT>::mSecond;
+	using SplitBoxBaseT<FirstT, SecondT>::mLeft;
+	using SplitBoxBaseT<FirstT, SecondT>::mBottom;
+	using SplitBoxBaseT<FirstT, SecondT>::mRight;
+	using SplitBoxBaseT<FirstT, SecondT>::mTop;
+	using SplitBoxBaseT<FirstT, SecondT>::mClipLeft;
+	using SplitBoxBaseT<FirstT, SecondT>::mClipRight;
+	using SplitBoxBaseT<FirstT, SecondT>::mClipBottom;
+	using SplitBoxBaseT<FirstT, SecondT>::mClipTop;
+	using SplitBoxBaseT<FirstT, SecondT>::checkThisContains;
 
 	public:
-	SplitBoxHorizontal(Ui::WidgetContainer<true, true> & Parent, Theme::Manager & Theme, Ui::WindowBase & Base) :
-		Ui::SplitBoxBase<A, B>{Parent, Theme, Base}
+	// SplitBox
+	SplitBoxVerticalT(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Theme) :
+		SplitBoxBaseT<FirstT, SecondT>{Parent, Window, Theme}
 	{}
 
-	// Drawable
-	virtual unsigned short getFitWidth() override
+	// Widget
+	void resizeWidth(signed short X) final
 	{
-		unsigned short FitWidthA = mA.getFitWidth();
-		unsigned short FitWidthB = mB.getFitWidth();
-		return FitWidthA + FitWidthB;
+		mRight += X;
+		mClipRight += X;
+		mFirst.resizeWidth(X);
+		mSecond.resizeWidth(X);
 	}
 
-	virtual unsigned short getFitHeight() override
+	void setClipLeft(signed short X) final
 	{
-		unsigned short FitHeightA = mA.getFitHeight();
-		unsigned short FitHeightB = mB.getFitHeight();
-		return std::max(FitHeightA, FitHeightB);
+		mFirst.setClipLeft(X);
+		mSecond.setClipLeft(X);
+	}
+
+	void setClipRight(signed short X) final
+	{
+		mFirst.setClipRight(X);
+		mSecond.setClipRight(X);
+	}
+
+	signed short getBaseWidth() const final
+	{
+		return std::max(mFirst.getBaseWidth(), mSecond.getBaseWidth());
+	}
+
+	signed short getBaseHeight() const final
+	{
+		return mFirst.getBaseHeight() + mSecond.getBaseHeight();
+	}
+
+	void delegateMouse(signed short X, signed short Y) final
+	{
+		if (Y < mSecond.getBottom()) mFirst.delegateMouse(X, Y);
+		else mSecond.delegateMouse(X, Y);
+	}
+
+	// Container
+	void releaseMouse(signed short X, signed short Y) final
+	{
+		if (checkThisContains(X, Y)) delegateMouse(X, Y);
+		else mParent.releaseMouse(X, Y);
+	}
+
+	void handleChildBaseWidthChanged(void *) final
+	{}
+};
+
+template<bool IsHorizontal, bool IsFirstStatic, typename FirstT, typename SecondT>
+class SplitBoxT;
+
+/// \brief A horizontal split box where the first child is fixed width.
+///
+/// Both children share the parent's height.
+/// The first child is kept at its base width and clipped if neccesary.
+/// The second child has its width set to any remaining space.
+template<typename FirstT, typename SecondT>
+class SplitBoxT<true, true, FirstT, SecondT> :
+	public SplitBoxHorizontalT<FirstT, SecondT>
+{
+	private:
+	using SplitBoxBaseT<FirstT, SecondT>::mParent;
+	using SplitBoxBaseT<FirstT, SecondT>::mFirst;
+	using SplitBoxBaseT<FirstT, SecondT>::mSecond;
+	using SplitBoxBaseT<FirstT, SecondT>::mLeft;
+	using SplitBoxBaseT<FirstT, SecondT>::mBottom;
+	using SplitBoxBaseT<FirstT, SecondT>::mRight;
+	using SplitBoxBaseT<FirstT, SecondT>::mTop;
+	using SplitBoxBaseT<FirstT, SecondT>::mClipLeft;
+	using SplitBoxBaseT<FirstT, SecondT>::mClipRight;
+	using SplitBoxBaseT<FirstT, SecondT>::mClipBottom;
+	using SplitBoxBaseT<FirstT, SecondT>::mClipTop;
+
+	void layout()
+	{
+		signed short Delta = mFirst.getLeft() + mFirst.getBaseWidth() - mFirst.getRight();
+		mFirst.resizeWidth(Delta);
+		mSecond.moveX(Delta);
+		mSecond.resizeWidth(-Delta);
+		mFirst.setClipRight(std::min(mRight, mClipRight));
+	}
+
+	public:
+	// SplitBox
+	SplitBoxT(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Theme) :
+		SplitBoxHorizontalT<FirstT, SecondT>{Parent, Window, Theme}
+	{
+		layout();
 	}
 
 	// Widget
-	virtual void aquireMouse(signed short X, signed short Y) override
+	void resizeWidth(signed short X) final
 	{
-		if (X < mB.getX()) mA.aquireMouse(X, Y);
-		else mB.aquireMouse(X, Y);
+		mRight += X;
+		mClipRight += X;
+		mSecond.resizeWidth(X);
+		mFirst.setClipRight(std::min(mRight, mClipRight));
+	}
+
+	void setClipLeft(signed short X) final
+	{
+		mFirst.setClipLeft(X);
+		mSecond.setClipLeft(X);
+	}
+
+	void setClipRight(signed short X) final
+	{
+		mFirst.setClipRight(std::min(mRight, mClipRight));
+		mSecond.setClipRight(X);
+	}
+
+	// Container
+	void handleChildBaseWidthChanged(void * Child) final
+	{
+		if (Child == &mFirst) layout();
 	}
 };
 
-template<typename A, typename B>
-class SplitBoxVertical :
-	public Ui::SplitBoxBase<A, B>
+/// \brief A horizontal split box where the second child is fixed width.
+///
+/// Both children share the parent's height.
+/// The second child is kept at its base width and clipped if neccesary.
+/// The first child has its width set to any remaining space.
+
+template<typename FirstT, typename SecondT>
+class SplitBoxT<true, false, FirstT, SecondT> :
+	public SplitBoxHorizontalT<FirstT, SecondT>
 {
-	protected:
-	using Ui::SplitBoxBase<A, B>::mA;
-	using Ui::SplitBoxBase<A, B>::mB;
+	private:
+	using SplitBoxBaseT<FirstT, SecondT>::mParent;
+	using SplitBoxBaseT<FirstT, SecondT>::mFirst;
+	using SplitBoxBaseT<FirstT, SecondT>::mSecond;
+	using SplitBoxBaseT<FirstT, SecondT>::mLeft;
+	using SplitBoxBaseT<FirstT, SecondT>::mBottom;
+	using SplitBoxBaseT<FirstT, SecondT>::mRight;
+	using SplitBoxBaseT<FirstT, SecondT>::mTop;
+	using SplitBoxBaseT<FirstT, SecondT>::mClipLeft;
+	using SplitBoxBaseT<FirstT, SecondT>::mClipRight;
+	using SplitBoxBaseT<FirstT, SecondT>::mClipBottom;
+	using SplitBoxBaseT<FirstT, SecondT>::mClipTop;
 
-	public:
-	SplitBoxVertical(Ui::WidgetContainer<true, true> & Parent, Theme::Manager & Theme, Ui::WindowBase & Base) :
-		Ui::SplitBoxBase<A, B>{Parent, Theme, Base}
-	{}
-
-	// Drawable
-	virtual unsigned short getFitWidth() override
+	void layout()
 	{
-		unsigned short FitWidthA = mA.getFitWidth();
-		unsigned short FitWidthB = mB.getFitWidth();
-		return std::max(FitWidthA, FitWidthB);
+		signed short Delta = mSecond.getLeft() + mSecond.getBaseWidth() - mSecond.getRight();
+		mFirst.resizeWidth(-Delta);
+		mSecond.moveX(-Delta);
+		mSecond.resizeWidth(Delta);
+		mSecond.setClipLeft(std::max(mLeft, mClipLeft));
 	}
 
-	virtual unsigned short getFitHeight() override
+	public:
+	// SplitBox
+	SplitBoxT(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Theme) :
+		SplitBoxHorizontalT<FirstT, SecondT>{Parent, Window, Theme}
 	{
-		unsigned short FitHeightA = mA.getFitHeight();
-		unsigned short FitHeightB = mB.getFitHeight();
-		return FitHeightA + FitHeightB;
+		layout();
 	}
 
 	// Widget
-	virtual void aquireMouse(signed short X, signed short Y) override
+	void resizeWidth(signed short X) final
 	{
-		if (Y < mB.getY()) mA.aquireMouse(X, Y);
-		else mB.aquireMouse(X, Y);
+		mRight += X;
+		mClipRight += X;
+		mFirst.resizeWidth(X);
+		mSecond.moveX(X);
+		mSecond.setClipLeft(std::max(mLeft, mClipLeft));
+	}
+
+	void setClipLeft(signed short X) final
+	{
+		mFirst.setClipLeft(X);
+		mSecond.setClipLeft(std::max(mLeft, mClipLeft));
+	}
+
+	void setClipRight(signed short X) final
+	{
+		mFirst.setClipRight(X);
+		mSecond.setClipRight(X);
+	}
+
+	// Container
+	void handleChildBaseWidthChanged(void * Child) final
+	{
+		if (Child == &mSecond) layout();
 	}
 };
 
-template<bool IsHorizontal, bool IsFirstStatic, typename A, typename B>
-class SplitBox;
+/// \brief A vertical split box where the first child is fixed height.
+///
+/// Both children share the parent's width.
+/// The first child is kept at its base height and clipped if neccesary.
+/// The second child has its height set to any remaining space.
 
-template<typename A, typename B>
-class SplitBox<false, false, A, B> :
-	public Ui::SplitBoxVertical<A, B>
+template<typename FirstT, typename SecondT>
+class SplitBoxT<false, true, FirstT, SecondT> :
+	public SplitBoxVerticalT<FirstT, SecondT>
 {
-	protected:
-	using Ui::SplitBoxVertical<A, B>::mA;
-	using Ui::SplitBoxVertical<A, B>::mB;
-	using Ui::SplitBoxVertical<A, B>::mWidth;
-	using Ui::SplitBoxVertical<A, B>::mHeight;
-	using Ui::SplitBoxVertical<A, B>::mX;
-	using Ui::SplitBoxVertical<A, B>::mY;
+	private:
+	using SplitBoxBaseT<FirstT, SecondT>::mParent;
+	using SplitBoxBaseT<FirstT, SecondT>::mFirst;
+	using SplitBoxBaseT<FirstT, SecondT>::mSecond;
+	using SplitBoxBaseT<FirstT, SecondT>::mLeft;
+	using SplitBoxBaseT<FirstT, SecondT>::mBottom;
+	using SplitBoxBaseT<FirstT, SecondT>::mRight;
+	using SplitBoxBaseT<FirstT, SecondT>::mTop;
+	using SplitBoxBaseT<FirstT, SecondT>::mClipLeft;
+	using SplitBoxBaseT<FirstT, SecondT>::mClipRight;
+	using SplitBoxBaseT<FirstT, SecondT>::mClipBottom;
+	using SplitBoxBaseT<FirstT, SecondT>::mClipTop;
+
+	void layout()
+	{
+		signed short Delta = mFirst.getBottom() + mFirst.getBaseHeight() - mFirst.getTop();
+		mFirst.resizeHeight(Delta);
+		mSecond.moveY(Delta);
+		mSecond.resizeHeight(-Delta);
+		mFirst.setClipTop(std::min(mTop, mClipTop));
+	}
 
 	public:
 	// SplitBox
-	SplitBox(Ui::WidgetContainer<true, true> & Parent, Theme::Manager & Theme, Ui::WindowBase & Base) :
-		Ui::SplitBoxVertical<A, B>{Parent, Theme, Base}
-	{}
-
-	// Drawable
-	virtual void setWidth(unsigned short Width) override
+	SplitBoxT(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Theme) :
+		SplitBoxVerticalT<FirstT, SecondT>{Parent, Window, Theme}
 	{
-		mWidth = Width;
-		mA.setWidth(mWidth);
-		mB.setWidth(mWidth);
+		layout();
 	}
 
-	virtual void setHeight(unsigned short Height) override
+	// Widget
+	void resizeHeight(signed short Y) final
 	{
-		mHeight = Height;
+		mTop += Y;
+		mClipTop += Y;
+		mSecond.resizeHeight(Y);
+		mFirst.setClipTop(std::min(mTop, mClipTop));
+	}
 
-		unsigned short FitHeightB = mB.getFitHeight();
-		if (mHeight >= FitHeightB) {
-			unsigned short ExtraSpace = mHeight - FitHeightB;
-			mA.setHeight(ExtraSpace);
-			mB.setHeight(FitHeightB);
-			mA.setY(mY);
-			mB.setY(mY + ExtraSpace);
-		}
-		else {
-			mA.setHeight(0);
-			mB.setHeight(mHeight);
-			mA.setY(mY);
-			mB.setY(mY + 0);
-		}
+	void setClipBottom(signed short Y) final
+	{
+		mFirst.setClipBottom(Y);
+		mSecond.setClipBottom(Y);
+	}
+
+	void setClipTop(signed short Y) final
+	{
+		mFirst.setClipTop(std::min(mTop, mClipTop));
+		mSecond.setClipTop(Y);
+	}
+
+	// Container
+	void handleChildBaseHeightChanged(void * Child) final
+	{
+		if (Child == &mFirst) layout();
 	}
 };
 
-template<typename A, typename B>
-class SplitBox<false, true, A, B> :
-	public Ui::SplitBoxVertical<A, B>
+/// \brief A vertical split box where the second child is fixed height.
+///
+/// Both children share the parent's width.
+/// The second child is kept at its base height and clipped if neccesary.
+/// The first child has its height set to any remaining space.
+
+template<typename FirstT, typename SecondT>
+class SplitBoxT<false, false, FirstT, SecondT> :
+	public SplitBoxVerticalT<FirstT, SecondT>
 {
-	protected:
-	using Ui::SplitBoxVertical<A, B>::mA;
-	using Ui::SplitBoxVertical<A, B>::mB;
-	using Ui::SplitBoxVertical<A, B>::mWidth;
-	using Ui::SplitBoxVertical<A, B>::mHeight;
-	using Ui::SplitBoxVertical<A, B>::mX;
-	using Ui::SplitBoxVertical<A, B>::mY;
+	private:
+	using SplitBoxBaseT<FirstT, SecondT>::mParent;
+	using SplitBoxBaseT<FirstT, SecondT>::mFirst;
+	using SplitBoxBaseT<FirstT, SecondT>::mSecond;
+	using SplitBoxBaseT<FirstT, SecondT>::mLeft;
+	using SplitBoxBaseT<FirstT, SecondT>::mBottom;
+	using SplitBoxBaseT<FirstT, SecondT>::mRight;
+	using SplitBoxBaseT<FirstT, SecondT>::mTop;
+	using SplitBoxBaseT<FirstT, SecondT>::mClipLeft;
+	using SplitBoxBaseT<FirstT, SecondT>::mClipRight;
+	using SplitBoxBaseT<FirstT, SecondT>::mClipBottom;
+	using SplitBoxBaseT<FirstT, SecondT>::mClipTop;
+
+	void layout()
+	{
+		signed short Delta = mSecond.getBottom() + mSecond.getBaseHeight() - mSecond.getTop();
+		mFirst.resizeHeight(-Delta);
+		mSecond.moveY(-Delta);
+		mSecond.resizeHeight(Delta);
+		mSecond.setClipBottom(std::max(mBottom, mClipBottom));
+	}
 
 	public:
 	// SplitBox
-	SplitBox(Ui::WidgetContainer<true, true> & Parent, Theme::Manager & Theme, Ui::WindowBase & Base) :
-		Ui::SplitBoxVertical<A, B>{Parent, Theme, Base}
-	{}
-
-	// Drawable
-	virtual void setWidth(unsigned short Width) override
+	SplitBoxT(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Theme) :
+		SplitBoxVerticalT<FirstT, SecondT>{Parent, Window, Theme}
 	{
-		mWidth = Width;
-		mA.setWidth(mWidth);
-		mB.setWidth(mWidth);
+		layout();
 	}
 
-	virtual void setHeight(unsigned short Height) override
+	// Widget
+	void resizeHeight(signed short Y) final
 	{
-		mHeight = Height;
-
-		unsigned short FitHeightA = mA.getFitHeight();
-		if (mHeight >= FitHeightA) {
-			unsigned short ExtraSpace = mHeight - FitHeightA;
-			mA.setHeight(FitHeightA);
-			mB.setHeight(ExtraSpace);
-			mB.setY(mY + FitHeightA);
-		}
-		else {
-			mA.setHeight(mHeight);
-			mB.setHeight(0);
-			mB.setY(mY + mHeight);
-		}
-	}
-};
-
-template<typename A, typename B>
-class SplitBox<true, false, A, B> :
-	public Ui::SplitBoxHorizontal<A, B>
-{
-	protected:
-	using Ui::SplitBoxHorizontal<A, B>::mA;
-	using Ui::SplitBoxHorizontal<A, B>::mB;
-	using Ui::SplitBoxHorizontal<A, B>::mWidth;
-	using Ui::SplitBoxHorizontal<A, B>::mHeight;
-	using Ui::SplitBoxHorizontal<A, B>::mX;
-	using Ui::SplitBoxHorizontal<A, B>::mY;
-
-	public:
-	// SplitBox
-	SplitBox(Ui::WidgetContainer<true, true> & Parent, Theme::Manager & Theme, Ui::WindowBase & Base) :
-		Ui::SplitBoxHorizontal<A, B>{Parent, Theme, Base}
-	{}
-
-	// Drawable
-	virtual void setWidth(unsigned short Width) override
-	{
-		mWidth = Width;
-
-		unsigned short FitWidthB = mB.getFitWidth();
-		if (mWidth >= FitWidthB) {
-			unsigned short ExtraSpace = mWidth - FitWidthB;
-			mA.setWidth(ExtraSpace);
-			mB.setWidth(FitWidthB);
-			mB.setX(mX + ExtraSpace);
-		}
-		else {
-			mA.setWidth(0);
-			mB.setWidth(mWidth);
-			mB.setX(mX + 0);
-		}
+		mTop += Y;
+		mClipTop += Y;
+		mFirst.resizeHeight(Y);
+		mSecond.moveY(Y);
+		mSecond.setClipBottom(std::max(mBottom, mClipBottom));
 	}
 
-	virtual void setHeight(unsigned short Height) override
+	void setClipBottom(signed short Y) final
 	{
-		mHeight = Height;
-		mA.setHeight(mHeight);
-		mB.setHeight(mHeight);
-	}
-};
-
-template<typename A, typename B>
-class SplitBox<true, true, A, B> :
-	public Ui::SplitBoxHorizontal<A, B>
-{
-	protected:
-	using Ui::SplitBoxHorizontal<A, B>::mA;
-	using Ui::SplitBoxHorizontal<A, B>::mB;
-	using Ui::SplitBoxHorizontal<A, B>::mWidth;
-	using Ui::SplitBoxHorizontal<A, B>::mHeight;
-	using Ui::SplitBoxHorizontal<A, B>::mX;
-	using Ui::SplitBoxHorizontal<A, B>::mY;
-
-	public:
-	// SplitBox
-	SplitBox(Ui::WidgetContainer<true, true> & Parent, Theme::Manager & Theme, Ui::WindowBase & Base) :
-		Ui::SplitBoxHorizontal<A, B>{Parent, Theme, Base}
-	{}
-
-	// Drawable
-	virtual void setWidth(unsigned short Width) override
-	{
-		mWidth = Width;
-
-		unsigned short FitWidthA = mA.getFitWidth();
-		if (mWidth >= FitWidthA) {
-			unsigned short ExtraSpace = mWidth - FitWidthA;
-			mA.setWidth(FitWidthA);
-			mB.setWidth(ExtraSpace);
-			mB.setX(mX + FitWidthA);
-		}
-		else {
-			mA.setWidth(mWidth);
-			mB.setWidth(0);
-			mB.setX(mX + mWidth);
-		}
+		mFirst.setClipBottom(Y);
+		mSecond.setClipBottom(std::max(mBottom, mClipBottom));
 	}
 
-	virtual void setHeight(unsigned short Height) override
+	void setClipTop(signed short Y) final
 	{
-		mHeight = Height;
-		mA.setHeight(mHeight);
-		mB.setHeight(mHeight);
+		mFirst.setClipTop(Y);
+		mSecond.setClipTop(Y);
+	}
+
+	// Container
+	void handleChildBaseHeightChanged(void * Child) final
+	{
+		if (Child == &mSecond) layout();
 	}
 };
 

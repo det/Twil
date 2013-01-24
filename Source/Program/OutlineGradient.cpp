@@ -1,23 +1,22 @@
-#include "Program/OutlineGradient.hpp"
+#include "OutlineGradient.hpp"
 
 #include "Gl/Context.hpp"
-#include "Math/Vector4.hpp"
 #include "Gl/Shader.hpp"
 
 namespace Twil {
 namespace Program {
 
-OutlineGradient::OutlineGradient()
+OutlineGradientT::OutlineGradientT()
 {
-	Gl::Shader Vertex(GL_VERTEX_SHADER);
+	Gl::ShaderT Vertex(GL_VERTEX_SHADER);
 	Vertex.loadFile("Shader/OutlineGradient.vert");
 	Vertex.compile();
 
-	Gl::Shader Geometry(GL_GEOMETRY_SHADER);
+	Gl::ShaderT Geometry(GL_GEOMETRY_SHADER);
 	Geometry.loadFile("Shader/OutlineGradient.geom");
 	Geometry.compile();
 
-	Gl::Shader Frag(GL_FRAGMENT_SHADER);
+	Gl::ShaderT Frag(GL_FRAGMENT_SHADER);
 	Frag.loadFile("Shader/OutlineGradient.frag");
 	Frag.compile();
 
@@ -28,17 +27,17 @@ OutlineGradient::OutlineGradient()
 	mProgram.link();
 	glUseProgram(mProgram);
 
-	mModelViewLoc = mProgram.getLocation("ModelView");
+	mScalingLoc = mProgram.getLocation("Scaling");
 }
 
-OutlineGradient::operator GLuint() const
+OutlineGradientT::operator GLuint() const
 {
 	return mProgram;
 }
 
-void OutlineGradient::setModelView(Math::Matrix3 const & ModelView)
+void OutlineGradientT::setScaling(float X, float Y)
 {
-	mProgram.setUniform(mModelViewLoc, false, ModelView);
+	mProgram.setUniform(mScalingLoc, X, Y);
 }
 
 }

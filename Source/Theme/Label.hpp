@@ -1,40 +1,55 @@
 #pragma once
 
+#include "Vertex/FillSolid.hpp"
+
 #include <string>
 #include <vector>
-#include "Vertex/FillSolid.hpp"
+
 
 namespace Twil {
 namespace Theme {
 
-class Manager;
+class ManagerT;
 
-class Label
+/// \brief Responsible for drawing a label.
+class LabelT
 {
 	private:
-	Theme::Manager & mManager;
-	std::vector<Vertex::FillSolid> mVertices;
-	signed short mX = 0;
-	signed short mY = 0;
-	unsigned short mWidth = 0;
-	unsigned short mHeight = 0;
+	ManagerT & mManager;
+	std::vector<Vertex::FillSolidT> mVertices;
+	signed short mLeft = 0;
+	signed short mBottom = 0;
+	signed short mRight = 0;
+	signed short mTop = 0;
+	short mClipLeft = 0;
+	short mClipBottom = 0;
+	short mClipRight = 0;
+	short mClipTop = 0;
 
 	public:
-	Label(Theme::Manager &);
+	LabelT(ManagerT &);
 
-	void setText(std::u32string const &);
-	void render();
+	/// \brief Sets the text to display.
+	void setText(std::u32string const & Text);
 
-	void setX(signed short);
-	void setY(signed short);
-	void setHeight(unsigned short);
-	void setWidth(unsigned short);
-	void setClipX(signed short, signed short);
-	void setClipY(signed short, signed short);
-	signed short getX();
-	signed short getY();
-	unsigned short getWidth();
-	unsigned short getHeight();
+	// Widget
+	void moveX(signed short);
+	void moveY(signed short);
+
+	void setClipLeft(signed short);
+	void setClipBottom(signed short);
+	void setClipRight(signed short);
+	void setClipTop(signed short);
+
+	void draw() const;
+
+	signed short getLeft() const;
+	signed short getBottom() const;
+	signed short getRight() const;
+	signed short getTop() const;
+
+	signed short getBaseWidth() const;
+	signed short getBaseHeight() const;
 };
 
 }

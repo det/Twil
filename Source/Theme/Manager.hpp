@@ -1,12 +1,13 @@
 #pragma once
 
+#include "Settings.hpp"
+
 #include "Ft/Bitmap.hpp"
 #include "Ft/Face.hpp"
 #include "Ft/Library.hpp"
 #include "Ft/Outline.hpp"
 #include "Ft/Stroker.hpp"
 #include "Ft/Size.hpp"
-#include "Math/Matrix3.hpp"
 #include "Program/FillSolid.hpp"
 #include "Program/OutlineGradient.hpp"
 #include "Gl/Context.hpp"
@@ -22,11 +23,12 @@
 namespace Twil {
 namespace Theme {
 
-class Button;
-class Label;
+class ButtonT;
+class LabelT;
 class Window;
 
-struct GlyphEntry
+/// \brief Represents a loaded Unicode glyph.
+struct GlyphEntryT
 {
 	FT_Vector Bearings;
 	FT_Vector Advance;
@@ -38,28 +40,28 @@ struct GlyphEntry
 	unsigned short Height;
 };
 
-class Manager
+/// \brief Manages all rendering for the theme.
+class ManagerT
 {
-	friend class Theme::Button;
-	friend class Theme::Label;
+	friend class ButtonT;
+	friend class LabelT;
 
 	private:
-	Ft::Library mLibrary;
-	Ft::Bitmap mBitmap;
-	Ft::Outline mOutline;
-	Ft::Stroker mStroker;
-	Ft::Face mLabelFace;
-	Ft::Size mLabelSize;
+	Ft::LibraryT mLibrary;
+	Ft::BitmapT mBitmap;
+	Ft::OutlineT mOutline;
+	Ft::StrokerT mStroker;
+	Ft::FaceT mLabelFace;
+	Ft::SizeT mLabelSize;
 
-	Gl::TextureArray mTexture;
-	Gl::StreamArray<Vertex::FillSolid> mSolidArray;
-	Gl::StreamArray<Vertex::OutlineGradient> mOutlineArray;
+	Gl::TextureArrayT mTexture;
+	Gl::StreamArrayT<Vertex::FillSolidT> mSolidArray;
+	Gl::StreamArrayT<Vertex::OutlineGradientT> mOutlineArray;
 
-	Program::FillSolid mFillSolid;
-	Program::OutlineGradient mOutlineGradient;
+	Program::FillSolidT mFillSolid;
+	Program::OutlineGradientT mOutlineGradient;
 
-	Math::Matrix3 mMatrix;
-	std::unordered_map<char32_t, GlyphEntry> mFontEntries;
+	std::unordered_map<char32_t, GlyphEntryT> mFontEntries;
 
 	// Button offsets
 	GLuint mButtonCenterInside;
@@ -81,14 +83,16 @@ class Manager
 	GLuint mButtonNeOutside;
 	GLuint mButtonNwOutside;
 
-	GlyphEntry const & loadGlyphEntry(Ft::Face &, char32_t);
+	GlyphEntryT const & loadGlyphEntry(Ft::FaceT &, char32_t);
+	void generateButtonBitmaps();
 
 	public:	
-	Manager();
+	ManagerT();
 
-	void beginRender(unsigned short Width, unsigned short Height);
-	void finishRender();
-	void renderWindow();
+	/// \brief Draw the GUI.
+	///
+	/// All Theme objects must queue their vertex data each time before this is called.
+	void draw(unsigned short Width, unsigned short Height);
 };
 
 }

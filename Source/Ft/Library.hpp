@@ -6,24 +6,30 @@
 namespace Twil {
 namespace Ft {
 
-class Bitmap;
-class Outline;
-class Face;
-class Stroker;
+class BitmapT;
+class OutlineT;
+class FaceT;
+class StrokerT;
 
-class Library
+/// \brief A FreeType library.
+class LibraryT
 {
-	friend class Ft::Bitmap;
-	friend class Ft::Face;
-	friend class Ft::Outline;
-	friend class Ft::Stroker;
+	friend class BitmapT;
+	friend class FaceT;
+	friend class OutlineT;
+	friend class StrokerT;
 
 	private:
 	FT_Library mId;
 	
+	// Non copyable
+	LibraryT(LibraryT &) = delete;
+	LibraryT & operator=(LibraryT &) = delete;
+
 	public:
-	Library();
-	~Library();
+	/// \throws std::runtime_error If the freetype library cant be initialized.
+	LibraryT();
+	~LibraryT();
 };
 
 }

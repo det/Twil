@@ -5,51 +5,60 @@
 namespace Twil {
 namespace Ui {
 
-template<typename ...Args>
-struct Tuple;
+template<typename ...>
+struct TupleT;
 
-template<typename First, typename Second, typename ...Rest>
-struct Tuple<First, Second, Rest...>
+/// \brief A variadic container that can be iterated over with a functor.
+template<typename T, typename ... ArgsT>
+struct TupleT<T, ArgsT ...>
 {
-	typedef First HeadType;
-	typedef Tuple<Second, Rest...> TailType;
+	T Head;
+	TupleT<ArgsT ...> Tail;
 
-	HeadType Head;
-	TailType Tail;
-
-	template<typename... ConArgs>
-	Tuple(ConArgs &... P) :
-		Head{P...},
-		Tail{P...}
+	template<typename ... ConArgsT>
+	TupleT(ConArgsT & ... ConArgs) :
+		Head{ConArgs ...},
+		Tail{ConArgs ...}
 	{}
 
-	template<typename F>
-	void iterate(F Function)
+	template<typename FunctionT>
+	void iterate(FunctionT Function)
 	{
 		Function(Head);
 		Tail.iterate(Function);
 	}
 
-	template<typename F>
-	void iterateUntil(F Function)
+	template<typename FunctionT>
+	void iterateUntil(FunctionT Function)
+	{
+		if (Function(Head)) Tail.iterateUntil(Function);
+	}
+
+	template<typename FunctionT>
+	void iterate(FunctionT Function) const
+	{
+		Function(Head);
+		Tail.iterate(Function);
+	}
+
+	template<typename FunctionT>
+	void iterateUntil(FunctionT Function) const
 	{
 		if (Function(Head)) Tail.iterateUntil(Function);
 	}
 };
 
-template<typename First, typename Second>
-struct Tuple<First, Second>
+/// \brief A pair container that can be iterated over with a functor.
+template<typename FirstT, typename SecondT>
+struct TupleT<FirstT, SecondT>
 {
-	typedef First HeadType;
-	typedef Second TailType;
+	FirstT Head;
+	SecondT Tail;
 
-	HeadType Head;
-	TailType Tail;
-
-	template<typename... ConArgs>
-	Tuple(ConArgs &... P) :
-		Head{P...},
-		Tail{P...}
+	template<typename ... ConArgsT>
+	TupleT(ConArgsT & ... ConArgs) :
+		Head{ConArgs ...},
+		Tail{ConArgs ...}
 	{}
 
 	template<typename F>
@@ -64,41 +73,54 @@ struct Tuple<First, Second>
 	{
 		if (Function(Head)) Function(Tail);
 	}
+
+	template<typename F>
+	void iterate(F Function) const
+	{
+		Function(Head);
+		Function(Tail);
+	}
+
+	template<typename F>
+	void iterateUntil(F Function) const
+	{
+		if (Function(Head)) Function(Tail);
+	}
 };
 
-template<std::size_t I, typename T, typename ...Args>
-struct TupleElement;
+template<std::size_t, typename, typename ...>
+struct TupleElementT;
 
-template<typename T, typename ...Args>
-struct TupleElement<0, T, Args...>
+template<typename T, typename ... ArgsT>
+struct TupleElementT<0, T, ArgsT ...>
 {
-	typedef T Type;
+	typedef T ElementT;
 
-	Type & get(Ui::Tuple<T, Args...> & Tuple)
+	ElementT & get(TupleT<T, ArgsT ...> & Tuple)
 	{
 		return Tuple.Head;
 	}
 };
 
 template<typename T>
-struct TupleElement<0, T>
+struct TupleElementT<0, T>
 {
-	typedef T Type;
+	typedef T ElementT;
 
-	Type & get(T & Value)
+	ElementT & get(T & Value)
 	{
 		return Value;
 	}
 };
 
-template<std::size_t I, typename T, typename ...Args>
-struct TupleElement
+template<std::size_t I, typename T, typename ... ArgsT>
+struct TupleElementT
 {
-	typedef typename Ui::TupleElement<I - 1, Args...>::Type Type;
+	typedef typename TupleElementT<I - 1, ArgsT ...>::ElementT ElementT;
 
-	Type & get(Ui::Tuple<T, Args...> & Tuple)
+	ElementT & get(TupleT<T, ArgsT ...> & Tuple)
 	{
-		return Ui::TupleElement<I - 1, Args...>().get(Tuple.Tail);
+		return TupleElementT<I - 1, ArgsT ...>().get(Tuple.Tail);
 	}
 };
 

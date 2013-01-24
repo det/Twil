@@ -12,7 +12,7 @@
 namespace Twil {
 namespace Platform {
 
-enum class Key
+enum class KeyT
 {
 	BackSpace = XK_BackSpace,
 	Tab = XK_Tab,
@@ -201,7 +201,7 @@ enum class Key
 	AsciiTilde = XK_asciitilde
 };
 
-enum class Mod
+enum class ModT
 {
 	Button1 = Button1Mask,
 	Button2 = Button2Mask,

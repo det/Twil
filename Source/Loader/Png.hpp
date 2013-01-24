@@ -7,13 +7,13 @@
 namespace Twil {
 namespace Loader {
 
-class Png
+class PngT
 {
 	private:
 	GLuint mId;
 
 	public:
-	void Load(std::string const &);
+	void Load(char const *);
 
 	void Bind() const;
 };

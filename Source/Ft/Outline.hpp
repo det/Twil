@@ -8,47 +8,78 @@
 namespace Twil {
 namespace Ft {
 
-class Bitmap;
-class Library;
+class BitmapT;
+class LibraryT;
 class Path;
-class Stroker;
+class StrokerT;
 
-class Outline
+/// \brief A FreeType outline.
+///
+/// Represents a set of closed paths comprised of lines and bezier curves. Can be rendered into a
+/// Twil::Ft::Bitmap.
+class OutlineT
 {
-	friend class Bitmap;
-	friend class Stroker;
+	friend class BitmapT;
+	friend class StrokerT;
 
 	private:
-	Ft::Library const & mLibrary;
+	LibraryT const & mLibrary;
 	FT_Outline mId;
 	FT_Vector mA;
 	short mPointCapacity;
 	short mContourCapacity;
 
+	// Non copyable
+	OutlineT(OutlineT &) = delete;
+	OutlineT & operator=(OutlineT &) = delete;
+
 	public:
-	Outline(Ft::Library const &);
-	~Outline();
+	OutlineT(LibraryT const &);
+	~OutlineT();
 
-	// Movable only
-	Outline(Ft::Outline &) = delete;
-	//Outline(Ft::Outline &&) = default;
-	Outline & operator=(Ft::Outline &) = delete;
-	//Outline & operator=(Ft::Outline &&) = default;
+	/// \brief Reserve enough space to hold an amount of points
+	void reservePoints(short Size);
 
-	void reservePoints(short);
-	void reserveContours(short);
+	/// \brief Reserve enough space to hold an amount of contours
+	void reserveContours(short Size);
+
+	/// \brief Clear all points and contours
 	void clear();
+
+	/// \brief Reverse all points and contours.
 	void reverse();
-	void translate(FT_Pos, FT_Pos);
-	void transform(FT_Matrix const &);
-	void beginPath(FT_Vector);
-	void endPath();
-	void addLine(FT_Vector);
-	void addQuadratic(FT_Vector, FT_Vector);
-	void addCubic(FT_Vector, FT_Vector, FT_Vector);
-	void add(Ft::Stroker const &, FT_StrokerBorder);
-	void add(Ft::Stroker const &);
-	void stroke(Ft::Stroker &);
+
+	/// \brief Add values to each point.
+	void translate(FT_Pos X, FT_Pos Y);
+
+	/// \brief Multiply each point by a matrix.
+	void transform(FT_Matrix const & Matrix);
+
+	/// \brief Begin a new contour.
+	///
+	/// Behaviour is undefined if not terminated with endPath.
+	/// \param A The starting point.
+	void beginContour(FT_Vector A);
+
+	/// \brief End a contour
+	void endContour();
+
+	/// \brief Move the contour in a line.
+	void moveLine(FT_Vector B);
+
+	/// \brief Move the contour in a quadratic bezier curve.
+	void moveQuadratic(FT_Vector B, FT_Vector C);
+
+	/// \brief Move the contour in a cubic bezier curve.
+	void moveCubic(FT_Vector B, FT_Vector C, FT_Vector D);
+
+	/// \brief Append one side of a stroke.
+	///
+	/// \param Border Selects which side of the stroke to append.
+	void append(StrokerT const & Stroker, FT_StrokerBorder Border);
+
+	/// \brief Append both sides of a stroke.
+	void append(StrokerT const & Stroker);
 };
 
 }

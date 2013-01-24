@@ -1,4 +1,4 @@
-#include "Gl/Context.hpp"
+#include "Context.hpp"
 
 #include "Platform/SymbolLoader.hpp"
 
@@ -6,7 +6,7 @@
 
 namespace {
 
-Twil::Gl::Context gContext;
+Twil::Gl::ContextT gContext;
 
 void checkError()
 {
@@ -3256,9 +3256,9 @@ void glTextureStorage3DEXT(GLuint texture, GLenum target, GLsizei levels, GLenum
 namespace Twil {
 namespace Gl {
 
-void Context::initialize()
+void ContextT::initialize()
 {
-	Platform::SymbolLoader Loader;
+	Platform::SymbolLoaderT Loader;
 	Loader.loadSymbolGL(gContext.CullFace, "glCullFace");
 	Loader.loadSymbolGL(gContext.FrontFace, "glFrontFace");
 	Loader.loadSymbolGL(gContext.Hint, "glHint");

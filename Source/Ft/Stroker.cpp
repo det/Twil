@@ -1,62 +1,65 @@
-#include "Ft/Stroker.hpp"
+#include "Stroker.hpp"
 
-#include "Ft/Face.hpp"
-#include "Ft/Library.hpp"
-#include "Ft/Outline.hpp"
+#include "Face.hpp"
+#include "Library.hpp"
+#include "Outline.hpp"
 
 namespace Twil {
 namespace Ft {
 
-Stroker::Stroker(Ft::Library & Library)
+StrokerT::StrokerT(LibraryT & Library)
 {
 	FT_Stroker_New(Library.mId, &mId);
 }
 
-Stroker::~Stroker()
+StrokerT::~StrokerT()
 {
 	FT_Stroker_Done(mId);
 }
 
-void Stroker::clear()
+void StrokerT::clear()
 {
 	FT_Stroker_Rewind(mId);
 }
 
-void Stroker::setOptions(FT_Fixed Radius, FT_Stroker_LineCap LineCap, FT_Stroker_LineJoin LineJoin, FT_Fixed MiterLimit)
+void StrokerT::setOptions(
+	FT_Fixed Radius, FT_Stroker_LineCap LineCap,
+	FT_Stroker_LineJoin LineJoin, FT_Fixed MiterLimit
+)
 {
 	FT_Stroker_Set(mId, Radius, LineCap, LineJoin, MiterLimit);
 }
 
-void Stroker::set(Ft::Outline & Outline)
+void StrokerT::set(OutlineT & Outline)
 {
 	FT_Stroker_ParseOutline(mId, &Outline.mId, false);
 }
 
-void Stroker::set(Ft::Face & Face)
+void StrokerT::set(FaceT & Face)
 {
 	FT_Stroker_ParseOutline(mId, &Face.mId->glyph->outline, false);
 }
-void Stroker::beginPath(FT_Vector A, FT_Bool IsOpen)
+void StrokerT::beginContour(FT_Vector A, FT_Bool IsOpen)
 {
 	FT_Stroker_BeginSubPath(mId, &A, IsOpen);
 }
 
-void Stroker::endPath()
+void StrokerT::endContour()
 {
 	FT_Stroker_EndSubPath(mId);
 }
 
-void Stroker::addLine(FT_Vector B)
+void StrokerT::moveLine(FT_Vector B)
 {
 	FT_Stroker_LineTo(mId, &B);
 }
 
-void Stroker::addQuadratic(FT_Vector B, FT_Vector C)
+void StrokerT::moveQuadratic(FT_Vector B, FT_Vector C)
 {
 	FT_Stroker_ConicTo(mId, &B, &C);
 }
 
-void Stroker::addCubic(FT_Vector B, FT_Vector C, FT_Vector D)
+void StrokerT::moveCubic(FT_Vector B, FT_Vector C, FT_Vector D)
 {
 	FT_Stroker_CubicTo(mId, &B, &C, &D);
 }

@@ -1,17 +1,16 @@
-#include "Ft/Size.hpp"
+#include "Size.hpp"
 
-#include "Ft/Face.hpp"
+#include "Face.hpp"
 
 #include FT_BBOX_H
 #include FT_SIZES_H
 #include <cmath>
-#include <iostream>
 #include <stdexcept>
 
 namespace Twil {
 namespace Ft {
 
-Size::Size(Ft::Face & Face, FT_F26Dot6 Points) :
+SizeT::SizeT(FaceT & Face, FT_F26Dot6 Points) :
 	mId{nullptr}
 {
 	auto Error = FT_New_Size(Face.mId, &mId);
@@ -21,22 +20,22 @@ Size::Size(Ft::Face & Face, FT_F26Dot6 Points) :
 	FT_Set_Char_Size(Face.mId, Points, Points, 96, 96);
 }
 
-Size::~Size()
+SizeT::~SizeT()
 {
 	FT_Done_Size(mId);
 }
 
-FT_Short Size::getHeight()
+FT_Short SizeT::getHeight() const
 {
 	return mId->metrics.height;
 }
 
-FT_Short Size::getDescender()
+FT_Short SizeT::getDescender() const
 {
 	return mId->metrics.descender;
 }
 
-FT_Short Size::getAscender()
+FT_Short SizeT::getAscender() const
 {
 	return mId->metrics.ascender;
 }

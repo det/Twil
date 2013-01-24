@@ -1,18 +1,16 @@
-#include "Gl/TextureArray.hpp"
+#include "TextureArray.hpp"
 
-#include "Gl/Context.hpp"
-
-#include <iostream>
+#include "Context.hpp"
 
 namespace Twil {
 namespace Gl {
 
-TextureArray::operator GLuint()
+TextureArrayT::operator GLuint()
 {
 	return mTexture;
 }
 
-void TextureArray::upload()
+void TextureArrayT::upload()
 {
 	if (mBytes.size() == mSize) return;
 

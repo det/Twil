@@ -1,4 +1,4 @@
-#include "Loader/Png.hpp"
+#include "Png.hpp"
 
 #include "Gl/Context.hpp"
 
@@ -10,7 +10,7 @@
 namespace Twil {
 namespace Loader {
 
-void Png::Load(std::string const & path)
+void PngT::Load(char const * Path)
 {
 	std::FILE * File;
 	png_byte Magic[8];
@@ -30,7 +30,7 @@ void Png::Load(std::string const & path)
 	GLint Alignment;
 
 	// libpng makes it much easier to use C FILE * than std::ifstream
-	File = std::fopen(path.c_str(), "rb");
+	File = std::fopen(Path, "rb");
 	if (File == nullptr) throw std::runtime_error{"Unable to open PNG file"};
 
 	if (std::fread(Magic, 1, sizeof(Magic), File) != sizeof(Magic)) {
@@ -130,7 +130,7 @@ void Png::Load(std::string const & path)
 	// Setup a pointer array.  Each one points at the begening of a row
 	RowPointers = new png_bytep[Height];
 
-	for (I = 0; I < H; ++I) RowPointers[I] = (png_bytep)(Texels + ((H - (I + 1)) * W * BytesPerPixel));
+	for (I = 0; I < H; ++I) RowPointers[I] = Texels + ((H - (I + 1)) * W * BytesPerPixel);
 
 	// Read pixel data using row pointers
 	png_read_image(PngPointer, RowPointers);
@@ -165,7 +165,7 @@ void Png::Load(std::string const & path)
 	delete Texels;
 }
 
-void Png::Bind() const
+void PngT::Bind() const
 {
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, mId);

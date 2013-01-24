@@ -1,323 +1,474 @@
 #pragma once
 
-#include "Ui/Tuple.hpp"
-#include "Ui/Widget.hpp"
-#include "Ui/WidgetContainer.hpp"
+#include "Container.hpp"
+#include "Tuple.hpp"
+#include "Widget.hpp"
 
 #include <algorithm>
-#include <array>
-#include <iostream>
 
 namespace Twil {
 
 namespace Theme {
-class Manager;
+class ManagerT;
 }
 
 namespace Ui {
 
-class WindowBase;
+class WindowBaseT;
 
-template<bool IsHorizontal, typename... Args>
-class PartitionBox :
-	public Ui::Widget<true, true>,
-	public Ui::WidgetContainer<true, true>
+/// \brief Functionality shared by both horizontal and vertical partition boxes.
+template<typename ... ArgsT>
+class PartitionBoxBaseT :
+	public ContainerT,
+	public WidgetT
 {
-	private:
-	Ui::WidgetContainer<true, true> & mParent;
-	Ui::Tuple<Args...> mChildren;
-	signed short mX = 0;
-	signed short mY = 0;
-	unsigned short mWidth = 0;
-	unsigned short mHeight = 0;
+	protected:
+	ContainerT & mParent;
+	TupleT<ArgsT ...> mChildren;
+	signed short mLeft = 0;
+	signed short mBottom = 0;
+	signed short mRight = 0;
+	signed short mTop = 0;
 
-	static std::size_t const mSize = sizeof...(Args);
+	static signed short const mSize = static_cast<signed short>(sizeof ... (ArgsT));
+
+	bool checkThisContains(signed short X, signed short Y)
+	{
+		return X >= mLeft && X <= mRight && Y >= mBottom && Y <= mTop;
+	}
 
 	public:
-	// PartitionBox
-	PartitionBox(Ui::WidgetContainer<true, true> & Parent, Theme::Manager & Theme, Ui::WindowBase & Base) :
+	// PartitionBoxBase
+	PartitionBoxBaseT(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Theme) :
 		mParent(Parent), // Gcc bug prevents brace initialization syntax here
-		mChildren{*this, Theme, Base}
+		mChildren{*this, Window, Theme}
 	{}
 
+	/// \returns A reference to a child widget.
+	///
+	/// \param I Index of the child
 	template<std::size_t I>
-	typename Ui::TupleElement<I, Args...>::Type & getChild()
+	typename TupleElementT<I, ArgsT ...>::ElementT & getChild()
 	{
-		return Ui::TupleElement<I, Args...>().get(mChildren);
+		return TupleElementT<I, ArgsT ...>().get(mChildren);
 	}
 
-	// Drawable
-	struct SetXFunctor
+	/// \returns A const reference to a child widget.
+	///
+	/// \param I Index of the child
+	template<std::size_t I>
+	typename TupleElementT<I, ArgsT ...>::ElementT const & getChild() const
 	{
-		signed short DeltaX;
-
-		template<typename T>
-		void operator()(T & Child)
-		{
-			auto ChildX = Child.getX();
-			Child.setX(ChildX + DeltaX);
-		}
-	};
-
-	virtual void setX(signed short X) override
-	{
-		signed short DeltaX = X - mX;
-		mX = X;
-		mChildren.iterate(SetXFunctor{DeltaX});
+		return TupleElementT<I, ArgsT ...>().get(mChildren);
 	}
 
-	struct SetYFunctor
-	{
-		signed short DeltaY;
-
-		template<typename T>
-		void operator()(T & Child)
-		{
-			auto ChildY = Child.getY();
-			Child.setY(ChildY + DeltaY);
-		}
-	};
-
-	virtual void setY(signed short Y) override
-	{
-		signed short DeltaY = Y - mY;
-		mY = Y;
-		mChildren.iterate(SetYFunctor{DeltaY});
-	}
-
-	struct PartitionWidthFunctor
+	// Widget
+	struct MoveXFunctorT
 	{
 		signed short X;
-		unsigned short BoxWidth;
-		unsigned short Mod;
 
 		template<typename T>
 		void operator()(T & Child)
 		{
-			unsigned short Width = BoxWidth;
-			if (Mod > 0) {
-				++Width;
-				--Mod;
-			}
-			Child.setWidth(Width);
-			Child.setX(X);
-			X += Width;
+			Child.moveX(X);
 		}
 	};
 
-	struct PartitionHeightFunctor
+	void moveX(signed short X) final
+	{
+		mLeft += X;
+		mRight += X;
+		mChildren.iterate(MoveXFunctorT{X});
+	}
+
+	struct MoveYFunctorT
 	{
 		signed short Y;
-		unsigned short BoxHeight;
-		unsigned short Mod;
 
 		template<typename T>
 		void operator()(T & Child)
 		{
-			unsigned short Height = BoxHeight;
-			if (Mod > 0) {
-				++Height;
-				--Mod;
-			}
-			Child.setHeight(Height);
-			Child.setY(Y);
-			Y += Height;
+			Child.moveY(Y);
 		}
 	};
 
-	struct SetWidthFunctor
+	void moveY(signed short Y) final
 	{
-		unsigned short Width;
+		mBottom += Y;
+		mTop += Y;
+		mChildren.iterate(MoveYFunctorT{Y});
+	}
+
+	struct SetClipLeftFunctorT
+	{
+		signed short X;
 
 		template<typename T>
 		void operator()(T & Child)
 		{
-			Child.setWidth(Width);
+			Child.setClipLeft(X);
 		}
 	};
 
-	struct SetHeightFunctor
+	void setClipLeft(signed short X) final
 	{
-		unsigned short Height;
+		mChildren.iterate(SetClipLeftFunctorT{X});
+	}
+
+	struct SetClipBottomFunctorT
+	{
+		signed short Y;
 
 		template<typename T>
 		void operator()(T & Child)
 		{
-			Child.setHeight(Height);
+			Child.setClipBottom(Y);
 		}
 	};
 
-	virtual void setWidth(unsigned short Width) override
+	void setClipBottom(signed short Y) final
 	{
-		mWidth = Width;
-		if (IsHorizontal) {
-			unsigned short BoxWidth = mWidth / mSize;
-			unsigned short Mod = mWidth % mSize;
-			mChildren.iterate(PartitionWidthFunctor{mX, BoxWidth, Mod});
-		}
-		else {
-			mChildren.iterate(SetWidthFunctor{mWidth});
-		}
+		mChildren.iterate(SetClipBottomFunctorT{Y});
 	}
 
-	virtual void setHeight(unsigned short Height) override
+	struct SetClipRightFunctorT
 	{
-		mHeight = Height;
-		if (IsHorizontal) {
-			mChildren.iterate(SetHeightFunctor{mHeight});
-		}
-		else {
-			unsigned short BoxHeight = mHeight / mSize;
-			unsigned short Mod = mHeight % mSize;
-			mChildren.iterate(PartitionHeightFunctor{mY, BoxHeight, Mod});
-		}
-	}
-
-	virtual void setClipX(signed short, signed short) override
-	{}
-
-	virtual void setClipY(signed short, signed short) override
-	{}
-
-	struct MaxWidthFunctor
-	{
-		unsigned short & MaxWidth;
+		signed short X;
 
 		template<typename T>
 		void operator()(T & Child)
 		{
-			auto Width = Child.getFitWidth();
-			MaxWidth = std::max(MaxWidth, Width);
+			Child.setClipRight(X);
 		}
 	};
 
-	struct MaxHeightFunctor
+	void setClipRight(signed short X) final
 	{
-		unsigned short & MaxHeight;
+		mChildren.iterate(SetClipRightFunctorT{X});
+	}
+
+	struct SetClipTopFunctorT
+	{
+		signed short Y;
 
 		template<typename T>
 		void operator()(T & Child)
 		{
-			auto Height = Child.getFitHeight();
-			MaxHeight = std::max(MaxHeight, Height);
+			Child.setClipTop(Y);
 		}
 	};
 
-	virtual unsigned short getFitWidth() override
+	void setClipTop(signed short Y) final
 	{
-		if (IsHorizontal) {
-			unsigned short MaxWidth = 0;
-			mChildren.iterate(MaxWidthFunctor{MaxWidth});
-			return MaxWidth * mSize;
-		}
-		else {
-			unsigned short MaxWidth = 0;
-			mChildren.iterate(MaxWidthFunctor{MaxWidth});
-			return MaxWidth;
-		}
+		mChildren.iterate(SetClipTopFunctorT{Y});
 	}
 
-	virtual unsigned short getFitHeight() override
-	{
-		if (IsHorizontal) {
-			unsigned short MaxHeight = 0;
-			mChildren.iterate(MaxHeightFunctor{MaxHeight});
-			return MaxHeight;
-		}
-		else {
-			unsigned short MaxHeight = 0;
-			mChildren.iterate(MaxHeightFunctor{MaxHeight});
-			return MaxHeight * mSize;
-		}
-	}
-
-	unsigned short getX() override
-	{
-		return mX;
-	}
-
-	unsigned short getY() override
-	{
-		return mY;
-	}
-
-	unsigned short getWidth() override
-	{
-		return mWidth;
-	}
-
-	unsigned short getHeight() override
-	{
-		return mHeight;
-	}
-
-	struct DrawFunctor
+	struct DrawFunctorT
 	{
 		template<typename T>
-		void operator()(T & Child)
+		void operator()(T const & Child)
 		{
 			Child.draw();
 		}
 	};
 
-	virtual void draw() override
+	void draw() const final
 	{
-		mChildren.iterate(DrawFunctor{});
+		mChildren.iterate(DrawFunctorT{});
 	}
+
+	signed short getLeft() const final
+	{
+		return mLeft;
+	}
+
+	signed short getBottom() const final
+	{
+		return mBottom;
+	}
+
+	signed short getRight() const final
+	{
+		return mRight;
+	}
+
+	signed short getTop() const final
+	{
+		return mTop;
+	}
+
+	struct MaxWidthFunctorT
+	{
+		signed short & MaxWidth;
+
+		template<typename T>
+		void operator()(T const & Child)
+		{
+			MaxWidth = std::max(MaxWidth, Child.getBaseWidth());
+		}
+	};
+
+	struct MaxHeightFunctorT
+	{
+		signed short & MaxHeight;
+
+		template<typename T>
+		void operator()(T const & Child)
+		{
+			MaxHeight = std::max(MaxHeight, Child.getBaseHeight());
+		}
+	};
+
+	// Container
+	void handleChildBaseWidthChanged(void *) final
+	{
+		mParent.handleChildBaseWidthChanged(this);
+	}
+
+	void handleChildBaseHeightChanged(void *) final
+	{
+		mParent.handleChildBaseHeightChanged(this);
+	}
+};
+
+template<bool IsHorizontal, typename ... ArgsT>
+class PartitionBoxT;
+
+/// \brief A horizontal partition box.
+///
+/// All children Share the parent's height. The width is split evenly among the children.
+///
+/// \param ArgsT A template argument pack of children widget types.
+
+template<typename ... ArgsT>
+class PartitionBoxT<true, ArgsT ...> :
+	public PartitionBoxBaseT<ArgsT ...>
+{
+	private:
+	using PartitionBoxBaseT<ArgsT ...>::mParent;
+	using PartitionBoxBaseT<ArgsT ...>::mChildren;
+	using PartitionBoxBaseT<ArgsT ...>::mLeft;
+	using PartitionBoxBaseT<ArgsT ...>::mBottom;
+	using PartitionBoxBaseT<ArgsT ...>::mRight;
+	using PartitionBoxBaseT<ArgsT ...>::mTop;
+	using PartitionBoxBaseT<ArgsT ...>::mSize;
+	using PartitionBoxBaseT<ArgsT ...>::checkThisContains;
+	using typename PartitionBoxBaseT<ArgsT ...>::MaxWidthFunctorT;
+	using typename PartitionBoxBaseT<ArgsT ...>::MaxHeightFunctorT;
+
+	public:
+	// PartitionBox
+	PartitionBoxT(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Theme) :
+		PartitionBoxBaseT<ArgsT ...>{Parent, Window, Theme}
+	{}
 
 	// Widget
-	struct AquireMouseHorizontalFunctor
+	struct ResizeWidthFunctorT
 	{
-		signed short X;
-		signed short Y;
+		signed short Left;
+		signed short BoxWidth;
+		signed short Mod;
 
 		template<typename T>
-		bool operator()(T & Child)
+		void operator()(T & Child)
 		{
-			signed short Max = Child.getX() + Child.getWidth();
-			if (X < Max) {
-				Child.aquireMouse(X, Y);
-				return false;
+			signed short Width = BoxWidth;
+			if (Mod > 0) {
+				++Width;
+				--Mod;
 			}
-			return true;
+			Child.moveX(Left - Child.getLeft());
+			Child.resizeWidth(Left + Width - Child.getRight());
+			Left += Width;
 		}
 	};
 
-	struct AquireMouseVerticalFunctor
+	void resizeWidth(signed short X) final
 	{
-		signed short X;
-		signed short Y;
-
-		template<typename T>
-		bool operator()(T & Child)
-		{
-			signed short Max = Child.getY() + Child.getHeight();
-			if (Y < Max) {
-				Child.aquireMouse(X, Y);
-				return false;
-			}
-			return true;
-		}
-	};
-
-	virtual void aquireMouse(signed short X, signed short Y) override
-	{
-		if (IsHorizontal) mChildren.iterateUntil(AquireMouseHorizontalFunctor{X, Y});
-		else mChildren.iterateUntil(AquireMouseVerticalFunctor{X, Y});
+		mRight += X;
+		signed short Width = mRight - mLeft;
+		signed short BoxWidth = Width / mSize;
+		signed short Mod = Width % mSize;
+		mChildren.iterate(ResizeWidthFunctorT{mLeft, BoxWidth, Mod});
 	}
 
-	// WidgetContainer
-	virtual void releaseMouse(signed short X, signed short Y) override
+	struct ResizeHeightFunctorT
 	{
-		auto MinX = mX;
-		auto MaxX = mX + mWidth;
-		auto MinY = mY;
-		auto MaxY = mY + mHeight;
+		signed short Top;
 
-		if (X >= MinX && X <= MaxX && Y >= MinY && Y <= MaxY) aquireMouse(X, Y);
+		template<typename T>
+		void operator()(T & Child)
+		{
+			Child.resizeHeight(Top);
+		}
+	};
+
+	void resizeHeight(signed short Y) final
+	{
+		mTop += Y;
+		mChildren.iterate(ResizeHeightFunctorT{Y});
+	}
+
+	signed short getBaseWidth() const final
+	{
+		signed short MaxWidth = 0;
+		mChildren.iterate(MaxWidthFunctorT{MaxWidth});
+		return MaxWidth * mSize;
+	}
+
+	signed short getBaseHeight() const final
+	{
+		signed short MaxHeight = 0;
+		mChildren.iterate(MaxHeightFunctorT{MaxHeight});
+		return MaxHeight;
+	}
+
+	struct DelegateMouseFunctorT
+	{
+		signed short X;
+		signed short Y;
+
+		template<typename T>
+		bool operator()(T & Child)
+		{
+			if (X < Child.getRight()) {
+				Child.delegateMouse(X, Y);
+				return false;
+			}
+			return true;
+		}
+	};
+
+	void delegateMouse(signed short X, signed short Y) final
+	{
+		mChildren.iterateUntil(DelegateMouseFunctorT{X, Y});
+	}
+
+	// Container
+	void releaseMouse(signed short X, signed short Y) final
+	{
+		if (checkThisContains(X, Y)) delegateMouse(X, Y);
 		else mParent.releaseMouse(X, Y);
 	}
 
+};
+
+/// \brief A vertical partition box.
+///
+/// All children Share the parent's width. The height is split evenly among the children.
+///
+/// \param ArgsT A template argument pack of children widget types.
+
+template<typename ... ArgsT>
+class PartitionBoxT<false, ArgsT ...> :
+	public PartitionBoxBaseT<ArgsT ...>
+{
+	private:
+	using PartitionBoxBaseT<ArgsT ...>::mParent;
+	using PartitionBoxBaseT<ArgsT ...>::mChildren;
+	using PartitionBoxBaseT<ArgsT ...>::mLeft;
+	using PartitionBoxBaseT<ArgsT ...>::mBottom;
+	using PartitionBoxBaseT<ArgsT ...>::mRight;
+	using PartitionBoxBaseT<ArgsT ...>::mTop;
+	using PartitionBoxBaseT<ArgsT ...>::mSize;
+	using PartitionBoxBaseT<ArgsT ...>::checkThisContains;
+	using typename PartitionBoxBaseT<ArgsT ...>::MaxWidthFunctorT;
+	using typename PartitionBoxBaseT<ArgsT ...>::MaxHeightFunctorT;
+
+	public:
+	// PartitionBox
+	PartitionBoxT(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Theme) :
+		PartitionBoxBaseT<ArgsT ...>{Parent, Window, Theme}
+	{}
+
+	// Widget
+	struct ResizeWidthFunctorT
+	{
+		signed short Right;
+
+		template<typename T>
+		void operator()(T & Child)
+		{
+			Child.resizeWidth(Right);
+		}
+	};
+
+	void resizeWidth(signed short X) final
+	{
+		mRight += X;
+		mChildren.iterate(ResizeWidthFunctorT{X});
+	}
+
+	struct ResizeHeightFunctorT
+	{
+		signed short Bottom;
+		signed short BoxHeight;
+		signed short Mod;
+
+		template<typename T>
+		void operator()(T & Child)
+		{
+			signed short Height = BoxHeight;
+			if (Mod > 0) {
+				++Height;
+				--Mod;
+			}
+			Child.moveY(Bottom - Child.getBottom());
+			Child.resizeHeight(Bottom + Height - Child.getTop());
+			Bottom += Height;
+		}
+	};
+
+	void resizeHeight(signed short Y) final
+	{
+		mTop += Y;
+		signed short Height = mTop - mBottom;
+		signed short BoxHeight = Height / mSize;
+		signed short Mod = Height % mSize;
+		mChildren.iterate(ResizeHeightFunctorT{mBottom, BoxHeight, Mod});
+	}
+
+	signed short getBaseWidth() const final
+	{
+		signed short MaxWidth = 0;
+		mChildren.iterate(MaxWidthFunctorT{MaxWidth});
+		return MaxWidth;
+	}
+
+	signed short getBaseHeight() const final
+	{
+		signed short MaxHeight = 0;
+		mChildren.iterate(MaxHeightFunctorT{MaxHeight});
+		return MaxHeight * mSize;
+	}
+
+	struct DelegateMouseFunctorT
+	{
+		signed short X;
+		signed short Y;
+
+		template<typename T>
+		bool operator()(T & Child)
+		{
+			if (Y < Child.getTop()) {
+				Child.delegateMouse(X, Y);
+				return false;
+			}
+			return true;
+		}
+	};
+
+	void delegateMouse(signed short X, signed short Y) final
+	{
+		mChildren.iterateUntil(DelegateMouseFunctorT{X, Y});
+	}
+
+	// Container
+	void releaseMouse(signed short X, signed short Y) final
+	{
+		if (checkThisContains(X, Y)) delegateMouse(X, Y);
+		else mParent.releaseMouse(X, Y);
+	}
 };
 
 }

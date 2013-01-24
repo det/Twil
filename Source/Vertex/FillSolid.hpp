@@ -7,19 +7,18 @@
 
 #include <GL3/gl3.h>
 
-#undef FillSolid
-
 namespace Twil {
 namespace Vertex {
 
-struct FillSolid
+struct FillSolidT
 {
-	Attribute::Color4b Color;
-	Attribute::Offset1i Offset;
-	Attribute::Position2h Position;
-	Attribute::Size2h Size;
-	Attribute::Size2h ClipMin;
-	Attribute::Size2h ClipMax;
+	Attribute::Color4bT Color;
+	Attribute::Position2hT ClipMin;
+	Attribute::Position2hT ClipMax;
+	Attribute::Position2hT PositionMin;
+	Attribute::Position2hT PositionMax;
+	Attribute::Size2hT TextureSize;
+	Attribute::Offset1iT Offset;
 
 	static void setup();
 };

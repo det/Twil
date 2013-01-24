@@ -1,13 +1,11 @@
 #pragma once
 
-#include "Math/Vector2.hpp"
-
 #include <GL3/gl3.h>
 
 namespace Twil {
 namespace Attribute {
 
-struct Position2f
+struct Position2fT
 {
 	GLfloat X;
 	GLfloat Y;

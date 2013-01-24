@@ -3,54 +3,46 @@
 layout(points) in;
 layout(triangle_strip, max_vertices=4) out;
 
-in GeometryData {
+in GeometryData
+{
 	flat vec4 Color;
-	flat vec4 Position;
-	flat vec2 PositionSize;
-	flat ivec2 TextureSize;
+	flat vec2 PositionMin;
+	flat vec2 PositionMax;
+	flat vec2 TextureMin;
+	flat vec2 TextureMax;
 	flat int Pitch;
 	flat int Offset;
 } Geometry[];
 
-out FragmentData {
+out FragmentData
+{
 	flat vec4 Color;
-	flat int Offset;
 	flat int Pitch;
+	flat int Offset;
 	smooth vec2 Texcoord;
 } Fragment;
 
 void main()
 {
-	float PosX = Geometry[0].Position.x;
-	float PosY = Geometry[0].Position.y;
-	float PosZ = Geometry[0].Position.z;
-	float PosW = Geometry[0].Position.w;
-	float PosWidth = Geometry[0].PositionSize.x;
-	float PosHeight = Geometry[0].PositionSize.y;
-	float TexX = 0.0;
-	float TexY = 0.0;
-	float TexWidth = Geometry[0].TextureSize.x;
-	float TexHeight = Geometry[0].TextureSize.y;
-
-	gl_Position = vec4(PosX, PosY, PosZ, PosW);
-	Fragment.Texcoord = vec2(TexX, TexY);
+	gl_Position = vec4(Geometry[0].PositionMin.x, Geometry[0].PositionMin.y, 0, 1);
+	Fragment.Texcoord = vec2(Geometry[0].TextureMin.x, Geometry[0].TextureMin.y);
 	EmitVertex();
 
-	gl_Position = vec4(PosX + PosWidth, PosY, PosZ, PosW);
-	Fragment.Texcoord = vec2(TexX + TexWidth, TexY);
+	gl_Position = vec4(Geometry[0].PositionMax.x, Geometry[0].PositionMin.y, 0, 1);
+	Fragment.Texcoord = vec2(Geometry[0].TextureMax.x, Geometry[0].TextureMin.y);
 	EmitVertex();
 
-	gl_Position = vec4(PosX, PosY + PosHeight, PosZ, PosW);
+	gl_Position = vec4(Geometry[0].PositionMin.x, Geometry[0].PositionMax.y, 0, 1);
 	Fragment.Color = Geometry[0].Color;
-	Fragment.Texcoord = vec2(TexX, TexY + TexHeight);
-	Fragment.Offset = Geometry[0].Offset;
 	Fragment.Pitch = Geometry[0].Pitch;
+	Fragment.Offset = Geometry[0].Offset;
+	Fragment.Texcoord = vec2(Geometry[0].TextureMin.x, Geometry[0].TextureMax.y);
 	EmitVertex();
 
-	gl_Position = vec4(PosX + PosWidth, PosY + PosHeight, PosZ, PosW);
+	gl_Position = vec4(Geometry[0].PositionMax.x, Geometry[0].PositionMax.y, 0, 1);
 	Fragment.Color = Geometry[0].Color;
-	Fragment.Texcoord = vec2(TexX + TexWidth, TexY + TexHeight);
-	Fragment.Offset = Geometry[0].Offset;
 	Fragment.Pitch = Geometry[0].Pitch;
+	Fragment.Offset = Geometry[0].Offset;
+	Fragment.Texcoord = vec2(Geometry[0].TextureMax.x, Geometry[0].TextureMax.y);
 	EmitVertex();
 }

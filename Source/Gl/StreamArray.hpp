@@ -1,27 +1,33 @@
 #pragma once
 
-#include "Gl/Context.hpp"
-#include "Gl/Buffer.hpp"
-#include "Gl/VertexArray.hpp"
+#include "Context.hpp"
+#include "Buffer.hpp"
+#include "VertexArray.hpp"
 
-#include <iostream>
 #include <vector>
 
 namespace Twil {
 namespace Gl {
 
+/// \brief Container for a dynamically growing OpenGL buffer for streaming data into.
+///
+/// \param T The vertex type.
 template<typename T>
-class StreamArray
+class StreamArrayT
 {
 	private:
-	Gl::Buffer mBuffer;
-	Gl::VertexArray mArray;
+	BufferT mBuffer;
+	VertexArrayT mArray;
 	std::vector<std::vector<T> const *> mPointers;
 	std::size_t mCapacity = 0;
 	std::size_t mSize = 0;
 
+	// Non copyable
+	StreamArrayT(StreamArrayT &) = delete;
+	StreamArrayT & operator=(StreamArrayT &) = delete;
+
 	public:
-	StreamArray()
+	StreamArrayT()
 	{
 		glBindVertexArray(mArray);
 		glBindBuffer(GL_ARRAY_BUFFER, mBuffer);
@@ -29,17 +35,22 @@ class StreamArray
 		glBindVertexArray(0);
 	}
 
+	/// \brief Implicit conversion operator so it can be used in gl* functions.
 	operator GLuint()
 	{
 		return mArray;
 	}
 
-	void add(std::vector<T> const & Vertices)
+	/// \brief Queue a vector of vertices for upload.
+	///
+	/// \param Vertices A vector of vertices to be copied whe upload() is called.
+	void queue(std::vector<T> const & Vertices)
 	{
 		mPointers.push_back(&Vertices);
 		mSize += Vertices.size();
 	}
 
+	/// \brief Grow the array if needed and stream all the queued vertices to OpenGL.
 	void upload()
 	{
 		// You cant map a buffer of size 0
@@ -55,7 +66,8 @@ class StreamArray
 		}
 
 		// Map the buffer and upload vertices
-		auto BufferPointer = glMapBufferRange(GL_ARRAY_BUFFER, 0, mSize * sizeof(T), GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT);
+		auto Flags = GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT;
+		auto BufferPointer = glMapBufferRange(GL_ARRAY_BUFFER, 0, mSize * sizeof(T), Flags);
 		auto VertexPointer = static_cast<T *>(BufferPointer);
 		for (auto & Pointer : mPointers) {
 			auto & Vector = *Pointer;
@@ -66,13 +78,15 @@ class StreamArray
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
+	/// \brief Clear the queue.
 	void clear()
 	{
 		mSize = 0;
 		mPointers.clear();
 	}
 
-	std::size_t getSize()
+	/// \returns The number of vertices in the queue.
+	std::size_t getSize() const
 	{
 		return mSize;
 	}

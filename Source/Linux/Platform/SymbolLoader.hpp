@@ -8,19 +8,26 @@
 namespace Twil {
 namespace Platform {
 
-class SymbolLoader
+/// \brief Loads OpenGL function pointers.
+class SymbolLoaderT
 {
 	public:
+	// These are the same on Linux
+
+	/// \brief Load an OpenGL 1.1 function pointer.
 	template<typename T>
-	void loadSymbol(T & Pointer, std::string const & Symbol)
+	void loadSymbolGL(T & Pointer, char const * Symbol) const
 	{
-		Pointer = reinterpret_cast<T>(glXGetProcAddressARB((GLubyte const *) Symbol.c_str()));
+		auto String = reinterpret_cast<GLubyte const *>(Symbol);
+		Pointer = reinterpret_cast<T>(glXGetProcAddressARB(String));
 	}
 
+	/// \brief Load an OpenGL 1.1+ function pointer.
 	template<typename T>
-	void loadSymbolGL(T & Pointer, std::string const & Symbol)
+	void loadSymbol(T & Pointer, char const * Symbol) const
 	{
-		Pointer = reinterpret_cast<T>(glXGetProcAddressARB((GLubyte const *) Symbol.c_str()));
+		auto String = reinterpret_cast<GLubyte const *>(Symbol);
+		Pointer = reinterpret_cast<T>(glXGetProcAddressARB(String));
 	}
 };
 

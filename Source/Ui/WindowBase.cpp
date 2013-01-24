@@ -1,72 +1,66 @@
-#include "Ui/WindowBase.hpp"
+#include "WindowBase.hpp"
 
-#include "Ui/KeyboardHandler.hpp"
-#include "Ui/MouseHandler.hpp"
+#include "KeyboardHandler.hpp"
+#include "MouseHandler.hpp"
 
 namespace Twil {
 namespace Ui {
 
-WindowBase::WindowBase(Ui::KeyboardHandler * KeyboardHandler, Ui::MouseHandler * MouseHandler) :
+WindowBaseT::WindowBaseT(KeyboardHandlerT * KeyboardHandler, MouseHandlerT * MouseHandler) :
 	mKeyboardHandler{KeyboardHandler},
 	mMouseHandler{MouseHandler},
-	mNeedsRedraw{false},
-	mNeedsResize{false}
+	mNeedsDraw{false}
 {}
 
-void WindowBase::setKeyboardHandler(Ui::KeyboardHandler & KeyboardHandler)
+void WindowBaseT::setKeyboardHandler(KeyboardHandlerT & KeyboardHandler)
 {
 	mKeyboardHandler = &KeyboardHandler;
 }
 
-void WindowBase::setMouseHandler(Ui::MouseHandler & MouseHandler)
+void WindowBaseT::setMouseHandler(MouseHandlerT & MouseHandler)
 {
 	mMouseHandler = &MouseHandler;
 }
 
-void WindowBase::sendMouseEnterWindow(unsigned short X, unsigned short Y)
+void WindowBaseT::sendMouseEnterWindow(signed short X, signed short Y)
 {
 	mMouseHandler->handleMouseEnterWindow(X, Y);
 }
 
-void WindowBase::sendMouseLeaveWindow(unsigned short X, unsigned short Y)
+void WindowBaseT::sendMouseLeaveWindow(signed short X, signed short Y)
 {
 	mMouseHandler->handleMouseLeaveWindow(X, Y);
 }
 
 
-void WindowBase::sendKeyPress(Platform::Key Key)
+void WindowBaseT::sendKeyPress(Platform::KeyT Key)
 {
 	mKeyboardHandler->handleKeyPress(Key);
 }
 
-void WindowBase::sendKeyRelease(Platform::Key Key)
+void WindowBaseT::sendKeyRelease(Platform::KeyT Key)
 {
 	mKeyboardHandler->handleKeyRelease(Key);
 }
 
-void WindowBase::sendMouseMotion(signed short X, signed short Y)
+void WindowBaseT::sendMouseMotion(signed short X, signed short Y)
 {
 	mMouseHandler->handleMouseMotion(X, Y);
 }
 
-void WindowBase::sendButtonPress(signed short X, signed short Y , unsigned char Button)
+void WindowBaseT::sendButtonPress(signed short X, signed short Y , unsigned char Button)
 {
 	mMouseHandler->handleButtonPress(X, Y, Button);
 }
 
-void WindowBase::sendButtonRelease(signed short X, signed short Y, unsigned char Button)
+void WindowBaseT::sendButtonRelease(signed short X, signed short Y, unsigned char Button)
 {
 	mMouseHandler->handleButtonRelease(X, Y, Button);
 }
 
-void WindowBase::markNeedsRedraw()
+void WindowBaseT::markNeedsDraw()
 {
-	mNeedsRedraw = true;
-}
-
-void WindowBase::markNeedsResize()
-{
-	mNeedsResize = true;
+	mNeedsDraw = true;
 }
 
 }
