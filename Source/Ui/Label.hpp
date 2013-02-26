@@ -3,11 +3,9 @@
 #include "Container.hpp"
 #include "MouseHandler.hpp"
 #include "WindowBase.hpp"
-#include "Widget.hpp"
 
 #include "Theme/Label.hpp"
 
-#include <iostream>
 #include <string>
 
 namespace Twil {
@@ -22,8 +20,7 @@ namespace Ui {
 /// \param LayoutT A layout class used for positioning and clipping.
 template<typename LayoutT>
 class LabelT :
-	public MouseHandlerT,
-	public WidgetT
+	public MouseHandlerT
 {
 	private:
 	ContainerT & mParent;
@@ -69,95 +66,89 @@ class LabelT :
 		mThemeLabel.setText(Text);
 		mWindow.markNeedsDraw();
 		layoutX();
-		layoutY();
 		mParent.handleChildBaseWidthChanged(this);
 	}
 
 	// Widget
-	void moveX(signed short X) final
+	void moveX(signed short X)
 	{
 		mLayout.moveX(X);
 		mThemeLabel.moveX(X);
 	}
 
-	void moveY(signed short Y) final
+	void moveY(signed short Y)
 	{
 		mLayout.moveY(Y);
 		mThemeLabel.moveY(Y);
 	}
 
-	void resizeWidth(signed short X) final
+	void resizeWidth(signed short X)
 	{
 		mLayout.resizeWidth(X);
 		layoutX();
 	}
 
-	void resizeHeight(signed short Y) final
+	void resizeHeight(signed short Y)
 	{
 		mLayout.resizeHeight(Y);
 		layoutY();
 	}
 
-	void setClipLeft(signed short X) final
+	void setClipLeft(signed short X)
 	{
 		mLayout.setClipLeft(X);
 		mThemeLabel.setClipLeft(mLayout.getLayoutClipLeft());
 	}
 
-	void setClipRight(signed short X) final
+	void setClipRight(signed short X)
 	{
 		mLayout.setClipRight(X);
 		mThemeLabel.setClipRight(mLayout.getLayoutClipRight());
 	}
 
-	void setClipBottom(signed short Y) final
+	void setClipBottom(signed short Y)
 	{
 		mLayout.setClipBottom(Y);
 		mThemeLabel.setClipBottom(mLayout.getLayoutClipBottom());
 	}
 
-	void setClipTop(signed short Y) final
+	void setClipTop(signed short Y)
 	{
 		mLayout.setClipTop(Y);
 		mThemeLabel.setClipTop(mLayout.getLayoutClipTop());
 	}
 
-	void draw() const final
-	{
-		mThemeLabel.draw();
-	}
-
-	signed short getLeft() const final
+	signed short getLeft() const
 	{
 		return mLayout.getLeft();
 	}
 
-	signed short getBottom() const final
+	signed short getBottom() const
 	{
 		return mLayout.getBottom();
 	}
 
-	signed short getRight() const final
+	signed short getRight() const
 	{
 		return mLayout.getRight();
 	}
 
-	signed short getTop() const final
+	signed short getTop() const
 	{
 		return mLayout.getTop();
 	}
 
-	signed short getBaseWidth() const final
+	signed short getBaseWidth() const
 	{
 		return mThemeLabel.getBaseWidth();
 	}
 
-	signed short getBaseHeight() const final
+	signed short getBaseHeight() const
 	{
 		return mThemeLabel.getBaseHeight();
 	}
 
-	void delegateMouse(signed short, signed short) final
+	void delegateMouse(signed short, signed short)
 	{
 		mWindow.setMouseHandler(*this);
 	}

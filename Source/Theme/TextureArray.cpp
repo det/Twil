@@ -1,9 +1,9 @@
 #include "TextureArray.hpp"
 
-#include "Context.hpp"
+#include "Gl/Context.hpp"
 
 namespace Twil {
-namespace Gl {
+namespace Theme {
 
 TextureArrayT::operator GLuint()
 {

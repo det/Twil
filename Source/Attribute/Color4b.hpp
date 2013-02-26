@@ -1,6 +1,6 @@
 #pragma once
 
-#include <GL3/gl3.h>
+#include "Gl/Context.hpp"
 
 namespace Twil {
 namespace Attribute {

@@ -1,12 +1,10 @@
 #include "Window.hpp"
 
 #include "Application.hpp"
+#include "Glx.hpp"
 
 #include <cstring>
 #include <stdexcept>
-#include <GL3/gl3.h> // Must be included before other GL headers
-#include <GL/glx.h>
-#include <GL/glxext.h>
 
 namespace Twil {
 namespace Platform {

@@ -5,9 +5,8 @@
 
 #include <cassert>
 #include <stdexcept>
-#include <GL3/gl3.h> // Must be included before other GL headers
-#include <GL/glx.h>
-#include <GL/glxext.h>
+
+#include "Glx.hpp"
 
 namespace Twil {
 namespace Platform {
@@ -84,7 +83,6 @@ class ApplicationT
 			} break;
 
 			case ConfigureNotify: {
-				if (Event.xconfigure.send_event != True) break; // FIXME: Is this correct?
 				Window.handleResize(Event.xconfigure.width, Event.xconfigure.height);
 			} break;
 

@@ -1,8 +1,9 @@
 #pragma once
 
+#include "Gl/Context.hpp"
+
 #include <png.h>
 #include <string>
-#include <GL3/gl3.h>
 
 namespace Twil {
 namespace Loader {

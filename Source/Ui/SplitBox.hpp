@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Container.hpp"
-#include "Widget.hpp"
 #include "WindowBase.hpp"
 
 #include "Theme/Manager.hpp"
@@ -12,8 +11,7 @@ namespace Ui {
 /// \brief Functionality shared by all split boxes.
 template<typename FirstT, typename SecondT>
 class SplitBoxBaseT :
-	public ContainerT,
-	public WidgetT
+	public ContainerT
 {
 	protected:
 	ContainerT & mParent;
@@ -28,7 +26,6 @@ class SplitBoxBaseT :
 	signed short mClipBottom = 0;
 	signed short mClipTop = 0;
 
-	/// \returns true if the position is within our bounds.
 	bool checkThisContains(signed short X, signed short Y)
 	{
 		return X >= mLeft && X <= mRight && Y >= mBottom && Y <= mTop;
@@ -67,7 +64,7 @@ class SplitBoxBaseT :
 	}
 
 	// Widget
-	void moveX(signed short X) final
+	void moveX(signed short X)
 	{
 		mLeft += X;
 		mRight += X;
@@ -77,7 +74,7 @@ class SplitBoxBaseT :
 		mSecond.moveX(X);
 	}
 
-	void moveY(signed short Y) final
+	void moveY(signed short Y)
 	{
 		mBottom += Y;
 		mTop += Y;
@@ -87,28 +84,22 @@ class SplitBoxBaseT :
 		mSecond.moveY(Y);
 	}
 
-	void draw() const final
-	{
-		mFirst.draw();
-		mSecond.draw();
-	}
-
-	signed short getLeft() const final
+	signed short getLeft() const
 	{
 		return mLeft;
 	}
 
-	signed short getBottom() const final
+	signed short getBottom() const
 	{
 		return mBottom;
 	}
 
-	signed short getRight() const final
+	signed short getRight() const
 	{
 		return mRight;
 	}
 
-	signed short getTop() const final
+	signed short getTop() const
 	{
 		return mTop;
 	}
@@ -140,7 +131,7 @@ class SplitBoxHorizontalT :
 	{}
 
 	// Widget
-	void resizeHeight(signed short Y) final
+	void resizeHeight(signed short Y)
 	{
 		mTop += Y;
 		mClipTop += Y;
@@ -148,29 +139,29 @@ class SplitBoxHorizontalT :
 		mSecond.resizeHeight(Y);
 	}
 
-	void setClipBottom(signed short Y) final
+	void setClipBottom(signed short Y)
 	{
 		mFirst.setClipBottom(Y);
 		mSecond.setClipBottom(Y);
 	}
 
-	void setClipTop(signed short Y) final
+	void setClipTop(signed short Y)
 	{
 		mFirst.setClipTop(Y);
 		mSecond.setClipTop(Y);
 	}
 
-	signed short getBaseWidth() const final
+	signed short getBaseWidth() const
 	{
 		return mFirst.getBaseWidth() + mSecond.getBaseWidth();
 	}
 
-	signed short getBaseHeight() const final
+	signed short getBaseHeight() const
 	{
 		return std::max(mFirst.getBaseHeight(), mSecond.getBaseHeight());
 	}
 
-	void delegateMouse(signed short X, signed short Y) final
+	void delegateMouse(signed short X, signed short Y)
 	{
 		if (X < mSecond.getLeft()) mFirst.delegateMouse(X, Y);
 		else mSecond.delegateMouse(X, Y);
@@ -213,7 +204,7 @@ class SplitBoxVerticalT :
 	{}
 
 	// Widget
-	void resizeWidth(signed short X) final
+	void resizeWidth(signed short X)
 	{
 		mRight += X;
 		mClipRight += X;
@@ -221,29 +212,29 @@ class SplitBoxVerticalT :
 		mSecond.resizeWidth(X);
 	}
 
-	void setClipLeft(signed short X) final
+	void setClipLeft(signed short X)
 	{
 		mFirst.setClipLeft(X);
 		mSecond.setClipLeft(X);
 	}
 
-	void setClipRight(signed short X) final
+	void setClipRight(signed short X)
 	{
 		mFirst.setClipRight(X);
 		mSecond.setClipRight(X);
 	}
 
-	signed short getBaseWidth() const final
+	signed short getBaseWidth() const
 	{
 		return std::max(mFirst.getBaseWidth(), mSecond.getBaseWidth());
 	}
 
-	signed short getBaseHeight() const final
+	signed short getBaseHeight() const
 	{
 		return mFirst.getBaseHeight() + mSecond.getBaseHeight();
 	}
 
-	void delegateMouse(signed short X, signed short Y) final
+	void delegateMouse(signed short X, signed short Y)
 	{
 		if (Y < mSecond.getBottom()) mFirst.delegateMouse(X, Y);
 		else mSecond.delegateMouse(X, Y);
@@ -303,7 +294,7 @@ class SplitBoxT<true, true, FirstT, SecondT> :
 	}
 
 	// Widget
-	void resizeWidth(signed short X) final
+	void resizeWidth(signed short X)
 	{
 		mRight += X;
 		mClipRight += X;
@@ -311,13 +302,13 @@ class SplitBoxT<true, true, FirstT, SecondT> :
 		mFirst.setClipRight(std::min(mRight, mClipRight));
 	}
 
-	void setClipLeft(signed short X) final
+	void setClipLeft(signed short X)
 	{
 		mFirst.setClipLeft(X);
 		mSecond.setClipLeft(X);
 	}
 
-	void setClipRight(signed short X) final
+	void setClipRight(signed short X)
 	{
 		mFirst.setClipRight(std::min(mRight, mClipRight));
 		mSecond.setClipRight(X);
@@ -371,7 +362,7 @@ class SplitBoxT<true, false, FirstT, SecondT> :
 	}
 
 	// Widget
-	void resizeWidth(signed short X) final
+	void resizeWidth(signed short X)
 	{
 		mRight += X;
 		mClipRight += X;
@@ -380,13 +371,13 @@ class SplitBoxT<true, false, FirstT, SecondT> :
 		mSecond.setClipLeft(std::max(mLeft, mClipLeft));
 	}
 
-	void setClipLeft(signed short X) final
+	void setClipLeft(signed short X)
 	{
 		mFirst.setClipLeft(X);
 		mSecond.setClipLeft(std::max(mLeft, mClipLeft));
 	}
 
-	void setClipRight(signed short X) final
+	void setClipRight(signed short X)
 	{
 		mFirst.setClipRight(X);
 		mSecond.setClipRight(X);
@@ -440,7 +431,7 @@ class SplitBoxT<false, true, FirstT, SecondT> :
 	}
 
 	// Widget
-	void resizeHeight(signed short Y) final
+	void resizeHeight(signed short Y)
 	{
 		mTop += Y;
 		mClipTop += Y;
@@ -448,13 +439,13 @@ class SplitBoxT<false, true, FirstT, SecondT> :
 		mFirst.setClipTop(std::min(mTop, mClipTop));
 	}
 
-	void setClipBottom(signed short Y) final
+	void setClipBottom(signed short Y)
 	{
 		mFirst.setClipBottom(Y);
 		mSecond.setClipBottom(Y);
 	}
 
-	void setClipTop(signed short Y) final
+	void setClipTop(signed short Y)
 	{
 		mFirst.setClipTop(std::min(mTop, mClipTop));
 		mSecond.setClipTop(Y);
@@ -508,7 +499,7 @@ class SplitBoxT<false, false, FirstT, SecondT> :
 	}
 
 	// Widget
-	void resizeHeight(signed short Y) final
+	void resizeHeight(signed short Y)
 	{
 		mTop += Y;
 		mClipTop += Y;
@@ -517,13 +508,13 @@ class SplitBoxT<false, false, FirstT, SecondT> :
 		mSecond.setClipBottom(std::max(mBottom, mClipBottom));
 	}
 
-	void setClipBottom(signed short Y) final
+	void setClipBottom(signed short Y)
 	{
 		mFirst.setClipBottom(Y);
 		mSecond.setClipBottom(std::max(mBottom, mClipBottom));
 	}
 
-	void setClipTop(signed short Y) final
+	void setClipTop(signed short Y)
 	{
 		mFirst.setClipTop(Y);
 		mSecond.setClipTop(Y);

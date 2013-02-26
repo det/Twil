@@ -1,24 +1,19 @@
 cmake_minimum_required (VERSION 2.8)
 project (Twil)
 
-INCLUDE(CheckIncludeFileCXX)
-CHECK_INCLUDE_FILE_CXX(iostream IOSTREAMS_HEADER)
-
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 	set (standard "-stdlib=libc++ -std=c++11")
 	set (math "-msse2") # -ffast-math
 	set (warning "-pedantic -Wall -Wextra -Wglobal-constructors -Wnon-virtual-dtor -Wshadow -Wnewline-eof -Wno-unused-parameter") # -Wsign-conversion
 	set (debug "-ggdb")
-	set (debug_runtime "-fsanitize=address -fsanitize=bounds -fsanitize=undefined")
-	set (release "-DNDEBUG -O4")
+	set (release "-DNDEBUG -O3 -flto")
 	set (symbol "-fno-rtti -fdata-sections -ffunction-sections -fvisibility=hidden -fvisibility-inlines-hidden")
 	set (linker_symbol "-Wl,--gc-sections")
 elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
 	set (standard "-std=c++11")
 	set (math "-mfpmath=sse -msse2 -ffast-math")
 	set (warning "-pedantic -Wall -Wextra -Wnon-virtual-dtor -Wno-missing-field-initializers -Wno-unused-parameter")
-	set (debug "-ggdb -isystem iostreams")
-	set (debug_runtime)
+	set (debug "-ggdb")
 	set (release "-DNDEBUG -O3 -flto")
 	set (symbol "-fno-rtti -fdata-sections -ffunction-sections -fvisibility=hidden -fvisibility-inlines-hidden")
 	set (linker_symbol "-Wl,--gc-sections")
@@ -27,7 +22,7 @@ else ()
 endif ()
 
 set (CMAKE_CXX_FLAGS "${standard} ${math} ${warning}")
-set (CMAKE_CXX_FLAGS_DEBUG "${debug} ${debug_runtime}")
+set (CMAKE_CXX_FLAGS_DEBUG "${debug}")
 set (CMAKE_CXX_FLAGS_RELEASE "${release} ${symbol}")
 set (CMAKE_EXE_LINKER_FLAGS_RELEASE "${linker_symbol}")
 set (CMAKE_CXX_FLAGS_RELWITHDEBINFO "${release} ${symbol} ${debug}")
@@ -39,11 +34,28 @@ set (fonts
 	Font/DejaVuSansMono.ttf
 )
 
+if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+	set (platform_sources
+		Linux/Platform/Key.cpp
+		Linux/Platform/Application.cpp
+		Linux/Platform/Glx.cpp
+		Linux/Platform/SymbolLoader.cpp
+		Linux/Platform/Window.cpp
+	)
+
+	set (platform_search_path
+		Linux
+	)
+
+	set (platform_libs
+		dl
+	)
+else ()
+	message(FATAL_ERROR "Unsupported platform: ${CMAKE_SYSTEM_NAME}")
+endif ()
+
 set (sources
-        ${CMAKE_SYSTEM_NAME}/Platform/Key.cpp
-        ${CMAKE_SYSTEM_NAME}/Platform/Application.cpp
-        ${CMAKE_SYSTEM_NAME}/Platform/SymbolLoader.cpp
-        ${CMAKE_SYSTEM_NAME}/Platform/Window.cpp
+	${platform_sources}
 	Attribute/Color1f.cpp
 	Attribute/Color4b.cpp
 	Attribute/Offset1i.cpp
@@ -62,19 +74,20 @@ set (sources
 	Gl/Context.cpp
 	Gl/Program.cpp
 	Gl/Shader.cpp
-	Gl/StreamArray.cpp
 	Gl/Texture.cpp
-	Gl/TextureArray.cpp
 	Gl/VertexArray.cpp
 	Loader/Png.cpp
 	Program/FillSolid.cpp
 	Program/OutlineGradient.cpp
 	Theme/Button.cpp
+	Theme/Drawable.cpp
 	Theme/Label.cpp
 	Theme/Manager.cpp
 	Theme/Settings.cpp
+	Theme/StreamArray.cpp
+	Theme/TextureArray.cpp
 	Ui/Application.cpp
-        Ui/Margin.cpp
+	Ui/Margin.cpp
 	Ui/Button.cpp
 	Ui/Event.cpp
 	Ui/Container.cpp
@@ -82,7 +95,7 @@ set (sources
 	Ui/PartitionBox.cpp
 	Ui/KeyboardHandler.cpp
 	Ui/Label.cpp
-        Ui/MouseHandler.cpp
+	Ui/MouseHandler.cpp
 	Ui/SplitBox.cpp
 	Ui/Tuple.cpp
 	Ui/WindowBase.cpp
@@ -108,24 +121,22 @@ add_executable (hello
 )
 
 find_package (Freetype REQUIRED)
-find_package (OpenAL REQUIRED)
-find_package (OpenGL REQUIRED)
+find_package (X11 REQUIRED)
 find_package (PNG REQUIRED)
 
 include_directories (
 	.
 	Header
-	${CMAKE_SYSTEM_NAME}
+	${platform_search_path}
 	${FREETYPE_INCLUDE_DIRS}
-	${OPENAL_INCLUDE_DIRS}
-	${OPENGL_INCLUDE_DIRS}
 	${PNG_INCLUDE_DIRS}
+	${X11_INCLUDE_DIRS}
 )
 
 target_link_libraries (hello
+	${platform_libs}
 	${FREETYPE_LIBRARIES}
-	${OPENAL_LIBRARIES}
-	${OPENGL_LIBRARIES}
+	${X11_LIBRARIES}
 	${PNG_LIBRARIES}
 )
 

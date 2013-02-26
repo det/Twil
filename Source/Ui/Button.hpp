@@ -2,7 +2,6 @@
 
 #include "Container.hpp"
 #include "Event.hpp"
-#include "Widget.hpp"
 #include "Window.hpp"
 
 #include "Gl/Context.hpp"
@@ -20,14 +19,17 @@ class WindowBaseT;
 template<typename T>
 class ButtonT :
 	public ContainerT,
-	public MouseHandlerT,
-	public WidgetT
+	public MouseHandlerT
 {
 	private:
 	ContainerT & mParent;
 	WindowBaseT & mWindow;
 	Theme::ButtonT mThemeButton;
 	T mChild;
+	signed short mMouseLeft = 0;
+	signed short mMouseRight = 0;
+	signed short mMouseBottom = 0;
+	signed short mMouseTop = 0;
 	bool mIsPressed;
 	bool mHasMouse;
 
@@ -71,91 +73,85 @@ class ButtonT :
 	}
 
 	// Widget
-	void moveX(signed short X) final
+	void moveX(signed short X)
 	{
 		mThemeButton.moveX(X);
 		mChild.moveX(X);
 	}
 
-	void moveY(signed short Y) final
+	void moveY(signed short Y)
 	{
 		mThemeButton.moveY(Y);
 		mChild.moveY(Y);
 	}
 
-	void resizeWidth(signed short X) final
+	void resizeWidth(signed short X)
 	{
 		mThemeButton.resizeWidth(X);
 		mChild.resizeWidth(X);
 	}
 
-	void resizeHeight(signed short Y) final
+	void resizeHeight(signed short Y)
 	{
 		mThemeButton.resizeHeight(Y);
 		mChild.resizeHeight(Y);
 	}
 
-	void setClipLeft(signed short X) final
+	void setClipLeft(signed short X)
 	{
 		mThemeButton.setClipLeft(X);
 		mChild.setClipLeft(X);
 	}
 
-	void setClipBottom(signed short Y) final
+	void setClipBottom(signed short Y)
 	{
 		mThemeButton.setClipBottom(Y);
 		mChild.setClipBottom(Y);
 	}
 
-	void setClipRight(signed short X) final
+	void setClipRight(signed short X)
 	{
 		mThemeButton.setClipRight(X);
 		mChild.setClipRight(X);
 	}
 
-	void setClipTop(signed short Y) final
+	void setClipTop(signed short Y)
 	{
 		mThemeButton.setClipTop(Y);
 		mChild.setClipTop(Y);
 	}
 
-	void draw() const final
-	{
-		mThemeButton.draw();
-		mChild.draw();
-	}
-
-	signed short getLeft() const final
+	signed short getLeft() const
 	{
 		return mThemeButton.getLeft();
 	}
 
-	signed short getBottom() const final
+	signed short getBottom() const
 	{
 		return mThemeButton.getBottom();
 	}
 
-	signed short getRight() const final
+	signed short getRight() const
 	{
 		return mThemeButton.getRight();
 	}
 
-	signed short getTop() const final
+	signed short getTop() const
 	{
 		return mThemeButton.getTop();
 	}
 
-	signed short getBaseWidth() const final
+	signed short getBaseWidth() const
 	{
 		return mThemeButton.getBaseWidth(mChild.getBaseWidth());
 	}
 
-	signed short getBaseHeight() const final
+	signed short getBaseHeight() const
 	{
 		return mThemeButton.getBaseHeight(mChild.getBaseHeight());
 	}
 
-	void delegateMouse(signed short, signed short) final
+	void delegateMouse(signed short, signed short)
 	{
 		mWindow.setMouseHandler(*this);
 		mHasMouse = true;

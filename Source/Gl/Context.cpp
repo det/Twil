@@ -6,12 +6,546 @@
 
 namespace {
 
-Twil::Gl::ContextT gContext;
+struct GlProcsT
+{
+	decltype(&glCullFace) CullFace;
+	decltype(&glFrontFace) FrontFace;
+	decltype(&glHint) Hint;
+	decltype(&glLineWidth) LineWidth;
+	decltype(&glPointSize) PointSize;
+	decltype(&glPolygonMode) PolygonMode;
+	decltype(&glScissor) Scissor;
+	decltype(&glTexParameterf) TexParameterf;
+	decltype(&glTexParameterfv) TexParameterfv;
+	decltype(&glTexParameteri) TexParameteri;
+	decltype(&glTexParameteriv) TexParameteriv;
+	decltype(&glTexImage1D) TexImage1D;
+	decltype(&glTexImage2D) TexImage2D;
+	decltype(&glDrawBuffer) DrawBuffer;
+	decltype(&glClear) Clear;
+	decltype(&glClearColor) ClearColor;
+	decltype(&glClearStencil) ClearStencil;
+	decltype(&glClearDepth) ClearDepth;
+	decltype(&glStencilMask) StencilMask;
+	decltype(&glColorMask) ColorMask;
+	decltype(&glDepthMask) DepthMask;
+	decltype(&glDisable) Disable;
+	decltype(&glEnable) Enable;
+	decltype(&glFinish) Finish;
+	decltype(&glFlush) Flush;
+	decltype(&glBlendFunc) BlendFunc;
+	decltype(&glLogicOp) LogicOp;
+	decltype(&glStencilFunc) StencilFunc;
+	decltype(&glStencilOp) StencilOp;
+	decltype(&glDepthFunc) DepthFunc;
+	decltype(&glPixelStoref) PixelStoref;
+	decltype(&glPixelStorei) PixelStorei;
+	decltype(&glReadBuffer) ReadBuffer;
+	decltype(&glReadPixels) ReadPixels;
+	decltype(&glGetBooleanv) GetBooleanv;
+	decltype(&glGetDoublev) GetDoublev;
+	decltype(&glGetError) GetError;
+	decltype(&glGetFloatv) GetFloatv;
+	decltype(&glGetIntegerv) GetIntegerv;
+	decltype(&glGetString) GetString;
+	decltype(&glGetTexImage) GetTexImage;
+	decltype(&glGetTexParameterfv) GetTexParameterfv;
+	decltype(&glGetTexParameteriv) GetTexParameteriv;
+	decltype(&glGetTexLevelParameterfv) GetTexLevelParameterfv;
+	decltype(&glGetTexLevelParameteriv) GetTexLevelParameteriv;
+	decltype(&glIsEnabled) IsEnabled;
+	decltype(&glDepthRange) DepthRange;
+	decltype(&glViewport) Viewport;
+	decltype(&glDrawArrays) DrawArrays;
+	decltype(&glDrawElements) DrawElements;
+	decltype(&glGetPointerv) GetPointerv;
+	decltype(&glPolygonOffset) PolygonOffset;
+	decltype(&glCopyTexImage1D) CopyTexImage1D;
+	decltype(&glCopyTexImage2D) CopyTexImage2D;
+	decltype(&glCopyTexSubImage1D) CopyTexSubImage1D;
+	decltype(&glCopyTexSubImage2D) CopyTexSubImage2D;
+	decltype(&glTexSubImage1D) TexSubImage1D;
+	decltype(&glTexSubImage2D) TexSubImage2D;
+	decltype(&glBindTexture) BindTexture;
+	decltype(&glDeleteTextures) DeleteTextures;
+	decltype(&glGenTextures) GenTextures;
+	decltype(&glIsTexture) IsTexture;
+	decltype(&glBlendColor) BlendColor;
+	decltype(&glBlendEquation) BlendEquation;
+	decltype(&glDrawRangeElements) DrawRangeElements;
+	decltype(&glTexImage3D) TexImage3D;
+	decltype(&glTexSubImage3D) TexSubImage3D;
+	decltype(&glCopyTexSubImage3D) CopyTexSubImage3D;
+	decltype(&glActiveTexture) ActiveTexture;
+	decltype(&glSampleCoverage) SampleCoverage;
+	decltype(&glCompressedTexImage3D) CompressedTexImage3D;
+	decltype(&glCompressedTexImage2D) CompressedTexImage2D;
+	decltype(&glCompressedTexImage1D) CompressedTexImage1D;
+	decltype(&glCompressedTexSubImage3D) CompressedTexSubImage3D;
+	decltype(&glCompressedTexSubImage2D) CompressedTexSubImage2D;
+	decltype(&glCompressedTexSubImage1D) CompressedTexSubImage1D;
+	decltype(&glGetCompressedTexImage) GetCompressedTexImage;
+	decltype(&glBlendFuncSeparate) BlendFuncSeparate;
+	decltype(&glMultiDrawArrays) MultiDrawArrays;
+	decltype(&glMultiDrawElements) MultiDrawElements;
+	decltype(&glPointParameterf) PointParameterf;
+	decltype(&glPointParameterfv) PointParameterfv;
+	decltype(&glPointParameteri) PointParameteri;
+	decltype(&glPointParameteriv) PointParameteriv;
+	decltype(&glGenQueries) GenQueries;
+	decltype(&glDeleteQueries) DeleteQueries;
+	decltype(&glIsQuery) IsQuery;
+	decltype(&glBeginQuery) BeginQuery;
+	decltype(&glEndQuery) EndQuery;
+	decltype(&glGetQueryiv) GetQueryiv;
+	decltype(&glGetQueryObjectiv) GetQueryObjectiv;
+	decltype(&glGetQueryObjectuiv) GetQueryObjectuiv;
+	decltype(&glVertexAttribP1ui) VertexAttribP1ui;
+	decltype(&glVertexAttribP1uiv) VertexAttribP1uiv;
+	decltype(&glVertexAttribP2ui) VertexAttribP2ui;
+	decltype(&glVertexAttribP2uiv) VertexAttribP2uiv;
+	decltype(&glVertexAttribP3ui) VertexAttribP3ui;
+	decltype(&glVertexAttribP3uiv) VertexAttribP3uiv;
+	decltype(&glVertexAttribP4ui) VertexAttribP4ui;
+	decltype(&glVertexAttribP4uiv) VertexAttribP4uiv;
+	decltype(&glBindBuffer) BindBuffer;
+	decltype(&glDeleteBuffers) DeleteBuffers;
+	decltype(&glGenBuffers) GenBuffers;
+	decltype(&glIsBuffer) IsBuffer;
+	decltype(&glBufferData) BufferData;
+	decltype(&glBufferSubData) BufferSubData;
+	decltype(&glGetBufferSubData) GetBufferSubData;
+	decltype(&glMapBuffer) MapBuffer;
+	decltype(&glUnmapBuffer) UnmapBuffer;
+	decltype(&glGetBufferParameteriv) GetBufferParameteriv;
+	decltype(&glGetBufferPointerv) GetBufferPointerv;
+	decltype(&glBlendEquationSeparate) BlendEquationSeparate;
+	decltype(&glDrawBuffers) DrawBuffers;
+	decltype(&glStencilOpSeparate) StencilOpSeparate;
+	decltype(&glStencilFuncSeparate) StencilFuncSeparate;
+	decltype(&glStencilMaskSeparate) StencilMaskSeparate;
+	decltype(&glAttachShader) AttachShader;
+	decltype(&glBindAttribLocation) BindAttribLocation;
+	decltype(&glCompileShader) CompileShader;
+	decltype(&glCreateProgram) CreateProgram;
+	decltype(&glCreateShader) CreateShader;
+	decltype(&glDeleteProgram) DeleteProgram;
+	decltype(&glDeleteShader) DeleteShader;
+	decltype(&glDetachShader) DetachShader;
+	decltype(&glDisableVertexAttribArray) DisableVertexAttribArray;
+	decltype(&glEnableVertexAttribArray) EnableVertexAttribArray;
+	decltype(&glGetActiveAttrib) GetActiveAttrib;
+	decltype(&glGetActiveUniform) GetActiveUniform;
+	decltype(&glGetAttachedShaders) GetAttachedShaders;
+	decltype(&glGetAttribLocation) GetAttribLocation;
+	decltype(&glGetProgramiv) GetProgramiv;
+	decltype(&glGetProgramInfoLog) GetProgramInfoLog;
+	decltype(&glGetShaderiv) GetShaderiv;
+	decltype(&glGetShaderInfoLog) GetShaderInfoLog;
+	decltype(&glGetShaderSource) GetShaderSource;
+	decltype(&glGetUniformLocation) GetUniformLocation;
+	decltype(&glGetUniformfv) GetUniformfv;
+	decltype(&glGetUniformiv) GetUniformiv;
+	decltype(&glGetVertexAttribdv) GetVertexAttribdv;
+	decltype(&glGetVertexAttribfv) GetVertexAttribfv;
+	decltype(&glGetVertexAttribiv) GetVertexAttribiv;
+	decltype(&glGetVertexAttribPointerv) GetVertexAttribPointerv;
+	decltype(&glIsProgram) IsProgram;
+	decltype(&glIsShader) IsShader;
+	decltype(&glLinkProgram) LinkProgram;
+	decltype(&glShaderSource) ShaderSource;
+	decltype(&glUseProgram) UseProgram;
+	decltype(&glUniform1f) Uniform1f;
+	decltype(&glUniform2f) Uniform2f;
+	decltype(&glUniform3f) Uniform3f;
+	decltype(&glUniform4f) Uniform4f;
+	decltype(&glUniform1i) Uniform1i;
+	decltype(&glUniform2i) Uniform2i;
+	decltype(&glUniform3i) Uniform3i;
+	decltype(&glUniform4i) Uniform4i;
+	decltype(&glUniform1fv) Uniform1fv;
+	decltype(&glUniform2fv) Uniform2fv;
+	decltype(&glUniform3fv) Uniform3fv;
+	decltype(&glUniform4fv) Uniform4fv;
+	decltype(&glUniform1iv) Uniform1iv;
+	decltype(&glUniform2iv) Uniform2iv;
+	decltype(&glUniform3iv) Uniform3iv;
+	decltype(&glUniform4iv) Uniform4iv;
+	decltype(&glUniformMatrix2fv) UniformMatrix2fv;
+	decltype(&glUniformMatrix3fv) UniformMatrix3fv;
+	decltype(&glUniformMatrix4fv) UniformMatrix4fv;
+	decltype(&glValidateProgram) ValidateProgram;
+	decltype(&glVertexAttrib1d) VertexAttrib1d;
+	decltype(&glVertexAttrib1dv) VertexAttrib1dv;
+	decltype(&glVertexAttrib1f) VertexAttrib1f;
+	decltype(&glVertexAttrib1fv) VertexAttrib1fv;
+	decltype(&glVertexAttrib1s) VertexAttrib1s;
+	decltype(&glVertexAttrib1sv) VertexAttrib1sv;
+	decltype(&glVertexAttrib2d) VertexAttrib2d;
+	decltype(&glVertexAttrib2dv) VertexAttrib2dv;
+	decltype(&glVertexAttrib2f) VertexAttrib2f;
+	decltype(&glVertexAttrib2fv) VertexAttrib2fv;
+	decltype(&glVertexAttrib2s) VertexAttrib2s;
+	decltype(&glVertexAttrib2sv) VertexAttrib2sv;
+	decltype(&glVertexAttrib3d) VertexAttrib3d;
+	decltype(&glVertexAttrib3dv) VertexAttrib3dv;
+	decltype(&glVertexAttrib3f) VertexAttrib3f;
+	decltype(&glVertexAttrib3fv) VertexAttrib3fv;
+	decltype(&glVertexAttrib3s) VertexAttrib3s;
+	decltype(&glVertexAttrib3sv) VertexAttrib3sv;
+	decltype(&glVertexAttrib4Nbv) VertexAttrib4Nbv;
+	decltype(&glVertexAttrib4Niv) VertexAttrib4Niv;
+	decltype(&glVertexAttrib4Nsv) VertexAttrib4Nsv;
+	decltype(&glVertexAttrib4Nub) VertexAttrib4Nub;
+	decltype(&glVertexAttrib4Nubv) VertexAttrib4Nubv;
+	decltype(&glVertexAttrib4Nuiv) VertexAttrib4Nuiv;
+	decltype(&glVertexAttrib4Nusv) VertexAttrib4Nusv;
+	decltype(&glVertexAttrib4bv) VertexAttrib4bv;
+	decltype(&glVertexAttrib4d) VertexAttrib4d;
+	decltype(&glVertexAttrib4dv) VertexAttrib4dv;
+	decltype(&glVertexAttrib4f) VertexAttrib4f;
+	decltype(&glVertexAttrib4fv) VertexAttrib4fv;
+	decltype(&glVertexAttrib4iv) VertexAttrib4iv;
+	decltype(&glVertexAttrib4s) VertexAttrib4s;
+	decltype(&glVertexAttrib4sv) VertexAttrib4sv;
+	decltype(&glVertexAttrib4ubv) VertexAttrib4ubv;
+	decltype(&glVertexAttrib4uiv) VertexAttrib4uiv;
+	decltype(&glVertexAttrib4usv) VertexAttrib4usv;
+	decltype(&glVertexAttribPointer) VertexAttribPointer;
+	decltype(&glUniformMatrix2x3fv) UniformMatrix2x3fv;
+	decltype(&glUniformMatrix3x2fv) UniformMatrix3x2fv;
+	decltype(&glUniformMatrix2x4fv) UniformMatrix2x4fv;
+	decltype(&glUniformMatrix4x2fv) UniformMatrix4x2fv;
+	decltype(&glUniformMatrix3x4fv) UniformMatrix3x4fv;
+	decltype(&glUniformMatrix4x3fv) UniformMatrix4x3fv;
+	decltype(&glColorMaski) ColorMaski;
+	decltype(&glGetBooleani_v) GetBooleani_v;
+	decltype(&glGetIntegeri_v) GetIntegeri_v;
+	decltype(&glEnablei) Enablei;
+	decltype(&glDisablei) Disablei;
+	decltype(&glIsEnabledi) IsEnabledi;
+	decltype(&glBeginTransformFeedback) BeginTransformFeedback;
+	decltype(&glEndTransformFeedback) EndTransformFeedback;
+	decltype(&glBindBufferRange) BindBufferRange;
+	decltype(&glBindBufferBase) BindBufferBase;
+	decltype(&glTransformFeedbackVaryings) TransformFeedbackVaryings;
+	decltype(&glGetTransformFeedbackVarying) GetTransformFeedbackVarying;
+	decltype(&glClampColor) ClampColor;
+	decltype(&glBeginConditionalRender) BeginConditionalRender;
+	decltype(&glEndConditionalRender) EndConditionalRender;
+	decltype(&glVertexAttribIPointer) VertexAttribIPointer;
+	decltype(&glGetVertexAttribIiv) GetVertexAttribIiv;
+	decltype(&glGetVertexAttribIuiv) GetVertexAttribIuiv;
+	decltype(&glVertexAttribI1i) VertexAttribI1i;
+	decltype(&glVertexAttribI2i) VertexAttribI2i;
+	decltype(&glVertexAttribI3i) VertexAttribI3i;
+	decltype(&glVertexAttribI4i) VertexAttribI4i;
+	decltype(&glVertexAttribI1ui) VertexAttribI1ui;
+	decltype(&glVertexAttribI2ui) VertexAttribI2ui;
+	decltype(&glVertexAttribI3ui) VertexAttribI3ui;
+	decltype(&glVertexAttribI4ui) VertexAttribI4ui;
+	decltype(&glVertexAttribI1iv) VertexAttribI1iv;
+	decltype(&glVertexAttribI2iv) VertexAttribI2iv;
+	decltype(&glVertexAttribI3iv) VertexAttribI3iv;
+	decltype(&glVertexAttribI4iv) VertexAttribI4iv;
+	decltype(&glVertexAttribI1uiv) VertexAttribI1uiv;
+	decltype(&glVertexAttribI2uiv) VertexAttribI2uiv;
+	decltype(&glVertexAttribI3uiv) VertexAttribI3uiv;
+	decltype(&glVertexAttribI4uiv) VertexAttribI4uiv;
+	decltype(&glVertexAttribI4bv) VertexAttribI4bv;
+	decltype(&glVertexAttribI4sv) VertexAttribI4sv;
+	decltype(&glVertexAttribI4ubv) VertexAttribI4ubv;
+	decltype(&glVertexAttribI4usv) VertexAttribI4usv;
+	decltype(&glGetUniformuiv) GetUniformuiv;
+	decltype(&glBindFragDataLocation) BindFragDataLocation;
+	decltype(&glGetFragDataLocation) GetFragDataLocation;
+	decltype(&glUniform1ui) Uniform1ui;
+	decltype(&glUniform2ui) Uniform2ui;
+	decltype(&glUniform3ui) Uniform3ui;
+	decltype(&glUniform4ui) Uniform4ui;
+	decltype(&glUniform1uiv) Uniform1uiv;
+	decltype(&glUniform2uiv) Uniform2uiv;
+	decltype(&glUniform3uiv) Uniform3uiv;
+	decltype(&glUniform4uiv) Uniform4uiv;
+	decltype(&glTexParameterIiv) TexParameterIiv;
+	decltype(&glTexParameterIuiv) TexParameterIuiv;
+	decltype(&glGetTexParameterIiv) GetTexParameterIiv;
+	decltype(&glGetTexParameterIuiv) GetTexParameterIuiv;
+	decltype(&glClearBufferiv) ClearBufferiv;
+	decltype(&glClearBufferuiv) ClearBufferuiv;
+	decltype(&glClearBufferfv) ClearBufferfv;
+	decltype(&glClearBufferfi) ClearBufferfi;
+	decltype(&glGetStringi) GetStringi;
+	decltype(&glDrawArraysInstanced) DrawArraysInstanced;
+	decltype(&glDrawElementsInstanced) DrawElementsInstanced;
+	decltype(&glTexBuffer) TexBuffer;
+	decltype(&glPrimitiveRestartIndex) PrimitiveRestartIndex;
+	decltype(&glGetInteger64i_v) GetInteger64i_v;
+	decltype(&glGetBufferParameteri64v) GetBufferParameteri64v;
+	decltype(&glFramebufferTexture) FramebufferTexture;
+	decltype(&glVertexAttribDivisor) VertexAttribDivisor;
+	decltype(&glMinSampleShading) MinSampleShading;
+	decltype(&glBlendEquationi) BlendEquationi;
+	decltype(&glBlendEquationSeparatei) BlendEquationSeparatei;
+	decltype(&glBlendFunci) BlendFunci;
+	decltype(&glBlendFuncSeparatei) BlendFuncSeparatei;
+	decltype(&glIsRenderbuffer) IsRenderbuffer;
+	decltype(&glBindRenderbuffer) BindRenderbuffer;
+	decltype(&glDeleteRenderbuffers) DeleteRenderbuffers;
+	decltype(&glGenRenderbuffers) GenRenderbuffers;
+	decltype(&glRenderbufferStorage) RenderbufferStorage;
+	decltype(&glGetRenderbufferParameteriv) GetRenderbufferParameteriv;
+	decltype(&glIsFramebuffer) IsFramebuffer;
+	decltype(&glBindFramebuffer) BindFramebuffer;
+	decltype(&glDeleteFramebuffers) DeleteFramebuffers;
+	decltype(&glGenFramebuffers) GenFramebuffers;
+	decltype(&glCheckFramebufferStatus) CheckFramebufferStatus;
+	decltype(&glFramebufferTexture1D) FramebufferTexture1D;
+	decltype(&glFramebufferTexture2D) FramebufferTexture2D;
+	decltype(&glFramebufferTexture3D) FramebufferTexture3D;
+	decltype(&glFramebufferRenderbuffer) FramebufferRenderbuffer;
+	decltype(&glGetFramebufferAttachmentParameteriv) GetFramebufferAttachmentParameteriv;
+	decltype(&glGenerateMipmap) GenerateMipmap;
+	decltype(&glBlitFramebuffer) BlitFramebuffer;
+	decltype(&glRenderbufferStorageMultisample) RenderbufferStorageMultisample;
+	decltype(&glFramebufferTextureLayer) FramebufferTextureLayer;
+	decltype(&glMapBufferRange) MapBufferRange;
+	decltype(&glFlushMappedBufferRange) FlushMappedBufferRange;
+	decltype(&glBindVertexArray) BindVertexArray;
+	decltype(&glDeleteVertexArrays) DeleteVertexArrays;
+	decltype(&glGenVertexArrays) GenVertexArrays;
+	decltype(&glIsVertexArray) IsVertexArray;
+	decltype(&glGetUniformIndices) GetUniformIndices;
+	decltype(&glGetActiveUniformsiv) GetActiveUniformsiv;
+	decltype(&glGetActiveUniformName) GetActiveUniformName;
+	decltype(&glGetUniformBlockIndex) GetUniformBlockIndex;
+	decltype(&glGetActiveUniformBlockiv) GetActiveUniformBlockiv;
+	decltype(&glGetActiveUniformBlockName) GetActiveUniformBlockName;
+	decltype(&glUniformBlockBinding) UniformBlockBinding;
+	decltype(&glCopyBufferSubData) CopyBufferSubData;
+	decltype(&glDrawElementsBaseVertex) DrawElementsBaseVertex;
+	decltype(&glDrawRangeElementsBaseVertex) DrawRangeElementsBaseVertex;
+	decltype(&glDrawElementsInstancedBaseVertex) DrawElementsInstancedBaseVertex;
+	decltype(&glMultiDrawElementsBaseVertex) MultiDrawElementsBaseVertex;
+	decltype(&glProvokingVertex) ProvokingVertex;
+	decltype(&glFenceSync) FenceSync;
+	decltype(&glIsSync) IsSync;
+	decltype(&glDeleteSync) DeleteSync;
+	decltype(&glClientWaitSync) ClientWaitSync;
+	decltype(&glWaitSync) WaitSync;
+	decltype(&glGetInteger64v) GetInteger64v;
+	decltype(&glGetSynciv) GetSynciv;
+	decltype(&glTexImage2DMultisample) TexImage2DMultisample;
+	decltype(&glTexImage3DMultisample) TexImage3DMultisample;
+	decltype(&glGetMultisamplefv) GetMultisamplefv;
+	decltype(&glSampleMaski) SampleMaski;
+	decltype(&glBlendEquationiARB) BlendEquationiARB;
+	decltype(&glBlendEquationSeparateiARB) BlendEquationSeparateiARB;
+	decltype(&glBlendFunciARB) BlendFunciARB;
+	decltype(&glBlendFuncSeparateiARB) BlendFuncSeparateiARB;
+	decltype(&glMinSampleShadingARB) MinSampleShadingARB;
+	decltype(&glNamedStringARB) NamedStringARB;
+	decltype(&glDeleteNamedStringARB) DeleteNamedStringARB;
+	decltype(&glCompileShaderIncludeARB) CompileShaderIncludeARB;
+	decltype(&glIsNamedStringARB) IsNamedStringARB;
+	decltype(&glGetNamedStringARB) GetNamedStringARB;
+	decltype(&glGetNamedStringivARB) GetNamedStringivARB;
+	decltype(&glBindFragDataLocationIndexed) BindFragDataLocationIndexed;
+	decltype(&glGetFragDataIndex) GetFragDataIndex;
+	decltype(&glGenSamplers) GenSamplers;
+	decltype(&glDeleteSamplers) DeleteSamplers;
+	decltype(&glIsSampler) IsSampler;
+	decltype(&glBindSampler) BindSampler;
+	decltype(&glSamplerParameteri) SamplerParameteri;
+	decltype(&glSamplerParameteriv) SamplerParameteriv;
+	decltype(&glSamplerParameterf) SamplerParameterf;
+	decltype(&glSamplerParameterfv) SamplerParameterfv;
+	decltype(&glSamplerParameterIiv) SamplerParameterIiv;
+	decltype(&glSamplerParameterIuiv) SamplerParameterIuiv;
+	decltype(&glGetSamplerParameteriv) GetSamplerParameteriv;
+	decltype(&glGetSamplerParameterIiv) GetSamplerParameterIiv;
+	decltype(&glGetSamplerParameterfv) GetSamplerParameterfv;
+	decltype(&glGetSamplerParameterIuiv) GetSamplerParameterIuiv;
+	decltype(&glQueryCounter) QueryCounter;
+	decltype(&glGetQueryObjecti64v) GetQueryObjecti64v;
+	decltype(&glGetQueryObjectui64v) GetQueryObjectui64v;
+	decltype(&glDrawArraysIndirect) DrawArraysIndirect;
+	decltype(&glDrawElementsIndirect) DrawElementsIndirect;
+	decltype(&glUniform1d) Uniform1d;
+	decltype(&glUniform2d) Uniform2d;
+	decltype(&glUniform3d) Uniform3d;
+	decltype(&glUniform4d) Uniform4d;
+	decltype(&glUniform1dv) Uniform1dv;
+	decltype(&glUniform2dv) Uniform2dv;
+	decltype(&glUniform3dv) Uniform3dv;
+	decltype(&glUniform4dv) Uniform4dv;
+	decltype(&glUniformMatrix2dv) UniformMatrix2dv;
+	decltype(&glUniformMatrix3dv) UniformMatrix3dv;
+	decltype(&glUniformMatrix4dv) UniformMatrix4dv;
+	decltype(&glUniformMatrix2x3dv) UniformMatrix2x3dv;
+	decltype(&glUniformMatrix2x4dv) UniformMatrix2x4dv;
+	decltype(&glUniformMatrix3x2dv) UniformMatrix3x2dv;
+	decltype(&glUniformMatrix3x4dv) UniformMatrix3x4dv;
+	decltype(&glUniformMatrix4x2dv) UniformMatrix4x2dv;
+	decltype(&glUniformMatrix4x3dv) UniformMatrix4x3dv;
+	decltype(&glGetUniformdv) GetUniformdv;
+	decltype(&glGetSubroutineUniformLocation) GetSubroutineUniformLocation;
+	decltype(&glGetSubroutineIndex) GetSubroutineIndex;
+	decltype(&glGetActiveSubroutineUniformiv) GetActiveSubroutineUniformiv;
+	decltype(&glGetActiveSubroutineUniformName) GetActiveSubroutineUniformName;
+	decltype(&glGetActiveSubroutineName) GetActiveSubroutineName;
+	decltype(&glUniformSubroutinesuiv) UniformSubroutinesuiv;
+	decltype(&glGetUniformSubroutineuiv) GetUniformSubroutineuiv;
+	decltype(&glGetProgramStageiv) GetProgramStageiv;
+	decltype(&glPatchParameteri) PatchParameteri;
+	decltype(&glPatchParameterfv) PatchParameterfv;
+	decltype(&glBindTransformFeedback) BindTransformFeedback;
+	decltype(&glDeleteTransformFeedbacks) DeleteTransformFeedbacks;
+	decltype(&glGenTransformFeedbacks) GenTransformFeedbacks;
+	decltype(&glIsTransformFeedback) IsTransformFeedback;
+	decltype(&glPauseTransformFeedback) PauseTransformFeedback;
+	decltype(&glResumeTransformFeedback) ResumeTransformFeedback;
+	decltype(&glDrawTransformFeedback) DrawTransformFeedback;
+	decltype(&glDrawTransformFeedbackStream) DrawTransformFeedbackStream;
+	decltype(&glBeginQueryIndexed) BeginQueryIndexed;
+	decltype(&glEndQueryIndexed) EndQueryIndexed;
+	decltype(&glGetQueryIndexediv) GetQueryIndexediv;
+	decltype(&glReleaseShaderCompiler) ReleaseShaderCompiler;
+	decltype(&glShaderBinary) ShaderBinary;
+	decltype(&glGetShaderPrecisionFormat) GetShaderPrecisionFormat;
+	decltype(&glDepthRangef) DepthRangef;
+	decltype(&glClearDepthf) ClearDepthf;
+	decltype(&glGetProgramBinary) GetProgramBinary;
+	decltype(&glProgramBinary) ProgramBinary;
+	decltype(&glProgramParameteri) ProgramParameteri;
+	decltype(&glUseProgramStages) UseProgramStages;
+	decltype(&glActiveShaderProgram) ActiveShaderProgram;
+	decltype(&glCreateShaderProgramv) CreateShaderProgramv;
+	decltype(&glBindProgramPipeline) BindProgramPipeline;
+	decltype(&glDeleteProgramPipelines) DeleteProgramPipelines;
+	decltype(&glGenProgramPipelines) GenProgramPipelines;
+	decltype(&glIsProgramPipeline) IsProgramPipeline;
+	decltype(&glGetProgramPipelineiv) GetProgramPipelineiv;
+	decltype(&glProgramUniform1i) ProgramUniform1i;
+	decltype(&glProgramUniform1iv) ProgramUniform1iv;
+	decltype(&glProgramUniform1f) ProgramUniform1f;
+	decltype(&glProgramUniform1fv) ProgramUniform1fv;
+	decltype(&glProgramUniform1d) ProgramUniform1d;
+	decltype(&glProgramUniform1dv) ProgramUniform1dv;
+	decltype(&glProgramUniform1ui) ProgramUniform1ui;
+	decltype(&glProgramUniform1uiv) ProgramUniform1uiv;
+	decltype(&glProgramUniform2i) ProgramUniform2i;
+	decltype(&glProgramUniform2iv) ProgramUniform2iv;
+	decltype(&glProgramUniform2f) ProgramUniform2f;
+	decltype(&glProgramUniform2fv) ProgramUniform2fv;
+	decltype(&glProgramUniform2d) ProgramUniform2d;
+	decltype(&glProgramUniform2dv) ProgramUniform2dv;
+	decltype(&glProgramUniform2ui) ProgramUniform2ui;
+	decltype(&glProgramUniform2uiv) ProgramUniform2uiv;
+	decltype(&glProgramUniform3i) ProgramUniform3i;
+	decltype(&glProgramUniform3iv) ProgramUniform3iv;
+	decltype(&glProgramUniform3f) ProgramUniform3f;
+	decltype(&glProgramUniform3fv) ProgramUniform3fv;
+	decltype(&glProgramUniform3d) ProgramUniform3d;
+	decltype(&glProgramUniform3dv) ProgramUniform3dv;
+	decltype(&glProgramUniform3ui) ProgramUniform3ui;
+	decltype(&glProgramUniform3uiv) ProgramUniform3uiv;
+	decltype(&glProgramUniform4i) ProgramUniform4i;
+	decltype(&glProgramUniform4iv) ProgramUniform4iv;
+	decltype(&glProgramUniform4f) ProgramUniform4f;
+	decltype(&glProgramUniform4fv) ProgramUniform4fv;
+	decltype(&glProgramUniform4d) ProgramUniform4d;
+	decltype(&glProgramUniform4dv) ProgramUniform4dv;
+	decltype(&glProgramUniform4ui) ProgramUniform4ui;
+	decltype(&glProgramUniform4uiv) ProgramUniform4uiv;
+	decltype(&glProgramUniformMatrix2fv) ProgramUniformMatrix2fv;
+	decltype(&glProgramUniformMatrix3fv) ProgramUniformMatrix3fv;
+	decltype(&glProgramUniformMatrix4fv) ProgramUniformMatrix4fv;
+	decltype(&glProgramUniformMatrix2dv) ProgramUniformMatrix2dv;
+	decltype(&glProgramUniformMatrix3dv) ProgramUniformMatrix3dv;
+	decltype(&glProgramUniformMatrix4dv) ProgramUniformMatrix4dv;
+	decltype(&glProgramUniformMatrix2x3fv) ProgramUniformMatrix2x3fv;
+	decltype(&glProgramUniformMatrix3x2fv) ProgramUniformMatrix3x2fv;
+	decltype(&glProgramUniformMatrix2x4fv) ProgramUniformMatrix2x4fv;
+	decltype(&glProgramUniformMatrix4x2fv) ProgramUniformMatrix4x2fv;
+	decltype(&glProgramUniformMatrix3x4fv) ProgramUniformMatrix3x4fv;
+	decltype(&glProgramUniformMatrix4x3fv) ProgramUniformMatrix4x3fv;
+	decltype(&glProgramUniformMatrix2x3dv) ProgramUniformMatrix2x3dv;
+	decltype(&glProgramUniformMatrix3x2dv) ProgramUniformMatrix3x2dv;
+	decltype(&glProgramUniformMatrix2x4dv) ProgramUniformMatrix2x4dv;
+	decltype(&glProgramUniformMatrix4x2dv) ProgramUniformMatrix4x2dv;
+	decltype(&glProgramUniformMatrix3x4dv) ProgramUniformMatrix3x4dv;
+	decltype(&glProgramUniformMatrix4x3dv) ProgramUniformMatrix4x3dv;
+	decltype(&glValidateProgramPipeline) ValidateProgramPipeline;
+	decltype(&glGetProgramPipelineInfoLog) GetProgramPipelineInfoLog;
+	decltype(&glVertexAttribL1d) VertexAttribL1d;
+	decltype(&glVertexAttribL2d) VertexAttribL2d;
+	decltype(&glVertexAttribL3d) VertexAttribL3d;
+	decltype(&glVertexAttribL4d) VertexAttribL4d;
+	decltype(&glVertexAttribL1dv) VertexAttribL1dv;
+	decltype(&glVertexAttribL2dv) VertexAttribL2dv;
+	decltype(&glVertexAttribL3dv) VertexAttribL3dv;
+	decltype(&glVertexAttribL4dv) VertexAttribL4dv;
+	decltype(&glVertexAttribLPointer) VertexAttribLPointer;
+	decltype(&glGetVertexAttribLdv) GetVertexAttribLdv;
+	decltype(&glViewportArrayv) ViewportArrayv;
+	decltype(&glViewportIndexedf) ViewportIndexedf;
+	decltype(&glViewportIndexedfv) ViewportIndexedfv;
+	decltype(&glScissorArrayv) ScissorArrayv;
+	decltype(&glScissorIndexed) ScissorIndexed;
+	decltype(&glScissorIndexedv) ScissorIndexedv;
+	decltype(&glDepthRangeArrayv) DepthRangeArrayv;
+	decltype(&glDepthRangeIndexed) DepthRangeIndexed;
+	decltype(&glGetFloati_v) GetFloati_v;
+	decltype(&glGetDoublei_v) GetDoublei_v;
+	decltype(&glCreateSyncFromCLeventARB) CreateSyncFromCLeventARB;
+	decltype(&glDebugMessageControlARB) DebugMessageControlARB;
+	decltype(&glDebugMessageInsertARB) DebugMessageInsertARB;
+	decltype(&glDebugMessageCallbackARB) DebugMessageCallbackARB;
+	decltype(&glGetDebugMessageLogARB) GetDebugMessageLogARB;
+	decltype(&glGetGraphicsResetStatusARB) GetGraphicsResetStatusARB;
+	decltype(&glGetnMapdvARB) GetnMapdvARB;
+	decltype(&glGetnMapfvARB) GetnMapfvARB;
+	decltype(&glGetnMapivARB) GetnMapivARB;
+	decltype(&glGetnPixelMapfvARB) GetnPixelMapfvARB;
+	decltype(&glGetnPixelMapuivARB) GetnPixelMapuivARB;
+	decltype(&glGetnPixelMapusvARB) GetnPixelMapusvARB;
+	decltype(&glGetnPolygonStippleARB) GetnPolygonStippleARB;
+	decltype(&glGetnColorTableARB) GetnColorTableARB;
+	decltype(&glGetnConvolutionFilterARB) GetnConvolutionFilterARB;
+	decltype(&glGetnSeparableFilterARB) GetnSeparableFilterARB;
+	decltype(&glGetnHistogramARB) GetnHistogramARB;
+	decltype(&glGetnMinmaxARB) GetnMinmaxARB;
+	decltype(&glGetnTexImageARB) GetnTexImageARB;
+	decltype(&glReadnPixelsARB) ReadnPixelsARB;
+	decltype(&glGetnCompressedTexImageARB) GetnCompressedTexImageARB;
+	decltype(&glGetnUniformfvARB) GetnUniformfvARB;
+	decltype(&glGetnUniformivARB) GetnUniformivARB;
+	decltype(&glGetnUniformuivARB) GetnUniformuivARB;
+	decltype(&glGetnUniformdvARB) GetnUniformdvARB;
+	decltype(&glDrawArraysInstancedBaseInstance) DrawArraysInstancedBaseInstance;
+	decltype(&glDrawElementsInstancedBaseInstance) DrawElementsInstancedBaseInstance;
+	decltype(&glDrawElementsInstancedBaseVertexBaseInstance) DrawElementsInstancedBaseVertexBaseInstance;
+	decltype(&glDrawTransformFeedbackInstanced) DrawTransformFeedbackInstanced;
+	decltype(&glDrawTransformFeedbackStreamInstanced) DrawTransformFeedbackStreamInstanced;
+	decltype(&glGetInternalformativ) GetInternalformativ;
+	decltype(&glGetActiveAtomicCounterBufferiv) GetActiveAtomicCounterBufferiv;
+	decltype(&glBindImageTexture) BindImageTexture;
+	decltype(&glMemoryBarrier) MemoryBarrier;
+	decltype(&glTexStorage1D) TexStorage1D;
+	decltype(&glTexStorage2D) TexStorage2D;
+	decltype(&glTexStorage3D) TexStorage3D;
+	decltype(&glTextureStorage1DEXT) TextureStorage1DEXT;
+	decltype(&glTextureStorage2DEXT) TextureStorage2DEXT;
+	decltype(&glTextureStorage3DEXT) TextureStorage3DEXT;
+};
+
+GlProcsT gGlProcs;
 
 void checkError()
 {
 #ifndef NDEBUG
-	auto error = gContext.GetError();
+	auto error = gGlProcs.GetError();
 	switch (error) {
 	case GL_NO_ERROR:
 		return;
@@ -25,3771 +559,3771 @@ void checkError()
 		throw std::runtime_error("OpenGL Error: GL_INVALID_FRAMEBUFFER_OPERATION");
 	case GL_OUT_OF_MEMORY:
 		throw std::runtime_error("OpenGL Error: GL_OUT_OF_MEMORY");
-	case GL_STACK_UNDERFLOW:
-		throw std::runtime_error("OpenGL Error: GL_STACK_UNDERFLOW");
-	case GL_STACK_OVERFLOW:
-		throw std::runtime_error("OpenGL Error: GL_STACK_OVERFLOW");
 	}
 #endif
 }
 
 }
 
+namespace Twil {
+namespace Gl {
+namespace Context {
+
+void initialize(Platform::SymbolLoaderT const & Loader)
+{
+	Loader.loadGlSymbol(gGlProcs.CullFace, "glCullFace");
+	Loader.loadGlSymbol(gGlProcs.FrontFace, "glFrontFace");
+	Loader.loadGlSymbol(gGlProcs.Hint, "glHint");
+	Loader.loadGlSymbol(gGlProcs.LineWidth, "glLineWidth");
+	Loader.loadGlSymbol(gGlProcs.PointSize, "glPointSize");
+	Loader.loadGlSymbol(gGlProcs.PolygonMode, "glPolygonMode");
+	Loader.loadGlSymbol(gGlProcs.Scissor, "glScissor");
+	Loader.loadGlSymbol(gGlProcs.TexParameterf, "glTexParameterf");
+	Loader.loadGlSymbol(gGlProcs.TexParameterfv, "glTexParameterfv");
+	Loader.loadGlSymbol(gGlProcs.TexParameteri, "glTexParameteri");
+	Loader.loadGlSymbol(gGlProcs.TexParameteriv, "glTexParameteriv");
+	Loader.loadGlSymbol(gGlProcs.TexImage1D, "glTexImage1D");
+	Loader.loadGlSymbol(gGlProcs.TexImage2D, "glTexImage2D");
+	Loader.loadGlSymbol(gGlProcs.DrawBuffer, "glDrawBuffer");
+	Loader.loadGlSymbol(gGlProcs.Clear, "glClear");
+	Loader.loadGlSymbol(gGlProcs.ClearColor, "glClearColor");
+	Loader.loadGlSymbol(gGlProcs.ClearStencil, "glClearStencil");
+	Loader.loadGlSymbol(gGlProcs.ClearDepth, "glClearDepth");
+	Loader.loadGlSymbol(gGlProcs.StencilMask, "glStencilMask");
+	Loader.loadGlSymbol(gGlProcs.ColorMask, "glColorMask");
+	Loader.loadGlSymbol(gGlProcs.DepthMask, "glDepthMask");
+	Loader.loadGlSymbol(gGlProcs.Disable, "glDisable");
+	Loader.loadGlSymbol(gGlProcs.Enable, "glEnable");
+	Loader.loadGlSymbol(gGlProcs.Finish, "glFinish");
+	Loader.loadGlSymbol(gGlProcs.Flush, "glFlush");
+	Loader.loadGlSymbol(gGlProcs.BlendFunc, "glBlendFunc");
+	Loader.loadGlSymbol(gGlProcs.LogicOp, "glLogicOp");
+	Loader.loadGlSymbol(gGlProcs.StencilFunc, "glStencilFunc");
+	Loader.loadGlSymbol(gGlProcs.StencilOp, "glStencilOp");
+	Loader.loadGlSymbol(gGlProcs.DepthFunc, "glDepthFunc");
+	Loader.loadGlSymbol(gGlProcs.PixelStoref, "glPixelStoref");
+	Loader.loadGlSymbol(gGlProcs.PixelStorei, "glPixelStorei");
+	Loader.loadGlSymbol(gGlProcs.ReadBuffer, "glReadBuffer");
+	Loader.loadGlSymbol(gGlProcs.ReadPixels, "glReadPixels");
+	Loader.loadGlSymbol(gGlProcs.GetBooleanv, "glGetBooleanv");
+	Loader.loadGlSymbol(gGlProcs.GetDoublev, "glGetDoublev");
+	Loader.loadGlSymbol(gGlProcs.GetError, "glGetError");
+	Loader.loadGlSymbol(gGlProcs.GetFloatv, "glGetFloatv");
+	Loader.loadGlSymbol(gGlProcs.GetIntegerv, "glGetIntegerv");
+	Loader.loadGlSymbol(gGlProcs.GetString, "glGetString");
+	Loader.loadGlSymbol(gGlProcs.GetTexImage, "glGetTexImage");
+	Loader.loadGlSymbol(gGlProcs.GetTexParameterfv, "glGetTexParameterfv");
+	Loader.loadGlSymbol(gGlProcs.GetTexParameteriv, "glGetTexParameteriv");
+	Loader.loadGlSymbol(gGlProcs.GetTexLevelParameterfv, "glGetTexLevelParameterfv");
+	Loader.loadGlSymbol(gGlProcs.GetTexLevelParameteriv, "glGetTexLevelParameteriv");
+	Loader.loadGlSymbol(gGlProcs.IsEnabled, "glIsEnabled");
+	Loader.loadGlSymbol(gGlProcs.DepthRange, "glDepthRange");
+	Loader.loadGlSymbol(gGlProcs.Viewport, "glViewport");
+	Loader.loadGlSymbol(gGlProcs.DrawArrays, "glDrawArrays");
+	Loader.loadGlSymbol(gGlProcs.DrawElements, "glDrawElements");
+	Loader.loadGlSymbol(gGlProcs.GetPointerv, "glGetPointerv");
+	Loader.loadGlSymbol(gGlProcs.PolygonOffset, "glPolygonOffset");
+	Loader.loadGlSymbol(gGlProcs.CopyTexImage1D, "glCopyTexImage1D");
+	Loader.loadGlSymbol(gGlProcs.CopyTexImage2D, "glCopyTexImage2D");
+	Loader.loadGlSymbol(gGlProcs.CopyTexSubImage1D, "glCopyTexSubImage1D");
+	Loader.loadGlSymbol(gGlProcs.CopyTexSubImage2D, "glCopyTexSubImage2D");
+	Loader.loadGlSymbol(gGlProcs.TexSubImage1D, "glTexSubImage1D");
+	Loader.loadGlSymbol(gGlProcs.TexSubImage2D, "glTexSubImage2D");
+	Loader.loadGlSymbol(gGlProcs.BindTexture, "glBindTexture");
+	Loader.loadGlSymbol(gGlProcs.DeleteTextures, "glDeleteTextures");
+	Loader.loadGlSymbol(gGlProcs.GenTextures, "glGenTextures");
+	Loader.loadGlSymbol(gGlProcs.IsTexture, "glIsTexture");
+	Loader.loadGlArbSymbol(gGlProcs.BlendColor, "glBlendColor");
+	Loader.loadGlArbSymbol(gGlProcs.BlendEquation, "glBlendEquation");
+	Loader.loadGlArbSymbol(gGlProcs.DrawRangeElements, "glDrawRangeElements");
+	Loader.loadGlArbSymbol(gGlProcs.TexImage3D, "glTexImage3D");
+	Loader.loadGlArbSymbol(gGlProcs.TexSubImage3D, "glTexSubImage3D");
+	Loader.loadGlArbSymbol(gGlProcs.CopyTexSubImage3D, "glCopyTexSubImage3D");
+	Loader.loadGlArbSymbol(gGlProcs.ActiveTexture, "glActiveTexture");
+	Loader.loadGlArbSymbol(gGlProcs.SampleCoverage, "glSampleCoverage");
+	Loader.loadGlArbSymbol(gGlProcs.CompressedTexImage3D, "glCompressedTexImage3D");
+	Loader.loadGlArbSymbol(gGlProcs.CompressedTexImage2D, "glCompressedTexImage2D");
+	Loader.loadGlArbSymbol(gGlProcs.CompressedTexImage1D, "glCompressedTexImage1D");
+	Loader.loadGlArbSymbol(gGlProcs.CompressedTexSubImage3D, "glCompressedTexSubImage3D");
+	Loader.loadGlArbSymbol(gGlProcs.CompressedTexSubImage2D, "glCompressedTexSubImage2D");
+	Loader.loadGlArbSymbol(gGlProcs.CompressedTexSubImage1D, "glCompressedTexSubImage1D");
+	Loader.loadGlArbSymbol(gGlProcs.GetCompressedTexImage, "glGetCompressedTexImage");
+	Loader.loadGlArbSymbol(gGlProcs.BlendFuncSeparate, "glBlendFuncSeparate");
+	Loader.loadGlArbSymbol(gGlProcs.MultiDrawArrays, "glMultiDrawArrays");
+	Loader.loadGlArbSymbol(gGlProcs.MultiDrawElements, "glMultiDrawElements");
+	Loader.loadGlArbSymbol(gGlProcs.PointParameterf, "glPointParameterf");
+	Loader.loadGlArbSymbol(gGlProcs.PointParameterfv, "glPointParameterfv");
+	Loader.loadGlArbSymbol(gGlProcs.PointParameteri, "glPointParameteri");
+	Loader.loadGlArbSymbol(gGlProcs.PointParameteriv, "glPointParameteriv");
+	Loader.loadGlArbSymbol(gGlProcs.GenQueries, "glGenQueries");
+	Loader.loadGlArbSymbol(gGlProcs.DeleteQueries, "glDeleteQueries");
+	Loader.loadGlArbSymbol(gGlProcs.IsQuery, "glIsQuery");
+	Loader.loadGlArbSymbol(gGlProcs.BeginQuery, "glBeginQuery");
+	Loader.loadGlArbSymbol(gGlProcs.EndQuery, "glEndQuery");
+	Loader.loadGlArbSymbol(gGlProcs.GetQueryiv, "glGetQueryiv");
+	Loader.loadGlArbSymbol(gGlProcs.GetQueryObjectiv, "glGetQueryObjectiv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribP1ui, "glVertexAttribP1ui");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribP1uiv, "glVertexAttribP1uiv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribP2ui, "glVertexAttribP2ui");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribP2uiv, "glVertexAttribP2uiv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribP3ui, "glVertexAttribP3ui");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribP3uiv, "glVertexAttribP3uiv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribP4ui, "glVertexAttribP4ui");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribP4uiv, "glVertexAttribP4uiv");
+	Loader.loadGlArbSymbol(gGlProcs.GetQueryObjectuiv, "glGetQueryObjectuiv");
+	Loader.loadGlArbSymbol(gGlProcs.BindBuffer, "glBindBuffer");
+	Loader.loadGlArbSymbol(gGlProcs.DeleteBuffers, "glDeleteBuffers");
+	Loader.loadGlArbSymbol(gGlProcs.GenBuffers, "glGenBuffers");
+	Loader.loadGlArbSymbol(gGlProcs.IsBuffer, "glIsBuffer");
+	Loader.loadGlArbSymbol(gGlProcs.BufferData, "glBufferData");
+	Loader.loadGlArbSymbol(gGlProcs.BufferSubData, "glBufferSubData");
+	Loader.loadGlArbSymbol(gGlProcs.GetBufferSubData, "glGetBufferSubData");
+	Loader.loadGlArbSymbol(gGlProcs.MapBuffer, "glMapBuffer");
+	Loader.loadGlArbSymbol(gGlProcs.UnmapBuffer, "glUnmapBuffer");
+	Loader.loadGlArbSymbol(gGlProcs.GetBufferParameteriv, "glGetBufferParameteriv");
+	Loader.loadGlArbSymbol(gGlProcs.GetBufferPointerv, "glGetBufferPointerv");
+	Loader.loadGlArbSymbol(gGlProcs.BlendEquationSeparate, "glBlendEquationSeparate");
+	Loader.loadGlArbSymbol(gGlProcs.DrawBuffers, "glDrawBuffers");
+	Loader.loadGlArbSymbol(gGlProcs.StencilOpSeparate, "glStencilOpSeparate");
+	Loader.loadGlArbSymbol(gGlProcs.StencilFuncSeparate, "glStencilFuncSeparate");
+	Loader.loadGlArbSymbol(gGlProcs.StencilMaskSeparate, "glStencilMaskSeparate");
+	Loader.loadGlArbSymbol(gGlProcs.AttachShader, "glAttachShader");
+	Loader.loadGlArbSymbol(gGlProcs.BindAttribLocation, "glBindAttribLocation");
+	Loader.loadGlArbSymbol(gGlProcs.CompileShader, "glCompileShader");
+	Loader.loadGlArbSymbol(gGlProcs.CreateProgram, "glCreateProgram");
+	Loader.loadGlArbSymbol(gGlProcs.CreateShader, "glCreateShader");
+	Loader.loadGlArbSymbol(gGlProcs.DeleteProgram, "glDeleteProgram");
+	Loader.loadGlArbSymbol(gGlProcs.DeleteShader, "glDeleteShader");
+	Loader.loadGlArbSymbol(gGlProcs.DetachShader, "glDetachShader");
+	Loader.loadGlArbSymbol(gGlProcs.DisableVertexAttribArray, "glDisableVertexAttribArray");
+	Loader.loadGlArbSymbol(gGlProcs.EnableVertexAttribArray, "glEnableVertexAttribArray");
+	Loader.loadGlArbSymbol(gGlProcs.GetActiveAttrib, "glGetActiveAttrib");
+	Loader.loadGlArbSymbol(gGlProcs.GetActiveUniform, "glGetActiveUniform");
+	Loader.loadGlArbSymbol(gGlProcs.GetAttachedShaders, "glGetAttachedShaders");
+	Loader.loadGlArbSymbol(gGlProcs.GetAttribLocation, "glGetAttribLocation");
+	Loader.loadGlArbSymbol(gGlProcs.GetProgramiv, "glGetProgramiv");
+	Loader.loadGlArbSymbol(gGlProcs.GetProgramInfoLog, "glGetProgramInfoLog");
+	Loader.loadGlArbSymbol(gGlProcs.GetShaderiv, "glGetShaderiv");
+	Loader.loadGlArbSymbol(gGlProcs.GetShaderInfoLog, "glGetShaderInfoLog");
+	Loader.loadGlArbSymbol(gGlProcs.GetShaderSource, "glGetShaderSource");
+	Loader.loadGlArbSymbol(gGlProcs.GetUniformLocation, "glGetUniformLocation");
+	Loader.loadGlArbSymbol(gGlProcs.GetUniformfv, "glGetUniformfv");
+	Loader.loadGlArbSymbol(gGlProcs.GetUniformiv, "glGetUniformiv");
+	Loader.loadGlArbSymbol(gGlProcs.GetVertexAttribdv, "glGetVertexAttribdv");
+	Loader.loadGlArbSymbol(gGlProcs.GetVertexAttribfv, "glGetVertexAttribfv");
+	Loader.loadGlArbSymbol(gGlProcs.GetVertexAttribiv, "glGetVertexAttribiv");
+	Loader.loadGlArbSymbol(gGlProcs.GetVertexAttribPointerv, "glGetVertexAttribPointerv");
+	Loader.loadGlArbSymbol(gGlProcs.IsProgram, "glIsProgram");
+	Loader.loadGlArbSymbol(gGlProcs.IsShader, "glIsShader");
+	Loader.loadGlArbSymbol(gGlProcs.LinkProgram, "glLinkProgram");
+	Loader.loadGlArbSymbol(gGlProcs.ShaderSource, "glShaderSource");
+	Loader.loadGlArbSymbol(gGlProcs.UseProgram, "glUseProgram");
+	Loader.loadGlArbSymbol(gGlProcs.Uniform1f, "glUniform1f");
+	Loader.loadGlArbSymbol(gGlProcs.Uniform2f, "glUniform2f");
+	Loader.loadGlArbSymbol(gGlProcs.Uniform3f, "glUniform3f");
+	Loader.loadGlArbSymbol(gGlProcs.Uniform4f, "glUniform4f");
+	Loader.loadGlArbSymbol(gGlProcs.Uniform1i, "glUniform1i");
+	Loader.loadGlArbSymbol(gGlProcs.Uniform2i, "glUniform2i");
+	Loader.loadGlArbSymbol(gGlProcs.Uniform3i, "glUniform3i");
+	Loader.loadGlArbSymbol(gGlProcs.Uniform4i, "glUniform4i");
+	Loader.loadGlArbSymbol(gGlProcs.Uniform1fv, "glUniform1fv");
+	Loader.loadGlArbSymbol(gGlProcs.Uniform2fv, "glUniform2fv");
+	Loader.loadGlArbSymbol(gGlProcs.Uniform3fv, "glUniform3fv");
+	Loader.loadGlArbSymbol(gGlProcs.Uniform4fv, "glUniform4fv");
+	Loader.loadGlArbSymbol(gGlProcs.Uniform1iv, "glUniform1iv");
+	Loader.loadGlArbSymbol(gGlProcs.Uniform2iv, "glUniform2iv");
+	Loader.loadGlArbSymbol(gGlProcs.Uniform3iv, "glUniform3iv");
+	Loader.loadGlArbSymbol(gGlProcs.Uniform4iv, "glUniform4iv");
+	Loader.loadGlArbSymbol(gGlProcs.UniformMatrix2fv, "glUniformMatrix2fv");
+	Loader.loadGlArbSymbol(gGlProcs.UniformMatrix3fv, "glUniformMatrix3fv");
+	Loader.loadGlArbSymbol(gGlProcs.UniformMatrix4fv, "glUniformMatrix4fv");
+	Loader.loadGlArbSymbol(gGlProcs.ValidateProgram, "glValidateProgram");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib1d, "glVertexAttrib1d");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib1dv, "glVertexAttrib1dv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib1f, "glVertexAttrib1f");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib1fv, "glVertexAttrib1fv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib1s, "glVertexAttrib1s");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib1sv, "glVertexAttrib1sv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib2d, "glVertexAttrib2d");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib2dv, "glVertexAttrib2dv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib2f, "glVertexAttrib2f");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib2fv, "glVertexAttrib2fv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib2s, "glVertexAttrib2s");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib2sv, "glVertexAttrib2sv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib3d, "glVertexAttrib3d");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib3dv, "glVertexAttrib3dv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib3f, "glVertexAttrib3f");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib3fv, "glVertexAttrib3fv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib3s, "glVertexAttrib3s");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib3sv, "glVertexAttrib3sv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib4Nbv, "glVertexAttrib4Nbv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib4Niv, "glVertexAttrib4Niv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib4Nsv, "glVertexAttrib4Nsv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib4Nub, "glVertexAttrib4Nub");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib4Nubv, "glVertexAttrib4Nubv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib4Nuiv, "glVertexAttrib4Nuiv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib4Nusv, "glVertexAttrib4Nusv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib4bv, "glVertexAttrib4bv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib4d, "glVertexAttrib4d");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib4dv, "glVertexAttrib4dv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib4f, "glVertexAttrib4f");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib4fv, "glVertexAttrib4fv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib4iv, "glVertexAttrib4iv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib4s, "glVertexAttrib4s");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib4sv, "glVertexAttrib4sv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib4ubv, "glVertexAttrib4ubv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib4uiv, "glVertexAttrib4uiv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttrib4usv, "glVertexAttrib4usv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribPointer, "glVertexAttribPointer");
+	Loader.loadGlArbSymbol(gGlProcs.UniformMatrix2x3fv, "glUniformMatrix2x3fv");
+	Loader.loadGlArbSymbol(gGlProcs.UniformMatrix3x2fv, "glUniformMatrix3x2fv");
+	Loader.loadGlArbSymbol(gGlProcs.UniformMatrix2x4fv, "glUniformMatrix2x4fv");
+	Loader.loadGlArbSymbol(gGlProcs.UniformMatrix4x2fv, "glUniformMatrix4x2fv");
+	Loader.loadGlArbSymbol(gGlProcs.UniformMatrix3x4fv, "glUniformMatrix3x4fv");
+	Loader.loadGlArbSymbol(gGlProcs.UniformMatrix4x3fv, "glUniformMatrix4x3fv");
+	Loader.loadGlArbSymbol(gGlProcs.ColorMaski, "glColorMaski");
+	Loader.loadGlArbSymbol(gGlProcs.GetBooleani_v, "glGetBooleani_v");
+	Loader.loadGlArbSymbol(gGlProcs.GetIntegeri_v, "glGetIntegeri_v");
+	Loader.loadGlArbSymbol(gGlProcs.Enablei, "glEnablei");
+	Loader.loadGlArbSymbol(gGlProcs.Disablei, "glDisablei");
+	Loader.loadGlArbSymbol(gGlProcs.IsEnabledi, "glIsEnabledi");
+	Loader.loadGlArbSymbol(gGlProcs.BeginTransformFeedback, "glBeginTransformFeedback");
+	Loader.loadGlArbSymbol(gGlProcs.EndTransformFeedback, "glEndTransformFeedback");
+	Loader.loadGlArbSymbol(gGlProcs.BindBufferRange, "glBindBufferRange");
+	Loader.loadGlArbSymbol(gGlProcs.BindBufferBase, "glBindBufferBase");
+	Loader.loadGlArbSymbol(gGlProcs.TransformFeedbackVaryings, "glTransformFeedbackVaryings");
+	Loader.loadGlArbSymbol(gGlProcs.GetTransformFeedbackVarying, "glGetTransformFeedbackVarying");
+	Loader.loadGlArbSymbol(gGlProcs.ClampColor, "glClampColor");
+	Loader.loadGlArbSymbol(gGlProcs.BeginConditionalRender, "glBeginConditionalRender");
+	Loader.loadGlArbSymbol(gGlProcs.EndConditionalRender, "glEndConditionalRender");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribIPointer, "glVertexAttribIPointer");
+	Loader.loadGlArbSymbol(gGlProcs.GetVertexAttribIiv, "glGetVertexAttribIiv");
+	Loader.loadGlArbSymbol(gGlProcs.GetVertexAttribIuiv, "glGetVertexAttribIuiv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribI1i, "glVertexAttribI1i");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribI2i, "glVertexAttribI2i");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribI3i, "glVertexAttribI3i");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribI4i, "glVertexAttribI4i");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribI1ui, "glVertexAttribI1ui");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribI2ui, "glVertexAttribI2ui");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribI3ui, "glVertexAttribI3ui");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribI4ui, "glVertexAttribI4ui");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribI1iv, "glVertexAttribI1iv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribI2iv, "glVertexAttribI2iv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribI3iv, "glVertexAttribI3iv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribI4iv, "glVertexAttribI4iv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribI1uiv, "glVertexAttribI1uiv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribI2uiv, "glVertexAttribI2uiv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribI3uiv, "glVertexAttribI3uiv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribI4uiv, "glVertexAttribI4uiv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribI4bv, "glVertexAttribI4bv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribI4sv, "glVertexAttribI4sv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribI4ubv, "glVertexAttribI4ubv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribI4usv, "glVertexAttribI4usv");
+	Loader.loadGlArbSymbol(gGlProcs.GetUniformuiv, "glGetUniformuiv");
+	Loader.loadGlArbSymbol(gGlProcs.BindFragDataLocation, "glBindFragDataLocation");
+	Loader.loadGlArbSymbol(gGlProcs.GetFragDataLocation, "glGetFragDataLocation");
+	Loader.loadGlArbSymbol(gGlProcs.Uniform1ui, "glUniform1ui");
+	Loader.loadGlArbSymbol(gGlProcs.Uniform2ui, "glUniform2ui");
+	Loader.loadGlArbSymbol(gGlProcs.Uniform3ui, "glUniform3ui");
+	Loader.loadGlArbSymbol(gGlProcs.Uniform4ui, "glUniform4ui");
+	Loader.loadGlArbSymbol(gGlProcs.Uniform1uiv, "glUniform1uiv");
+	Loader.loadGlArbSymbol(gGlProcs.Uniform2uiv, "glUniform2uiv");
+	Loader.loadGlArbSymbol(gGlProcs.Uniform3uiv, "glUniform3uiv");
+	Loader.loadGlArbSymbol(gGlProcs.Uniform4uiv, "glUniform4uiv");
+	Loader.loadGlArbSymbol(gGlProcs.TexParameterIiv, "glTexParameterIiv");
+	Loader.loadGlArbSymbol(gGlProcs.TexParameterIuiv, "glTexParameterIuiv");
+	Loader.loadGlArbSymbol(gGlProcs.GetTexParameterIiv, "glGetTexParameterIiv");
+	Loader.loadGlArbSymbol(gGlProcs.GetTexParameterIuiv, "glGetTexParameterIuiv");
+	Loader.loadGlArbSymbol(gGlProcs.ClearBufferiv, "glClearBufferiv");
+	Loader.loadGlArbSymbol(gGlProcs.ClearBufferuiv, "glClearBufferuiv");
+	Loader.loadGlArbSymbol(gGlProcs.ClearBufferfv, "glClearBufferfv");
+	Loader.loadGlArbSymbol(gGlProcs.ClearBufferfi, "glClearBufferfi");
+	Loader.loadGlArbSymbol(gGlProcs.GetStringi, "glGetStringi");
+	Loader.loadGlArbSymbol(gGlProcs.DrawArraysInstanced, "glDrawArraysInstanced");
+	Loader.loadGlArbSymbol(gGlProcs.DrawElementsInstanced, "glDrawElementsInstanced");
+	Loader.loadGlArbSymbol(gGlProcs.TexBuffer, "glTexBuffer");
+	Loader.loadGlArbSymbol(gGlProcs.PrimitiveRestartIndex, "glPrimitiveRestartIndex");
+	Loader.loadGlArbSymbol(gGlProcs.GetInteger64i_v, "glGetInteger64i_v");
+	Loader.loadGlArbSymbol(gGlProcs.GetBufferParameteri64v, "glGetBufferParameteri64v");
+	Loader.loadGlArbSymbol(gGlProcs.FramebufferTexture, "glFramebufferTexture");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribDivisor, "glVertexAttribDivisor");
+	Loader.loadGlArbSymbol(gGlProcs.MinSampleShading, "glMinSampleShading");
+	Loader.loadGlArbSymbol(gGlProcs.BlendEquationi, "glBlendEquationi");
+	Loader.loadGlArbSymbol(gGlProcs.BlendEquationSeparatei, "glBlendEquationSeparatei");
+	Loader.loadGlArbSymbol(gGlProcs.BlendFunci, "glBlendFunci");
+	Loader.loadGlArbSymbol(gGlProcs.BlendFuncSeparatei, "glBlendFuncSeparatei");
+	Loader.loadGlArbSymbol(gGlProcs.IsRenderbuffer, "glIsRenderbuffer");
+	Loader.loadGlArbSymbol(gGlProcs.BindRenderbuffer, "glBindRenderbuffer");
+	Loader.loadGlArbSymbol(gGlProcs.DeleteRenderbuffers, "glDeleteRenderbuffers");
+	Loader.loadGlArbSymbol(gGlProcs.GenRenderbuffers, "glGenRenderbuffers");
+	Loader.loadGlArbSymbol(gGlProcs.RenderbufferStorage, "glRenderbufferStorage");
+	Loader.loadGlArbSymbol(gGlProcs.GetRenderbufferParameteriv, "glGetRenderbufferParameteriv");
+	Loader.loadGlArbSymbol(gGlProcs.IsFramebuffer, "glIsFramebuffer");
+	Loader.loadGlArbSymbol(gGlProcs.BindFramebuffer, "glBindFramebuffer");
+	Loader.loadGlArbSymbol(gGlProcs.DeleteFramebuffers, "glDeleteFramebuffers");
+	Loader.loadGlArbSymbol(gGlProcs.GenFramebuffers, "glGenFramebuffers");
+	Loader.loadGlArbSymbol(gGlProcs.CheckFramebufferStatus, "glCheckFramebufferStatus");
+	Loader.loadGlArbSymbol(gGlProcs.FramebufferTexture1D, "glFramebufferTexture1D");
+	Loader.loadGlArbSymbol(gGlProcs.FramebufferTexture2D, "glFramebufferTexture2D");
+	Loader.loadGlArbSymbol(gGlProcs.FramebufferTexture3D, "glFramebufferTexture3D");
+	Loader.loadGlArbSymbol(gGlProcs.FramebufferRenderbuffer, "glFramebufferRenderbuffer");
+	Loader.loadGlArbSymbol(gGlProcs.GetFramebufferAttachmentParameteriv, "glGetFramebufferAttachmentParameteriv");
+	Loader.loadGlArbSymbol(gGlProcs.GenerateMipmap, "glGenerateMipmap");
+	Loader.loadGlArbSymbol(gGlProcs.BlitFramebuffer, "glBlitFramebuffer");
+	Loader.loadGlArbSymbol(gGlProcs.RenderbufferStorageMultisample, "glRenderbufferStorageMultisample");
+	Loader.loadGlArbSymbol(gGlProcs.FramebufferTextureLayer, "glFramebufferTextureLayer");
+	Loader.loadGlArbSymbol(gGlProcs.MapBufferRange, "glMapBufferRange");
+	Loader.loadGlArbSymbol(gGlProcs.FlushMappedBufferRange, "glFlushMappedBufferRange");
+	Loader.loadGlArbSymbol(gGlProcs.BindVertexArray, "glBindVertexArray");
+	Loader.loadGlArbSymbol(gGlProcs.DeleteVertexArrays, "glDeleteVertexArrays");
+	Loader.loadGlArbSymbol(gGlProcs.GenVertexArrays, "glGenVertexArrays");
+	Loader.loadGlArbSymbol(gGlProcs.IsVertexArray, "glIsVertexArray");
+	Loader.loadGlArbSymbol(gGlProcs.GetUniformIndices, "glGetUniformIndices");
+	Loader.loadGlArbSymbol(gGlProcs.GetActiveUniformsiv, "glGetActiveUniformsiv");
+	Loader.loadGlArbSymbol(gGlProcs.GetActiveUniformName, "glGetActiveUniformName");
+	Loader.loadGlArbSymbol(gGlProcs.GetUniformBlockIndex, "glGetUniformBlockIndex");
+	Loader.loadGlArbSymbol(gGlProcs.GetActiveUniformBlockiv, "glGetActiveUniformBlockiv");
+	Loader.loadGlArbSymbol(gGlProcs.GetActiveUniformBlockName, "glGetActiveUniformBlockName");
+	Loader.loadGlArbSymbol(gGlProcs.UniformBlockBinding, "glUniformBlockBinding");
+	Loader.loadGlArbSymbol(gGlProcs.CopyBufferSubData, "glCopyBufferSubData");
+	Loader.loadGlArbSymbol(gGlProcs.DrawElementsBaseVertex, "glDrawElementsBaseVertex");
+	Loader.loadGlArbSymbol(gGlProcs.DrawRangeElementsBaseVertex, "glDrawRangeElementsBaseVertex");
+	Loader.loadGlArbSymbol(gGlProcs.DrawElementsInstancedBaseVertex, "glDrawElementsInstancedBaseVertex");
+	Loader.loadGlArbSymbol(gGlProcs.MultiDrawElementsBaseVertex, "glMultiDrawElementsBaseVertex");
+	Loader.loadGlArbSymbol(gGlProcs.ProvokingVertex, "glProvokingVertex");
+	Loader.loadGlArbSymbol(gGlProcs.FenceSync, "glFenceSync");
+	Loader.loadGlArbSymbol(gGlProcs.IsSync, "glIsSync");
+	Loader.loadGlArbSymbol(gGlProcs.DeleteSync, "glDeleteSync");
+	Loader.loadGlArbSymbol(gGlProcs.ClientWaitSync, "glClientWaitSync");
+	Loader.loadGlArbSymbol(gGlProcs.WaitSync, "glWaitSync");
+	Loader.loadGlArbSymbol(gGlProcs.GetInteger64v, "glGetInteger64v");
+	Loader.loadGlArbSymbol(gGlProcs.GetSynciv, "glGetSynciv");
+	Loader.loadGlArbSymbol(gGlProcs.TexImage2DMultisample, "glTexImage2DMultisample");
+	Loader.loadGlArbSymbol(gGlProcs.TexImage3DMultisample, "glTexImage3DMultisample");
+	Loader.loadGlArbSymbol(gGlProcs.GetMultisamplefv, "glGetMultisamplefv");
+	Loader.loadGlArbSymbol(gGlProcs.SampleMaski, "glSampleMaski");
+	Loader.loadGlArbSymbol(gGlProcs.BlendEquationiARB, "glBlendEquationiARB");
+	Loader.loadGlArbSymbol(gGlProcs.BlendEquationSeparateiARB, "glBlendEquationSeparateiARB");
+	Loader.loadGlArbSymbol(gGlProcs.BlendFunciARB, "glBlendFunciARB");
+	Loader.loadGlArbSymbol(gGlProcs.BlendFuncSeparateiARB, "glBlendFuncSeparateiARB");
+	Loader.loadGlArbSymbol(gGlProcs.MinSampleShadingARB, "glMinSampleShadingARB");
+	Loader.loadGlArbSymbol(gGlProcs.NamedStringARB, "glNamedStringARB");
+	Loader.loadGlArbSymbol(gGlProcs.DeleteNamedStringARB, "glDeleteNamedStringARB");
+	Loader.loadGlArbSymbol(gGlProcs.CompileShaderIncludeARB, "glCompileShaderIncludeARB");
+	Loader.loadGlArbSymbol(gGlProcs.IsNamedStringARB, "glIsNamedStringARB");
+	Loader.loadGlArbSymbol(gGlProcs.GetNamedStringARB, "glGetNamedStringARB");
+	Loader.loadGlArbSymbol(gGlProcs.GetNamedStringivARB, "glGetNamedStringivARB");
+	Loader.loadGlArbSymbol(gGlProcs.BindFragDataLocationIndexed, "glBindFragDataLocationIndexed");
+	Loader.loadGlArbSymbol(gGlProcs.GetFragDataIndex, "glGetFragDataIndex");
+	Loader.loadGlArbSymbol(gGlProcs.GenSamplers, "glGenSamplers");
+	Loader.loadGlArbSymbol(gGlProcs.DeleteSamplers, "glDeleteSamplers");
+	Loader.loadGlArbSymbol(gGlProcs.IsSampler, "glIsSampler");
+	Loader.loadGlArbSymbol(gGlProcs.BindSampler, "glBindSampler");
+	Loader.loadGlArbSymbol(gGlProcs.SamplerParameteri, "glSamplerParameteri");
+	Loader.loadGlArbSymbol(gGlProcs.SamplerParameteriv, "glSamplerParameteriv");
+	Loader.loadGlArbSymbol(gGlProcs.SamplerParameterf, "glSamplerParameterf");
+	Loader.loadGlArbSymbol(gGlProcs.SamplerParameterfv, "glSamplerParameterfv");
+	Loader.loadGlArbSymbol(gGlProcs.SamplerParameterIiv, "glSamplerParameterIiv");
+	Loader.loadGlArbSymbol(gGlProcs.SamplerParameterIuiv, "glSamplerParameterIuiv");
+	Loader.loadGlArbSymbol(gGlProcs.GetSamplerParameteriv, "glGetSamplerParameteriv");
+	Loader.loadGlArbSymbol(gGlProcs.GetSamplerParameterIiv, "glGetSamplerParameterIiv");
+	Loader.loadGlArbSymbol(gGlProcs.GetSamplerParameterfv, "glGetSamplerParameterfv");
+	Loader.loadGlArbSymbol(gGlProcs.GetSamplerParameterIuiv, "glGetSamplerParameterIuiv");
+	Loader.loadGlArbSymbol(gGlProcs.QueryCounter, "glQueryCounter");
+	Loader.loadGlArbSymbol(gGlProcs.GetQueryObjecti64v, "glGetQueryObjecti64v");
+	Loader.loadGlArbSymbol(gGlProcs.GetQueryObjectui64v, "glGetQueryObjectui64v");
+	Loader.loadGlArbSymbol(gGlProcs.DrawArraysIndirect, "glDrawArraysIndirect");
+	Loader.loadGlArbSymbol(gGlProcs.DrawElementsIndirect, "glDrawElementsIndirect");
+	Loader.loadGlArbSymbol(gGlProcs.Uniform1d, "glUniform1d");
+	Loader.loadGlArbSymbol(gGlProcs.Uniform2d, "glUniform2d");
+	Loader.loadGlArbSymbol(gGlProcs.Uniform3d, "glUniform3d");
+	Loader.loadGlArbSymbol(gGlProcs.Uniform4d, "glUniform4d");
+	Loader.loadGlArbSymbol(gGlProcs.Uniform1dv, "glUniform1dv");
+	Loader.loadGlArbSymbol(gGlProcs.Uniform2dv, "glUniform2dv");
+	Loader.loadGlArbSymbol(gGlProcs.Uniform3dv, "glUniform3dv");
+	Loader.loadGlArbSymbol(gGlProcs.Uniform4dv, "glUniform4dv");
+	Loader.loadGlArbSymbol(gGlProcs.UniformMatrix2dv, "glUniformMatrix2dv");
+	Loader.loadGlArbSymbol(gGlProcs.UniformMatrix3dv, "glUniformMatrix3dv");
+	Loader.loadGlArbSymbol(gGlProcs.UniformMatrix4dv, "glUniformMatrix4dv");
+	Loader.loadGlArbSymbol(gGlProcs.UniformMatrix2x3dv, "glUniformMatrix2x3dv");
+	Loader.loadGlArbSymbol(gGlProcs.UniformMatrix2x4dv, "glUniformMatrix2x4dv");
+	Loader.loadGlArbSymbol(gGlProcs.UniformMatrix3x2dv, "glUniformMatrix3x2dv");
+	Loader.loadGlArbSymbol(gGlProcs.UniformMatrix3x4dv, "glUniformMatrix3x4dv");
+	Loader.loadGlArbSymbol(gGlProcs.UniformMatrix4x2dv, "glUniformMatrix4x2dv");
+	Loader.loadGlArbSymbol(gGlProcs.UniformMatrix4x3dv, "glUniformMatrix4x3dv");
+	Loader.loadGlArbSymbol(gGlProcs.GetUniformdv, "glGetUniformdv");
+	Loader.loadGlArbSymbol(gGlProcs.GetSubroutineUniformLocation, "glGetSubroutineUniformLocation");
+	Loader.loadGlArbSymbol(gGlProcs.GetSubroutineIndex, "glGetSubroutineIndex");
+	Loader.loadGlArbSymbol(gGlProcs.GetActiveSubroutineUniformiv, "glGetActiveSubroutineUniformiv");
+	Loader.loadGlArbSymbol(gGlProcs.GetActiveSubroutineUniformName, "glGetActiveSubroutineUniformName");
+	Loader.loadGlArbSymbol(gGlProcs.GetActiveSubroutineName, "glGetActiveSubroutineName");
+	Loader.loadGlArbSymbol(gGlProcs.UniformSubroutinesuiv, "glUniformSubroutinesuiv");
+	Loader.loadGlArbSymbol(gGlProcs.GetUniformSubroutineuiv, "glGetUniformSubroutineuiv");
+	Loader.loadGlArbSymbol(gGlProcs.GetProgramStageiv, "glGetProgramStageiv");
+	Loader.loadGlArbSymbol(gGlProcs.PatchParameteri, "glPatchParameteri");
+	Loader.loadGlArbSymbol(gGlProcs.PatchParameterfv, "glPatchParameterfv");
+	Loader.loadGlArbSymbol(gGlProcs.BindTransformFeedback, "glBindTransformFeedback");
+	Loader.loadGlArbSymbol(gGlProcs.DeleteTransformFeedbacks, "glDeleteTransformFeedbacks");
+	Loader.loadGlArbSymbol(gGlProcs.GenTransformFeedbacks, "glGenTransformFeedbacks");
+	Loader.loadGlArbSymbol(gGlProcs.IsTransformFeedback, "glIsTransformFeedback");
+	Loader.loadGlArbSymbol(gGlProcs.PauseTransformFeedback, "glPauseTransformFeedback");
+	Loader.loadGlArbSymbol(gGlProcs.ResumeTransformFeedback, "glResumeTransformFeedback");
+	Loader.loadGlArbSymbol(gGlProcs.DrawTransformFeedback, "glDrawTransformFeedback");
+	Loader.loadGlArbSymbol(gGlProcs.DrawTransformFeedbackStream, "glDrawTransformFeedbackStream");
+	Loader.loadGlArbSymbol(gGlProcs.BeginQueryIndexed, "glBeginQueryIndexed");
+	Loader.loadGlArbSymbol(gGlProcs.EndQueryIndexed, "glEndQueryIndexed");
+	Loader.loadGlArbSymbol(gGlProcs.GetQueryIndexediv, "glGetQueryIndexediv");
+	Loader.loadGlArbSymbol(gGlProcs.ReleaseShaderCompiler, "glReleaseShaderCompiler");
+	Loader.loadGlArbSymbol(gGlProcs.ShaderBinary, "glShaderBinary");
+	Loader.loadGlArbSymbol(gGlProcs.GetShaderPrecisionFormat, "glGetShaderPrecisionFormat");
+	Loader.loadGlArbSymbol(gGlProcs.DepthRangef, "glDepthRangef");
+	Loader.loadGlArbSymbol(gGlProcs.ClearDepthf, "glClearDepthf");
+	Loader.loadGlArbSymbol(gGlProcs.GetProgramBinary, "glGetProgramBinary");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramBinary, "glProgramBinary");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramParameteri, "glProgramParameteri");
+	Loader.loadGlArbSymbol(gGlProcs.UseProgramStages, "glUseProgramStages");
+	Loader.loadGlArbSymbol(gGlProcs.ActiveShaderProgram, "glActiveShaderProgram");
+	Loader.loadGlArbSymbol(gGlProcs.CreateShaderProgramv, "glCreateShaderProgramv");
+	Loader.loadGlArbSymbol(gGlProcs.BindProgramPipeline, "glBindProgramPipeline");
+	Loader.loadGlArbSymbol(gGlProcs.DeleteProgramPipelines, "glDeleteProgramPipelines");
+	Loader.loadGlArbSymbol(gGlProcs.GenProgramPipelines, "glGenProgramPipelines");
+	Loader.loadGlArbSymbol(gGlProcs.IsProgramPipeline, "glIsProgramPipeline");
+	Loader.loadGlArbSymbol(gGlProcs.GetProgramPipelineiv, "glGetProgramPipelineiv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniform1i, "glProgramUniform1i");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniform1iv, "glProgramUniform1iv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniform1f, "glProgramUniform1f");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniform1fv, "glProgramUniform1fv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniform1d, "glProgramUniform1d");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniform1dv, "glProgramUniform1dv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniform1ui, "glProgramUniform1ui");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniform1uiv, "glProgramUniform1uiv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniform2i, "glProgramUniform2i");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniform2iv, "glProgramUniform2iv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniform2f, "glProgramUniform2f");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniform2fv, "glProgramUniform2fv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniform2d, "glProgramUniform2d");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniform2dv, "glProgramUniform2dv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniform2ui, "glProgramUniform2ui");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniform2uiv, "glProgramUniform2uiv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniform3i, "glProgramUniform3i");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniform3iv, "glProgramUniform3iv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniform3f, "glProgramUniform3f");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniform3fv, "glProgramUniform3fv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniform3d, "glProgramUniform3d");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniform3dv, "glProgramUniform3dv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniform3ui, "glProgramUniform3ui");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniform3uiv, "glProgramUniform3uiv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniform4i, "glProgramUniform4i");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniform4iv, "glProgramUniform4iv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniform4f, "glProgramUniform4f");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniform4fv, "glProgramUniform4fv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniform4d, "glProgramUniform4d");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniform4dv, "glProgramUniform4dv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniform4ui, "glProgramUniform4ui");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniform4uiv, "glProgramUniform4uiv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniformMatrix2fv, "glProgramUniformMatrix2fv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniformMatrix3fv, "glProgramUniformMatrix3fv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniformMatrix4fv, "glProgramUniformMatrix4fv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniformMatrix2dv, "glProgramUniformMatrix2dv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniformMatrix3dv, "glProgramUniformMatrix3dv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniformMatrix4dv, "glProgramUniformMatrix4dv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniformMatrix2x3fv, "glProgramUniformMatrix2x3fv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniformMatrix3x2fv, "glProgramUniformMatrix3x2fv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniformMatrix2x4fv, "glProgramUniformMatrix2x4fv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniformMatrix4x2fv, "glProgramUniformMatrix4x2fv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniformMatrix3x4fv, "glProgramUniformMatrix3x4fv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniformMatrix4x3fv, "glProgramUniformMatrix4x3fv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniformMatrix2x3dv, "glProgramUniformMatrix2x3dv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniformMatrix3x2dv, "glProgramUniformMatrix3x2dv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniformMatrix2x4dv, "glProgramUniformMatrix2x4dv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniformMatrix4x2dv, "glProgramUniformMatrix4x2dv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniformMatrix3x4dv, "glProgramUniformMatrix3x4dv");
+	Loader.loadGlArbSymbol(gGlProcs.ProgramUniformMatrix4x3dv, "glProgramUniformMatrix4x3dv");
+	Loader.loadGlArbSymbol(gGlProcs.ValidateProgramPipeline, "glValidateProgramPipeline");
+	Loader.loadGlArbSymbol(gGlProcs.GetProgramPipelineInfoLog, "glGetProgramPipelineInfoLog");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribL1d, "glVertexAttribL1d");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribL2d, "glVertexAttribL2d");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribL3d, "glVertexAttribL3d");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribL4d, "glVertexAttribL4d");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribL1dv, "glVertexAttribL1dv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribL2dv, "glVertexAttribL2dv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribL3dv, "glVertexAttribL3dv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribL4dv, "glVertexAttribL4dv");
+	Loader.loadGlArbSymbol(gGlProcs.VertexAttribLPointer, "glVertexAttribLPointer");
+	Loader.loadGlArbSymbol(gGlProcs.GetVertexAttribLdv, "glGetVertexAttribLdv");
+	Loader.loadGlArbSymbol(gGlProcs.ViewportArrayv, "glViewportArrayv");
+	Loader.loadGlArbSymbol(gGlProcs.ViewportIndexedf, "glViewportIndexedf");
+	Loader.loadGlArbSymbol(gGlProcs.ViewportIndexedfv, "glViewportIndexedfv");
+	Loader.loadGlArbSymbol(gGlProcs.ScissorArrayv, "glScissorArrayv");
+	Loader.loadGlArbSymbol(gGlProcs.ScissorIndexed, "glScissorIndexed");
+	Loader.loadGlArbSymbol(gGlProcs.ScissorIndexedv, "glScissorIndexedv");
+	Loader.loadGlArbSymbol(gGlProcs.DepthRangeArrayv, "glDepthRangeArrayv");
+	Loader.loadGlArbSymbol(gGlProcs.DepthRangeIndexed, "glDepthRangeIndexed");
+	Loader.loadGlArbSymbol(gGlProcs.GetFloati_v, "glGetFloati_v");
+	Loader.loadGlArbSymbol(gGlProcs.GetDoublei_v, "glGetDoublei_v");
+	Loader.loadGlArbSymbol(gGlProcs.CreateSyncFromCLeventARB, "glCreateSyncFromCLeventARB");
+	Loader.loadGlArbSymbol(gGlProcs.DebugMessageControlARB, "glDebugMessageControlARB");
+	Loader.loadGlArbSymbol(gGlProcs.DebugMessageInsertARB, "glDebugMessageInsertARB");
+	Loader.loadGlArbSymbol(gGlProcs.DebugMessageCallbackARB, "glDebugMessageCallbackARB");
+	Loader.loadGlArbSymbol(gGlProcs.GetDebugMessageLogARB, "glGetDebugMessageLogARB");
+	Loader.loadGlArbSymbol(gGlProcs.GetGraphicsResetStatusARB, "glGetGraphicsResetStatusARB");
+	Loader.loadGlArbSymbol(gGlProcs.GetnMapdvARB, "glGetnMapdvARB");
+	Loader.loadGlArbSymbol(gGlProcs.GetnMapfvARB, "glGetnMapfvARB");
+	Loader.loadGlArbSymbol(gGlProcs.GetnMapivARB, "glGetnMapivARB");
+	Loader.loadGlArbSymbol(gGlProcs.GetnPixelMapfvARB, "glGetnPixelMapfvARB");
+	Loader.loadGlArbSymbol(gGlProcs.GetnPixelMapuivARB, "glGetnPixelMapuivARB");
+	Loader.loadGlArbSymbol(gGlProcs.GetnPixelMapusvARB, "glGetnPixelMapusvARB");
+	Loader.loadGlArbSymbol(gGlProcs.GetnPolygonStippleARB, "glGetnPolygonStippleARB");
+	Loader.loadGlArbSymbol(gGlProcs.GetnColorTableARB, "glGetnColorTableARB");
+	Loader.loadGlArbSymbol(gGlProcs.GetnConvolutionFilterARB, "glGetnConvolutionFilterARB");
+	Loader.loadGlArbSymbol(gGlProcs.GetnSeparableFilterARB, "glGetnSeparableFilterARB");
+	Loader.loadGlArbSymbol(gGlProcs.GetnHistogramARB, "glGetnHistogramARB");
+	Loader.loadGlArbSymbol(gGlProcs.GetnMinmaxARB, "glGetnMinmaxARB");
+	Loader.loadGlArbSymbol(gGlProcs.GetnTexImageARB, "glGetnTexImageARB");
+	Loader.loadGlArbSymbol(gGlProcs.ReadnPixelsARB, "glReadnPixelsARB");
+	Loader.loadGlArbSymbol(gGlProcs.GetnCompressedTexImageARB, "glGetnCompressedTexImageARB");
+	Loader.loadGlArbSymbol(gGlProcs.GetnUniformfvARB, "glGetnUniformfvARB");
+	Loader.loadGlArbSymbol(gGlProcs.GetnUniformivARB, "glGetnUniformivARB");
+	Loader.loadGlArbSymbol(gGlProcs.GetnUniformuivARB, "glGetnUniformuivARB");
+	Loader.loadGlArbSymbol(gGlProcs.GetnUniformdvARB, "glGetnUniformdvARB");
+	Loader.loadGlArbSymbol(gGlProcs.DrawArraysInstancedBaseInstance, "glDrawArraysInstancedBaseInstance");
+	Loader.loadGlArbSymbol(gGlProcs.DrawElementsInstancedBaseInstance, "glDrawElementsInstancedBaseInstance");
+	Loader.loadGlArbSymbol(gGlProcs.DrawElementsInstancedBaseVertexBaseInstance, "glDrawElementsInstancedBaseVertexBaseInstance");
+	Loader.loadGlArbSymbol(gGlProcs.DrawTransformFeedbackInstanced, "glDrawTransformFeedbackInstanced");
+	Loader.loadGlArbSymbol(gGlProcs.DrawTransformFeedbackStreamInstanced, "glDrawTransformFeedbackStreamInstanced");
+	Loader.loadGlArbSymbol(gGlProcs.GetInternalformativ, "glGetInternalformativ");
+	Loader.loadGlArbSymbol(gGlProcs.GetActiveAtomicCounterBufferiv, "glGetActiveAtomicCounterBufferiv");
+	Loader.loadGlArbSymbol(gGlProcs.BindImageTexture, "glBindImageTexture");
+	Loader.loadGlArbSymbol(gGlProcs.MemoryBarrier, "glMemoryBarrier");
+	Loader.loadGlArbSymbol(gGlProcs.TexStorage1D, "glTexStorage1D");
+	Loader.loadGlArbSymbol(gGlProcs.TexStorage2D, "glTexStorage2D");
+	Loader.loadGlArbSymbol(gGlProcs.TexStorage3D, "glTexStorage3D");
+	Loader.loadGlArbSymbol(gGlProcs.TextureStorage1DEXT, "glTextureStorage1DEXT");
+	Loader.loadGlArbSymbol(gGlProcs.TextureStorage2DEXT, "glTextureStorage2DEXT");
+	Loader.loadGlArbSymbol(gGlProcs.TextureStorage3DEXT, "glTextureStorage3DEXT");
+}
+}
+
+}
+}
+
+extern "C" {
+
 void glCullFace(GLenum mode)
 {
-	gContext.CullFace(mode);
+	gGlProcs.CullFace(mode);
 	checkError();
 }
 
 void glFrontFace(GLenum mode)
 {
-	gContext.FrontFace(mode);
+	gGlProcs.FrontFace(mode);
 	checkError();
 }
 
 void glHint(GLenum target, GLenum mode)
 {
-	gContext.Hint(target, mode);
+	gGlProcs.Hint(target, mode);
 	checkError();
 }
 
 void glLineWidth(GLfloat width)
 {
-	gContext.LineWidth(width);
+	gGlProcs.LineWidth(width);
 	checkError();
 }
 
 void glPointSize(GLfloat size)
 {
-	gContext.PointSize(size);
+	gGlProcs.PointSize(size);
 	checkError();
 }
 
 void glPolygonMode(GLenum face, GLenum mode)
 {
-	gContext.PolygonMode(face, mode);
+	gGlProcs.PolygonMode(face, mode);
 	checkError();
 }
 
 void glScissor(GLint x, GLint y, GLsizei width, GLsizei height)
 {
-	gContext.Scissor(x, y, width, height);
+	gGlProcs.Scissor(x, y, width, height);
 	checkError();
 }
 
 void glTexParameterf(GLenum target, GLenum pname, GLfloat param)
 {
-	gContext.TexParameterf(target, pname, param);
+	gGlProcs.TexParameterf(target, pname, param);
 	checkError();
 }
 
 void glTexParameterfv(GLenum target, GLenum pname, GLfloat const * params)
 {
-	gContext.TexParameterfv(target, pname, params);
+	gGlProcs.TexParameterfv(target, pname, params);
 	checkError();
 }
 
 void glTexParameteri(GLenum target, GLenum pname, GLint param)
 {
-	gContext.TexParameteri(target, pname, param);
+	gGlProcs.TexParameteri(target, pname, param);
 	checkError();
 }
 
 void glTexParameteriv(GLenum target, GLenum pname, GLint const * params)
 {
-	gContext.TexParameteriv(target, pname, params);
+	gGlProcs.TexParameteriv(target, pname, params);
 	checkError();
 }
 
 void glTexImage1D(GLenum target, GLint level, GLint internalformat, GLsizei width, GLint border, GLenum format, GLenum type, GLvoid const * pixels)
 {
-	gContext.TexImage1D(target, level, internalformat, width, border, format, type, pixels);
+	gGlProcs.TexImage1D(target, level, internalformat, width, border, format, type, pixels);
 	checkError();
 }
 
 void glTexImage2D(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, GLvoid const * pixels)
 {
-	gContext.TexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
+	gGlProcs.TexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
 	checkError();
 }
 
 void glDrawBuffer(GLenum mode)
 {
-	gContext.DrawBuffer(mode);
+	gGlProcs.DrawBuffer(mode);
 	checkError();
 }
 
 void glClear(GLbitfield mask)
 {
-	gContext.Clear(mask);
+	gGlProcs.Clear(mask);
 	checkError();
 }
 
 void glClearColor(GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha)
 {
-	gContext.ClearColor(red, green, blue, alpha);
+	gGlProcs.ClearColor(red, green, blue, alpha);
 	checkError();
 }
 
 void glClearStencil(GLint s)
 {
-	gContext.ClearStencil(s);
+	gGlProcs.ClearStencil(s);
 	checkError();
 }
 
 void glClearDepth(GLclampd depth)
 {
-	gContext.ClearDepth(depth);
+	gGlProcs.ClearDepth(depth);
 	checkError();
 }
 
 void glStencilMask(GLuint mask)
 {
-	gContext.StencilMask(mask);
+	gGlProcs.StencilMask(mask);
 	checkError();
 }
 
 void glColorMask(GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha)
 {
-	gContext.ColorMask(red, green, blue, alpha);
+	gGlProcs.ColorMask(red, green, blue, alpha);
 	checkError();
 }
 
 void glDepthMask(GLboolean flag)
 {
-	gContext.DepthMask(flag);
+	gGlProcs.DepthMask(flag);
 	checkError();
 }
 
 void glDisable(GLenum cap)
 {
-	gContext.Disable(cap);
+	gGlProcs.Disable(cap);
 	checkError();
 }
 
 void glEnable(GLenum cap)
 {
-	gContext.Enable(cap);
+	gGlProcs.Enable(cap);
 	checkError();
 }
 
 void glFinish()
 {
-	gContext.Finish();
+	gGlProcs.Finish();
 	checkError();
 }
 
 void glFlush()
 {
-	gContext.Flush();
+	gGlProcs.Flush();
 	checkError();
 }
 
 void glBlendFunc(GLenum sfactor, GLenum dfactor)
 {
-	gContext.BlendFunc(sfactor, dfactor);
+	gGlProcs.BlendFunc(sfactor, dfactor);
 	checkError();
 }
 
 void glLogicOp(GLenum opcode)
 {
-	gContext.LogicOp(opcode);
+	gGlProcs.LogicOp(opcode);
 	checkError();
 }
 
 void glStencilFunc(GLenum func, GLint ref, GLuint mask)
 {
-	gContext.StencilFunc(func, ref, mask);
+	gGlProcs.StencilFunc(func, ref, mask);
 	checkError();
 }
 
 void glStencilOp(GLenum fail, GLenum zfail, GLenum zpass)
 {
-	gContext.StencilOp(fail, zfail, zpass);
+	gGlProcs.StencilOp(fail, zfail, zpass);
 	checkError();
 }
 
 void glDepthFunc(GLenum func)
 {
-	gContext.DepthFunc(func);
+	gGlProcs.DepthFunc(func);
 	checkError();
 }
 
 void glPixelStoref(GLenum pname, GLfloat param)
 {
-	gContext.PixelStoref(pname, param);
+	gGlProcs.PixelStoref(pname, param);
 	checkError();
 }
 
 void glPixelStorei(GLenum pname, GLint param)
 {
-	gContext.PixelStorei(pname, param);
+	gGlProcs.PixelStorei(pname, param);
 	checkError();
 }
 
 void glReadBuffer(GLenum mode)
 {
-	gContext.ReadBuffer(mode);
+	gGlProcs.ReadBuffer(mode);
 	checkError();
 }
 
 void glReadPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid * pixels)
 {
-	gContext.ReadPixels(x, y, width, height, format, type, pixels);
+	gGlProcs.ReadPixels(x, y, width, height, format, type, pixels);
 	checkError();
 }
 
 void glGetBooleanv(GLenum pname, GLboolean * params)
 {
-	gContext.GetBooleanv(pname, params);
+	gGlProcs.GetBooleanv(pname, params);
 	checkError();
 }
 
 void glGetDoublev(GLenum pname, GLdouble * params)
 {
-	gContext.GetDoublev(pname, params);
+	gGlProcs.GetDoublev(pname, params);
 	checkError();
 }
 
 GLenum glGetError()
 {
-	auto result = gContext.GetError();
+	auto result = gGlProcs.GetError();
 	checkError();
 	return result;
 }
 
 void glGetFloatv(GLenum pname, GLfloat * params)
 {
-	gContext.GetFloatv(pname, params);
+	gGlProcs.GetFloatv(pname, params);
 	checkError();
 }
 
 void glGetIntegerv(GLenum pname, GLint * params)
 {
-	gContext.GetIntegerv(pname, params);
+	gGlProcs.GetIntegerv(pname, params);
 	checkError();
 }
 
 GLubyte const * glGetString(GLenum name)
 {
-	auto result = gContext.GetString(name);
+	auto result = gGlProcs.GetString(name);
 	checkError();
 	return result;
 }
 
 void glGetTexImage(GLenum target, GLint level, GLenum format, GLenum type, GLvoid * pixels)
 {
-	gContext.GetTexImage(target, level, format, type, pixels);
+	gGlProcs.GetTexImage(target, level, format, type, pixels);
 	checkError();
 }
 
 void glGetTexParameterfv(GLenum target, GLenum pname, GLfloat * params)
 {
-	gContext.GetTexParameterfv(target, pname, params);
+	gGlProcs.GetTexParameterfv(target, pname, params);
 	checkError();
 }
 
 void glGetTexParameteriv(GLenum target, GLenum pname, GLint * params)
 {
-	gContext.GetTexParameteriv(target, pname, params);
+	gGlProcs.GetTexParameteriv(target, pname, params);
 	checkError();
 }
 
 void glGetTexLevelParameterfv(GLenum target, GLint level, GLenum pname, GLfloat * params)
 {
-	gContext.GetTexLevelParameterfv(target, level, pname, params);
+	gGlProcs.GetTexLevelParameterfv(target, level, pname, params);
 	checkError();
 }
 
 void glGetTexLevelParameteriv(GLenum target, GLint level, GLenum pname, GLint * params)
 {
-	gContext.GetTexLevelParameteriv(target, level, pname, params);
+	gGlProcs.GetTexLevelParameteriv(target, level, pname, params);
 	checkError();
 }
 
 GLboolean glIsEnabled(GLenum cap)
 {
-	auto result = gContext.IsEnabled(cap);
+	auto result = gGlProcs.IsEnabled(cap);
 	checkError();
 	return result;
 }
 
 void glDepthRange(GLclampd near, GLclampd far)
 {
-	gContext.DepthRange(near, far);
+	gGlProcs.DepthRange(near, far);
 	checkError();
 }
 
 void glViewport(GLint x, GLint y, GLsizei width, GLsizei height)
 {
-	gContext.Viewport(x, y, width, height);
+	gGlProcs.Viewport(x, y, width, height);
 	checkError();
 }
 
 void glDrawArrays(GLenum mode, GLint first, GLsizei count)
 {
-	gContext.DrawArrays(mode, first, count);
+	gGlProcs.DrawArrays(mode, first, count);
 	checkError();
 }
 
 void glDrawElements(GLenum mode, GLsizei count, GLenum type, GLvoid const * indices)
 {
-	gContext.DrawElements(mode, count, type, indices);
+	gGlProcs.DrawElements(mode, count, type, indices);
 	checkError();
 }
 
 void glGetPointerv(GLenum pname, GLvoid * * params)
 {
-	gContext.GetPointerv(pname, params);
+	gGlProcs.GetPointerv(pname, params);
 	checkError();
 }
 
 void glPolygonOffset(GLfloat factor, GLfloat units)
 {
-	gContext.PolygonOffset(factor, units);
+	gGlProcs.PolygonOffset(factor, units);
 	checkError();
 }
 
 void glCopyTexImage1D(GLenum target, GLint level, GLenum internalformat, GLint x, GLint y, GLsizei width, GLint border)
 {
-	gContext.CopyTexImage1D(target, level, internalformat, x, y, width, border);
+	gGlProcs.CopyTexImage1D(target, level, internalformat, x, y, width, border);
 	checkError();
 }
 
 void glCopyTexImage2D(GLenum target, GLint level, GLenum internalformat, GLint x, GLint y, GLsizei width, GLsizei height, GLint border)
 {
-	gContext.CopyTexImage2D(target, level, internalformat, x, y, width, height, border);
+	gGlProcs.CopyTexImage2D(target, level, internalformat, x, y, width, height, border);
 	checkError();
 }
 
 void glCopyTexSubImage1D(GLenum target, GLint level, GLint xoffset, GLint x, GLint y, GLsizei width)
 {
-	gContext.CopyTexSubImage1D(target, level, xoffset, x, y, width);
+	gGlProcs.CopyTexSubImage1D(target, level, xoffset, x, y, width);
 	checkError();
 }
 
 void glCopyTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height)
 {
-	gContext.CopyTexSubImage2D(target, level, xoffset, yoffset, x, y, width, height);
+	gGlProcs.CopyTexSubImage2D(target, level, xoffset, yoffset, x, y, width, height);
 	checkError();
 }
 
 void glTexSubImage1D(GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, GLvoid const * pixels)
 {
-	gContext.TexSubImage1D(target, level, xoffset, width, format, type, pixels);
+	gGlProcs.TexSubImage1D(target, level, xoffset, width, format, type, pixels);
 	checkError();
 }
 
 void glTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid const * pixels)
 {
-	gContext.TexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, pixels);
+	gGlProcs.TexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, pixels);
 	checkError();
 }
 
 void glBindTexture(GLenum target, GLuint texture)
 {
-	gContext.BindTexture(target, texture);
+	gGlProcs.BindTexture(target, texture);
 	checkError();
 }
 
 void glDeleteTextures(GLsizei n, GLuint const * textures)
 {
-	gContext.DeleteTextures(n, textures);
+	gGlProcs.DeleteTextures(n, textures);
 	checkError();
 }
 
 void glGenTextures(GLsizei n, GLuint * textures)
 {
-	gContext.GenTextures(n, textures);
+	gGlProcs.GenTextures(n, textures);
 	checkError();
 }
 
 GLboolean glIsTexture(GLuint texture)
 {
-	auto result = gContext.IsTexture(texture);
+	auto result = gGlProcs.IsTexture(texture);
 	checkError();
 	return result;
 }
 
 void glBlendColor(GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha)
 {
-	gContext.BlendColor(red, green, blue, alpha);
+	gGlProcs.BlendColor(red, green, blue, alpha);
 	checkError();
 }
 
 void glBlendEquation(GLenum mode)
 {
-	gContext.BlendEquation(mode);
+	gGlProcs.BlendEquation(mode);
 	checkError();
 }
 
 void glDrawRangeElements(GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, GLvoid const * indices)
 {
-	gContext.DrawRangeElements(mode, start, end, count, type, indices);
+	gGlProcs.DrawRangeElements(mode, start, end, count, type, indices);
 	checkError();
 }
 
 void glTexImage3D(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, GLvoid const * pixels)
 {
-	gContext.TexImage3D(target, level, internalformat, width, height, depth, border, format, type, pixels);
+	gGlProcs.TexImage3D(target, level, internalformat, width, height, depth, border, format, type, pixels);
 	checkError();
 }
 
 void glTexSubImage3D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, GLvoid const * pixels)
 {
-	gContext.TexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, pixels);
+	gGlProcs.TexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, pixels);
 	checkError();
 }
 
 void glCopyTexSubImage3D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLint x, GLint y, GLsizei width, GLsizei height)
 {
-	gContext.CopyTexSubImage3D(target, level, xoffset, yoffset, zoffset, x, y, width, height);
+	gGlProcs.CopyTexSubImage3D(target, level, xoffset, yoffset, zoffset, x, y, width, height);
 	checkError();
 }
 
 void glActiveTexture(GLenum texture)
 {
-	gContext.ActiveTexture(texture);
+	gGlProcs.ActiveTexture(texture);
 	checkError();
 }
 
 void glSampleCoverage(GLclampf value, GLboolean invert)
 {
-	gContext.SampleCoverage(value, invert);
+	gGlProcs.SampleCoverage(value, invert);
 	checkError();
 }
 
 void glCompressedTexImage3D(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLsizei imageSize, GLvoid const * data)
 {
-	gContext.CompressedTexImage3D(target, level, internalformat, width, height, depth, border, imageSize, data);
+	gGlProcs.CompressedTexImage3D(target, level, internalformat, width, height, depth, border, imageSize, data);
 	checkError();
 }
 
 void glCompressedTexImage2D(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, GLvoid const * data)
 {
-	gContext.CompressedTexImage2D(target, level, internalformat, width, height, border, imageSize, data);
+	gGlProcs.CompressedTexImage2D(target, level, internalformat, width, height, border, imageSize, data);
 	checkError();
 }
 
 void glCompressedTexImage1D(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLint border, GLsizei imageSize, GLvoid const * data)
 {
-	gContext.CompressedTexImage1D(target, level, internalformat, width, border, imageSize, data);
+	gGlProcs.CompressedTexImage1D(target, level, internalformat, width, border, imageSize, data);
 	checkError();
 }
 
 void glCompressedTexSubImage3D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLsizei imageSize, GLvoid const * data)
 {
-	gContext.CompressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, imageSize, data);
+	gGlProcs.CompressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, imageSize, data);
 	checkError();
 }
 
 void glCompressedTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, GLvoid const * data)
 {
-	gContext.CompressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, imageSize, data);
+	gGlProcs.CompressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, imageSize, data);
 	checkError();
 }
 
 void glCompressedTexSubImage1D(GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLsizei imageSize, GLvoid const * data)
 {
-	gContext.CompressedTexSubImage1D(target, level, xoffset, width, format, imageSize, data);
+	gGlProcs.CompressedTexSubImage1D(target, level, xoffset, width, format, imageSize, data);
 	checkError();
 }
 
 void glGetCompressedTexImage(GLenum target, GLint level, GLvoid * img)
 {
-	gContext.GetCompressedTexImage(target, level, img);
+	gGlProcs.GetCompressedTexImage(target, level, img);
 	checkError();
 }
 
 void glBlendFuncSeparate(GLenum sfactorRGB, GLenum dfactorRGB, GLenum sfactorAlpha, GLenum dfactorAlpha)
 {
-	gContext.BlendFuncSeparate(sfactorRGB, dfactorRGB, sfactorAlpha, dfactorAlpha);
+	gGlProcs.BlendFuncSeparate(sfactorRGB, dfactorRGB, sfactorAlpha, dfactorAlpha);
 	checkError();
 }
 
 void glMultiDrawArrays(GLenum mode, GLint const * first, GLsizei const * count, GLsizei primcount)
 {
-	gContext.MultiDrawArrays(mode, first, count, primcount);
+	gGlProcs.MultiDrawArrays(mode, first, count, primcount);
 	checkError();
 }
 
 void glMultiDrawElements(GLenum mode, GLsizei const * count, GLenum type, GLvoid const * * indices, GLsizei primcount)
 {
-	gContext.MultiDrawElements(mode, count, type, indices, primcount);
+	gGlProcs.MultiDrawElements(mode, count, type, indices, primcount);
 	checkError();
 }
 
 void glPointParameterf(GLenum pname, GLfloat param)
 {
-	gContext.PointParameterf(pname, param);
+	gGlProcs.PointParameterf(pname, param);
 	checkError();
 }
 
 void glPointParameterfv(GLenum pname, GLfloat const * params)
 {
-	gContext.PointParameterfv(pname, params);
+	gGlProcs.PointParameterfv(pname, params);
 	checkError();
 }
 
 void glPointParameteri(GLenum pname, GLint param)
 {
-	gContext.PointParameteri(pname, param);
+	gGlProcs.PointParameteri(pname, param);
 	checkError();
 }
 
 void glPointParameteriv(GLenum pname, GLint const * params)
 {
-	gContext.PointParameteriv(pname, params);
+	gGlProcs.PointParameteriv(pname, params);
 	checkError();
 }
 
 void glGenQueries(GLsizei n, GLuint * ids)
 {
-	gContext.GenQueries(n, ids);
+	gGlProcs.GenQueries(n, ids);
 	checkError();
 }
 
 void glDeleteQueries(GLsizei n, GLuint const * ids)
 {
-	gContext.DeleteQueries(n, ids);
+	gGlProcs.DeleteQueries(n, ids);
 	checkError();
 }
 
 GLboolean glIsQuery(GLuint id)
 {
-	auto result = gContext.IsQuery(id);
+	auto result = gGlProcs.IsQuery(id);
 	checkError();
 	return result;
 }
 
 void glBeginQuery(GLenum target, GLuint id)
 {
-	gContext.BeginQuery(target, id);
+	gGlProcs.BeginQuery(target, id);
 	checkError();
 }
 
 void glEndQuery(GLenum target)
 {
-	gContext.EndQuery(target);
+	gGlProcs.EndQuery(target);
 	checkError();
 }
 
 void glGetQueryiv(GLenum target, GLenum pname, GLint * params)
 {
-	gContext.GetQueryiv(target, pname, params);
+	gGlProcs.GetQueryiv(target, pname, params);
 	checkError();
 }
 
 void glGetQueryObjectiv(GLuint id, GLenum pname, GLint * params)
 {
-	gContext.GetQueryObjectiv(id, pname, params);
+	gGlProcs.GetQueryObjectiv(id, pname, params);
 	checkError();
 }
 
 void glGetQueryObjectuiv(GLuint id, GLenum pname, GLuint * params)
 {
-	gContext.GetQueryObjectuiv(id, pname, params);
+	gGlProcs.GetQueryObjectuiv(id, pname, params);
 	checkError();
 }
 
 void glBindBuffer(GLenum target, GLuint buffer)
 {
-	gContext.BindBuffer(target, buffer);
+	gGlProcs.BindBuffer(target, buffer);
 	checkError();
 }
 
 void glDeleteBuffers(GLsizei n, GLuint const * buffers)
 {
-	gContext.DeleteBuffers(n, buffers);
+	gGlProcs.DeleteBuffers(n, buffers);
 	checkError();
 }
 
 void glGenBuffers(GLsizei n, GLuint * buffers)
 {
-	gContext.GenBuffers(n, buffers);
+	gGlProcs.GenBuffers(n, buffers);
 	checkError();
 }
 
 GLboolean glIsBuffer(GLuint buffer)
 {
-	auto result = gContext.IsBuffer(buffer);
+	auto result = gGlProcs.IsBuffer(buffer);
 	checkError();
 	return result;
 }
 
 void glBufferData(GLenum target, GLsizeiptr size, GLvoid const * data, GLenum usage)
 {
-	gContext.BufferData(target, size, data, usage);
+	gGlProcs.BufferData(target, size, data, usage);
 	checkError();
 }
 
 void glBufferSubData(GLenum target, GLintptr offset, GLsizeiptr size, GLvoid const * data)
 {
-	gContext.BufferSubData(target, offset, size, data);
+	gGlProcs.BufferSubData(target, offset, size, data);
 	checkError();
 }
 
 void glGetBufferSubData(GLenum target, GLintptr offset, GLsizeiptr size, GLvoid * data)
 {
-	gContext.GetBufferSubData(target, offset, size, data);
+	gGlProcs.GetBufferSubData(target, offset, size, data);
 	checkError();
 }
 
 GLvoid * glMapBuffer(GLenum target, GLenum access)
 {
-	auto result = gContext.MapBuffer(target, access);
+	auto result = gGlProcs.MapBuffer(target, access);
 	checkError();
 	return result;
 }
 
 GLboolean glUnmapBuffer(GLenum target)
 {
-	auto result = gContext.UnmapBuffer(target);
+	auto result = gGlProcs.UnmapBuffer(target);
 	checkError();
 	return result;
 }
 
 void glGetBufferParameteriv(GLenum target, GLenum pname, GLint * params)
 {
-	gContext.GetBufferParameteriv(target, pname, params);
+	gGlProcs.GetBufferParameteriv(target, pname, params);
 	checkError();
 }
 
 void glGetBufferPointerv(GLenum target, GLenum pname, GLvoid * * params)
 {
-	gContext.GetBufferPointerv(target, pname, params);
+	gGlProcs.GetBufferPointerv(target, pname, params);
 	checkError();
 }
 
 void glBlendEquationSeparate(GLenum modeRGB, GLenum modeAlpha)
 {
-	gContext.BlendEquationSeparate(modeRGB, modeAlpha);
+	gGlProcs.BlendEquationSeparate(modeRGB, modeAlpha);
 	checkError();
 }
 
 void glDrawBuffers(GLsizei n, GLenum const * bufs)
 {
-	gContext.DrawBuffers(n, bufs);
+	gGlProcs.DrawBuffers(n, bufs);
 	checkError();
 }
 
 void glStencilOpSeparate(GLenum face, GLenum sfail, GLenum dpfail, GLenum dppass)
 {
-	gContext.StencilOpSeparate(face, sfail, dpfail, dppass);
+	gGlProcs.StencilOpSeparate(face, sfail, dpfail, dppass);
 	checkError();
 }
 
 void glStencilFuncSeparate(GLenum face, GLenum func, GLint ref, GLuint mask)
 {
-	gContext.StencilFuncSeparate(face, func, ref, mask);
+	gGlProcs.StencilFuncSeparate(face, func, ref, mask);
 	checkError();
 }
 
 void glStencilMaskSeparate(GLenum face, GLuint mask)
 {
-	gContext.StencilMaskSeparate(face, mask);
+	gGlProcs.StencilMaskSeparate(face, mask);
 	checkError();
 }
 
 void glAttachShader(GLuint program, GLuint shader)
 {
-	gContext.AttachShader(program, shader);
+	gGlProcs.AttachShader(program, shader);
 	checkError();
 }
 
 void glBindAttribLocation(GLuint program, GLuint index, GLchar const * name)
 {
-	gContext.BindAttribLocation(program, index, name);
+	gGlProcs.BindAttribLocation(program, index, name);
 	checkError();
 }
 
 void glCompileShader(GLuint shader)
 {
-	gContext.CompileShader(shader);
+	gGlProcs.CompileShader(shader);
 	checkError();
 }
 
 GLuint glCreateProgram()
 {
-	auto result = gContext.CreateProgram();
+	auto result = gGlProcs.CreateProgram();
 	checkError();
 	return result;
 }
 
 GLuint glCreateShader(GLenum type)
 {
-	auto result = gContext.CreateShader(type);
+	auto result = gGlProcs.CreateShader(type);
 	checkError();
 	return result;
 }
 
 void glDeleteProgram(GLuint program)
 {
-	gContext.DeleteProgram(program);
+	gGlProcs.DeleteProgram(program);
 	checkError();
 }
 
 void glDeleteShader(GLuint shader)
 {
-	gContext.DeleteShader(shader);
+	gGlProcs.DeleteShader(shader);
 	checkError();
 }
 
 void glDetachShader(GLuint program, GLuint shader)
 {
-	gContext.DetachShader(program, shader);
+	gGlProcs.DetachShader(program, shader);
 	checkError();
 }
 
 void glDisableVertexAttribArray(GLuint index)
 {
-	gContext.DisableVertexAttribArray(index);
+	gGlProcs.DisableVertexAttribArray(index);
 	checkError();
 }
 
 void glEnableVertexAttribArray(GLuint index)
 {
-	gContext.EnableVertexAttribArray(index);
+	gGlProcs.EnableVertexAttribArray(index);
 	checkError();
 }
 
 void glGetActiveAttrib(GLuint program, GLuint index, GLsizei bufSize, GLsizei * length, GLint * size, GLenum * type, GLchar * name)
 {
-	gContext.GetActiveAttrib(program, index, bufSize, length, size, type, name);
+	gGlProcs.GetActiveAttrib(program, index, bufSize, length, size, type, name);
 	checkError();
 }
 
 void glGetActiveUniform(GLuint program, GLuint index, GLsizei bufSize, GLsizei * length, GLint * size, GLenum * type, GLchar * name)
 {
-	gContext.GetActiveUniform(program, index, bufSize, length, size, type, name);
+	gGlProcs.GetActiveUniform(program, index, bufSize, length, size, type, name);
 	checkError();
 }
 
 void glGetAttachedShaders(GLuint program, GLsizei maxCount, GLsizei * count, GLuint * obj)
 {
-	gContext.GetAttachedShaders(program, maxCount, count, obj);
+	gGlProcs.GetAttachedShaders(program, maxCount, count, obj);
 	checkError();
 }
 
 GLint glGetAttribLocation(GLuint program, GLchar const * name)
 {
-	auto result = gContext.GetAttribLocation(program, name);
+	auto result = gGlProcs.GetAttribLocation(program, name);
 	checkError();
 	return result;
 }
 
 void glGetProgramiv(GLuint program, GLenum pname, GLint * params)
 {
-	gContext.GetProgramiv(program, pname, params);
+	gGlProcs.GetProgramiv(program, pname, params);
 	checkError();
 }
 
 void glGetProgramInfoLog(GLuint program, GLsizei bufSize, GLsizei * length, GLchar * infoLog)
 {
-	gContext.GetProgramInfoLog(program, bufSize, length, infoLog);
+	gGlProcs.GetProgramInfoLog(program, bufSize, length, infoLog);
 	checkError();
 }
 
 void glGetShaderiv(GLuint shader, GLenum pname, GLint * params)
 {
-	gContext.GetShaderiv(shader, pname, params);
+	gGlProcs.GetShaderiv(shader, pname, params);
 	checkError();
 }
 
 void glGetShaderInfoLog(GLuint shader, GLsizei bufSize, GLsizei * length, GLchar * infoLog)
 {
-	gContext.GetShaderInfoLog(shader, bufSize, length, infoLog);
+	gGlProcs.GetShaderInfoLog(shader, bufSize, length, infoLog);
 	checkError();
 }
 
 void glGetShaderSource(GLuint shader, GLsizei bufSize, GLsizei * length, GLchar * source)
 {
-	gContext.GetShaderSource(shader, bufSize, length, source);
+	gGlProcs.GetShaderSource(shader, bufSize, length, source);
 	checkError();
 }
 
 GLint glGetUniformLocation(GLuint program, GLchar const * name)
 {
-	auto result = gContext.GetUniformLocation(program, name);
+	auto result = gGlProcs.GetUniformLocation(program, name);
 	checkError();
 	return result;
 }
 
 void glGetUniformfv(GLuint program, GLint location, GLfloat * params)
 {
-	gContext.GetUniformfv(program, location, params);
+	gGlProcs.GetUniformfv(program, location, params);
 	checkError();
 }
 
 void glGetUniformiv(GLuint program, GLint location, GLint * params)
 {
-	gContext.GetUniformiv(program, location, params);
+	gGlProcs.GetUniformiv(program, location, params);
 	checkError();
 }
 
 void glGetVertexAttribdv(GLuint index, GLenum pname, GLdouble * params)
 {
-	gContext.GetVertexAttribdv(index, pname, params);
+	gGlProcs.GetVertexAttribdv(index, pname, params);
 	checkError();
 }
 
 void glGetVertexAttribfv(GLuint index, GLenum pname, GLfloat * params)
 {
-	gContext.GetVertexAttribfv(index, pname, params);
+	gGlProcs.GetVertexAttribfv(index, pname, params);
 	checkError();
 }
 
 void glGetVertexAttribiv(GLuint index, GLenum pname, GLint * params)
 {
-	gContext.GetVertexAttribiv(index, pname, params);
+	gGlProcs.GetVertexAttribiv(index, pname, params);
 	checkError();
 }
 
 void glGetVertexAttribPointerv(GLuint index, GLenum pname, GLvoid * * pointer)
 {
-	gContext.GetVertexAttribPointerv(index, pname, pointer);
+	gGlProcs.GetVertexAttribPointerv(index, pname, pointer);
 	checkError();
 }
 
 GLboolean glIsProgram(GLuint program)
 {
-	auto result = gContext.IsProgram(program);
+	auto result = gGlProcs.IsProgram(program);
 	checkError();
 	return result;
 }
 
 GLboolean glIsShader(GLuint shader)
 {
-	auto result = gContext.IsShader(shader);
+	auto result = gGlProcs.IsShader(shader);
 	checkError();
 	return result;
 }
 
 void glLinkProgram(GLuint program)
 {
-	gContext.LinkProgram(program);
+	gGlProcs.LinkProgram(program);
 	checkError();
 }
 
 void glShaderSource(GLuint shader, GLsizei count, GLchar const * * string, GLint const * length)
 {
-	gContext.ShaderSource(shader, count, string, length);
+	gGlProcs.ShaderSource(shader, count, string, length);
 	checkError();
 }
 
 void glUseProgram(GLuint program)
 {
-	gContext.UseProgram(program);
+	gGlProcs.UseProgram(program);
 	checkError();
 }
 
 void glUniform1f(GLint location, GLfloat v0)
 {
-	gContext.Uniform1f(location, v0);
+	gGlProcs.Uniform1f(location, v0);
 	checkError();
 }
 
 void glUniform2f(GLint location, GLfloat v0, GLfloat v1)
 {
-	gContext.Uniform2f(location, v0, v1);
+	gGlProcs.Uniform2f(location, v0, v1);
 	checkError();
 }
 
 void glUniform3f(GLint location, GLfloat v0, GLfloat v1, GLfloat v2)
 {
-	gContext.Uniform3f(location, v0, v1, v2);
+	gGlProcs.Uniform3f(location, v0, v1, v2);
 	checkError();
 }
 
 void glUniform4f(GLint location, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3)
 {
-	gContext.Uniform4f(location, v0, v1, v2, v3);
+	gGlProcs.Uniform4f(location, v0, v1, v2, v3);
 	checkError();
 }
 
 void glUniform1i(GLint location, GLint v0)
 {
-	gContext.Uniform1i(location, v0);
+	gGlProcs.Uniform1i(location, v0);
 	checkError();
 }
 
 void glUniform2i(GLint location, GLint v0, GLint v1)
 {
-	gContext.Uniform2i(location, v0, v1);
+	gGlProcs.Uniform2i(location, v0, v1);
 	checkError();
 }
 
 void glUniform3i(GLint location, GLint v0, GLint v1, GLint v2)
 {
-	gContext.Uniform3i(location, v0, v1, v2);
+	gGlProcs.Uniform3i(location, v0, v1, v2);
 	checkError();
 }
 
 void glUniform4i(GLint location, GLint v0, GLint v1, GLint v2, GLint v3)
 {
-	gContext.Uniform4i(location, v0, v1, v2, v3);
+	gGlProcs.Uniform4i(location, v0, v1, v2, v3);
 	checkError();
 }
 
 void glUniform1fv(GLint location, GLsizei count, GLfloat const * value)
 {
-	gContext.Uniform1fv(location, count, value);
+	gGlProcs.Uniform1fv(location, count, value);
 	checkError();
 }
 
 void glUniform2fv(GLint location, GLsizei count, GLfloat const * value)
 {
-	gContext.Uniform2fv(location, count, value);
+	gGlProcs.Uniform2fv(location, count, value);
 	checkError();
 }
 
 void glUniform3fv(GLint location, GLsizei count, GLfloat const * value)
 {
-	gContext.Uniform3fv(location, count, value);
+	gGlProcs.Uniform3fv(location, count, value);
 	checkError();
 }
 
 void glUniform4fv(GLint location, GLsizei count, GLfloat const * value)
 {
-	gContext.Uniform4fv(location, count, value);
+	gGlProcs.Uniform4fv(location, count, value);
 	checkError();
 }
 
 void glUniform1iv(GLint location, GLsizei count, GLint const * value)
 {
-	gContext.Uniform1iv(location, count, value);
+	gGlProcs.Uniform1iv(location, count, value);
 	checkError();
 }
 
 void glUniform2iv(GLint location, GLsizei count, GLint const * value)
 {
-	gContext.Uniform2iv(location, count, value);
+	gGlProcs.Uniform2iv(location, count, value);
 	checkError();
 }
 
 void glUniform3iv(GLint location, GLsizei count, GLint const * value)
 {
-	gContext.Uniform3iv(location, count, value);
+	gGlProcs.Uniform3iv(location, count, value);
 	checkError();
 }
 
 void glUniform4iv(GLint location, GLsizei count, GLint const * value)
 {
-	gContext.Uniform4iv(location, count, value);
+	gGlProcs.Uniform4iv(location, count, value);
 	checkError();
 }
 
 void glUniformMatrix2fv(GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
 {
-	gContext.UniformMatrix2fv(location, count, transpose, value);
+	gGlProcs.UniformMatrix2fv(location, count, transpose, value);
 	checkError();
 }
 
 void glUniformMatrix3fv(GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
 {
-	gContext.UniformMatrix3fv(location, count, transpose, value);
+	gGlProcs.UniformMatrix3fv(location, count, transpose, value);
 	checkError();
 }
 
 void glUniformMatrix4fv(GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
 {
-	gContext.UniformMatrix4fv(location, count, transpose, value);
+	gGlProcs.UniformMatrix4fv(location, count, transpose, value);
 	checkError();
 }
 
 void glValidateProgram(GLuint program)
 {
-	gContext.ValidateProgram(program);
+	gGlProcs.ValidateProgram(program);
 	checkError();
 }
 
 void glVertexAttrib1d(GLuint index, GLdouble x)
 {
-	gContext.VertexAttrib1d(index, x);
+	gGlProcs.VertexAttrib1d(index, x);
 	checkError();
 }
 
 void glVertexAttrib1dv(GLuint index, GLdouble const * v)
 {
-	gContext.VertexAttrib1dv(index, v);
+	gGlProcs.VertexAttrib1dv(index, v);
 	checkError();
 }
 
 void glVertexAttrib1f(GLuint index, GLfloat x)
 {
-	gContext.VertexAttrib1f(index, x);
+	gGlProcs.VertexAttrib1f(index, x);
 	checkError();
 }
 
 void glVertexAttrib1fv(GLuint index, GLfloat const * v)
 {
-	gContext.VertexAttrib1fv(index, v);
+	gGlProcs.VertexAttrib1fv(index, v);
 	checkError();
 }
 
 void glVertexAttrib1s(GLuint index, GLshort x)
 {
-	gContext.VertexAttrib1s(index, x);
+	gGlProcs.VertexAttrib1s(index, x);
 	checkError();
 }
 
 void glVertexAttrib1sv(GLuint index, GLshort const * v)
 {
-	gContext.VertexAttrib1sv(index, v);
+	gGlProcs.VertexAttrib1sv(index, v);
 	checkError();
 }
 
 void glVertexAttrib2d(GLuint index, GLdouble x, GLdouble y)
 {
-	gContext.VertexAttrib2d(index, x, y);
+	gGlProcs.VertexAttrib2d(index, x, y);
 	checkError();
 }
 
 void glVertexAttrib2dv(GLuint index, GLdouble const * v)
 {
-	gContext.VertexAttrib2dv(index, v);
+	gGlProcs.VertexAttrib2dv(index, v);
 	checkError();
 }
 
 void glVertexAttrib2f(GLuint index, GLfloat x, GLfloat y)
 {
-	gContext.VertexAttrib2f(index, x, y);
+	gGlProcs.VertexAttrib2f(index, x, y);
 	checkError();
 }
 
 void glVertexAttrib2fv(GLuint index, GLfloat const * v)
 {
-	gContext.VertexAttrib2fv(index, v);
+	gGlProcs.VertexAttrib2fv(index, v);
 	checkError();
 }
 
 void glVertexAttrib2s(GLuint index, GLshort x, GLshort y)
 {
-	gContext.VertexAttrib2s(index, x, y);
+	gGlProcs.VertexAttrib2s(index, x, y);
 	checkError();
 }
 
 void glVertexAttrib2sv(GLuint index, GLshort const * v)
 {
-	gContext.VertexAttrib2sv(index, v);
+	gGlProcs.VertexAttrib2sv(index, v);
 	checkError();
 }
 
 void glVertexAttrib3d(GLuint index, GLdouble x, GLdouble y, GLdouble z)
 {
-	gContext.VertexAttrib3d(index, x, y, z);
+	gGlProcs.VertexAttrib3d(index, x, y, z);
 	checkError();
 }
 
 void glVertexAttrib3dv(GLuint index, GLdouble const * v)
 {
-	gContext.VertexAttrib3dv(index, v);
+	gGlProcs.VertexAttrib3dv(index, v);
 	checkError();
 }
 
 void glVertexAttrib3f(GLuint index, GLfloat x, GLfloat y, GLfloat z)
 {
-	gContext.VertexAttrib3f(index, x, y, z);
+	gGlProcs.VertexAttrib3f(index, x, y, z);
 	checkError();
 }
 
 void glVertexAttrib3fv(GLuint index, GLfloat const * v)
 {
-	gContext.VertexAttrib3fv(index, v);
+	gGlProcs.VertexAttrib3fv(index, v);
 	checkError();
 }
 
 void glVertexAttrib3s(GLuint index, GLshort x, GLshort y, GLshort z)
 {
-	gContext.VertexAttrib3s(index, x, y, z);
+	gGlProcs.VertexAttrib3s(index, x, y, z);
 	checkError();
 }
 
 void glVertexAttrib3sv(GLuint index, GLshort const * v)
 {
-	gContext.VertexAttrib3sv(index, v);
+	gGlProcs.VertexAttrib3sv(index, v);
 	checkError();
 }
 
 void glVertexAttrib4Nbv(GLuint index, GLbyte const * v)
 {
-	gContext.VertexAttrib4Nbv(index, v);
+	gGlProcs.VertexAttrib4Nbv(index, v);
 	checkError();
 }
 
 void glVertexAttrib4Niv(GLuint index, GLint const * v)
 {
-	gContext.VertexAttrib4Niv(index, v);
+	gGlProcs.VertexAttrib4Niv(index, v);
 	checkError();
 }
 
 void glVertexAttrib4Nsv(GLuint index, GLshort const * v)
 {
-	gContext.VertexAttrib4Nsv(index, v);
+	gGlProcs.VertexAttrib4Nsv(index, v);
 	checkError();
 }
 
 void glVertexAttrib4Nub(GLuint index, GLubyte x, GLubyte y, GLubyte z, GLubyte w)
 {
-	gContext.VertexAttrib4Nub(index, x, y, z, w);
+	gGlProcs.VertexAttrib4Nub(index, x, y, z, w);
 	checkError();
 }
 
 void glVertexAttrib4Nubv(GLuint index, GLubyte const * v)
 {
-	gContext.VertexAttrib4Nubv(index, v);
+	gGlProcs.VertexAttrib4Nubv(index, v);
 	checkError();
 }
 
 void glVertexAttrib4Nuiv(GLuint index, GLuint const * v)
 {
-	gContext.VertexAttrib4Nuiv(index, v);
+	gGlProcs.VertexAttrib4Nuiv(index, v);
 	checkError();
 }
 
 void glVertexAttrib4Nusv(GLuint index, GLushort const * v)
 {
-	gContext.VertexAttrib4Nusv(index, v);
+	gGlProcs.VertexAttrib4Nusv(index, v);
 	checkError();
 }
 
 void glVertexAttrib4bv(GLuint index, GLbyte const * v)
 {
-	gContext.VertexAttrib4bv(index, v);
+	gGlProcs.VertexAttrib4bv(index, v);
 	checkError();
 }
 
 void glVertexAttrib4d(GLuint index, GLdouble x, GLdouble y, GLdouble z, GLdouble w)
 {
-	gContext.VertexAttrib4d(index, x, y, z, w);
+	gGlProcs.VertexAttrib4d(index, x, y, z, w);
 	checkError();
 }
 
 void glVertexAttrib4dv(GLuint index, GLdouble const * v)
 {
-	gContext.VertexAttrib4dv(index, v);
+	gGlProcs.VertexAttrib4dv(index, v);
 	checkError();
 }
 
 void glVertexAttrib4f(GLuint index, GLfloat x, GLfloat y, GLfloat z, GLfloat w)
 {
-	gContext.VertexAttrib4f(index, x, y, z, w);
+	gGlProcs.VertexAttrib4f(index, x, y, z, w);
 	checkError();
 }
 
 void glVertexAttrib4fv(GLuint index, GLfloat const * v)
 {
-	gContext.VertexAttrib4fv(index, v);
+	gGlProcs.VertexAttrib4fv(index, v);
 	checkError();
 }
 
 void glVertexAttrib4iv(GLuint index, GLint const * v)
 {
-	gContext.VertexAttrib4iv(index, v);
+	gGlProcs.VertexAttrib4iv(index, v);
 	checkError();
 }
 
 void glVertexAttrib4s(GLuint index, GLshort x, GLshort y, GLshort z, GLshort w)
 {
-	gContext.VertexAttrib4s(index, x, y, z, w);
+	gGlProcs.VertexAttrib4s(index, x, y, z, w);
 	checkError();
 }
 
 void glVertexAttrib4sv(GLuint index, GLshort const * v)
 {
-	gContext.VertexAttrib4sv(index, v);
+	gGlProcs.VertexAttrib4sv(index, v);
 	checkError();
 }
 
 void glVertexAttrib4ubv(GLuint index, GLubyte const * v)
 {
-	gContext.VertexAttrib4ubv(index, v);
+	gGlProcs.VertexAttrib4ubv(index, v);
 	checkError();
 }
 
 void glVertexAttrib4uiv(GLuint index, GLuint const * v)
 {
-	gContext.VertexAttrib4uiv(index, v);
+	gGlProcs.VertexAttrib4uiv(index, v);
 	checkError();
 }
 
 void glVertexAttrib4usv(GLuint index, GLushort const * v)
 {
-	gContext.VertexAttrib4usv(index, v);
+	gGlProcs.VertexAttrib4usv(index, v);
 	checkError();
 }
 
 void glVertexAttribPointer(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, GLvoid const * pointer)
 {
-	gContext.VertexAttribPointer(index, size, type, normalized, stride, pointer);
+	gGlProcs.VertexAttribPointer(index, size, type, normalized, stride, pointer);
 	checkError();
 }
 
 void glUniformMatrix2x3fv(GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
 {
-	gContext.UniformMatrix2x3fv(location, count, transpose, value);
+	gGlProcs.UniformMatrix2x3fv(location, count, transpose, value);
 	checkError();
 }
 
 void glUniformMatrix3x2fv(GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
 {
-	gContext.UniformMatrix3x2fv(location, count, transpose, value);
+	gGlProcs.UniformMatrix3x2fv(location, count, transpose, value);
 	checkError();
 }
 
 void glUniformMatrix2x4fv(GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
 {
-	gContext.UniformMatrix2x4fv(location, count, transpose, value);
+	gGlProcs.UniformMatrix2x4fv(location, count, transpose, value);
 	checkError();
 }
 
 void glUniformMatrix4x2fv(GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
 {
-	gContext.UniformMatrix4x2fv(location, count, transpose, value);
+	gGlProcs.UniformMatrix4x2fv(location, count, transpose, value);
 	checkError();
 }
 
 void glUniformMatrix3x4fv(GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
 {
-	gContext.UniformMatrix3x4fv(location, count, transpose, value);
+	gGlProcs.UniformMatrix3x4fv(location, count, transpose, value);
 	checkError();
 }
 
 void glUniformMatrix4x3fv(GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
 {
-	gContext.UniformMatrix4x3fv(location, count, transpose, value);
+	gGlProcs.UniformMatrix4x3fv(location, count, transpose, value);
 	checkError();
 }
 
 void glColorMaski(GLuint index, GLboolean r, GLboolean g, GLboolean b, GLboolean a)
 {
-	gContext.ColorMaski(index, r, g, b, a);
+	gGlProcs.ColorMaski(index, r, g, b, a);
 	checkError();
 }
 
 void glGetBooleani_v(GLenum target, GLuint index, GLboolean * data)
 {
-	gContext.GetBooleani_v(target, index, data);
+	gGlProcs.GetBooleani_v(target, index, data);
 	checkError();
 }
 
 void glGetIntegeri_v(GLenum target, GLuint index, GLint * data)
 {
-	gContext.GetIntegeri_v(target, index, data);
+	gGlProcs.GetIntegeri_v(target, index, data);
 	checkError();
 }
 
 void glEnablei(GLenum target, GLuint index)
 {
-	gContext.Enablei(target, index);
+	gGlProcs.Enablei(target, index);
 	checkError();
 }
 
 void glDisablei(GLenum target, GLuint index)
 {
-	gContext.Disablei(target, index);
+	gGlProcs.Disablei(target, index);
 	checkError();
 }
 
 GLboolean glIsEnabledi(GLenum target, GLuint index)
 {
-	auto result = gContext.IsEnabledi(target, index);
+	auto result = gGlProcs.IsEnabledi(target, index);
 	checkError();
 	return result;
 }
 
 void glBeginTransformFeedback(GLenum primitiveMode)
 {
-	gContext.BeginTransformFeedback(primitiveMode);
+	gGlProcs.BeginTransformFeedback(primitiveMode);
 	checkError();
 }
 
 void glEndTransformFeedback(void)
 {
-	gContext.EndTransformFeedback();
+	gGlProcs.EndTransformFeedback();
 	checkError();
 }
 
 void glBindBufferRange(GLenum target, GLuint index, GLuint buffer, GLintptr offset, GLsizeiptr size)
 {
-	gContext.BindBufferRange(target, index, buffer, offset, size);
+	gGlProcs.BindBufferRange(target, index, buffer, offset, size);
 	checkError();
 }
 
 void glBindBufferBase(GLenum target, GLuint index, GLuint buffer)
 {
-	gContext.BindBufferBase(target, index, buffer);
+	gGlProcs.BindBufferBase(target, index, buffer);
 	checkError();
 }
 
 void glTransformFeedbackVaryings(GLuint program, GLsizei count, GLchar const * * varyings, GLenum bufferMode)
 {
-	gContext.TransformFeedbackVaryings(program, count, varyings, bufferMode);
+	gGlProcs.TransformFeedbackVaryings(program, count, varyings, bufferMode);
 	checkError();
 }
 
 void glGetTransformFeedbackVarying(GLuint program, GLuint index, GLsizei bufSize, GLsizei * length, GLsizei * size, GLenum * type, GLchar * name)
 {
-	gContext.GetTransformFeedbackVarying(program, index, bufSize, length, size, type, name);
+	gGlProcs.GetTransformFeedbackVarying(program, index, bufSize, length, size, type, name);
 	checkError();
 }
 
 void glClampColor(GLenum target, GLenum clamp)
 {
-	gContext.ClampColor(target, clamp);
+	gGlProcs.ClampColor(target, clamp);
 	checkError();
 }
 
 void glBeginConditionalRender(GLuint id, GLenum mode)
 {
-	gContext.BeginConditionalRender(id, mode);
+	gGlProcs.BeginConditionalRender(id, mode);
 	checkError();
 }
 
 void glEndConditionalRender(void)
 {
-	gContext.EndConditionalRender();
+	gGlProcs.EndConditionalRender();
 	checkError();
 }
 
 void glVertexAttribIPointer(GLuint index, GLint size, GLenum type, GLsizei stride, GLvoid const * pointer)
 {
-	gContext.VertexAttribIPointer(index, size, type, stride, pointer);
+	gGlProcs.VertexAttribIPointer(index, size, type, stride, pointer);
 	checkError();
 }
 
 void glGetVertexAttribIiv(GLuint index, GLenum pname, GLint * params)
 {
-	gContext.GetVertexAttribIiv(index, pname, params);
+	gGlProcs.GetVertexAttribIiv(index, pname, params);
 	checkError();
 }
 
 void glGetVertexAttribIuiv(GLuint index, GLenum pname, GLuint * params)
 {
-	gContext.GetVertexAttribIuiv(index, pname, params);
+	gGlProcs.GetVertexAttribIuiv(index, pname, params);
 	checkError();
 }
 
 void glVertexAttribI1i(GLuint index, GLint x)
 {
-	gContext.VertexAttribI1i(index, x);
+	gGlProcs.VertexAttribI1i(index, x);
 	checkError();
 }
 
 void glVertexAttribI2i(GLuint index, GLint x, GLint y)
 {
-	gContext.VertexAttribI2i(index, x, y);
+	gGlProcs.VertexAttribI2i(index, x, y);
 	checkError();
 }
 
 void glVertexAttribI3i(GLuint index, GLint x, GLint y, GLint z)
 {
-	gContext.VertexAttribI3i(index, x, y, z);
+	gGlProcs.VertexAttribI3i(index, x, y, z);
 	checkError();
 }
 
 void glVertexAttribI4i(GLuint index, GLint x, GLint y, GLint z, GLint w)
 {
-	gContext.VertexAttribI4i(index, x, y, z, w);
+	gGlProcs.VertexAttribI4i(index, x, y, z, w);
 	checkError();
 }
 
 void glVertexAttribI1ui(GLuint index, GLuint x)
 {
-	gContext.VertexAttribI1ui(index, x);
+	gGlProcs.VertexAttribI1ui(index, x);
 	checkError();
 }
 
 void glVertexAttribI2ui(GLuint index, GLuint x, GLuint y)
 {
-	gContext.VertexAttribI2ui(index, x, y);
+	gGlProcs.VertexAttribI2ui(index, x, y);
 	checkError();
 }
 
 void glVertexAttribI3ui(GLuint index, GLuint x, GLuint y, GLuint z)
 {
-	gContext.VertexAttribI3ui(index, x, y, z);
+	gGlProcs.VertexAttribI3ui(index, x, y, z);
 	checkError();
 }
 
 void glVertexAttribI4ui(GLuint index, GLuint x, GLuint y, GLuint z, GLuint w)
 {
-	gContext.VertexAttribI4ui(index, x, y, z, w);
+	gGlProcs.VertexAttribI4ui(index, x, y, z, w);
 	checkError();
 }
 
 void glVertexAttribI1iv(GLuint index, GLint const * v)
 {
-	gContext.VertexAttribI1iv(index, v);
+	gGlProcs.VertexAttribI1iv(index, v);
 	checkError();
 }
 
 void glVertexAttribI2iv(GLuint index, GLint const * v)
 {
-	gContext.VertexAttribI2iv(index, v);
+	gGlProcs.VertexAttribI2iv(index, v);
 	checkError();
 }
 
 void glVertexAttribI3iv(GLuint index, GLint const * v)
 {
-	gContext.VertexAttribI3iv(index, v);
+	gGlProcs.VertexAttribI3iv(index, v);
 	checkError();
 }
 
 void glVertexAttribI4iv(GLuint index, GLint const * v)
 {
-	gContext.VertexAttribI4iv(index, v);
+	gGlProcs.VertexAttribI4iv(index, v);
 	checkError();
 }
 
 void glVertexAttribI1uiv(GLuint index, GLuint const * v)
 {
-	gContext.VertexAttribI1uiv(index, v);
+	gGlProcs.VertexAttribI1uiv(index, v);
 	checkError();
 }
 
 void glVertexAttribI2uiv(GLuint index, GLuint const * v)
 {
-	gContext.VertexAttribI2uiv(index, v);
+	gGlProcs.VertexAttribI2uiv(index, v);
 	checkError();
 }
 
 void glVertexAttribI3uiv(GLuint index, GLuint const * v)
 {
-	gContext.VertexAttribI3uiv(index, v);
+	gGlProcs.VertexAttribI3uiv(index, v);
 	checkError();
 }
 
 void glVertexAttribI4uiv(GLuint index, GLuint const * v)
 {
-	gContext.VertexAttribI4uiv(index, v);
+	gGlProcs.VertexAttribI4uiv(index, v);
 	checkError();
 }
 
 void glVertexAttribI4bv(GLuint index, GLbyte const * v)
 {
-	gContext.VertexAttribI4bv(index, v);
+	gGlProcs.VertexAttribI4bv(index, v);
 	checkError();
 }
 
 void glVertexAttribI4sv(GLuint index, GLshort const * v)
 {
-	gContext.VertexAttribI4sv(index, v);
+	gGlProcs.VertexAttribI4sv(index, v);
 	checkError();
 }
 
 void glVertexAttribI4ubv(GLuint index, GLubyte const * v)
 {
-	gContext.VertexAttribI4ubv(index, v);
+	gGlProcs.VertexAttribI4ubv(index, v);
 	checkError();
 }
 
 void glVertexAttribI4usv(GLuint index, GLushort const * v)
 {
-	gContext.VertexAttribI4usv(index, v);
+	gGlProcs.VertexAttribI4usv(index, v);
 	checkError();
 }
 
 void glGetUniformuiv(GLuint program, GLint location, GLuint * params)
 {
-	gContext.GetUniformuiv(program, location, params);
+	gGlProcs.GetUniformuiv(program, location, params);
 	checkError();
 }
 
 void glBindFragDataLocation(GLuint program, GLuint color, GLchar const * name)
 {
-	gContext.BindFragDataLocation(program, color, name);
+	gGlProcs.BindFragDataLocation(program, color, name);
 	checkError();
 }
 
 GLint glGetFragDataLocation(GLuint program, GLchar const * name)
 {
-	auto result = gContext.GetFragDataLocation(program, name);
+	auto result = gGlProcs.GetFragDataLocation(program, name);
 	checkError();
 	return result;
 }
 
 void glUniform1ui(GLint location, GLuint v0)
 {
-	gContext.Uniform1ui(location, v0);
+	gGlProcs.Uniform1ui(location, v0);
 	checkError();
 }
 
 void glUniform2ui(GLint location, GLuint v0, GLuint v1)
 {
-	gContext.Uniform2ui(location, v0, v1);
+	gGlProcs.Uniform2ui(location, v0, v1);
 	checkError();
 }
 
 void glUniform3ui(GLint location, GLuint v0, GLuint v1, GLuint v2)
 {
-	gContext.Uniform3ui(location, v0, v1, v2);
+	gGlProcs.Uniform3ui(location, v0, v1, v2);
 	checkError();
 }
 
 void glUniform4ui(GLint location, GLuint v0, GLuint v1, GLuint v2, GLuint v3)
 {
-	gContext.Uniform4ui(location, v0, v1, v2, v3);
+	gGlProcs.Uniform4ui(location, v0, v1, v2, v3);
 	checkError();
 }
 
 void glUniform1uiv(GLint location, GLsizei count, GLuint const * value)
 {
-	gContext.Uniform1uiv(location, count, value);
+	gGlProcs.Uniform1uiv(location, count, value);
 	checkError();
 }
 
 void glUniform2uiv(GLint location, GLsizei count, GLuint const * value)
 {
-	gContext.Uniform2uiv(location, count, value);
+	gGlProcs.Uniform2uiv(location, count, value);
 	checkError();
 }
 
 void glUniform3uiv(GLint location, GLsizei count, GLuint const * value)
 {
-	gContext.Uniform3uiv(location, count, value);
+	gGlProcs.Uniform3uiv(location, count, value);
 	checkError();
 }
 
 void glUniform4uiv(GLint location, GLsizei count, GLuint const * value)
 {
-	gContext.Uniform4uiv(location, count, value);
+	gGlProcs.Uniform4uiv(location, count, value);
 	checkError();
 }
 
 void glTexParameterIiv(GLenum target, GLenum pname, GLint const * params)
 {
-	gContext.TexParameterIiv(target, pname, params);
+	gGlProcs.TexParameterIiv(target, pname, params);
 	checkError();
 }
 
 void glTexParameterIuiv(GLenum target, GLenum pname, GLuint const * params)
 {
-	gContext.TexParameterIuiv(target, pname, params);
+	gGlProcs.TexParameterIuiv(target, pname, params);
 	checkError();
 }
 
 void glGetTexParameterIiv(GLenum target, GLenum pname, GLint * params)
 {
-	gContext.GetTexParameterIiv(target, pname, params);
+	gGlProcs.GetTexParameterIiv(target, pname, params);
 	checkError();
 }
 
 void glGetTexParameterIuiv(GLenum target, GLenum pname, GLuint * params)
 {
-	gContext.GetTexParameterIuiv(target, pname, params);
+	gGlProcs.GetTexParameterIuiv(target, pname, params);
 	checkError();
 }
 
 void glClearBufferiv(GLenum buffer, GLint drawbuffer, GLint const * value)
 {
-	gContext.ClearBufferiv(buffer, drawbuffer, value);
+	gGlProcs.ClearBufferiv(buffer, drawbuffer, value);
 	checkError();
 }
 
 void glClearBufferuiv(GLenum buffer, GLint drawbuffer, GLuint const * value)
 {
-	gContext.ClearBufferuiv(buffer, drawbuffer, value);
+	gGlProcs.ClearBufferuiv(buffer, drawbuffer, value);
 	checkError();
 }
 
 void glClearBufferfv(GLenum buffer, GLint drawbuffer, GLfloat const * value)
 {
-	gContext.ClearBufferfv(buffer, drawbuffer, value);
+	gGlProcs.ClearBufferfv(buffer, drawbuffer, value);
 	checkError();
 }
 
 void glClearBufferfi(GLenum buffer, GLint drawbuffer, GLfloat depth, GLint stencil)
 {
-	gContext.ClearBufferfi(buffer, drawbuffer, depth, stencil);
+	gGlProcs.ClearBufferfi(buffer, drawbuffer, depth, stencil);
 	checkError();
 }
 
 GLubyte const * glGetStringi (GLenum name, GLuint index)
 {
-	auto result = gContext.GetStringi (name, index);
+	auto result = gGlProcs.GetStringi (name, index);
 	checkError();
 	return result;
 }
 
 void glDrawArraysInstanced(GLenum mode, GLint first, GLsizei count, GLsizei primcount)
 {
-	gContext.DrawArraysInstanced(mode, first, count, primcount);
+	gGlProcs.DrawArraysInstanced(mode, first, count, primcount);
 	checkError();
 }
 
 void glDrawElementsInstanced(GLenum mode, GLsizei count, GLenum type, GLvoid const * indices, GLsizei primcount)
 {
-	gContext.DrawElementsInstanced(mode, count, type, indices, primcount);
+	gGlProcs.DrawElementsInstanced(mode, count, type, indices, primcount);
 	checkError();
 }
 
 void glTexBuffer(GLenum target, GLenum internalformat, GLuint buffer)
 {
-	gContext.TexBuffer(target, internalformat, buffer);
+	gGlProcs.TexBuffer(target, internalformat, buffer);
 	checkError();
 }
 
 void glPrimitiveRestartIndex(GLuint index)
 {
-	gContext.PrimitiveRestartIndex(index);
+	gGlProcs.PrimitiveRestartIndex(index);
 	checkError();
 }
 
 void glGetInteger64i_v(GLenum target, GLuint index, GLint64 *data)
 {
-	gContext.GetInteger64i_v(target, index, data);
+	gGlProcs.GetInteger64i_v(target, index, data);
 	checkError();
 }
 
 void glGetBufferParameteri64v(GLenum target, GLenum pname, GLint64 *params)
 {
-	gContext.GetBufferParameteri64v(target, pname, params);
+	gGlProcs.GetBufferParameteri64v(target, pname, params);
 	checkError();
 }
 
 void glFramebufferTexture(GLenum target, GLenum attachment, GLuint texture, GLint level)
 {
-	gContext.FramebufferTexture(target, attachment, texture, level);
+	gGlProcs.FramebufferTexture(target, attachment, texture, level);
 	checkError();
 }
 
 void glVertexAttribDivisor(GLuint index, GLuint divisor)
 {
-	gContext.VertexAttribDivisor(index, divisor);
+	gGlProcs.VertexAttribDivisor(index, divisor);
 	checkError();
 }
 
 void glMinSampleShading(GLclampf value)
 {
-	gContext.MinSampleShading(value);
+	gGlProcs.MinSampleShading(value);
 	checkError();
 }
 
 void glBlendEquationi(GLuint buf, GLenum mode)
 {
-	gContext.BlendEquationi(buf, mode);
+	gGlProcs.BlendEquationi(buf, mode);
 	checkError();
 }
 
 void glBlendEquationSeparatei(GLuint buf, GLenum modeRGB, GLenum modeAlpha)
 {
-	gContext.BlendEquationSeparatei(buf, modeRGB, modeAlpha);
+	gGlProcs.BlendEquationSeparatei(buf, modeRGB, modeAlpha);
 	checkError();
 }
 
 void glBlendFunci(GLuint buf, GLenum src, GLenum dst)
 {
-	gContext.BlendFunci(buf, src, dst);
+	gGlProcs.BlendFunci(buf, src, dst);
 	checkError();
 }
 
 void glBlendFuncSeparatei(GLuint buf, GLenum srcRGB, GLenum dstRGB, GLenum srcAlpha, GLenum dstAlpha)
 {
-	gContext.BlendFuncSeparatei(buf, srcRGB, dstRGB, srcAlpha, dstAlpha);
+	gGlProcs.BlendFuncSeparatei(buf, srcRGB, dstRGB, srcAlpha, dstAlpha);
 	checkError();
 }
 
 GLboolean glIsRenderbuffer(GLuint renderbuffer)
 {
-	auto result = gContext.IsRenderbuffer(renderbuffer);
+	auto result = gGlProcs.IsRenderbuffer(renderbuffer);
 	checkError();
 	return result;
 }
 
 void glBindRenderbuffer(GLenum target, GLuint renderbuffer)
 {
-	gContext.BindRenderbuffer(target, renderbuffer);
+	gGlProcs.BindRenderbuffer(target, renderbuffer);
 	checkError();
 }
 
 void glDeleteRenderbuffers(GLsizei n, GLuint const * renderbuffers)
 {
-	gContext.DeleteRenderbuffers(n, renderbuffers);
+	gGlProcs.DeleteRenderbuffers(n, renderbuffers);
 	checkError();
 }
 
 void glGenRenderbuffers(GLsizei n, GLuint * renderbuffers)
 {
-	gContext.GenRenderbuffers(n, renderbuffers);
+	gGlProcs.GenRenderbuffers(n, renderbuffers);
 	checkError();
 }
 
 void glRenderbufferStorage(GLenum target, GLenum internalformat, GLsizei width, GLsizei height)
 {
-	gContext.RenderbufferStorage(target, internalformat, width, height);
+	gGlProcs.RenderbufferStorage(target, internalformat, width, height);
 	checkError();
 }
 
 void glGetRenderbufferParameteriv(GLenum target, GLenum pname, GLint * params)
 {
-	gContext.GetRenderbufferParameteriv(target, pname, params);
+	gGlProcs.GetRenderbufferParameteriv(target, pname, params);
 	checkError();
 }
 
 GLboolean glIsFramebuffer(GLuint framebuffer)
 {
-	auto result = gContext.IsFramebuffer(framebuffer);
+	auto result = gGlProcs.IsFramebuffer(framebuffer);
 	checkError();
 	return result;
 }
 
 void glBindFramebuffer(GLenum target, GLuint framebuffer)
 {
-	gContext.BindFramebuffer(target, framebuffer);
+	gGlProcs.BindFramebuffer(target, framebuffer);
 	checkError();
 }
 
 void glDeleteFramebuffers(GLsizei n, GLuint const * framebuffers)
 {
-	gContext.DeleteFramebuffers(n, framebuffers);
+	gGlProcs.DeleteFramebuffers(n, framebuffers);
 	checkError();
 }
 
 void glGenFramebuffers(GLsizei n, GLuint * framebuffers)
 {
-	gContext.GenFramebuffers(n, framebuffers);
+	gGlProcs.GenFramebuffers(n, framebuffers);
 	checkError();
 }
 
 GLenum glCheckFramebufferStatus(GLenum target)
 {
-	auto result = gContext.CheckFramebufferStatus(target);
+	auto result = gGlProcs.CheckFramebufferStatus(target);
 	checkError();
 	return result;
 }
 
 void glFramebufferTexture1D(GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level)
 {
-	gContext.FramebufferTexture1D(target, attachment, textarget, texture, level);
+	gGlProcs.FramebufferTexture1D(target, attachment, textarget, texture, level);
 	checkError();
 }
 
 void glFramebufferTexture2D(GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level)
 {
-	gContext.FramebufferTexture2D(target, attachment, textarget, texture, level);
+	gGlProcs.FramebufferTexture2D(target, attachment, textarget, texture, level);
 	checkError();
 }
 
 void glFramebufferTexture3D(GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level, GLint zoffset)
 {
-	gContext.FramebufferTexture3D(target, attachment, textarget, texture, level, zoffset);
+	gGlProcs.FramebufferTexture3D(target, attachment, textarget, texture, level, zoffset);
 	checkError();
 }
 
 void glFramebufferRenderbuffer(GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer)
 {
-	gContext.FramebufferRenderbuffer(target, attachment, renderbuffertarget, renderbuffer);
+	gGlProcs.FramebufferRenderbuffer(target, attachment, renderbuffertarget, renderbuffer);
 	checkError();
 }
 
 void glGetFramebufferAttachmentParameteriv(GLenum target, GLenum attachment, GLenum pname, GLint * params)
 {
-	gContext.GetFramebufferAttachmentParameteriv(target, attachment, pname, params);
+	gGlProcs.GetFramebufferAttachmentParameteriv(target, attachment, pname, params);
 	checkError();
 }
 
 void glGenerateMipmap(GLenum target)
 {
-	gContext.GenerateMipmap(target);
+	gGlProcs.GenerateMipmap(target);
 	checkError();
 }
 
 void glBlitFramebuffer(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1, GLbitfield mask, GLenum filter)
 {
-	gContext.BlitFramebuffer(srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter);
+	gGlProcs.BlitFramebuffer(srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter);
 	checkError();
 }
 
 void glRenderbufferStorageMultisample(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height)
 {
-	gContext.RenderbufferStorageMultisample(target, samples, internalformat, width, height);
+	gGlProcs.RenderbufferStorageMultisample(target, samples, internalformat, width, height);
 	checkError();
 }
 
 void glFramebufferTextureLayer(GLenum target, GLenum attachment, GLuint texture, GLint level, GLint layer)
 {
-	gContext.FramebufferTextureLayer(target, attachment, texture, level, layer);
+	gGlProcs.FramebufferTextureLayer(target, attachment, texture, level, layer);
 	checkError();
 }
 
 GLvoid * glMapBufferRange(GLenum target, GLintptr offset, GLsizeiptr length, GLbitfield access)
 {
-	auto result = gContext.MapBufferRange(target, offset, length, access);
+	auto result = gGlProcs.MapBufferRange(target, offset, length, access);
 	checkError();
 	return result;
 }
 
 void glFlushMappedBufferRange(GLenum target, GLintptr offset, GLsizeiptr length)
 {
-	gContext.FlushMappedBufferRange(target, offset, length);
+	gGlProcs.FlushMappedBufferRange(target, offset, length);
 	checkError();
 }
 
 void glBindVertexArray(GLuint array)
 {
-	gContext.BindVertexArray(array);
+	gGlProcs.BindVertexArray(array);
 	checkError();
 }
 
 void glDeleteVertexArrays(GLsizei n, GLuint const * arrays)
 {
-	gContext.DeleteVertexArrays(n, arrays);
+	gGlProcs.DeleteVertexArrays(n, arrays);
 	checkError();
 }
 
 void glGenVertexArrays(GLsizei n, GLuint * arrays)
 {
-	gContext.GenVertexArrays(n, arrays);
+	gGlProcs.GenVertexArrays(n, arrays);
 	checkError();
 }
 
 GLboolean glIsVertexArray(GLuint array)
 {
-	auto result = gContext.IsVertexArray(array);
+	auto result = gGlProcs.IsVertexArray(array);
 	checkError();
 	return result;
 }
 
 void glGetUniformIndices(GLuint program, GLsizei uniformCount, GLchar const * * uniformNames, GLuint * uniformIndices)
 {
-	gContext.GetUniformIndices(program, uniformCount, uniformNames, uniformIndices);
+	gGlProcs.GetUniformIndices(program, uniformCount, uniformNames, uniformIndices);
 	checkError();
 }
 
 void glGetActiveUniformsiv(GLuint program, GLsizei uniformCount, GLuint const * uniformIndices, GLenum pname, GLint * params)
 {
-	gContext.GetActiveUniformsiv(program, uniformCount, uniformIndices, pname, params);
+	gGlProcs.GetActiveUniformsiv(program, uniformCount, uniformIndices, pname, params);
 	checkError();
 }
 
 void glGetActiveUniformName(GLuint program, GLuint uniformIndex, GLsizei bufSize, GLsizei * length, GLchar * uniformName)
 {
-	gContext.GetActiveUniformName(program, uniformIndex, bufSize, length, uniformName);
+	gGlProcs.GetActiveUniformName(program, uniformIndex, bufSize, length, uniformName);
 	checkError();
 }
 
 GLuint glGetUniformBlockIndex(GLuint program, GLchar const * uniformBlockName)
 {
-	auto result = gContext.GetUniformBlockIndex(program, uniformBlockName);
+	auto result = gGlProcs.GetUniformBlockIndex(program, uniformBlockName);
 	checkError();
 	return result;
 }
 
 void glGetActiveUniformBlockiv(GLuint program, GLuint uniformBlockIndex, GLenum pname, GLint * params)
 {
-	gContext.GetActiveUniformBlockiv(program, uniformBlockIndex, pname, params);
+	gGlProcs.GetActiveUniformBlockiv(program, uniformBlockIndex, pname, params);
 	checkError();
 }
 
 void glGetActiveUniformBlockName(GLuint program, GLuint uniformBlockIndex, GLsizei bufSize, GLsizei * length, GLchar * uniformBlockName)
 {
-	gContext.GetActiveUniformBlockName(program, uniformBlockIndex, bufSize, length, uniformBlockName);
+	gGlProcs.GetActiveUniformBlockName(program, uniformBlockIndex, bufSize, length, uniformBlockName);
 	checkError();
 }
 
 void glUniformBlockBinding(GLuint program, GLuint uniformBlockIndex, GLuint uniformBlockBinding)
 {
-	gContext.UniformBlockBinding(program, uniformBlockIndex, uniformBlockBinding);
+	gGlProcs.UniformBlockBinding(program, uniformBlockIndex, uniformBlockBinding);
 	checkError();
 }
 
 void glCopyBufferSubData(GLenum readTarget, GLenum writeTarget, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size)
 {
-	gContext.CopyBufferSubData(readTarget, writeTarget, readOffset, writeOffset, size);
+	gGlProcs.CopyBufferSubData(readTarget, writeTarget, readOffset, writeOffset, size);
 	checkError();
 }
 
 void glDrawElementsBaseVertex(GLenum mode, GLsizei count, GLenum type, GLvoid const * indices, GLint basevertex)
 {
-	gContext.DrawElementsBaseVertex(mode, count, type, indices, basevertex);
+	gGlProcs.DrawElementsBaseVertex(mode, count, type, indices, basevertex);
 	checkError();
 }
 
 void glDrawRangeElementsBaseVertex(GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, GLvoid const * indices, GLint basevertex)
 {
-	gContext.DrawRangeElementsBaseVertex(mode, start, end, count, type, indices, basevertex);
+	gGlProcs.DrawRangeElementsBaseVertex(mode, start, end, count, type, indices, basevertex);
 	checkError();
 }
 
 void glDrawElementsInstancedBaseVertex(GLenum mode, GLsizei count, GLenum type, GLvoid const * indices, GLsizei primcount, GLint basevertex)
 {
-	gContext.DrawElementsInstancedBaseVertex(mode, count, type, indices, primcount, basevertex);
+	gGlProcs.DrawElementsInstancedBaseVertex(mode, count, type, indices, primcount, basevertex);
 	checkError();
 }
 
 void glMultiDrawElementsBaseVertex(GLenum mode, GLsizei const * count, GLenum type, GLvoid const * * indices, GLsizei primcount, GLint const * basevertex)
 {
-	gContext.MultiDrawElementsBaseVertex(mode, count, type, indices, primcount, basevertex);
+	gGlProcs.MultiDrawElementsBaseVertex(mode, count, type, indices, primcount, basevertex);
 	checkError();
 }
 
 void glProvokingVertex(GLenum mode)
 {
-	gContext.ProvokingVertex(mode);
+	gGlProcs.ProvokingVertex(mode);
 	checkError();
 }
 
 GLsync glFenceSync(GLenum condition, GLbitfield flags)
 {
-	auto result = gContext.FenceSync(condition, flags);
+	auto result = gGlProcs.FenceSync(condition, flags);
 	checkError();
 	return result;
 }
 
 GLboolean glIsSync(GLsync sync)
 {
-	auto result = gContext.IsSync(sync);
+	auto result = gGlProcs.IsSync(sync);
 	checkError();
 	return result;
 }
 
 void glDeleteSync(GLsync sync)
 {
-	gContext.DeleteSync(sync);
+	gGlProcs.DeleteSync(sync);
 	checkError();
 }
 
 GLenum glClientWaitSync(GLsync sync, GLbitfield flags, GLuint64 timeout)
 {
-	auto result = gContext.ClientWaitSync(sync, flags, timeout);
+	auto result = gGlProcs.ClientWaitSync(sync, flags, timeout);
 	checkError();
 	return result;
 }
 
 void glWaitSync(GLsync sync, GLbitfield flags, GLuint64 timeout)
 {
-	gContext.WaitSync(sync, flags, timeout);
+	gGlProcs.WaitSync(sync, flags, timeout);
 	checkError();
 }
 
 void glGetInteger64v(GLenum pname, GLint64 *params)
 {
-	gContext.GetInteger64v(pname, params);
+	gGlProcs.GetInteger64v(pname, params);
 	checkError();
 }
 
 void glGetSynciv(GLsync sync, GLenum pname, GLsizei bufSize, GLsizei * length, GLint * values)
 {
-	gContext.GetSynciv(sync, pname, bufSize, length, values);
+	gGlProcs.GetSynciv(sync, pname, bufSize, length, values);
 	checkError();
 }
 
 void glTexImage2DMultisample(GLenum target, GLsizei samples, GLint internalformat, GLsizei width, GLsizei height, GLboolean fixedsamplelocations)
 {
-	gContext.TexImage2DMultisample(target, samples, internalformat, width, height, fixedsamplelocations);
+	gGlProcs.TexImage2DMultisample(target, samples, internalformat, width, height, fixedsamplelocations);
 	checkError();
 }
 
 void glTexImage3DMultisample(GLenum target, GLsizei samples, GLint internalformat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedsamplelocations)
 {
-	gContext.TexImage3DMultisample(target, samples, internalformat, width, height, depth, fixedsamplelocations);
+	gGlProcs.TexImage3DMultisample(target, samples, internalformat, width, height, depth, fixedsamplelocations);
 	checkError();
 }
 
 void glGetMultisamplefv(GLenum pname, GLuint index, GLfloat * val)
 {
-	gContext.GetMultisamplefv(pname, index, val);
+	gGlProcs.GetMultisamplefv(pname, index, val);
 	checkError();
 }
 
 void glSampleMaski(GLuint index, GLbitfield mask)
 {
-	gContext.SampleMaski(index, mask);
+	gGlProcs.SampleMaski(index, mask);
 	checkError();
 }
 
 void glBlendEquationiARB(GLuint buf, GLenum mode)
 {
-	gContext.BlendEquationiARB(buf, mode);
+	gGlProcs.BlendEquationiARB(buf, mode);
 	checkError();
 }
 
 void glBlendEquationSeparateiARB(GLuint buf, GLenum modeRGB, GLenum modeAlpha)
 {
-	gContext.BlendEquationSeparateiARB(buf, modeRGB, modeAlpha);
+	gGlProcs.BlendEquationSeparateiARB(buf, modeRGB, modeAlpha);
 	checkError();
 }
 
 void glBlendFunciARB(GLuint buf, GLenum src, GLenum dst)
 {
-	gContext.BlendFunciARB(buf, src, dst);
+	gGlProcs.BlendFunciARB(buf, src, dst);
 	checkError();
 }
 
 void glBlendFuncSeparateiARB(GLuint buf, GLenum srcRGB, GLenum dstRGB, GLenum srcAlpha, GLenum dstAlpha)
 {
-	gContext.BlendFuncSeparateiARB(buf, srcRGB, dstRGB, srcAlpha, dstAlpha);
+	gGlProcs.BlendFuncSeparateiARB(buf, srcRGB, dstRGB, srcAlpha, dstAlpha);
 	checkError();
 }
 
 void glMinSampleShadingARB(GLclampf value)
 {
-	gContext.MinSampleShadingARB(value);
+	gGlProcs.MinSampleShadingARB(value);
 	checkError();
 }
 
 void glNamedStringARB(GLenum type, GLint namelen, GLchar const * name, GLint stringlen, GLchar const * string)
 {
-	gContext.NamedStringARB(type, namelen, name, stringlen, string);
+	gGlProcs.NamedStringARB(type, namelen, name, stringlen, string);
 	checkError();
 }
 
 void glDeleteNamedStringARB(GLint namelen, GLchar const * name)
 {
-	gContext.DeleteNamedStringARB(namelen, name);
+	gGlProcs.DeleteNamedStringARB(namelen, name);
 	checkError();
 }
 
 void glCompileShaderIncludeARB(GLuint shader, GLsizei count, GLchar const * * path, GLint const * length)
 {
-	gContext.CompileShaderIncludeARB(shader, count, path, length);
+	gGlProcs.CompileShaderIncludeARB(shader, count, path, length);
 	checkError();
 }
 
 GLboolean glIsNamedStringARB(GLint namelen, GLchar const * name)
 {
-	auto result = gContext.IsNamedStringARB(namelen, name);
+	auto result = gGlProcs.IsNamedStringARB(namelen, name);
 	checkError();
 	return result;
 }
 
 void glGetNamedStringARB(GLint namelen, GLchar const * name, GLsizei bufSize, GLint * stringlen, GLchar * string)
 {
-	gContext.GetNamedStringARB(namelen, name, bufSize, stringlen, string);
+	gGlProcs.GetNamedStringARB(namelen, name, bufSize, stringlen, string);
 	checkError();
 }
 
 void glGetNamedStringivARB(GLint namelen, GLchar const * name, GLenum pname, GLint * params)
 {
-	gContext.GetNamedStringivARB(namelen, name, pname, params);
+	gGlProcs.GetNamedStringivARB(namelen, name, pname, params);
 	checkError();
 }
 
 void glBindFragDataLocationIndexed(GLuint program, GLuint colorNumber, GLuint index, GLchar const * name)
 {
-	gContext.BindFragDataLocationIndexed(program, colorNumber, index, name);
+	gGlProcs.BindFragDataLocationIndexed(program, colorNumber, index, name);
 	checkError();
 }
 
 GLint glGetFragDataIndex(GLuint program, GLchar const * name)
 {
-	auto result = gContext.GetFragDataIndex(program, name);
+	auto result = gGlProcs.GetFragDataIndex(program, name);
 	checkError();
 	return result;
 }
 
 void glGenSamplers(GLsizei count, GLuint * samplers)
 {
-	gContext.GenSamplers(count, samplers);
+	gGlProcs.GenSamplers(count, samplers);
 	checkError();
 }
 
 void glDeleteSamplers(GLsizei count, GLuint const * samplers)
 {
-	gContext.DeleteSamplers(count, samplers);
+	gGlProcs.DeleteSamplers(count, samplers);
 	checkError();
 }
 
 GLboolean glIsSampler(GLuint sampler)
 {
-	auto result = gContext.IsSampler(sampler);
+	auto result = gGlProcs.IsSampler(sampler);
 	checkError();
 	return result;
 }
 
 void glBindSampler(GLuint unit, GLuint sampler)
 {
-	gContext.BindSampler(unit, sampler);
+	gGlProcs.BindSampler(unit, sampler);
 	checkError();
 }
 
 void glSamplerParameteri(GLuint sampler, GLenum pname, GLint param)
 {
-	gContext.SamplerParameteri(sampler, pname, param);
+	gGlProcs.SamplerParameteri(sampler, pname, param);
 	checkError();
 }
 
 void glSamplerParameteriv(GLuint sampler, GLenum pname, GLint const * param)
 {
-	gContext.SamplerParameteriv(sampler, pname, param);
+	gGlProcs.SamplerParameteriv(sampler, pname, param);
 	checkError();
 }
 
 void glSamplerParameterf(GLuint sampler, GLenum pname, GLfloat param)
 {
-	gContext.SamplerParameterf(sampler, pname, param);
+	gGlProcs.SamplerParameterf(sampler, pname, param);
 	checkError();
 }
 
 void glSamplerParameterfv(GLuint sampler, GLenum pname, GLfloat const * param)
 {
-	gContext.SamplerParameterfv(sampler, pname, param);
+	gGlProcs.SamplerParameterfv(sampler, pname, param);
 	checkError();
 }
 
 void glSamplerParameterIiv(GLuint sampler, GLenum pname, GLint const * param)
 {
-	gContext.SamplerParameterIiv(sampler, pname, param);
+	gGlProcs.SamplerParameterIiv(sampler, pname, param);
 	checkError();
 }
 
 void glSamplerParameterIuiv(GLuint sampler, GLenum pname, GLuint const * param)
 {
-	gContext.SamplerParameterIuiv(sampler, pname, param);
+	gGlProcs.SamplerParameterIuiv(sampler, pname, param);
 	checkError();
 }
 
 void glGetSamplerParameteriv(GLuint sampler, GLenum pname, GLint * params)
 {
-	gContext.GetSamplerParameteriv(sampler, pname, params);
+	gGlProcs.GetSamplerParameteriv(sampler, pname, params);
 	checkError();
 }
 
 void glGetSamplerParameterIiv(GLuint sampler, GLenum pname, GLint * params)
 {
-	gContext.GetSamplerParameterIiv(sampler, pname, params);
+	gGlProcs.GetSamplerParameterIiv(sampler, pname, params);
 	checkError();
 }
 
 void glGetSamplerParameterfv(GLuint sampler, GLenum pname, GLfloat * params)
 {
-	gContext.GetSamplerParameterfv(sampler, pname, params);
+	gGlProcs.GetSamplerParameterfv(sampler, pname, params);
 	checkError();
 }
 
 void glGetSamplerParameterIuiv(GLuint sampler, GLenum pname, GLuint * params)
 {
-	gContext.GetSamplerParameterIuiv(sampler, pname, params);
+	gGlProcs.GetSamplerParameterIuiv(sampler, pname, params);
 	checkError();
 }
 
 void glQueryCounter(GLuint id, GLenum target)
 {
-	gContext.QueryCounter(id, target);
+	gGlProcs.QueryCounter(id, target);
 	checkError();
 }
 
 void glGetQueryObjecti64v(GLuint id, GLenum pname, GLint64 *params)
 {
-	gContext.GetQueryObjecti64v(id, pname, params);
+	gGlProcs.GetQueryObjecti64v(id, pname, params);
 	checkError();
 }
 
 void glGetQueryObjectui64v(GLuint id, GLenum pname, GLuint64 *params)
 {
-	gContext.GetQueryObjectui64v(id, pname, params);
+	gGlProcs.GetQueryObjectui64v(id, pname, params);
 	checkError();
 }
 
 void glVertexAttribP1ui(GLuint index, GLenum type, GLboolean normalized, GLuint value)
 {
-	gContext.VertexAttribP1ui(index, type, normalized, value);
+	gGlProcs.VertexAttribP1ui(index, type, normalized, value);
 	checkError();
 }
 
 void glVertexAttribP1uiv(GLuint index, GLenum type, GLboolean normalized, GLuint const * value)
 {
-	gContext.VertexAttribP1uiv(index, type, normalized, value);
+	gGlProcs.VertexAttribP1uiv(index, type, normalized, value);
 	checkError();
 }
 
 void glVertexAttribP2ui(GLuint index, GLenum type, GLboolean normalized, GLuint value)
 {
-	gContext.VertexAttribP2ui(index, type, normalized, value);
+	gGlProcs.VertexAttribP2ui(index, type, normalized, value);
 	checkError();
 }
 
 void glVertexAttribP2uiv(GLuint index, GLenum type, GLboolean normalized, GLuint const * value)
 {
-	gContext.VertexAttribP2uiv(index, type, normalized, value);
+	gGlProcs.VertexAttribP2uiv(index, type, normalized, value);
 	checkError();
 }
 
 void glVertexAttribP3ui(GLuint index, GLenum type, GLboolean normalized, GLuint value)
 {
-	gContext.VertexAttribP3ui(index, type, normalized, value);
+	gGlProcs.VertexAttribP3ui(index, type, normalized, value);
 	checkError();
 }
 
 void glVertexAttribP3uiv(GLuint index, GLenum type, GLboolean normalized, GLuint const * value)
 {
-	gContext.VertexAttribP3uiv(index, type, normalized, value);
+	gGlProcs.VertexAttribP3uiv(index, type, normalized, value);
 	checkError();
 }
 
 void glVertexAttribP4ui(GLuint index, GLenum type, GLboolean normalized, GLuint value)
 {
-	gContext.VertexAttribP4ui(index, type, normalized, value);
+	gGlProcs.VertexAttribP4ui(index, type, normalized, value);
 	checkError();
 }
 
 void glVertexAttribP4uiv(GLuint index, GLenum type, GLboolean normalized, GLuint const * value)
 {
-	gContext.VertexAttribP4uiv(index, type, normalized, value);
+	gGlProcs.VertexAttribP4uiv(index, type, normalized, value);
 	checkError();
 }
 
 void glDrawArraysIndirect(GLenum mode, GLvoid const * indirect)
 {
-	gContext.DrawArraysIndirect(mode, indirect);
+	gGlProcs.DrawArraysIndirect(mode, indirect);
 	checkError();
 }
 
 void glDrawElementsIndirect(GLenum mode, GLenum type, GLvoid const * indirect)
 {
-	gContext.DrawElementsIndirect(mode, type, indirect);
+	gGlProcs.DrawElementsIndirect(mode, type, indirect);
 	checkError();
 }
 
 void glUniform1d(GLint location, GLdouble x)
 {
-	gContext.Uniform1d(location, x);
+	gGlProcs.Uniform1d(location, x);
 	checkError();
 }
 
 void glUniform2d(GLint location, GLdouble x, GLdouble y)
 {
-	gContext.Uniform2d(location, x, y);
+	gGlProcs.Uniform2d(location, x, y);
 	checkError();
 }
 
 void glUniform3d(GLint location, GLdouble x, GLdouble y, GLdouble z)
 {
-	gContext.Uniform3d(location, x, y, z);
+	gGlProcs.Uniform3d(location, x, y, z);
 	checkError();
 }
 
 void glUniform4d(GLint location, GLdouble x, GLdouble y, GLdouble z, GLdouble w)
 {
-	gContext.Uniform4d(location, x, y, z, w);
+	gGlProcs.Uniform4d(location, x, y, z, w);
 	checkError();
 }
 
 void glUniform1dv(GLint location, GLsizei count, GLdouble const * value)
 {
-	gContext.Uniform1dv(location, count, value);
+	gGlProcs.Uniform1dv(location, count, value);
 	checkError();
 }
 
 void glUniform2dv(GLint location, GLsizei count, GLdouble const * value)
 {
-	gContext.Uniform2dv(location, count, value);
+	gGlProcs.Uniform2dv(location, count, value);
 	checkError();
 }
 
 void glUniform3dv(GLint location, GLsizei count, GLdouble const * value)
 {
-	gContext.Uniform3dv(location, count, value);
+	gGlProcs.Uniform3dv(location, count, value);
 	checkError();
 }
 
 void glUniform4dv(GLint location, GLsizei count, GLdouble const * value)
 {
-	gContext.Uniform4dv(location, count, value);
+	gGlProcs.Uniform4dv(location, count, value);
 	checkError();
 }
 
 void glUniformMatrix2dv(GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
 {
-	gContext.UniformMatrix2dv(location, count, transpose, value);
+	gGlProcs.UniformMatrix2dv(location, count, transpose, value);
 	checkError();
 }
 
 void glUniformMatrix3dv(GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
 {
-	gContext.UniformMatrix3dv(location, count, transpose, value);
+	gGlProcs.UniformMatrix3dv(location, count, transpose, value);
 	checkError();
 }
 
 void glUniformMatrix4dv(GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
 {
-	gContext.UniformMatrix4dv(location, count, transpose, value);
+	gGlProcs.UniformMatrix4dv(location, count, transpose, value);
 	checkError();
 }
 
 void glUniformMatrix2x3dv(GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
 {
-	gContext.UniformMatrix2x3dv(location, count, transpose, value);
+	gGlProcs.UniformMatrix2x3dv(location, count, transpose, value);
 	checkError();
 }
 
 void glUniformMatrix2x4dv(GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
 {
-	gContext.UniformMatrix2x4dv(location, count, transpose, value);
+	gGlProcs.UniformMatrix2x4dv(location, count, transpose, value);
 	checkError();
 }
 
 void glUniformMatrix3x2dv(GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
 {
-	gContext.UniformMatrix3x2dv(location, count, transpose, value);
+	gGlProcs.UniformMatrix3x2dv(location, count, transpose, value);
 	checkError();
 }
 
 void glUniformMatrix3x4dv(GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
 {
-	gContext.UniformMatrix3x4dv(location, count, transpose, value);
+	gGlProcs.UniformMatrix3x4dv(location, count, transpose, value);
 	checkError();
 }
 
 void glUniformMatrix4x2dv(GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
 {
-	gContext.UniformMatrix4x2dv(location, count, transpose, value);
+	gGlProcs.UniformMatrix4x2dv(location, count, transpose, value);
 	checkError();
 }
 
 void glUniformMatrix4x3dv(GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
 {
-	gContext.UniformMatrix4x3dv(location, count, transpose, value);
+	gGlProcs.UniformMatrix4x3dv(location, count, transpose, value);
 	checkError();
 }
 
 void glGetUniformdv(GLuint program, GLint location, GLdouble * params)
 {
-	gContext.GetUniformdv(program, location, params);
+	gGlProcs.GetUniformdv(program, location, params);
 	checkError();
 }
 
 GLint glGetSubroutineUniformLocation(GLuint program, GLenum shadertype, GLchar const * name)
 {
-	auto result = gContext.GetSubroutineUniformLocation(program, shadertype, name);
+	auto result = gGlProcs.GetSubroutineUniformLocation(program, shadertype, name);
 	checkError();
 	return result;
 }
 
 GLuint glGetSubroutineIndex(GLuint program, GLenum shadertype, GLchar const * name)
 {
-	auto result = gContext.GetSubroutineIndex(program, shadertype, name);
+	auto result = gGlProcs.GetSubroutineIndex(program, shadertype, name);
 	checkError();
 	return result;
 }
 
 void glGetActiveSubroutineUniformiv(GLuint program, GLenum shadertype, GLuint index, GLenum pname, GLint * values)
 {
-	gContext.GetActiveSubroutineUniformiv(program, shadertype, index, pname, values);
+	gGlProcs.GetActiveSubroutineUniformiv(program, shadertype, index, pname, values);
 	checkError();
 }
 
 void glGetActiveSubroutineUniformName(GLuint program, GLenum shadertype, GLuint index, GLsizei bufsize, GLsizei * length, GLchar * name)
 {
-	gContext.GetActiveSubroutineUniformName(program, shadertype, index, bufsize, length, name);
+	gGlProcs.GetActiveSubroutineUniformName(program, shadertype, index, bufsize, length, name);
 	checkError();
 }
 
 void glGetActiveSubroutineName(GLuint program, GLenum shadertype, GLuint index, GLsizei bufsize, GLsizei * length, GLchar * name)
 {
-	gContext.GetActiveSubroutineName(program, shadertype, index, bufsize, length, name);
+	gGlProcs.GetActiveSubroutineName(program, shadertype, index, bufsize, length, name);
 	checkError();
 }
 
 void glUniformSubroutinesuiv(GLenum shadertype, GLsizei count, GLuint const * indices)
 {
-	gContext.UniformSubroutinesuiv(shadertype, count, indices);
+	gGlProcs.UniformSubroutinesuiv(shadertype, count, indices);
 	checkError();
 }
 
 void glGetUniformSubroutineuiv(GLenum shadertype, GLint location, GLuint * params)
 {
-	gContext.GetUniformSubroutineuiv(shadertype, location, params);
+	gGlProcs.GetUniformSubroutineuiv(shadertype, location, params);
 	checkError();
 }
 
 void glGetProgramStageiv(GLuint program, GLenum shadertype, GLenum pname, GLint * values)
 {
-	gContext.GetProgramStageiv(program, shadertype, pname, values);
+	gGlProcs.GetProgramStageiv(program, shadertype, pname, values);
 	checkError();
 }
 
 void glPatchParameteri(GLenum pname, GLint value)
 {
-	gContext.PatchParameteri(pname, value);
+	gGlProcs.PatchParameteri(pname, value);
 	checkError();
 }
 
 void glPatchParameterfv(GLenum pname, GLfloat const * values)
 {
-	gContext.PatchParameterfv(pname, values);
+	gGlProcs.PatchParameterfv(pname, values);
 	checkError();
 }
 
 void glBindTransformFeedback(GLenum target, GLuint id)
 {
-	gContext.BindTransformFeedback(target, id);
+	gGlProcs.BindTransformFeedback(target, id);
 	checkError();
 }
 
 void glDeleteTransformFeedbacks(GLsizei n, GLuint const * ids)
 {
-	gContext.DeleteTransformFeedbacks(n, ids);
+	gGlProcs.DeleteTransformFeedbacks(n, ids);
 	checkError();
 }
 
 void glGenTransformFeedbacks(GLsizei n, GLuint * ids)
 {
-	gContext.GenTransformFeedbacks(n, ids);
+	gGlProcs.GenTransformFeedbacks(n, ids);
 	checkError();
 }
 
 GLboolean glIsTransformFeedback(GLuint id)
 {
-	auto result = gContext.IsTransformFeedback(id);
+	auto result = gGlProcs.IsTransformFeedback(id);
 	checkError();
 	return result;
 }
 
 void glPauseTransformFeedback(void)
 {
-	gContext.PauseTransformFeedback();
+	gGlProcs.PauseTransformFeedback();
 	checkError();
 }
 
 void glResumeTransformFeedback(void)
 {
-	gContext.ResumeTransformFeedback();
+	gGlProcs.ResumeTransformFeedback();
 	checkError();
 }
 
 void glDrawTransformFeedback(GLenum mode, GLuint id)
 {
-	gContext.DrawTransformFeedback(mode, id);
+	gGlProcs.DrawTransformFeedback(mode, id);
 	checkError();
 }
 
 void glDrawTransformFeedbackStream(GLenum mode, GLuint id, GLuint stream)
 {
-	gContext.DrawTransformFeedbackStream(mode, id, stream);
+	gGlProcs.DrawTransformFeedbackStream(mode, id, stream);
 	checkError();
 }
 
 void glBeginQueryIndexed(GLenum target, GLuint index, GLuint id)
 {
-	gContext.BeginQueryIndexed(target, index, id);
+	gGlProcs.BeginQueryIndexed(target, index, id);
 	checkError();
 }
 
 void glEndQueryIndexed(GLenum target, GLuint index)
 {
-	gContext.EndQueryIndexed(target, index);
+	gGlProcs.EndQueryIndexed(target, index);
 	checkError();
 }
 
 void glGetQueryIndexediv(GLenum target, GLuint index, GLenum pname, GLint * params)
 {
-	gContext.GetQueryIndexediv(target, index, pname, params);
+	gGlProcs.GetQueryIndexediv(target, index, pname, params);
 	checkError();
 }
 
 void glReleaseShaderCompiler(void)
 {
-	gContext.ReleaseShaderCompiler();
+	gGlProcs.ReleaseShaderCompiler();
 	checkError();
 }
 
 void glShaderBinary(GLsizei count, GLuint const * shaders, GLenum binaryformat, GLvoid const * binary, GLsizei length)
 {
-	gContext.ShaderBinary(count, shaders, binaryformat, binary, length);
+	gGlProcs.ShaderBinary(count, shaders, binaryformat, binary, length);
 	checkError();
 }
 
 void glGetShaderPrecisionFormat(GLenum shadertype, GLenum precisiontype, GLint * range, GLint * precision)
 {
-	gContext.GetShaderPrecisionFormat(shadertype, precisiontype, range, precision);
+	gGlProcs.GetShaderPrecisionFormat(shadertype, precisiontype, range, precision);
 	checkError();
 }
 
 void glDepthRangef(GLclampf n, GLclampf f)
 {
-	gContext.DepthRangef(n, f);
+	gGlProcs.DepthRangef(n, f);
 	checkError();
 }
 
 void glClearDepthf(GLclampf d)
 {
-	gContext.ClearDepthf(d);
+	gGlProcs.ClearDepthf(d);
 	checkError();
 }
 
 void glGetProgramBinary(GLuint program, GLsizei bufSize, GLsizei * length, GLenum * binaryFormat, GLvoid * binary)
 {
-	gContext.GetProgramBinary(program, bufSize, length, binaryFormat, binary);
+	gGlProcs.GetProgramBinary(program, bufSize, length, binaryFormat, binary);
 	checkError();
 }
 
 void glProgramBinary(GLuint program, GLenum binaryFormat, GLvoid const * binary, GLsizei length)
 {
-	gContext.ProgramBinary(program, binaryFormat, binary, length);
+	gGlProcs.ProgramBinary(program, binaryFormat, binary, length);
 	checkError();
 }
 
 void glProgramParameteri(GLuint program, GLenum pname, GLint value)
 {
-	gContext.ProgramParameteri(program, pname, value);
+	gGlProcs.ProgramParameteri(program, pname, value);
 	checkError();
 }
 
 void glUseProgramStages(GLuint pipeline, GLbitfield stages, GLuint program)
 {
-	gContext.UseProgramStages(pipeline, stages, program);
+	gGlProcs.UseProgramStages(pipeline, stages, program);
 	checkError();
 }
 
 void glActiveShaderProgram(GLuint pipeline, GLuint program)
 {
-	gContext.ActiveShaderProgram(pipeline, program);
+	gGlProcs.ActiveShaderProgram(pipeline, program);
 	checkError();
 }
 
 GLuint glCreateShaderProgramv(GLenum type, GLsizei count, GLchar const * * strings)
 {
-	auto result = gContext.CreateShaderProgramv(type, count, strings);
+	auto result = gGlProcs.CreateShaderProgramv(type, count, strings);
 	checkError();
 	return result;
 }
 
 void glBindProgramPipeline(GLuint pipeline)
 {
-	gContext.BindProgramPipeline(pipeline);
+	gGlProcs.BindProgramPipeline(pipeline);
 	checkError();
 }
 
 void glDeleteProgramPipelines(GLsizei n, GLuint const * pipelines)
 {
-	gContext.DeleteProgramPipelines(n, pipelines);
+	gGlProcs.DeleteProgramPipelines(n, pipelines);
 	checkError();
 }
 
 void glGenProgramPipelines(GLsizei n, GLuint * pipelines)
 {
-	gContext.GenProgramPipelines(n, pipelines);
+	gGlProcs.GenProgramPipelines(n, pipelines);
 	checkError();
 }
 
 GLboolean glIsProgramPipeline(GLuint pipeline)
 {
-	auto result = gContext.IsProgramPipeline(pipeline);
+	auto result = gGlProcs.IsProgramPipeline(pipeline);
 	checkError();
 	return result;
 }
 
 void glGetProgramPipelineiv(GLuint pipeline, GLenum pname, GLint * params)
 {
-	gContext.GetProgramPipelineiv(pipeline, pname, params);
+	gGlProcs.GetProgramPipelineiv(pipeline, pname, params);
 	checkError();
 }
 
 void glProgramUniform1i(GLuint program, GLint location, GLint v0)
 {
-	gContext.ProgramUniform1i(program, location, v0);
+	gGlProcs.ProgramUniform1i(program, location, v0);
 	checkError();
 }
 
 void glProgramUniform1iv(GLuint program, GLint location, GLsizei count, GLint const * value)
 {
-	gContext.ProgramUniform1iv(program, location, count, value);
+	gGlProcs.ProgramUniform1iv(program, location, count, value);
 	checkError();
 }
 
 void glProgramUniform1f(GLuint program, GLint location, GLfloat v0)
 {
-	gContext.ProgramUniform1f(program, location, v0);
+	gGlProcs.ProgramUniform1f(program, location, v0);
 	checkError();
 }
 
 void glProgramUniform1fv(GLuint program, GLint location, GLsizei count, GLfloat const * value)
 {
-	gContext.ProgramUniform1fv(program, location, count, value);
+	gGlProcs.ProgramUniform1fv(program, location, count, value);
 	checkError();
 }
 
 void glProgramUniform1d(GLuint program, GLint location, GLdouble v0)
 {
-	gContext.ProgramUniform1d(program, location, v0);
+	gGlProcs.ProgramUniform1d(program, location, v0);
 	checkError();
 }
 
 void glProgramUniform1dv(GLuint program, GLint location, GLsizei count, GLdouble const * value)
 {
-	gContext.ProgramUniform1dv(program, location, count, value);
+	gGlProcs.ProgramUniform1dv(program, location, count, value);
 	checkError();
 }
 
 void glProgramUniform1ui(GLuint program, GLint location, GLuint v0)
 {
-	gContext.ProgramUniform1ui(program, location, v0);
+	gGlProcs.ProgramUniform1ui(program, location, v0);
 	checkError();
 }
 
 void glProgramUniform1uiv(GLuint program, GLint location, GLsizei count, GLuint const * value)
 {
-	gContext.ProgramUniform1uiv(program, location, count, value);
+	gGlProcs.ProgramUniform1uiv(program, location, count, value);
 	checkError();
 }
 
 void glProgramUniform2i(GLuint program, GLint location, GLint v0, GLint v1)
 {
-	gContext.ProgramUniform2i(program, location, v0, v1);
+	gGlProcs.ProgramUniform2i(program, location, v0, v1);
 	checkError();
 }
 
 void glProgramUniform2iv(GLuint program, GLint location, GLsizei count, GLint const * value)
 {
-	gContext.ProgramUniform2iv(program, location, count, value);
+	gGlProcs.ProgramUniform2iv(program, location, count, value);
 	checkError();
 }
 
 void glProgramUniform2f(GLuint program, GLint location, GLfloat v0, GLfloat v1)
 {
-	gContext.ProgramUniform2f(program, location, v0, v1);
+	gGlProcs.ProgramUniform2f(program, location, v0, v1);
 	checkError();
 }
 
 void glProgramUniform2fv(GLuint program, GLint location, GLsizei count, GLfloat const * value)
 {
-	gContext.ProgramUniform2fv(program, location, count, value);
+	gGlProcs.ProgramUniform2fv(program, location, count, value);
 	checkError();
 }
 
 void glProgramUniform2d(GLuint program, GLint location, GLdouble v0, GLdouble v1)
 {
-	gContext.ProgramUniform2d(program, location, v0, v1);
+	gGlProcs.ProgramUniform2d(program, location, v0, v1);
 	checkError();
 }
 
 void glProgramUniform2dv(GLuint program, GLint location, GLsizei count, GLdouble const * value)
 {
-	gContext.ProgramUniform2dv(program, location, count, value);
+	gGlProcs.ProgramUniform2dv(program, location, count, value);
 	checkError();
 }
 
 void glProgramUniform2ui(GLuint program, GLint location, GLuint v0, GLuint v1)
 {
-	gContext.ProgramUniform2ui(program, location, v0, v1);
+	gGlProcs.ProgramUniform2ui(program, location, v0, v1);
 	checkError();
 }
 
 void glProgramUniform2uiv(GLuint program, GLint location, GLsizei count, GLuint const * value)
 {
-	gContext.ProgramUniform2uiv(program, location, count, value);
+	gGlProcs.ProgramUniform2uiv(program, location, count, value);
 	checkError();
 }
 
 void glProgramUniform3i(GLuint program, GLint location, GLint v0, GLint v1, GLint v2)
 {
-	gContext.ProgramUniform3i(program, location, v0, v1, v2);
+	gGlProcs.ProgramUniform3i(program, location, v0, v1, v2);
 	checkError();
 }
 
 void glProgramUniform3iv(GLuint program, GLint location, GLsizei count, GLint const * value)
 {
-	gContext.ProgramUniform3iv(program, location, count, value);
+	gGlProcs.ProgramUniform3iv(program, location, count, value);
 	checkError();
 }
 
 void glProgramUniform3f(GLuint program, GLint location, GLfloat v0, GLfloat v1, GLfloat v2)
 {
-	gContext.ProgramUniform3f(program, location, v0, v1, v2);
+	gGlProcs.ProgramUniform3f(program, location, v0, v1, v2);
 	checkError();
 }
 
 void glProgramUniform3fv(GLuint program, GLint location, GLsizei count, GLfloat const * value)
 {
-	gContext.ProgramUniform3fv(program, location, count, value);
+	gGlProcs.ProgramUniform3fv(program, location, count, value);
 	checkError();
 }
 
 void glProgramUniform3d(GLuint program, GLint location, GLdouble v0, GLdouble v1, GLdouble v2)
 {
-	gContext.ProgramUniform3d(program, location, v0, v1, v2);
+	gGlProcs.ProgramUniform3d(program, location, v0, v1, v2);
 	checkError();
 }
 
 void glProgramUniform3dv(GLuint program, GLint location, GLsizei count, GLdouble const * value)
 {
-	gContext.ProgramUniform3dv(program, location, count, value);
+	gGlProcs.ProgramUniform3dv(program, location, count, value);
 	checkError();
 }
 
 void glProgramUniform3ui(GLuint program, GLint location, GLuint v0, GLuint v1, GLuint v2)
 {
-	gContext.ProgramUniform3ui(program, location, v0, v1, v2);
+	gGlProcs.ProgramUniform3ui(program, location, v0, v1, v2);
 	checkError();
 }
 
 void glProgramUniform3uiv(GLuint program, GLint location, GLsizei count, GLuint const * value)
 {
-	gContext.ProgramUniform3uiv(program, location, count, value);
+	gGlProcs.ProgramUniform3uiv(program, location, count, value);
 	checkError();
 }
 
 void glProgramUniform4i(GLuint program, GLint location, GLint v0, GLint v1, GLint v2, GLint v3)
 {
-	gContext.ProgramUniform4i(program, location, v0, v1, v2, v3);
+	gGlProcs.ProgramUniform4i(program, location, v0, v1, v2, v3);
 	checkError();
 }
 
 void glProgramUniform4iv(GLuint program, GLint location, GLsizei count, GLint const * value)
 {
-	gContext.ProgramUniform4iv(program, location, count, value);
+	gGlProcs.ProgramUniform4iv(program, location, count, value);
 	checkError();
 }
 
 void glProgramUniform4f(GLuint program, GLint location, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3)
 {
-	gContext.ProgramUniform4f(program, location, v0, v1, v2, v3);
+	gGlProcs.ProgramUniform4f(program, location, v0, v1, v2, v3);
 	checkError();
 }
 
 void glProgramUniform4fv(GLuint program, GLint location, GLsizei count, GLfloat const * value)
 {
-	gContext.ProgramUniform4fv(program, location, count, value);
+	gGlProcs.ProgramUniform4fv(program, location, count, value);
 	checkError();
 }
 
 void glProgramUniform4d(GLuint program, GLint location, GLdouble v0, GLdouble v1, GLdouble v2, GLdouble v3)
 {
-	gContext.ProgramUniform4d(program, location, v0, v1, v2, v3);
+	gGlProcs.ProgramUniform4d(program, location, v0, v1, v2, v3);
 	checkError();
 }
 
 void glProgramUniform4dv(GLuint program, GLint location, GLsizei count, GLdouble const * value)
 {
-	gContext.ProgramUniform4dv(program, location, count, value);
+	gGlProcs.ProgramUniform4dv(program, location, count, value);
 	checkError();
 }
 
 void glProgramUniform4ui(GLuint program, GLint location, GLuint v0, GLuint v1, GLuint v2, GLuint v3)
 {
-	gContext.ProgramUniform4ui(program, location, v0, v1, v2, v3);
+	gGlProcs.ProgramUniform4ui(program, location, v0, v1, v2, v3);
 	checkError();
 }
 
 void glProgramUniform4uiv(GLuint program, GLint location, GLsizei count, GLuint const * value)
 {
-	gContext.ProgramUniform4uiv(program, location, count, value);
+	gGlProcs.ProgramUniform4uiv(program, location, count, value);
 	checkError();
 }
 
 void glProgramUniformMatrix2fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
 {
-	gContext.ProgramUniformMatrix2fv(program, location, count, transpose, value);
+	gGlProcs.ProgramUniformMatrix2fv(program, location, count, transpose, value);
 	checkError();
 }
 
 void glProgramUniformMatrix3fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
 {
-	gContext.ProgramUniformMatrix3fv(program, location, count, transpose, value);
+	gGlProcs.ProgramUniformMatrix3fv(program, location, count, transpose, value);
 	checkError();
 }
 
 void glProgramUniformMatrix4fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
 {
-	gContext.ProgramUniformMatrix4fv(program, location, count, transpose, value);
+	gGlProcs.ProgramUniformMatrix4fv(program, location, count, transpose, value);
 	checkError();
 }
 
 void glProgramUniformMatrix2dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
 {
-	gContext.ProgramUniformMatrix2dv(program, location, count, transpose, value);
+	gGlProcs.ProgramUniformMatrix2dv(program, location, count, transpose, value);
 	checkError();
 }
 
 void glProgramUniformMatrix3dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
 {
-	gContext.ProgramUniformMatrix3dv(program, location, count, transpose, value);
+	gGlProcs.ProgramUniformMatrix3dv(program, location, count, transpose, value);
 	checkError();
 }
 
 void glProgramUniformMatrix4dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
 {
-	gContext.ProgramUniformMatrix4dv(program, location, count, transpose, value);
+	gGlProcs.ProgramUniformMatrix4dv(program, location, count, transpose, value);
 	checkError();
 }
 
 void glProgramUniformMatrix2x3fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
 {
-	gContext.ProgramUniformMatrix2x3fv(program, location, count, transpose, value);
+	gGlProcs.ProgramUniformMatrix2x3fv(program, location, count, transpose, value);
 	checkError();
 }
 
 void glProgramUniformMatrix3x2fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
 {
-	gContext.ProgramUniformMatrix3x2fv(program, location, count, transpose, value);
+	gGlProcs.ProgramUniformMatrix3x2fv(program, location, count, transpose, value);
 	checkError();
 }
 
 void glProgramUniformMatrix2x4fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
 {
-	gContext.ProgramUniformMatrix2x4fv(program, location, count, transpose, value);
+	gGlProcs.ProgramUniformMatrix2x4fv(program, location, count, transpose, value);
 	checkError();
 }
 
 void glProgramUniformMatrix4x2fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
 {
-	gContext.ProgramUniformMatrix4x2fv(program, location, count, transpose, value);
+	gGlProcs.ProgramUniformMatrix4x2fv(program, location, count, transpose, value);
 	checkError();
 }
 
 void glProgramUniformMatrix3x4fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
 {
-	gContext.ProgramUniformMatrix3x4fv(program, location, count, transpose, value);
+	gGlProcs.ProgramUniformMatrix3x4fv(program, location, count, transpose, value);
 	checkError();
 }
 
 void glProgramUniformMatrix4x3fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
 {
-	gContext.ProgramUniformMatrix4x3fv(program, location, count, transpose, value);
+	gGlProcs.ProgramUniformMatrix4x3fv(program, location, count, transpose, value);
 	checkError();
 }
 
 void glProgramUniformMatrix2x3dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
 {
-	gContext.ProgramUniformMatrix2x3dv(program, location, count, transpose, value);
+	gGlProcs.ProgramUniformMatrix2x3dv(program, location, count, transpose, value);
 	checkError();
 }
 
 void glProgramUniformMatrix3x2dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
 {
-	gContext.ProgramUniformMatrix3x2dv(program, location, count, transpose, value);
+	gGlProcs.ProgramUniformMatrix3x2dv(program, location, count, transpose, value);
 	checkError();
 }
 
 void glProgramUniformMatrix2x4dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
 {
-	gContext.ProgramUniformMatrix2x4dv(program, location, count, transpose, value);
+	gGlProcs.ProgramUniformMatrix2x4dv(program, location, count, transpose, value);
 	checkError();
 }
 
 void glProgramUniformMatrix4x2dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
 {
-	gContext.ProgramUniformMatrix4x2dv(program, location, count, transpose, value);
+	gGlProcs.ProgramUniformMatrix4x2dv(program, location, count, transpose, value);
 	checkError();
 }
 
 void glProgramUniformMatrix3x4dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
 {
-	gContext.ProgramUniformMatrix3x4dv(program, location, count, transpose, value);
+	gGlProcs.ProgramUniformMatrix3x4dv(program, location, count, transpose, value);
 	checkError();
 }
 
 void glProgramUniformMatrix4x3dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
 {
-	gContext.ProgramUniformMatrix4x3dv(program, location, count, transpose, value);
+	gGlProcs.ProgramUniformMatrix4x3dv(program, location, count, transpose, value);
 	checkError();
 }
 
 void glValidateProgramPipeline(GLuint pipeline)
 {
-	gContext.ValidateProgramPipeline(pipeline);
+	gGlProcs.ValidateProgramPipeline(pipeline);
 	checkError();
 }
 
 void glGetProgramPipelineInfoLog(GLuint pipeline, GLsizei bufSize, GLsizei * length, GLchar * infoLog)
 {
-	gContext.GetProgramPipelineInfoLog(pipeline, bufSize, length, infoLog);
+	gGlProcs.GetProgramPipelineInfoLog(pipeline, bufSize, length, infoLog);
 	checkError();
 }
 
 void glVertexAttribL1d(GLuint index, GLdouble x)
 {
-	gContext.VertexAttribL1d(index, x);
+	gGlProcs.VertexAttribL1d(index, x);
 	checkError();
 }
 
 void glVertexAttribL2d(GLuint index, GLdouble x, GLdouble y)
 {
-	gContext.VertexAttribL2d(index, x, y);
+	gGlProcs.VertexAttribL2d(index, x, y);
 	checkError();
 }
 
 void glVertexAttribL3d(GLuint index, GLdouble x, GLdouble y, GLdouble z)
 {
-	gContext.VertexAttribL3d(index, x, y, z);
+	gGlProcs.VertexAttribL3d(index, x, y, z);
 	checkError();
 }
 
 void glVertexAttribL4d(GLuint index, GLdouble x, GLdouble y, GLdouble z, GLdouble w)
 {
-	gContext.VertexAttribL4d(index, x, y, z, w);
+	gGlProcs.VertexAttribL4d(index, x, y, z, w);
 	checkError();
 }
 
 void glVertexAttribL1dv(GLuint index, GLdouble const * v)
 {
-	gContext.VertexAttribL1dv(index, v);
+	gGlProcs.VertexAttribL1dv(index, v);
 	checkError();
 }
 
 void glVertexAttribL2dv(GLuint index, GLdouble const * v)
 {
-	gContext.VertexAttribL2dv(index, v);
+	gGlProcs.VertexAttribL2dv(index, v);
 	checkError();
 }
 
 void glVertexAttribL3dv(GLuint index, GLdouble const * v)
 {
-	gContext.VertexAttribL3dv(index, v);
+	gGlProcs.VertexAttribL3dv(index, v);
 	checkError();
 }
 
 void glVertexAttribL4dv(GLuint index, GLdouble const * v)
 {
-	gContext.VertexAttribL4dv(index, v);
+	gGlProcs.VertexAttribL4dv(index, v);
 	checkError();
 }
 
 void glVertexAttribLPointer(GLuint index, GLint size, GLenum type, GLsizei stride, GLvoid const * pointer)
 {
-	gContext.VertexAttribLPointer(index, size, type, stride, pointer);
+	gGlProcs.VertexAttribLPointer(index, size, type, stride, pointer);
 	checkError();
 }
 
 void glGetVertexAttribLdv(GLuint index, GLenum pname, GLdouble * params)
 {
-	gContext.GetVertexAttribLdv(index, pname, params);
+	gGlProcs.GetVertexAttribLdv(index, pname, params);
 	checkError();
 }
 
 void glViewportArrayv(GLuint first, GLsizei count, GLfloat const * v)
 {
-	gContext.ViewportArrayv(first, count, v);
+	gGlProcs.ViewportArrayv(first, count, v);
 	checkError();
 }
 
 void glViewportIndexedf(GLuint index, GLfloat x, GLfloat y, GLfloat w, GLfloat h)
 {
-	gContext.ViewportIndexedf(index, x, y, w, h);
+	gGlProcs.ViewportIndexedf(index, x, y, w, h);
 	checkError();
 }
 
 void glViewportIndexedfv(GLuint index, GLfloat const * v)
 {
-	gContext.ViewportIndexedfv(index, v);
+	gGlProcs.ViewportIndexedfv(index, v);
 	checkError();
 }
 
 void glScissorArrayv(GLuint first, GLsizei count, GLint const * v)
 {
-	gContext.ScissorArrayv(first, count, v);
+	gGlProcs.ScissorArrayv(first, count, v);
 	checkError();
 }
 
 void glScissorIndexed(GLuint index, GLint left, GLint bottom, GLsizei width, GLsizei height)
 {
-	gContext.ScissorIndexed(index, left, bottom, width, height);
+	gGlProcs.ScissorIndexed(index, left, bottom, width, height);
 	checkError();
 }
 
 void glScissorIndexedv(GLuint index, GLint const * v)
 {
-	gContext.ScissorIndexedv(index, v);
+	gGlProcs.ScissorIndexedv(index, v);
 	checkError();
 }
 
 void glDepthRangeArrayv(GLuint first, GLsizei count, GLclampd const * v)
 {
-	gContext.DepthRangeArrayv(first, count, v);
+	gGlProcs.DepthRangeArrayv(first, count, v);
 	checkError();
 }
 
 void glDepthRangeIndexed(GLuint index, GLclampd n, GLclampd f)
 {
-	gContext.DepthRangeIndexed(index, n, f);
+	gGlProcs.DepthRangeIndexed(index, n, f);
 	checkError();
 }
 
 void glGetFloati_v(GLenum target, GLuint index, GLfloat * data)
 {
-	gContext.GetFloati_v(target, index, data);
+	gGlProcs.GetFloati_v(target, index, data);
 	checkError();
 }
 
 void glGetDoublei_v(GLenum target, GLuint index, GLdouble * data)
 {
-	gContext.GetDoublei_v(target, index, data);
+	gGlProcs.GetDoublei_v(target, index, data);
 	checkError();
 }
 
 GLsync glCreateSyncFromCLeventARB(struct _cl_context * context, struct _cl_event * event, GLbitfield flags)
 {
-	auto result = gContext.CreateSyncFromCLeventARB(context, event, flags);
+	auto result = gGlProcs.CreateSyncFromCLeventARB(context, event, flags);
 	checkError();
 	return result;
 }
 
 void glDebugMessageControlARB(GLenum source, GLenum type, GLenum severity, GLsizei count, GLuint const * ids, GLboolean enabled)
 {
-	gContext.DebugMessageControlARB(source, type, severity, count, ids, enabled);
+	gGlProcs.DebugMessageControlARB(source, type, severity, count, ids, enabled);
 	checkError();
 }
 
 void glDebugMessageInsertARB(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, GLchar const * buf)
 {
-	gContext.DebugMessageInsertARB(source, type, id, severity, length, buf);
+	gGlProcs.DebugMessageInsertARB(source, type, id, severity, length, buf);
 	checkError();
 }
 
 void glDebugMessageCallbackARB(GLDEBUGPROCARB callback, GLvoid const * userParam)
 {
-	gContext.DebugMessageCallbackARB(callback, userParam);
+	gGlProcs.DebugMessageCallbackARB(callback, userParam);
 	checkError();
 }
 
 GLuint glGetDebugMessageLogARB(GLuint count, GLsizei bufsize, GLenum * sources, GLenum * types, GLuint * ids, GLenum * severities, GLsizei * lengths, GLchar * messageLog)
 {
-	auto result = gContext.GetDebugMessageLogARB(count, bufsize, sources, types, ids, severities, lengths, messageLog);
+	auto result = gGlProcs.GetDebugMessageLogARB(count, bufsize, sources, types, ids, severities, lengths, messageLog);
 	checkError();
 	return result;
 }
 
 GLenum glGetGraphicsResetStatusARB(void)
 {
-	auto result = gContext.GetGraphicsResetStatusARB();
+	auto result = gGlProcs.GetGraphicsResetStatusARB();
 	checkError();
 	return result;
 }
 
 void glGetnMapdvARB(GLenum target, GLenum query, GLsizei bufSize, GLdouble * v)
 {
-	gContext.GetnMapdvARB(target, query, bufSize, v);
+	gGlProcs.GetnMapdvARB(target, query, bufSize, v);
 	checkError();
 }
 
 void glGetnMapfvARB(GLenum target, GLenum query, GLsizei bufSize, GLfloat * v)
 {
-	gContext.GetnMapfvARB(target, query, bufSize, v);
+	gGlProcs.GetnMapfvARB(target, query, bufSize, v);
 	checkError();
 }
 
 void glGetnMapivARB(GLenum target, GLenum query, GLsizei bufSize, GLint * v)
 {
-	gContext.GetnMapivARB(target, query, bufSize, v);
+	gGlProcs.GetnMapivARB(target, query, bufSize, v);
 	checkError();
 }
 
 void glGetnPixelMapfvARB(GLenum map, GLsizei bufSize, GLfloat * values)
 {
-	gContext.GetnPixelMapfvARB(map, bufSize, values);
+	gGlProcs.GetnPixelMapfvARB(map, bufSize, values);
 	checkError();
 }
 
 void glGetnPixelMapuivARB(GLenum map, GLsizei bufSize, GLuint * values)
 {
-	gContext.GetnPixelMapuivARB(map, bufSize, values);
+	gGlProcs.GetnPixelMapuivARB(map, bufSize, values);
 	checkError();
 }
 
 void glGetnPixelMapusvARB(GLenum map, GLsizei bufSize, GLushort * values)
 {
-	gContext.GetnPixelMapusvARB(map, bufSize, values);
+	gGlProcs.GetnPixelMapusvARB(map, bufSize, values);
 	checkError();
 }
 
 void glGetnPolygonStippleARB(GLsizei bufSize, GLubyte * pattern)
 {
-	gContext.GetnPolygonStippleARB(bufSize, pattern);
+	gGlProcs.GetnPolygonStippleARB(bufSize, pattern);
 	checkError();
 }
 
 void glGetnColorTableARB(GLenum target, GLenum format, GLenum type, GLsizei bufSize, GLvoid * table)
 {
-	gContext.GetnColorTableARB(target, format, type, bufSize, table);
+	gGlProcs.GetnColorTableARB(target, format, type, bufSize, table);
 	checkError();
 }
 
 void glGetnConvolutionFilterARB(GLenum target, GLenum format, GLenum type, GLsizei bufSize, GLvoid * image)
 {
-	gContext.GetnConvolutionFilterARB(target, format, type, bufSize, image);
+	gGlProcs.GetnConvolutionFilterARB(target, format, type, bufSize, image);
 	checkError();
 }
 
 void glGetnSeparableFilterARB(GLenum target, GLenum format, GLenum type, GLsizei rowBufSize, GLvoid * row, GLsizei columnBufSize, GLvoid * column, GLvoid * span)
 {
-	gContext.GetnSeparableFilterARB(target, format, type, rowBufSize, row, columnBufSize, column, span);
+	gGlProcs.GetnSeparableFilterARB(target, format, type, rowBufSize, row, columnBufSize, column, span);
 	checkError();
 }
 
 void glGetnHistogramARB(GLenum target, GLboolean reset, GLenum format, GLenum type, GLsizei bufSize, GLvoid * values)
 {
-	gContext.GetnHistogramARB(target, reset, format, type, bufSize, values);
+	gGlProcs.GetnHistogramARB(target, reset, format, type, bufSize, values);
 	checkError();
 }
 
 void glGetnMinmaxARB(GLenum target, GLboolean reset, GLenum format, GLenum type, GLsizei bufSize, GLvoid * values)
 {
-	gContext.GetnMinmaxARB(target, reset, format, type, bufSize, values);
+	gGlProcs.GetnMinmaxARB(target, reset, format, type, bufSize, values);
 	checkError();
 }
 
 void glGetnTexImageARB(GLenum target, GLint level, GLenum format, GLenum type, GLsizei bufSize, GLvoid * img)
 {
-	gContext.GetnTexImageARB(target, level, format, type, bufSize, img);
+	gGlProcs.GetnTexImageARB(target, level, format, type, bufSize, img);
 	checkError();
 }
 
 void glReadnPixelsARB(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLsizei bufSize, GLvoid * data)
 {
-	gContext.ReadnPixelsARB(x, y, width, height, format, type, bufSize, data);
+	gGlProcs.ReadnPixelsARB(x, y, width, height, format, type, bufSize, data);
 	checkError();
 }
 
 void glGetnCompressedTexImageARB(GLenum target, GLint lod, GLsizei bufSize, GLvoid * img)
 {
-	gContext.GetnCompressedTexImageARB(target, lod, bufSize, img);
+	gGlProcs.GetnCompressedTexImageARB(target, lod, bufSize, img);
 	checkError();
 }
 
 void glGetnUniformfvARB(GLuint program, GLint location, GLsizei bufSize, GLfloat * params)
 {
-	gContext.GetnUniformfvARB(program, location, bufSize, params);
+	gGlProcs.GetnUniformfvARB(program, location, bufSize, params);
 	checkError();
 }
 
 void glGetnUniformivARB(GLuint program, GLint location, GLsizei bufSize, GLint * params)
 {
-	gContext.GetnUniformivARB(program, location, bufSize, params);
+	gGlProcs.GetnUniformivARB(program, location, bufSize, params);
 	checkError();
 }
 
 void glGetnUniformuivARB(GLuint program, GLint location, GLsizei bufSize, GLuint * params)
 {
-	gContext.GetnUniformuivARB(program, location, bufSize, params);
+	gGlProcs.GetnUniformuivARB(program, location, bufSize, params);
 	checkError();
 }
 
 void glGetnUniformdvARB(GLuint program, GLint location, GLsizei bufSize, GLdouble * params)
 {
-	gContext.GetnUniformdvARB(program, location, bufSize, params);
+	gGlProcs.GetnUniformdvARB(program, location, bufSize, params);
 	checkError();
 }
 
 void glDrawArraysInstancedBaseInstance(GLenum mode, GLint first, GLsizei count, GLsizei primcount, GLuint baseinstance)
 {
-	gContext.DrawArraysInstancedBaseInstance(mode, first, count, primcount, baseinstance);
+	gGlProcs.DrawArraysInstancedBaseInstance(mode, first, count, primcount, baseinstance);
 	checkError();
 }
 
 void glDrawElementsInstancedBaseInstance(GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei primcount, GLuint baseinstance)
 {
-	gContext.DrawElementsInstancedBaseInstance(mode, count, type,  indices, primcount, baseinstance);
+	gGlProcs.DrawElementsInstancedBaseInstance(mode, count, type,  indices, primcount, baseinstance);
 	checkError();
 }
 
 void glDrawElementsInstancedBaseVertexBaseInstance(GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei primcount, GLint basevertex, GLuint baseinstance)
 {
-	gContext.DrawElementsInstancedBaseVertexBaseInstance(mode, count, type,  indices, primcount, basevertex, baseinstance);
+	gGlProcs.DrawElementsInstancedBaseVertexBaseInstance(mode, count, type,  indices, primcount, basevertex, baseinstance);
 	checkError();
 }
 
 void glDrawTransformFeedbackInstanced(GLenum mode, GLuint id, GLsizei primcount)
 {
-	gContext.DrawTransformFeedbackInstanced(mode, id, primcount);
+	gGlProcs.DrawTransformFeedbackInstanced(mode, id, primcount);
 	checkError();
 }
 
 void glDrawTransformFeedbackStreamInstanced(GLenum mode, GLuint id, GLuint stream, GLsizei primcount)
 {
-	gContext.DrawTransformFeedbackStreamInstanced(mode, id, stream, primcount);
+	gGlProcs.DrawTransformFeedbackStreamInstanced(mode, id, stream, primcount);
 	checkError();
 }
 
 void glGetInternalformativ(GLenum target, GLenum internalformat, GLenum pname, GLsizei bufSize, GLint * params)
 {
-	gContext.GetInternalformativ(target, internalformat, pname, bufSize, params);
+	gGlProcs.GetInternalformativ(target, internalformat, pname, bufSize, params);
 	checkError();
 }
 
 void glGetActiveAtomicCounterBufferiv(GLuint program, GLuint bufferIndex, GLenum pname, GLint * params)
 {
-	gContext.GetActiveAtomicCounterBufferiv(program, bufferIndex, pname, params);
+	gGlProcs.GetActiveAtomicCounterBufferiv(program, bufferIndex, pname, params);
 	checkError();
 }
 
 void glBindImageTexture(GLuint unit, GLuint texture, GLint level, GLboolean layered, GLint layer, GLenum access, GLenum format)
 {
-	gContext.BindImageTexture(unit, texture, level, layered, layer, access, format);
+	gGlProcs.BindImageTexture(unit, texture, level, layered, layer, access, format);
 	checkError();
 }
 
 void glMemoryBarrier(GLbitfield barriers)
 {
-	gContext.MemoryBarrier(barriers);
+	gGlProcs.MemoryBarrier(barriers);
 	checkError();
 }
 
 void glTexStorage1D(GLenum target, GLsizei levels, GLenum internalformat, GLsizei width)
 {
-	gContext.TexStorage1D(target, levels, internalformat, width);
+	gGlProcs.TexStorage1D(target, levels, internalformat, width);
 	checkError();
 }
 
 void glTexStorage2D(GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height)
 {
-	gContext.TexStorage2D(target, levels, internalformat, width, height);
+	gGlProcs.TexStorage2D(target, levels, internalformat, width, height);
 	checkError();
 }
 
 void glTexStorage3D(GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth)
 {
-	gContext.TexStorage3D(target, levels, internalformat, width, height, depth);
+	gGlProcs.TexStorage3D(target, levels, internalformat, width, height, depth);
 	checkError();
 }
 
 void glTextureStorage1DEXT(GLuint texture, GLenum target, GLsizei levels, GLenum internalformat, GLsizei width)
 {
-	gContext.TextureStorage1DEXT(texture, target, levels, internalformat, width);
+	gGlProcs.TextureStorage1DEXT(texture, target, levels, internalformat, width);
 	checkError();
 }
 
 void glTextureStorage2DEXT(GLuint texture, GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height)
 {
-	gContext.TextureStorage2DEXT(texture, target, levels, internalformat, width, height);
+	gGlProcs.TextureStorage2DEXT(texture, target, levels, internalformat, width, height);
 	checkError();
 }
 
 void glTextureStorage3DEXT(GLuint texture, GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth)
 {
-	gContext.TextureStorage3DEXT(texture, target, levels, internalformat, width, height, depth);
+	gGlProcs.TextureStorage3DEXT(texture, target, levels, internalformat, width, height, depth);
 	checkError();
 }
 
-
-namespace Twil {
-namespace Gl {
-
-void ContextT::initialize()
-{
-	Platform::SymbolLoaderT Loader;
-	Loader.loadSymbolGL(gContext.CullFace, "glCullFace");
-	Loader.loadSymbolGL(gContext.FrontFace, "glFrontFace");
-	Loader.loadSymbolGL(gContext.Hint, "glHint");
-	Loader.loadSymbolGL(gContext.LineWidth, "glLineWidth");
-	Loader.loadSymbolGL(gContext.PointSize, "glPointSize");
-	Loader.loadSymbolGL(gContext.PolygonMode, "glPolygonMode");
-	Loader.loadSymbolGL(gContext.Scissor, "glScissor");
-	Loader.loadSymbolGL(gContext.TexParameterf, "glTexParameterf");
-	Loader.loadSymbolGL(gContext.TexParameterfv, "glTexParameterfv");
-	Loader.loadSymbolGL(gContext.TexParameteri, "glTexParameteri");
-	Loader.loadSymbolGL(gContext.TexParameteriv, "glTexParameteriv");
-	Loader.loadSymbolGL(gContext.TexImage1D, "glTexImage1D");
-	Loader.loadSymbolGL(gContext.TexImage2D, "glTexImage2D");
-	Loader.loadSymbolGL(gContext.DrawBuffer, "glDrawBuffer");
-	Loader.loadSymbolGL(gContext.Clear, "glClear");
-	Loader.loadSymbolGL(gContext.ClearColor, "glClearColor");
-	Loader.loadSymbolGL(gContext.ClearStencil, "glClearStencil");
-	Loader.loadSymbolGL(gContext.ClearDepth, "glClearDepth");
-	Loader.loadSymbolGL(gContext.StencilMask, "glStencilMask");
-	Loader.loadSymbolGL(gContext.ColorMask, "glColorMask");
-	Loader.loadSymbolGL(gContext.DepthMask, "glDepthMask");
-	Loader.loadSymbolGL(gContext.Disable, "glDisable");
-	Loader.loadSymbolGL(gContext.Enable, "glEnable");
-	Loader.loadSymbolGL(gContext.Finish, "glFinish");
-	Loader.loadSymbolGL(gContext.Flush, "glFlush");
-	Loader.loadSymbolGL(gContext.BlendFunc, "glBlendFunc");
-	Loader.loadSymbolGL(gContext.LogicOp, "glLogicOp");
-	Loader.loadSymbolGL(gContext.StencilFunc, "glStencilFunc");
-	Loader.loadSymbolGL(gContext.StencilOp, "glStencilOp");
-	Loader.loadSymbolGL(gContext.DepthFunc, "glDepthFunc");
-	Loader.loadSymbolGL(gContext.PixelStoref, "glPixelStoref");
-	Loader.loadSymbolGL(gContext.PixelStorei, "glPixelStorei");
-	Loader.loadSymbolGL(gContext.ReadBuffer, "glReadBuffer");
-	Loader.loadSymbolGL(gContext.ReadPixels, "glReadPixels");
-	Loader.loadSymbolGL(gContext.GetBooleanv, "glGetBooleanv");
-	Loader.loadSymbolGL(gContext.GetDoublev, "glGetDoublev");
-	Loader.loadSymbolGL(gContext.GetError, "glGetError");
-	Loader.loadSymbolGL(gContext.GetFloatv, "glGetFloatv");
-	Loader.loadSymbolGL(gContext.GetIntegerv, "glGetIntegerv");
-	Loader.loadSymbolGL(gContext.GetString, "glGetString");
-	Loader.loadSymbolGL(gContext.GetTexImage, "glGetTexImage");
-	Loader.loadSymbolGL(gContext.GetTexParameterfv, "glGetTexParameterfv");
-	Loader.loadSymbolGL(gContext.GetTexParameteriv, "glGetTexParameteriv");
-	Loader.loadSymbolGL(gContext.GetTexLevelParameterfv, "glGetTexLevelParameterfv");
-	Loader.loadSymbolGL(gContext.GetTexLevelParameteriv, "glGetTexLevelParameteriv");
-	Loader.loadSymbolGL(gContext.IsEnabled, "glIsEnabled");
-	Loader.loadSymbolGL(gContext.DepthRange, "glDepthRange");
-	Loader.loadSymbolGL(gContext.Viewport, "glViewport");
-	Loader.loadSymbolGL(gContext.DrawArrays, "glDrawArrays");
-	Loader.loadSymbolGL(gContext.DrawElements, "glDrawElements");
-	Loader.loadSymbolGL(gContext.GetPointerv, "glGetPointerv");
-	Loader.loadSymbolGL(gContext.PolygonOffset, "glPolygonOffset");
-	Loader.loadSymbolGL(gContext.CopyTexImage1D, "glCopyTexImage1D");
-	Loader.loadSymbolGL(gContext.CopyTexImage2D, "glCopyTexImage2D");
-	Loader.loadSymbolGL(gContext.CopyTexSubImage1D, "glCopyTexSubImage1D");
-	Loader.loadSymbolGL(gContext.CopyTexSubImage2D, "glCopyTexSubImage2D");
-	Loader.loadSymbolGL(gContext.TexSubImage1D, "glTexSubImage1D");
-	Loader.loadSymbolGL(gContext.TexSubImage2D, "glTexSubImage2D");
-	Loader.loadSymbolGL(gContext.BindTexture, "glBindTexture");
-	Loader.loadSymbolGL(gContext.DeleteTextures, "glDeleteTextures");
-	Loader.loadSymbolGL(gContext.GenTextures, "glGenTextures");
-	Loader.loadSymbolGL(gContext.IsTexture, "glIsTexture");
-	Loader.loadSymbol(gContext.BlendColor, "glBlendColor");
-	Loader.loadSymbol(gContext.BlendEquation, "glBlendEquation");
-	Loader.loadSymbol(gContext.DrawRangeElements, "glDrawRangeElements");
-	Loader.loadSymbol(gContext.TexImage3D, "glTexImage3D");
-	Loader.loadSymbol(gContext.TexSubImage3D, "glTexSubImage3D");
-	Loader.loadSymbol(gContext.CopyTexSubImage3D, "glCopyTexSubImage3D");
-	Loader.loadSymbol(gContext.ActiveTexture, "glActiveTexture");
-	Loader.loadSymbol(gContext.SampleCoverage, "glSampleCoverage");
-	Loader.loadSymbol(gContext.CompressedTexImage3D, "glCompressedTexImage3D");
-	Loader.loadSymbol(gContext.CompressedTexImage2D, "glCompressedTexImage2D");
-	Loader.loadSymbol(gContext.CompressedTexImage1D, "glCompressedTexImage1D");
-	Loader.loadSymbol(gContext.CompressedTexSubImage3D, "glCompressedTexSubImage3D");
-	Loader.loadSymbol(gContext.CompressedTexSubImage2D, "glCompressedTexSubImage2D");
-	Loader.loadSymbol(gContext.CompressedTexSubImage1D, "glCompressedTexSubImage1D");
-	Loader.loadSymbol(gContext.GetCompressedTexImage, "glGetCompressedTexImage");
-	Loader.loadSymbol(gContext.BlendFuncSeparate, "glBlendFuncSeparate");
-	Loader.loadSymbol(gContext.MultiDrawArrays, "glMultiDrawArrays");
-	Loader.loadSymbol(gContext.MultiDrawElements, "glMultiDrawElements");
-	Loader.loadSymbol(gContext.PointParameterf, "glPointParameterf");
-	Loader.loadSymbol(gContext.PointParameterfv, "glPointParameterfv");
-	Loader.loadSymbol(gContext.PointParameteri, "glPointParameteri");
-	Loader.loadSymbol(gContext.PointParameteriv, "glPointParameteriv");
-	Loader.loadSymbol(gContext.GenQueries, "glGenQueries");
-	Loader.loadSymbol(gContext.DeleteQueries, "glDeleteQueries");
-	Loader.loadSymbol(gContext.IsQuery, "glIsQuery");
-	Loader.loadSymbol(gContext.BeginQuery, "glBeginQuery");
-	Loader.loadSymbol(gContext.EndQuery, "glEndQuery");
-	Loader.loadSymbol(gContext.GetQueryiv, "glGetQueryiv");
-	Loader.loadSymbol(gContext.GetQueryObjectiv, "glGetQueryObjectiv");
-	Loader.loadSymbol(gContext.VertexAttribP1ui, "glVertexAttribP1ui");
-	Loader.loadSymbol(gContext.VertexAttribP1uiv, "glVertexAttribP1uiv");
-	Loader.loadSymbol(gContext.VertexAttribP2ui, "glVertexAttribP2ui");
-	Loader.loadSymbol(gContext.VertexAttribP2uiv, "glVertexAttribP2uiv");
-	Loader.loadSymbol(gContext.VertexAttribP3ui, "glVertexAttribP3ui");
-	Loader.loadSymbol(gContext.VertexAttribP3uiv, "glVertexAttribP3uiv");
-	Loader.loadSymbol(gContext.VertexAttribP4ui, "glVertexAttribP4ui");
-	Loader.loadSymbol(gContext.VertexAttribP4uiv, "glVertexAttribP4uiv");
-	Loader.loadSymbol(gContext.GetQueryObjectuiv, "glGetQueryObjectuiv");
-	Loader.loadSymbol(gContext.BindBuffer, "glBindBuffer");
-	Loader.loadSymbol(gContext.DeleteBuffers, "glDeleteBuffers");
-	Loader.loadSymbol(gContext.GenBuffers, "glGenBuffers");
-	Loader.loadSymbol(gContext.IsBuffer, "glIsBuffer");
-	Loader.loadSymbol(gContext.BufferData, "glBufferData");
-	Loader.loadSymbol(gContext.BufferSubData, "glBufferSubData");
-	Loader.loadSymbol(gContext.GetBufferSubData, "glGetBufferSubData");
-	Loader.loadSymbol(gContext.MapBuffer, "glMapBuffer");
-	Loader.loadSymbol(gContext.UnmapBuffer, "glUnmapBuffer");
-	Loader.loadSymbol(gContext.GetBufferParameteriv, "glGetBufferParameteriv");
-	Loader.loadSymbol(gContext.GetBufferPointerv, "glGetBufferPointerv");
-	Loader.loadSymbol(gContext.BlendEquationSeparate, "glBlendEquationSeparate");
-	Loader.loadSymbol(gContext.DrawBuffers, "glDrawBuffers");
-	Loader.loadSymbol(gContext.StencilOpSeparate, "glStencilOpSeparate");
-	Loader.loadSymbol(gContext.StencilFuncSeparate, "glStencilFuncSeparate");
-	Loader.loadSymbol(gContext.StencilMaskSeparate, "glStencilMaskSeparate");
-	Loader.loadSymbol(gContext.AttachShader, "glAttachShader");
-	Loader.loadSymbol(gContext.BindAttribLocation, "glBindAttribLocation");
-	Loader.loadSymbol(gContext.CompileShader, "glCompileShader");
-	Loader.loadSymbol(gContext.CreateProgram, "glCreateProgram");
-	Loader.loadSymbol(gContext.CreateShader, "glCreateShader");
-	Loader.loadSymbol(gContext.DeleteProgram, "glDeleteProgram");
-	Loader.loadSymbol(gContext.DeleteShader, "glDeleteShader");
-	Loader.loadSymbol(gContext.DetachShader, "glDetachShader");
-	Loader.loadSymbol(gContext.DisableVertexAttribArray, "glDisableVertexAttribArray");
-	Loader.loadSymbol(gContext.EnableVertexAttribArray, "glEnableVertexAttribArray");
-	Loader.loadSymbol(gContext.GetActiveAttrib, "glGetActiveAttrib");
-	Loader.loadSymbol(gContext.GetActiveUniform, "glGetActiveUniform");
-	Loader.loadSymbol(gContext.GetAttachedShaders, "glGetAttachedShaders");
-	Loader.loadSymbol(gContext.GetAttribLocation, "glGetAttribLocation");
-	Loader.loadSymbol(gContext.GetProgramiv, "glGetProgramiv");
-	Loader.loadSymbol(gContext.GetProgramInfoLog, "glGetProgramInfoLog");
-	Loader.loadSymbol(gContext.GetShaderiv, "glGetShaderiv");
-	Loader.loadSymbol(gContext.GetShaderInfoLog, "glGetShaderInfoLog");
-	Loader.loadSymbol(gContext.GetShaderSource, "glGetShaderSource");
-	Loader.loadSymbol(gContext.GetUniformLocation, "glGetUniformLocation");
-	Loader.loadSymbol(gContext.GetUniformfv, "glGetUniformfv");
-	Loader.loadSymbol(gContext.GetUniformiv, "glGetUniformiv");
-	Loader.loadSymbol(gContext.GetVertexAttribdv, "glGetVertexAttribdv");
-	Loader.loadSymbol(gContext.GetVertexAttribfv, "glGetVertexAttribfv");
-	Loader.loadSymbol(gContext.GetVertexAttribiv, "glGetVertexAttribiv");
-	Loader.loadSymbol(gContext.GetVertexAttribPointerv, "glGetVertexAttribPointerv");
-	Loader.loadSymbol(gContext.IsProgram, "glIsProgram");
-	Loader.loadSymbol(gContext.IsShader, "glIsShader");
-	Loader.loadSymbol(gContext.LinkProgram, "glLinkProgram");
-	Loader.loadSymbol(gContext.ShaderSource, "glShaderSource");
-	Loader.loadSymbol(gContext.UseProgram, "glUseProgram");
-	Loader.loadSymbol(gContext.Uniform1f, "glUniform1f");
-	Loader.loadSymbol(gContext.Uniform2f, "glUniform2f");
-	Loader.loadSymbol(gContext.Uniform3f, "glUniform3f");
-	Loader.loadSymbol(gContext.Uniform4f, "glUniform4f");
-	Loader.loadSymbol(gContext.Uniform1i, "glUniform1i");
-	Loader.loadSymbol(gContext.Uniform2i, "glUniform2i");
-	Loader.loadSymbol(gContext.Uniform3i, "glUniform3i");
-	Loader.loadSymbol(gContext.Uniform4i, "glUniform4i");
-	Loader.loadSymbol(gContext.Uniform1fv, "glUniform1fv");
-	Loader.loadSymbol(gContext.Uniform2fv, "glUniform2fv");
-	Loader.loadSymbol(gContext.Uniform3fv, "glUniform3fv");
-	Loader.loadSymbol(gContext.Uniform4fv, "glUniform4fv");
-	Loader.loadSymbol(gContext.Uniform1iv, "glUniform1iv");
-	Loader.loadSymbol(gContext.Uniform2iv, "glUniform2iv");
-	Loader.loadSymbol(gContext.Uniform3iv, "glUniform3iv");
-	Loader.loadSymbol(gContext.Uniform4iv, "glUniform4iv");
-	Loader.loadSymbol(gContext.UniformMatrix2fv, "glUniformMatrix2fv");
-	Loader.loadSymbol(gContext.UniformMatrix3fv, "glUniformMatrix3fv");
-	Loader.loadSymbol(gContext.UniformMatrix4fv, "glUniformMatrix4fv");
-	Loader.loadSymbol(gContext.ValidateProgram, "glValidateProgram");
-	Loader.loadSymbol(gContext.VertexAttrib1d, "glVertexAttrib1d");
-	Loader.loadSymbol(gContext.VertexAttrib1dv, "glVertexAttrib1dv");
-	Loader.loadSymbol(gContext.VertexAttrib1f, "glVertexAttrib1f");
-	Loader.loadSymbol(gContext.VertexAttrib1fv, "glVertexAttrib1fv");
-	Loader.loadSymbol(gContext.VertexAttrib1s, "glVertexAttrib1s");
-	Loader.loadSymbol(gContext.VertexAttrib1sv, "glVertexAttrib1sv");
-	Loader.loadSymbol(gContext.VertexAttrib2d, "glVertexAttrib2d");
-	Loader.loadSymbol(gContext.VertexAttrib2dv, "glVertexAttrib2dv");
-	Loader.loadSymbol(gContext.VertexAttrib2f, "glVertexAttrib2f");
-	Loader.loadSymbol(gContext.VertexAttrib2fv, "glVertexAttrib2fv");
-	Loader.loadSymbol(gContext.VertexAttrib2s, "glVertexAttrib2s");
-	Loader.loadSymbol(gContext.VertexAttrib2sv, "glVertexAttrib2sv");
-	Loader.loadSymbol(gContext.VertexAttrib3d, "glVertexAttrib3d");
-	Loader.loadSymbol(gContext.VertexAttrib3dv, "glVertexAttrib3dv");
-	Loader.loadSymbol(gContext.VertexAttrib3f, "glVertexAttrib3f");
-	Loader.loadSymbol(gContext.VertexAttrib3fv, "glVertexAttrib3fv");
-	Loader.loadSymbol(gContext.VertexAttrib3s, "glVertexAttrib3s");
-	Loader.loadSymbol(gContext.VertexAttrib3sv, "glVertexAttrib3sv");
-	Loader.loadSymbol(gContext.VertexAttrib4Nbv, "glVertexAttrib4Nbv");
-	Loader.loadSymbol(gContext.VertexAttrib4Niv, "glVertexAttrib4Niv");
-	Loader.loadSymbol(gContext.VertexAttrib4Nsv, "glVertexAttrib4Nsv");
-	Loader.loadSymbol(gContext.VertexAttrib4Nub, "glVertexAttrib4Nub");
-	Loader.loadSymbol(gContext.VertexAttrib4Nubv, "glVertexAttrib4Nubv");
-	Loader.loadSymbol(gContext.VertexAttrib4Nuiv, "glVertexAttrib4Nuiv");
-	Loader.loadSymbol(gContext.VertexAttrib4Nusv, "glVertexAttrib4Nusv");
-	Loader.loadSymbol(gContext.VertexAttrib4bv, "glVertexAttrib4bv");
-	Loader.loadSymbol(gContext.VertexAttrib4d, "glVertexAttrib4d");
-	Loader.loadSymbol(gContext.VertexAttrib4dv, "glVertexAttrib4dv");
-	Loader.loadSymbol(gContext.VertexAttrib4f, "glVertexAttrib4f");
-	Loader.loadSymbol(gContext.VertexAttrib4fv, "glVertexAttrib4fv");
-	Loader.loadSymbol(gContext.VertexAttrib4iv, "glVertexAttrib4iv");
-	Loader.loadSymbol(gContext.VertexAttrib4s, "glVertexAttrib4s");
-	Loader.loadSymbol(gContext.VertexAttrib4sv, "glVertexAttrib4sv");
-	Loader.loadSymbol(gContext.VertexAttrib4ubv, "glVertexAttrib4ubv");
-	Loader.loadSymbol(gContext.VertexAttrib4uiv, "glVertexAttrib4uiv");
-	Loader.loadSymbol(gContext.VertexAttrib4usv, "glVertexAttrib4usv");
-	Loader.loadSymbol(gContext.VertexAttribPointer, "glVertexAttribPointer");
-	Loader.loadSymbol(gContext.UniformMatrix2x3fv, "glUniformMatrix2x3fv");
-	Loader.loadSymbol(gContext.UniformMatrix3x2fv, "glUniformMatrix3x2fv");
-	Loader.loadSymbol(gContext.UniformMatrix2x4fv, "glUniformMatrix2x4fv");
-	Loader.loadSymbol(gContext.UniformMatrix4x2fv, "glUniformMatrix4x2fv");
-	Loader.loadSymbol(gContext.UniformMatrix3x4fv, "glUniformMatrix3x4fv");
-	Loader.loadSymbol(gContext.UniformMatrix4x3fv, "glUniformMatrix4x3fv");
-	Loader.loadSymbol(gContext.ColorMaski, "glColorMaski");
-	Loader.loadSymbol(gContext.GetBooleani_v, "glGetBooleani_v");
-	Loader.loadSymbol(gContext.GetIntegeri_v, "glGetIntegeri_v");
-	Loader.loadSymbol(gContext.Enablei, "glEnablei");
-	Loader.loadSymbol(gContext.Disablei, "glDisablei");
-	Loader.loadSymbol(gContext.IsEnabledi, "glIsEnabledi");
-	Loader.loadSymbol(gContext.BeginTransformFeedback, "glBeginTransformFeedback");
-	Loader.loadSymbol(gContext.EndTransformFeedback, "glEndTransformFeedback");
-	Loader.loadSymbol(gContext.BindBufferRange, "glBindBufferRange");
-	Loader.loadSymbol(gContext.BindBufferBase, "glBindBufferBase");
-	Loader.loadSymbol(gContext.TransformFeedbackVaryings, "glTransformFeedbackVaryings");
-	Loader.loadSymbol(gContext.GetTransformFeedbackVarying, "glGetTransformFeedbackVarying");
-	Loader.loadSymbol(gContext.ClampColor, "glClampColor");
-	Loader.loadSymbol(gContext.BeginConditionalRender, "glBeginConditionalRender");
-	Loader.loadSymbol(gContext.EndConditionalRender, "glEndConditionalRender");
-	Loader.loadSymbol(gContext.VertexAttribIPointer, "glVertexAttribIPointer");
-	Loader.loadSymbol(gContext.GetVertexAttribIiv, "glGetVertexAttribIiv");
-	Loader.loadSymbol(gContext.GetVertexAttribIuiv, "glGetVertexAttribIuiv");
-	Loader.loadSymbol(gContext.VertexAttribI1i, "glVertexAttribI1i");
-	Loader.loadSymbol(gContext.VertexAttribI2i, "glVertexAttribI2i");
-	Loader.loadSymbol(gContext.VertexAttribI3i, "glVertexAttribI3i");
-	Loader.loadSymbol(gContext.VertexAttribI4i, "glVertexAttribI4i");
-	Loader.loadSymbol(gContext.VertexAttribI1ui, "glVertexAttribI1ui");
-	Loader.loadSymbol(gContext.VertexAttribI2ui, "glVertexAttribI2ui");
-	Loader.loadSymbol(gContext.VertexAttribI3ui, "glVertexAttribI3ui");
-	Loader.loadSymbol(gContext.VertexAttribI4ui, "glVertexAttribI4ui");
-	Loader.loadSymbol(gContext.VertexAttribI1iv, "glVertexAttribI1iv");
-	Loader.loadSymbol(gContext.VertexAttribI2iv, "glVertexAttribI2iv");
-	Loader.loadSymbol(gContext.VertexAttribI3iv, "glVertexAttribI3iv");
-	Loader.loadSymbol(gContext.VertexAttribI4iv, "glVertexAttribI4iv");
-	Loader.loadSymbol(gContext.VertexAttribI1uiv, "glVertexAttribI1uiv");
-	Loader.loadSymbol(gContext.VertexAttribI2uiv, "glVertexAttribI2uiv");
-	Loader.loadSymbol(gContext.VertexAttribI3uiv, "glVertexAttribI3uiv");
-	Loader.loadSymbol(gContext.VertexAttribI4uiv, "glVertexAttribI4uiv");
-	Loader.loadSymbol(gContext.VertexAttribI4bv, "glVertexAttribI4bv");
-	Loader.loadSymbol(gContext.VertexAttribI4sv, "glVertexAttribI4sv");
-	Loader.loadSymbol(gContext.VertexAttribI4ubv, "glVertexAttribI4ubv");
-	Loader.loadSymbol(gContext.VertexAttribI4usv, "glVertexAttribI4usv");
-	Loader.loadSymbol(gContext.GetUniformuiv, "glGetUniformuiv");
-	Loader.loadSymbol(gContext.BindFragDataLocation, "glBindFragDataLocation");
-	Loader.loadSymbol(gContext.GetFragDataLocation, "glGetFragDataLocation");
-	Loader.loadSymbol(gContext.Uniform1ui, "glUniform1ui");
-	Loader.loadSymbol(gContext.Uniform2ui, "glUniform2ui");
-	Loader.loadSymbol(gContext.Uniform3ui, "glUniform3ui");
-	Loader.loadSymbol(gContext.Uniform4ui, "glUniform4ui");
-	Loader.loadSymbol(gContext.Uniform1uiv, "glUniform1uiv");
-	Loader.loadSymbol(gContext.Uniform2uiv, "glUniform2uiv");
-	Loader.loadSymbol(gContext.Uniform3uiv, "glUniform3uiv");
-	Loader.loadSymbol(gContext.Uniform4uiv, "glUniform4uiv");
-	Loader.loadSymbol(gContext.TexParameterIiv, "glTexParameterIiv");
-	Loader.loadSymbol(gContext.TexParameterIuiv, "glTexParameterIuiv");
-	Loader.loadSymbol(gContext.GetTexParameterIiv, "glGetTexParameterIiv");
-	Loader.loadSymbol(gContext.GetTexParameterIuiv, "glGetTexParameterIuiv");
-	Loader.loadSymbol(gContext.ClearBufferiv, "glClearBufferiv");
-	Loader.loadSymbol(gContext.ClearBufferuiv, "glClearBufferuiv");
-	Loader.loadSymbol(gContext.ClearBufferfv, "glClearBufferfv");
-	Loader.loadSymbol(gContext.ClearBufferfi, "glClearBufferfi");
-	Loader.loadSymbol(gContext.GetStringi, "glGetStringi");
-	Loader.loadSymbol(gContext.DrawArraysInstanced, "glDrawArraysInstanced");
-	Loader.loadSymbol(gContext.DrawElementsInstanced, "glDrawElementsInstanced");
-	Loader.loadSymbol(gContext.TexBuffer, "glTexBuffer");
-	Loader.loadSymbol(gContext.PrimitiveRestartIndex, "glPrimitiveRestartIndex");
-	Loader.loadSymbol(gContext.GetInteger64i_v, "glGetInteger64i_v");
-	Loader.loadSymbol(gContext.GetBufferParameteri64v, "glGetBufferParameteri64v");
-	Loader.loadSymbol(gContext.FramebufferTexture, "glFramebufferTexture");
-	Loader.loadSymbol(gContext.VertexAttribDivisor, "glVertexAttribDivisor");
-	Loader.loadSymbol(gContext.MinSampleShading, "glMinSampleShading");
-	Loader.loadSymbol(gContext.BlendEquationi, "glBlendEquationi");
-	Loader.loadSymbol(gContext.BlendEquationSeparatei, "glBlendEquationSeparatei");
-	Loader.loadSymbol(gContext.BlendFunci, "glBlendFunci");
-	Loader.loadSymbol(gContext.BlendFuncSeparatei, "glBlendFuncSeparatei");
-	Loader.loadSymbol(gContext.IsRenderbuffer, "glIsRenderbuffer");
-	Loader.loadSymbol(gContext.BindRenderbuffer, "glBindRenderbuffer");
-	Loader.loadSymbol(gContext.DeleteRenderbuffers, "glDeleteRenderbuffers");
-	Loader.loadSymbol(gContext.GenRenderbuffers, "glGenRenderbuffers");
-	Loader.loadSymbol(gContext.RenderbufferStorage, "glRenderbufferStorage");
-	Loader.loadSymbol(gContext.GetRenderbufferParameteriv, "glGetRenderbufferParameteriv");
-	Loader.loadSymbol(gContext.IsFramebuffer, "glIsFramebuffer");
-	Loader.loadSymbol(gContext.BindFramebuffer, "glBindFramebuffer");
-	Loader.loadSymbol(gContext.DeleteFramebuffers, "glDeleteFramebuffers");
-	Loader.loadSymbol(gContext.GenFramebuffers, "glGenFramebuffers");
-	Loader.loadSymbol(gContext.CheckFramebufferStatus, "glCheckFramebufferStatus");
-	Loader.loadSymbol(gContext.FramebufferTexture1D, "glFramebufferTexture1D");
-	Loader.loadSymbol(gContext.FramebufferTexture2D, "glFramebufferTexture2D");
-	Loader.loadSymbol(gContext.FramebufferTexture3D, "glFramebufferTexture3D");
-	Loader.loadSymbol(gContext.FramebufferRenderbuffer, "glFramebufferRenderbuffer");
-	Loader.loadSymbol(gContext.GetFramebufferAttachmentParameteriv, "glGetFramebufferAttachmentParameteriv");
-	Loader.loadSymbol(gContext.GenerateMipmap, "glGenerateMipmap");
-	Loader.loadSymbol(gContext.BlitFramebuffer, "glBlitFramebuffer");
-	Loader.loadSymbol(gContext.RenderbufferStorageMultisample, "glRenderbufferStorageMultisample");
-	Loader.loadSymbol(gContext.FramebufferTextureLayer, "glFramebufferTextureLayer");
-	Loader.loadSymbol(gContext.MapBufferRange, "glMapBufferRange");
-	Loader.loadSymbol(gContext.FlushMappedBufferRange, "glFlushMappedBufferRange");
-	Loader.loadSymbol(gContext.BindVertexArray, "glBindVertexArray");
-	Loader.loadSymbol(gContext.DeleteVertexArrays, "glDeleteVertexArrays");
-	Loader.loadSymbol(gContext.GenVertexArrays, "glGenVertexArrays");
-	Loader.loadSymbol(gContext.IsVertexArray, "glIsVertexArray");
-	Loader.loadSymbol(gContext.GetUniformIndices, "glGetUniformIndices");
-	Loader.loadSymbol(gContext.GetActiveUniformsiv, "glGetActiveUniformsiv");
-	Loader.loadSymbol(gContext.GetActiveUniformName, "glGetActiveUniformName");
-	Loader.loadSymbol(gContext.GetUniformBlockIndex, "glGetUniformBlockIndex");
-	Loader.loadSymbol(gContext.GetActiveUniformBlockiv, "glGetActiveUniformBlockiv");
-	Loader.loadSymbol(gContext.GetActiveUniformBlockName, "glGetActiveUniformBlockName");
-	Loader.loadSymbol(gContext.UniformBlockBinding, "glUniformBlockBinding");
-	Loader.loadSymbol(gContext.CopyBufferSubData, "glCopyBufferSubData");
-	Loader.loadSymbol(gContext.DrawElementsBaseVertex, "glDrawElementsBaseVertex");
-	Loader.loadSymbol(gContext.DrawRangeElementsBaseVertex, "glDrawRangeElementsBaseVertex");
-	Loader.loadSymbol(gContext.DrawElementsInstancedBaseVertex, "glDrawElementsInstancedBaseVertex");
-	Loader.loadSymbol(gContext.MultiDrawElementsBaseVertex, "glMultiDrawElementsBaseVertex");
-	Loader.loadSymbol(gContext.ProvokingVertex, "glProvokingVertex");
-	Loader.loadSymbol(gContext.FenceSync, "glFenceSync");
-	Loader.loadSymbol(gContext.IsSync, "glIsSync");
-	Loader.loadSymbol(gContext.DeleteSync, "glDeleteSync");
-	Loader.loadSymbol(gContext.ClientWaitSync, "glClientWaitSync");
-	Loader.loadSymbol(gContext.WaitSync, "glWaitSync");
-	Loader.loadSymbol(gContext.GetInteger64v, "glGetInteger64v");
-	Loader.loadSymbol(gContext.GetSynciv, "glGetSynciv");
-	Loader.loadSymbol(gContext.TexImage2DMultisample, "glTexImage2DMultisample");
-	Loader.loadSymbol(gContext.TexImage3DMultisample, "glTexImage3DMultisample");
-	Loader.loadSymbol(gContext.GetMultisamplefv, "glGetMultisamplefv");
-	Loader.loadSymbol(gContext.SampleMaski, "glSampleMaski");
-	Loader.loadSymbol(gContext.BlendEquationiARB, "glBlendEquationiARB");
-	Loader.loadSymbol(gContext.BlendEquationSeparateiARB, "glBlendEquationSeparateiARB");
-	Loader.loadSymbol(gContext.BlendFunciARB, "glBlendFunciARB");
-	Loader.loadSymbol(gContext.BlendFuncSeparateiARB, "glBlendFuncSeparateiARB");
-	Loader.loadSymbol(gContext.MinSampleShadingARB, "glMinSampleShadingARB");
-	Loader.loadSymbol(gContext.NamedStringARB, "glNamedStringARB");
-	Loader.loadSymbol(gContext.DeleteNamedStringARB, "glDeleteNamedStringARB");
-	Loader.loadSymbol(gContext.CompileShaderIncludeARB, "glCompileShaderIncludeARB");
-	Loader.loadSymbol(gContext.IsNamedStringARB, "glIsNamedStringARB");
-	Loader.loadSymbol(gContext.GetNamedStringARB, "glGetNamedStringARB");
-	Loader.loadSymbol(gContext.GetNamedStringivARB, "glGetNamedStringivARB");
-	Loader.loadSymbol(gContext.BindFragDataLocationIndexed, "glBindFragDataLocationIndexed");
-	Loader.loadSymbol(gContext.GetFragDataIndex, "glGetFragDataIndex");
-	Loader.loadSymbol(gContext.GenSamplers, "glGenSamplers");
-	Loader.loadSymbol(gContext.DeleteSamplers, "glDeleteSamplers");
-	Loader.loadSymbol(gContext.IsSampler, "glIsSampler");
-	Loader.loadSymbol(gContext.BindSampler, "glBindSampler");
-	Loader.loadSymbol(gContext.SamplerParameteri, "glSamplerParameteri");
-	Loader.loadSymbol(gContext.SamplerParameteriv, "glSamplerParameteriv");
-	Loader.loadSymbol(gContext.SamplerParameterf, "glSamplerParameterf");
-	Loader.loadSymbol(gContext.SamplerParameterfv, "glSamplerParameterfv");
-	Loader.loadSymbol(gContext.SamplerParameterIiv, "glSamplerParameterIiv");
-	Loader.loadSymbol(gContext.SamplerParameterIuiv, "glSamplerParameterIuiv");
-	Loader.loadSymbol(gContext.GetSamplerParameteriv, "glGetSamplerParameteriv");
-	Loader.loadSymbol(gContext.GetSamplerParameterIiv, "glGetSamplerParameterIiv");
-	Loader.loadSymbol(gContext.GetSamplerParameterfv, "glGetSamplerParameterfv");
-	Loader.loadSymbol(gContext.GetSamplerParameterIuiv, "glGetSamplerParameterIuiv");
-	Loader.loadSymbol(gContext.QueryCounter, "glQueryCounter");
-	Loader.loadSymbol(gContext.GetQueryObjecti64v, "glGetQueryObjecti64v");
-	Loader.loadSymbol(gContext.GetQueryObjectui64v, "glGetQueryObjectui64v");
-	Loader.loadSymbol(gContext.DrawArraysIndirect, "glDrawArraysIndirect");
-	Loader.loadSymbol(gContext.DrawElementsIndirect, "glDrawElementsIndirect");
-	Loader.loadSymbol(gContext.Uniform1d, "glUniform1d");
-	Loader.loadSymbol(gContext.Uniform2d, "glUniform2d");
-	Loader.loadSymbol(gContext.Uniform3d, "glUniform3d");
-	Loader.loadSymbol(gContext.Uniform4d, "glUniform4d");
-	Loader.loadSymbol(gContext.Uniform1dv, "glUniform1dv");
-	Loader.loadSymbol(gContext.Uniform2dv, "glUniform2dv");
-	Loader.loadSymbol(gContext.Uniform3dv, "glUniform3dv");
-	Loader.loadSymbol(gContext.Uniform4dv, "glUniform4dv");
-	Loader.loadSymbol(gContext.UniformMatrix2dv, "glUniformMatrix2dv");
-	Loader.loadSymbol(gContext.UniformMatrix3dv, "glUniformMatrix3dv");
-	Loader.loadSymbol(gContext.UniformMatrix4dv, "glUniformMatrix4dv");
-	Loader.loadSymbol(gContext.UniformMatrix2x3dv, "glUniformMatrix2x3dv");
-	Loader.loadSymbol(gContext.UniformMatrix2x4dv, "glUniformMatrix2x4dv");
-	Loader.loadSymbol(gContext.UniformMatrix3x2dv, "glUniformMatrix3x2dv");
-	Loader.loadSymbol(gContext.UniformMatrix3x4dv, "glUniformMatrix3x4dv");
-	Loader.loadSymbol(gContext.UniformMatrix4x2dv, "glUniformMatrix4x2dv");
-	Loader.loadSymbol(gContext.UniformMatrix4x3dv, "glUniformMatrix4x3dv");
-	Loader.loadSymbol(gContext.GetUniformdv, "glGetUniformdv");
-	Loader.loadSymbol(gContext.GetSubroutineUniformLocation, "glGetSubroutineUniformLocation");
-	Loader.loadSymbol(gContext.GetSubroutineIndex, "glGetSubroutineIndex");
-	Loader.loadSymbol(gContext.GetActiveSubroutineUniformiv, "glGetActiveSubroutineUniformiv");
-	Loader.loadSymbol(gContext.GetActiveSubroutineUniformName, "glGetActiveSubroutineUniformName");
-	Loader.loadSymbol(gContext.GetActiveSubroutineName, "glGetActiveSubroutineName");
-	Loader.loadSymbol(gContext.UniformSubroutinesuiv, "glUniformSubroutinesuiv");
-	Loader.loadSymbol(gContext.GetUniformSubroutineuiv, "glGetUniformSubroutineuiv");
-	Loader.loadSymbol(gContext.GetProgramStageiv, "glGetProgramStageiv");
-	Loader.loadSymbol(gContext.PatchParameteri, "glPatchParameteri");
-	Loader.loadSymbol(gContext.PatchParameterfv, "glPatchParameterfv");
-	Loader.loadSymbol(gContext.BindTransformFeedback, "glBindTransformFeedback");
-	Loader.loadSymbol(gContext.DeleteTransformFeedbacks, "glDeleteTransformFeedbacks");
-	Loader.loadSymbol(gContext.GenTransformFeedbacks, "glGenTransformFeedbacks");
-	Loader.loadSymbol(gContext.IsTransformFeedback, "glIsTransformFeedback");
-	Loader.loadSymbol(gContext.PauseTransformFeedback, "glPauseTransformFeedback");
-	Loader.loadSymbol(gContext.ResumeTransformFeedback, "glResumeTransformFeedback");
-	Loader.loadSymbol(gContext.DrawTransformFeedback, "glDrawTransformFeedback");
-	Loader.loadSymbol(gContext.DrawTransformFeedbackStream, "glDrawTransformFeedbackStream");
-	Loader.loadSymbol(gContext.BeginQueryIndexed, "glBeginQueryIndexed");
-	Loader.loadSymbol(gContext.EndQueryIndexed, "glEndQueryIndexed");
-	Loader.loadSymbol(gContext.GetQueryIndexediv, "glGetQueryIndexediv");
-	Loader.loadSymbol(gContext.ReleaseShaderCompiler, "glReleaseShaderCompiler");
-	Loader.loadSymbol(gContext.ShaderBinary, "glShaderBinary");
-	Loader.loadSymbol(gContext.GetShaderPrecisionFormat, "glGetShaderPrecisionFormat");
-	Loader.loadSymbol(gContext.DepthRangef, "glDepthRangef");
-	Loader.loadSymbol(gContext.ClearDepthf, "glClearDepthf");
-	Loader.loadSymbol(gContext.GetProgramBinary, "glGetProgramBinary");
-	Loader.loadSymbol(gContext.ProgramBinary, "glProgramBinary");
-	Loader.loadSymbol(gContext.ProgramParameteri, "glProgramParameteri");
-	Loader.loadSymbol(gContext.UseProgramStages, "glUseProgramStages");
-	Loader.loadSymbol(gContext.ActiveShaderProgram, "glActiveShaderProgram");
-	Loader.loadSymbol(gContext.CreateShaderProgramv, "glCreateShaderProgramv");
-	Loader.loadSymbol(gContext.BindProgramPipeline, "glBindProgramPipeline");
-	Loader.loadSymbol(gContext.DeleteProgramPipelines, "glDeleteProgramPipelines");
-	Loader.loadSymbol(gContext.GenProgramPipelines, "glGenProgramPipelines");
-	Loader.loadSymbol(gContext.IsProgramPipeline, "glIsProgramPipeline");
-	Loader.loadSymbol(gContext.GetProgramPipelineiv, "glGetProgramPipelineiv");
-	Loader.loadSymbol(gContext.ProgramUniform1i, "glProgramUniform1i");
-	Loader.loadSymbol(gContext.ProgramUniform1iv, "glProgramUniform1iv");
-	Loader.loadSymbol(gContext.ProgramUniform1f, "glProgramUniform1f");
-	Loader.loadSymbol(gContext.ProgramUniform1fv, "glProgramUniform1fv");
-	Loader.loadSymbol(gContext.ProgramUniform1d, "glProgramUniform1d");
-	Loader.loadSymbol(gContext.ProgramUniform1dv, "glProgramUniform1dv");
-	Loader.loadSymbol(gContext.ProgramUniform1ui, "glProgramUniform1ui");
-	Loader.loadSymbol(gContext.ProgramUniform1uiv, "glProgramUniform1uiv");
-	Loader.loadSymbol(gContext.ProgramUniform2i, "glProgramUniform2i");
-	Loader.loadSymbol(gContext.ProgramUniform2iv, "glProgramUniform2iv");
-	Loader.loadSymbol(gContext.ProgramUniform2f, "glProgramUniform2f");
-	Loader.loadSymbol(gContext.ProgramUniform2fv, "glProgramUniform2fv");
-	Loader.loadSymbol(gContext.ProgramUniform2d, "glProgramUniform2d");
-	Loader.loadSymbol(gContext.ProgramUniform2dv, "glProgramUniform2dv");
-	Loader.loadSymbol(gContext.ProgramUniform2ui, "glProgramUniform2ui");
-	Loader.loadSymbol(gContext.ProgramUniform2uiv, "glProgramUniform2uiv");
-	Loader.loadSymbol(gContext.ProgramUniform3i, "glProgramUniform3i");
-	Loader.loadSymbol(gContext.ProgramUniform3iv, "glProgramUniform3iv");
-	Loader.loadSymbol(gContext.ProgramUniform3f, "glProgramUniform3f");
-	Loader.loadSymbol(gContext.ProgramUniform3fv, "glProgramUniform3fv");
-	Loader.loadSymbol(gContext.ProgramUniform3d, "glProgramUniform3d");
-	Loader.loadSymbol(gContext.ProgramUniform3dv, "glProgramUniform3dv");
-	Loader.loadSymbol(gContext.ProgramUniform3ui, "glProgramUniform3ui");
-	Loader.loadSymbol(gContext.ProgramUniform3uiv, "glProgramUniform3uiv");
-	Loader.loadSymbol(gContext.ProgramUniform4i, "glProgramUniform4i");
-	Loader.loadSymbol(gContext.ProgramUniform4iv, "glProgramUniform4iv");
-	Loader.loadSymbol(gContext.ProgramUniform4f, "glProgramUniform4f");
-	Loader.loadSymbol(gContext.ProgramUniform4fv, "glProgramUniform4fv");
-	Loader.loadSymbol(gContext.ProgramUniform4d, "glProgramUniform4d");
-	Loader.loadSymbol(gContext.ProgramUniform4dv, "glProgramUniform4dv");
-	Loader.loadSymbol(gContext.ProgramUniform4ui, "glProgramUniform4ui");
-	Loader.loadSymbol(gContext.ProgramUniform4uiv, "glProgramUniform4uiv");
-	Loader.loadSymbol(gContext.ProgramUniformMatrix2fv, "glProgramUniformMatrix2fv");
-	Loader.loadSymbol(gContext.ProgramUniformMatrix3fv, "glProgramUniformMatrix3fv");
-	Loader.loadSymbol(gContext.ProgramUniformMatrix4fv, "glProgramUniformMatrix4fv");
-	Loader.loadSymbol(gContext.ProgramUniformMatrix2dv, "glProgramUniformMatrix2dv");
-	Loader.loadSymbol(gContext.ProgramUniformMatrix3dv, "glProgramUniformMatrix3dv");
-	Loader.loadSymbol(gContext.ProgramUniformMatrix4dv, "glProgramUniformMatrix4dv");
-	Loader.loadSymbol(gContext.ProgramUniformMatrix2x3fv, "glProgramUniformMatrix2x3fv");
-	Loader.loadSymbol(gContext.ProgramUniformMatrix3x2fv, "glProgramUniformMatrix3x2fv");
-	Loader.loadSymbol(gContext.ProgramUniformMatrix2x4fv, "glProgramUniformMatrix2x4fv");
-	Loader.loadSymbol(gContext.ProgramUniformMatrix4x2fv, "glProgramUniformMatrix4x2fv");
-	Loader.loadSymbol(gContext.ProgramUniformMatrix3x4fv, "glProgramUniformMatrix3x4fv");
-	Loader.loadSymbol(gContext.ProgramUniformMatrix4x3fv, "glProgramUniformMatrix4x3fv");
-	Loader.loadSymbol(gContext.ProgramUniformMatrix2x3dv, "glProgramUniformMatrix2x3dv");
-	Loader.loadSymbol(gContext.ProgramUniformMatrix3x2dv, "glProgramUniformMatrix3x2dv");
-	Loader.loadSymbol(gContext.ProgramUniformMatrix2x4dv, "glProgramUniformMatrix2x4dv");
-	Loader.loadSymbol(gContext.ProgramUniformMatrix4x2dv, "glProgramUniformMatrix4x2dv");
-	Loader.loadSymbol(gContext.ProgramUniformMatrix3x4dv, "glProgramUniformMatrix3x4dv");
-	Loader.loadSymbol(gContext.ProgramUniformMatrix4x3dv, "glProgramUniformMatrix4x3dv");
-	Loader.loadSymbol(gContext.ValidateProgramPipeline, "glValidateProgramPipeline");
-	Loader.loadSymbol(gContext.GetProgramPipelineInfoLog, "glGetProgramPipelineInfoLog");
-	Loader.loadSymbol(gContext.VertexAttribL1d, "glVertexAttribL1d");
-	Loader.loadSymbol(gContext.VertexAttribL2d, "glVertexAttribL2d");
-	Loader.loadSymbol(gContext.VertexAttribL3d, "glVertexAttribL3d");
-	Loader.loadSymbol(gContext.VertexAttribL4d, "glVertexAttribL4d");
-	Loader.loadSymbol(gContext.VertexAttribL1dv, "glVertexAttribL1dv");
-	Loader.loadSymbol(gContext.VertexAttribL2dv, "glVertexAttribL2dv");
-	Loader.loadSymbol(gContext.VertexAttribL3dv, "glVertexAttribL3dv");
-	Loader.loadSymbol(gContext.VertexAttribL4dv, "glVertexAttribL4dv");
-	Loader.loadSymbol(gContext.VertexAttribLPointer, "glVertexAttribLPointer");
-	Loader.loadSymbol(gContext.GetVertexAttribLdv, "glGetVertexAttribLdv");
-	Loader.loadSymbol(gContext.ViewportArrayv, "glViewportArrayv");
-	Loader.loadSymbol(gContext.ViewportIndexedf, "glViewportIndexedf");
-	Loader.loadSymbol(gContext.ViewportIndexedfv, "glViewportIndexedfv");
-	Loader.loadSymbol(gContext.ScissorArrayv, "glScissorArrayv");
-	Loader.loadSymbol(gContext.ScissorIndexed, "glScissorIndexed");
-	Loader.loadSymbol(gContext.ScissorIndexedv, "glScissorIndexedv");
-	Loader.loadSymbol(gContext.DepthRangeArrayv, "glDepthRangeArrayv");
-	Loader.loadSymbol(gContext.DepthRangeIndexed, "glDepthRangeIndexed");
-	Loader.loadSymbol(gContext.GetFloati_v, "glGetFloati_v");
-	Loader.loadSymbol(gContext.GetDoublei_v, "glGetDoublei_v");
-	Loader.loadSymbol(gContext.CreateSyncFromCLeventARB, "glCreateSyncFromCLeventARB");
-	Loader.loadSymbol(gContext.DebugMessageControlARB, "glDebugMessageControlARB");
-	Loader.loadSymbol(gContext.DebugMessageInsertARB, "glDebugMessageInsertARB");
-	Loader.loadSymbol(gContext.DebugMessageCallbackARB, "glDebugMessageCallbackARB");
-	Loader.loadSymbol(gContext.GetDebugMessageLogARB, "glGetDebugMessageLogARB");
-	Loader.loadSymbol(gContext.GetGraphicsResetStatusARB, "glGetGraphicsResetStatusARB");
-	Loader.loadSymbol(gContext.GetnMapdvARB, "glGetnMapdvARB");
-	Loader.loadSymbol(gContext.GetnMapfvARB, "glGetnMapfvARB");
-	Loader.loadSymbol(gContext.GetnMapivARB, "glGetnMapivARB");
-	Loader.loadSymbol(gContext.GetnPixelMapfvARB, "glGetnPixelMapfvARB");
-	Loader.loadSymbol(gContext.GetnPixelMapuivARB, "glGetnPixelMapuivARB");
-	Loader.loadSymbol(gContext.GetnPixelMapusvARB, "glGetnPixelMapusvARB");
-	Loader.loadSymbol(gContext.GetnPolygonStippleARB, "glGetnPolygonStippleARB");
-	Loader.loadSymbol(gContext.GetnColorTableARB, "glGetnColorTableARB");
-	Loader.loadSymbol(gContext.GetnConvolutionFilterARB, "glGetnConvolutionFilterARB");
-	Loader.loadSymbol(gContext.GetnSeparableFilterARB, "glGetnSeparableFilterARB");
-	Loader.loadSymbol(gContext.GetnHistogramARB, "glGetnHistogramARB");
-	Loader.loadSymbol(gContext.GetnMinmaxARB, "glGetnMinmaxARB");
-	Loader.loadSymbol(gContext.GetnTexImageARB, "glGetnTexImageARB");
-	Loader.loadSymbol(gContext.ReadnPixelsARB, "glReadnPixelsARB");
-	Loader.loadSymbol(gContext.GetnCompressedTexImageARB, "glGetnCompressedTexImageARB");
-	Loader.loadSymbol(gContext.GetnUniformfvARB, "glGetnUniformfvARB");
-	Loader.loadSymbol(gContext.GetnUniformivARB, "glGetnUniformivARB");
-	Loader.loadSymbol(gContext.GetnUniformuivARB, "glGetnUniformuivARB");
-	Loader.loadSymbol(gContext.GetnUniformdvARB, "glGetnUniformdvARB");
-	Loader.loadSymbol(gContext.DrawArraysInstancedBaseInstance, "glDrawArraysInstancedBaseInstance");
-	Loader.loadSymbol(gContext.DrawElementsInstancedBaseInstance, "glDrawElementsInstancedBaseInstance");
-	Loader.loadSymbol(gContext.DrawElementsInstancedBaseVertexBaseInstance, "glDrawElementsInstancedBaseVertexBaseInstance");
-	Loader.loadSymbol(gContext.DrawTransformFeedbackInstanced, "glDrawTransformFeedbackInstanced");
-	Loader.loadSymbol(gContext.DrawTransformFeedbackStreamInstanced, "glDrawTransformFeedbackStreamInstanced");
-	Loader.loadSymbol(gContext.GetInternalformativ, "glGetInternalformativ");
-	Loader.loadSymbol(gContext.GetActiveAtomicCounterBufferiv, "glGetActiveAtomicCounterBufferiv");
-	Loader.loadSymbol(gContext.BindImageTexture, "glBindImageTexture");
-	Loader.loadSymbol(gContext.MemoryBarrier, "glMemoryBarrier");
-	Loader.loadSymbol(gContext.TexStorage1D, "glTexStorage1D");
-	Loader.loadSymbol(gContext.TexStorage2D, "glTexStorage2D");
-	Loader.loadSymbol(gContext.TexStorage3D, "glTexStorage3D");
-	Loader.loadSymbol(gContext.TextureStorage1DEXT, "glTextureStorage1DEXT");
-	Loader.loadSymbol(gContext.TextureStorage2DEXT, "glTextureStorage2DEXT");
-	Loader.loadSymbol(gContext.TextureStorage3DEXT, "glTextureStorage3DEXT");
-}
-
-}
 }

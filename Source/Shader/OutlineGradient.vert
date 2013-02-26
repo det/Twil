@@ -5,8 +5,8 @@ uniform vec2 Scaling;
 layout(location = 0) in vec4 BorderColor;
 layout(location = 1) in vec4 BottomColor;
 layout(location = 2) in vec4 TopColor;
-layout(location = 3) in ivec2 ClipMin;
-layout(location = 4) in ivec2 ClipMax;
+layout(location = 3) in vec2 ClipMin;
+layout(location = 4) in vec2 ClipMax;
 layout(location = 5) in ivec2 PositionMin;
 layout(location = 6) in ivec2 PositionMax;
 layout(location = 7) in ivec2 TextureSize;
@@ -29,14 +29,13 @@ out GeometryData
 
 void main(void)
 {
-	vec2 InverseScale = TextureSize / vec2(PositionMax - PositionMin);
 	Geometry.BorderColor = BorderColor;
 	Geometry.BottomColor = BottomColor;
 	Geometry.TopColor = TopColor;
-	Geometry.TextureMin = (ClipMin - PositionMin) * InverseScale;
-	Geometry.TextureMax = (ClipMax - PositionMin) * InverseScale;
-	Geometry.PositionMin = ClipMin * Scaling - 1;
-	Geometry.PositionMax = ClipMax * Scaling - 1;
+	Geometry.TextureMin = TextureSize * ClipMin;
+	Geometry.TextureMax = TextureSize * ClipMax;
+	Geometry.PositionMin = PositionMin * Scaling - 1;
+	Geometry.PositionMax = PositionMax * Scaling - 1;
 	Geometry.Pitch = TextureSize.x;
 	Geometry.InsideIndex = InsideIndex;
 	Geometry.OutsideIndex = OutsideIndex;

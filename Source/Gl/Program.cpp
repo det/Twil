@@ -1,13 +1,11 @@
 #include "Program.hpp"
 
-#include "Context.hpp"
 #include "Shader.hpp"
 
 #include <iostream>
 #include <stdexcept>
 #include <string>
 #include <vector>
-#include <GL3/gl3.h>
 
 namespace Twil {
 namespace Gl {
@@ -29,7 +27,7 @@ ProgramT::operator GLuint() const
 
 void ProgramT::attach(ShaderT const & Shader)
 {
-	glAttachShader(mId, Shader.mId);
+	glAttachShader(mId, Shader);
 }
 
 void ProgramT::link()

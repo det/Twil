@@ -25,11 +25,11 @@ void ManagerT::generateButtonBitmaps()
 	signed short Roundness = Settings::Button::Roundness;
 
 	signed short BorderSize = 1;
-	signed short CornerSize = 1 + Roundness;
+	signed short CornerSize = BorderSize + Roundness;
 	signed short BitmapSize = BorderSize * 2 + CornerSize * 2 + 1;
 
 	signed short Pos1 = 0;
-	signed short Pos2 = Pos1 + 1;
+	signed short Pos2 = Pos1 + BorderSize;
 	signed short Pos3 = Pos2 + Roundness;
 	signed short Pos4 = Pos3 + 1;
 	signed short Pos5 = Pos4 + Roundness;
@@ -79,7 +79,7 @@ void ManagerT::generateButtonBitmaps()
 	mButtonNwInside = mTexture.append(mBitmap.getSubRange(Pos1, Pos4, CornerSize, CornerSize));
 
 	// Outline
-	mStroker.setOptions(1 * 64, FT_STROKER_LINECAP_ROUND, FT_STROKER_LINEJOIN_ROUND, 0);
+	mStroker.setOptions(BorderSize * 64, FT_STROKER_LINECAP_ROUND, FT_STROKER_LINEJOIN_ROUND, 0);
 	mStroker.set(mOutline);
 	mOutline.clear();
 	mOutline.append(mStroker, FT_STROKER_BORDER_LEFT);
@@ -128,6 +128,11 @@ GlyphEntryT const & ManagerT::loadGlyphEntry(Ft::FaceT & Face, char32_t Codepoin
 void ManagerT::draw(unsigned short Width, unsigned short Height)
 {
 	if (Width == 0 || Height == 0) return;
+
+	mTexture.upload();
+	mSolidArray.update();
+	mOutlineArray.update();
+
 	float ScalingX = 2.0 / Width;
 	float ScalingY = 2.0 / Height;
 	float Red = float(Settings::Window::BackgroundColor.Red) / 255.0;
@@ -137,10 +142,6 @@ void ManagerT::draw(unsigned short Width, unsigned short Height)
 	glViewport(0, 0, Width, Height);
 	glClearColor(Red, Green, Blue, Alpha);
 	glClear(GL_COLOR_BUFFER_BIT);
-
-	mTexture.upload();
-	mSolidArray.upload();
-	mOutlineArray.upload();
 
 	glBindTexture(GL_TEXTURE_BUFFER, mTexture);
 
@@ -159,9 +160,6 @@ void ManagerT::draw(unsigned short Width, unsigned short Height)
 	glUseProgram(0);
 
 	glBindTexture(GL_TEXTURE_BUFFER, 0);
-
-	mSolidArray.clear();
-	mOutlineArray.clear();
 }
 
 }

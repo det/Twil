@@ -1,7 +1,8 @@
 #pragma once
 
+#include "Context.hpp"
+
 #include <string>
-#include <GL3/gl3.h>
 
 namespace Twil {
 namespace Gl {
@@ -11,8 +12,6 @@ class ProgramT;
 /// \brief Container for an OpenGL Shader.
 class ShaderT
 {
-	friend class ProgramT;
-
 	private:
 	GLuint mId;
 
@@ -26,7 +25,7 @@ class ShaderT
 	~ShaderT();
 
 	/// \brief Implicit conversion operator so it can be used in gl* functions.
-	operator GLuint();
+	operator GLuint() const;
 
 	/// \brief Uploads shader source to OpenGL
 	///

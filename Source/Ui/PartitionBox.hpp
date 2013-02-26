@@ -2,7 +2,6 @@
 
 #include "Container.hpp"
 #include "Tuple.hpp"
-#include "Widget.hpp"
 
 #include <algorithm>
 
@@ -19,8 +18,7 @@ class WindowBaseT;
 /// \brief Functionality shared by both horizontal and vertical partition boxes.
 template<typename ... ArgsT>
 class PartitionBoxBaseT :
-	public ContainerT,
-	public WidgetT
+	public ContainerT
 {
 	protected:
 	ContainerT & mParent;
@@ -74,7 +72,7 @@ class PartitionBoxBaseT :
 		}
 	};
 
-	void moveX(signed short X) final
+	void moveX(signed short X)
 	{
 		mLeft += X;
 		mRight += X;
@@ -92,7 +90,7 @@ class PartitionBoxBaseT :
 		}
 	};
 
-	void moveY(signed short Y) final
+	void moveY(signed short Y)
 	{
 		mBottom += Y;
 		mTop += Y;
@@ -110,7 +108,7 @@ class PartitionBoxBaseT :
 		}
 	};
 
-	void setClipLeft(signed short X) final
+	void setClipLeft(signed short X)
 	{
 		mChildren.iterate(SetClipLeftFunctorT{X});
 	}
@@ -126,7 +124,7 @@ class PartitionBoxBaseT :
 		}
 	};
 
-	void setClipBottom(signed short Y) final
+	void setClipBottom(signed short Y)
 	{
 		mChildren.iterate(SetClipBottomFunctorT{Y});
 	}
@@ -142,7 +140,7 @@ class PartitionBoxBaseT :
 		}
 	};
 
-	void setClipRight(signed short X) final
+	void setClipRight(signed short X)
 	{
 		mChildren.iterate(SetClipRightFunctorT{X});
 	}
@@ -158,7 +156,7 @@ class PartitionBoxBaseT :
 		}
 	};
 
-	void setClipTop(signed short Y) final
+	void setClipTop(signed short Y)
 	{
 		mChildren.iterate(SetClipTopFunctorT{Y});
 	}
@@ -172,27 +170,22 @@ class PartitionBoxBaseT :
 		}
 	};
 
-	void draw() const final
-	{
-		mChildren.iterate(DrawFunctorT{});
-	}
-
-	signed short getLeft() const final
+	signed short getLeft() const
 	{
 		return mLeft;
 	}
 
-	signed short getBottom() const final
+	signed short getBottom() const
 	{
 		return mBottom;
 	}
 
-	signed short getRight() const final
+	signed short getRight() const
 	{
 		return mRight;
 	}
 
-	signed short getTop() const final
+	signed short getTop() const
 	{
 		return mTop;
 	}
@@ -283,7 +276,7 @@ class PartitionBoxT<true, ArgsT ...> :
 		}
 	};
 
-	void resizeWidth(signed short X) final
+	void resizeWidth(signed short X)
 	{
 		mRight += X;
 		signed short Width = mRight - mLeft;
@@ -303,20 +296,20 @@ class PartitionBoxT<true, ArgsT ...> :
 		}
 	};
 
-	void resizeHeight(signed short Y) final
+	void resizeHeight(signed short Y)
 	{
 		mTop += Y;
 		mChildren.iterate(ResizeHeightFunctorT{Y});
 	}
 
-	signed short getBaseWidth() const final
+	signed short getBaseWidth() const
 	{
 		signed short MaxWidth = 0;
 		mChildren.iterate(MaxWidthFunctorT{MaxWidth});
 		return MaxWidth * mSize;
 	}
 
-	signed short getBaseHeight() const final
+	signed short getBaseHeight() const
 	{
 		signed short MaxHeight = 0;
 		mChildren.iterate(MaxHeightFunctorT{MaxHeight});
@@ -339,7 +332,7 @@ class PartitionBoxT<true, ArgsT ...> :
 		}
 	};
 
-	void delegateMouse(signed short X, signed short Y) final
+	void delegateMouse(signed short X, signed short Y)
 	{
 		mChildren.iterateUntil(DelegateMouseFunctorT{X, Y});
 	}
@@ -393,7 +386,7 @@ class PartitionBoxT<false, ArgsT ...> :
 		}
 	};
 
-	void resizeWidth(signed short X) final
+	void resizeWidth(signed short X)
 	{
 		mRight += X;
 		mChildren.iterate(ResizeWidthFunctorT{X});
@@ -419,7 +412,7 @@ class PartitionBoxT<false, ArgsT ...> :
 		}
 	};
 
-	void resizeHeight(signed short Y) final
+	void resizeHeight(signed short Y)
 	{
 		mTop += Y;
 		signed short Height = mTop - mBottom;
@@ -428,14 +421,14 @@ class PartitionBoxT<false, ArgsT ...> :
 		mChildren.iterate(ResizeHeightFunctorT{mBottom, BoxHeight, Mod});
 	}
 
-	signed short getBaseWidth() const final
+	signed short getBaseWidth() const
 	{
 		signed short MaxWidth = 0;
 		mChildren.iterate(MaxWidthFunctorT{MaxWidth});
 		return MaxWidth;
 	}
 
-	signed short getBaseHeight() const final
+	signed short getBaseHeight() const
 	{
 		signed short MaxHeight = 0;
 		mChildren.iterate(MaxHeightFunctorT{MaxHeight});
@@ -458,7 +451,7 @@ class PartitionBoxT<false, ArgsT ...> :
 		}
 	};
 
-	void delegateMouse(signed short X, signed short Y) final
+	void delegateMouse(signed short X, signed short Y)
 	{
 		mChildren.iterateUntil(DelegateMouseFunctorT{X, Y});
 	}

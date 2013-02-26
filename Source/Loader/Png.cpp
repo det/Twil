@@ -1,11 +1,8 @@
 #include "Png.hpp"
 
-#include "Gl/Context.hpp"
-
 #include <cstdio>
 #include <fstream>
 #include <stdexcept>
-#include <GL3/gl3.h>
 
 namespace Twil {
 namespace Loader {

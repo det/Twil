@@ -1,7 +1,8 @@
 #pragma once
 
+#include "Context.hpp"
+
 #include <string>
-#include <GL3/gl3.h>
 
 namespace Twil {
 namespace Gl {

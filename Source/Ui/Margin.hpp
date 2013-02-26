@@ -3,7 +3,6 @@
 #include "Container.hpp"
 #include "MouseHandler.hpp"
 #include "WindowBase.hpp"
-#include "Widget.hpp"
 
 #include "Theme/Manager.hpp"
 
@@ -18,8 +17,7 @@ namespace Ui {
 template<unsigned short SpaceX, unsigned short SpaceY, typename T>
 class MarginT :
 	public ContainerT,
-	public MouseHandlerT,
-	public WidgetT
+	public MouseHandlerT
 {
 	ContainerT & mParent;
 	WindowBaseT & mWindow;
@@ -68,88 +66,83 @@ class MarginT :
 	}
 
 	// Widget
-	void moveX(signed short X) final
+	void moveX(signed short X)
 	{
 		mLeft += X;
 		mRight += X;
 		mChild.moveX(X);
 	}
 
-	void moveY(signed short Y) final
+	void moveY(signed short Y)
 	{
 		mBottom += Y;
 		mTop += Y;
 		mChild.moveY(Y);
 	}
 
-	void resizeWidth(signed short X) final
+	void resizeWidth(signed short X)
 	{
 		mRight += X;
 		mChild.resizeWidth(X);
 	}
 
-	void resizeHeight(signed short Y) final
+	void resizeHeight(signed short Y)
 	{
 		mTop += Y;
 		mChild.resizeHeight(Y);
 	}
 
-	void setClipLeft(signed short X) final
+	void setClipLeft(signed short X)
 	{
 		mChild.setClipLeft(X);
 	}
 
-	void setClipBottom(signed short Y) final
+	void setClipBottom(signed short Y)
 	{
 		mChild.setClipBottom(Y);
 	}
 
-	void setClipRight(signed short X) final
+	void setClipRight(signed short X)
 	{
 		mChild.setClipRight(X);
 	}
 
-	void setClipTop(signed short Y) final
+	void setClipTop(signed short Y)
 	{
 		mChild.setClipTop(Y);
 	}
 
-	void draw() const final
-	{
-		mChild.draw();
-	}
-
-	signed short getLeft() const final
+	signed short getLeft() const
 	{
 		return mLeft;
 	}
 
-	signed short getBottom() const final
+	signed short getBottom() const
 	{
 		return mBottom;
 	}
 
-	signed short getRight() const final
+	signed short getRight() const
 	{
 		return mRight;
 	}
 
-	signed short getTop() const final
+	signed short getTop() const
 	{
 		return mTop;
 	}
 
-	signed short getBaseWidth() const final
+	signed short getBaseWidth() const
 	{
 		return mChild.getBaseWidth() + SpaceX + SpaceX;
 	}
 
-	signed short getBaseHeight() const final
+	signed short getBaseHeight() const
 	{
 		return mChild.getBaseHeight() + SpaceY + SpaceY;
 	}
 
-	void delegateMouse(signed short X, signed short Y) final
+	void delegateMouse(signed short X, signed short Y)
 	{
 		if (checkChildContains(X, Y)) mChild.delegateMouse(X, Y);
 		else mWindow.setMouseHandler(*this);

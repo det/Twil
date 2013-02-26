@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Settings.hpp"
+#include "StreamArray.hpp"
+#include "TextureArray.hpp"
 
 #include "Ft/Bitmap.hpp"
 #include "Ft/Face.hpp"
@@ -11,8 +13,6 @@
 #include "Program/FillSolid.hpp"
 #include "Program/OutlineGradient.hpp"
 #include "Gl/Context.hpp"
-#include "Gl/StreamArray.hpp"
-#include "Gl/TextureArray.hpp"
 #include "Gl/VertexArray.hpp"
 #include "Vertex/FillSolid.hpp"
 #include "Vertex/OutlineGradient.hpp"
@@ -54,9 +54,9 @@ class ManagerT
 	Ft::FaceT mLabelFace;
 	Ft::SizeT mLabelSize;
 
-	Gl::TextureArrayT mTexture;
-	Gl::StreamArrayT<Vertex::FillSolidT> mSolidArray;
-	Gl::StreamArrayT<Vertex::OutlineGradientT> mOutlineArray;
+	TextureArrayT mTexture;
+	StreamArrayT<Vertex::FillSolidT> mSolidArray;
+	StreamArrayT<Vertex::OutlineGradientT> mOutlineArray;
 
 	Program::FillSolidT mFillSolid;
 	Program::OutlineGradientT mOutlineGradient;
@@ -89,10 +89,11 @@ class ManagerT
 	public:	
 	ManagerT();
 
+	void draw(unsigned short Width, unsigned short Height);
+
 	/// \brief Draw the GUI.
 	///
 	/// All Theme objects must queue their vertex data each time before this is called.
-	void draw(unsigned short Width, unsigned short Height);
 };
 
 }

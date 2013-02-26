@@ -33,9 +33,6 @@ class WidgetT
 	/// \brief Set the top clipping bound.
 	virtual void setClipTop(signed short) = 0;
 
-	/// \brief Communicate drawing to the theme.
-	virtual void draw() const = 0;
-
 	/// \returns The left position bound.
 	virtual signed short getLeft() const = 0;
 

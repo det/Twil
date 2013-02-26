@@ -1,19 +1,19 @@
 #pragma once
 
-#include "Buffer.hpp"
-#include "Texture.hpp"
+#include "Gl/Buffer.hpp"
+#include "Gl/Texture.hpp"
 
 #include <vector>
 
 namespace Twil {
-namespace Gl {
+namespace Theme {
 
 /// \brief Container for a dynamicly growing OpenGL buffer texture.
 class TextureArrayT
 {
 	private:
-	BufferT mBuffer;
-	TextureT mTexture;
+	Gl::BufferT mBuffer;
+	Gl::TextureT mTexture;
 
 	// Non copyable
 	TextureArrayT(TextureArrayT &) = delete;

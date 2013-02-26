@@ -1,4 +1,6 @@
 #include "Application.hpp"
+#include "Glx.hpp"
+#include "SymbolLoader.hpp"
 
 #include "Gl/Context.hpp"
 
@@ -8,6 +10,9 @@ namespace Platform {
 ApplicationT::ApplicationT() :
 	mRunning{false}
 {
+	SymbolLoaderT Loader;
+	Glx::initialize(Loader);
+
 	mDisplay = XOpenDisplay(0);
 	if (mDisplay == nullptr) throw std::runtime_error{"Unable to open display"};
 
@@ -16,16 +21,16 @@ ApplicationT::ApplicationT() :
 	mWmDeleteWindow = XInternAtom(mDisplay, "WM_DELETE_WINDOW", False);
 
 	static int VisualAttributes[] = {
-		GLX_X_RENDERABLE ,  True,
-		GLX_DRAWABLE_TYPE,  GLX_WINDOW_BIT,
-		GLX_RENDER_TYPE,    GLX_RGBA_BIT,
-		GLX_X_VISUAL_TYPE,  GLX_TRUE_COLOR,
-		GLX_RED_SIZE,       8,
-		GLX_GREEN_SIZE,     8,
-		GLX_BLUE_SIZE,      8,
-		GLX_ALPHA_SIZE,     8,
-		GLX_DEPTH_SIZE,     16,
-		GLX_DOUBLEBUFFER,   True,
+		GLX_X_RENDERABLE ,                True,
+		GLX_DRAWABLE_TYPE,                GLX_WINDOW_BIT,
+		GLX_RENDER_TYPE,                  GLX_RGBA_BIT,
+		GLX_X_VISUAL_TYPE,                GLX_TRUE_COLOR,
+		GLX_RED_SIZE,                     8,
+		GLX_GREEN_SIZE,                   8,
+		GLX_BLUE_SIZE,                    8,
+		GLX_ALPHA_SIZE,                   8,
+		GLX_DEPTH_SIZE,                   16,
+		GLX_DOUBLEBUFFER,                 True,
 		GLX_FRAMEBUFFER_SRGB_CAPABLE_ARB, True,
 		None
 	};
@@ -56,14 +61,6 @@ ApplicationT::ApplicationT() :
 		StructureNotifyMask |
 		ExposureMask;
 
-	using GlXCreateContextAttribsARBProcT = GLXContext (*) (
-		Display *, GLXFBConfig, GLXContext, Bool, int const *
-	);
-
-	auto Symbol = reinterpret_cast<GLubyte const *>("glXCreateContextAttribsARB");
-	auto Function = glXGetProcAddressARB(Symbol);
-	auto glXCreateContextAttribsARB = reinterpret_cast<GlXCreateContextAttribsARBProcT>(Function);
-
 	int ContextAttribs[] = {
 		GLX_CONTEXT_MAJOR_VERSION_ARB, 3,
 		GLX_CONTEXT_MINOR_VERSION_ARB, 3,
@@ -74,7 +71,7 @@ ApplicationT::ApplicationT() :
 	mContextId = glXCreateContextAttribsARB(mDisplay, Config, 0, True, ContextAttribs);
 	if (mContextId == 0) throw std::runtime_error{"Unable to create OpenGL context"};
 
-	Gl::ContextT::initialize();
+	Gl::Context::initialize(Loader);
 }
 
 ApplicationT::~ApplicationT()

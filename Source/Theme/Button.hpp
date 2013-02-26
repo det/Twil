@@ -1,5 +1,9 @@
 #pragma once
 
+#include "Drawable.hpp"
+#include "Manager.hpp"
+#include "Settings.hpp"
+
 #include "Vertex/OutlineGradient.hpp"
 
 #include <vector>
@@ -7,14 +11,12 @@
 namespace Twil {
 namespace Theme {
 
-class ManagerT;
-
 /// \brief Responsible for drawing a button.
-class ButtonT
+class ButtonT :
+	public DrawableT<Vertex::OutlineGradientT>
 {
 	private:
 	ManagerT & mManager;
-	std::vector<Vertex::OutlineGradientT> mVertices;
 	signed short mLeft = 0;
 	signed short mBottom = 0;
 	signed short mRight = 0;
@@ -25,14 +27,8 @@ class ButtonT
 	signed short mClipTop = 0;
 	bool mIsDown = false;
 
-	void clipLeft();
-	void clipLeftCenter();
-	void clipRight();
-	void clipRightCenter();
-	void clipBottom();
-	void clipBottomCenter();
-	void clipTop();
-	void clipTopCenter();
+	static signed short const mBorderSize = 1;
+	static signed short const mCornerSize = mBorderSize + Settings::Button::Roundness;
 
 	public:
 	ButtonT(ManagerT &);
@@ -52,6 +48,9 @@ class ButtonT
 	/// \returns The top margin for the theme
 	signed short getTopMargin() const;
 
+	// Drawable
+	void draw(Vertex::OutlineGradientT *) const final;
+
 	// Widget
 	void moveX(signed short);
 	void moveY(signed short);
@@ -63,8 +62,6 @@ class ButtonT
 	void setClipBottom(signed short);
 	void setClipRight(signed short);
 	void setClipTop(signed short);
-
-	void draw() const;
 
 	signed short getLeft() const;
 	signed short getBottom() const;

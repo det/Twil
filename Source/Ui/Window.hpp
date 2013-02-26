@@ -99,7 +99,6 @@ class WindowT :
 	void update()
 	{
 		if (mNeedsDraw) {
-			mChild.draw();
 			mThemeManager.draw(mWidth, mHeight);
 			swapBuffers();
 			mNeedsDraw = false;

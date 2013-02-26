@@ -21,7 +21,7 @@ ShaderT::~ShaderT()
 	glDeleteShader(mId);
 }
 
-ShaderT::operator GLuint()
+ShaderT::operator GLuint() const
 {
 	return mId;
 }
