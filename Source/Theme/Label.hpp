@@ -2,7 +2,6 @@
 
 #include "Drawable.hpp"
 #include "Manager.hpp"
-
 #include "Vertex/FillSolid.hpp"
 
 #include <string>

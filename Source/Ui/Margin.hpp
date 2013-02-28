@@ -3,7 +3,6 @@
 #include "Container.hpp"
 #include "MouseHandler.hpp"
 #include "WindowBase.hpp"
-
 #include "Theme/Manager.hpp"
 
 namespace Twil {

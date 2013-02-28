@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Drawable.hpp"
-
 #include "Gl/Buffer.hpp"
 #include "Gl/Context.hpp"
 #include "Gl/VertexArray.hpp"

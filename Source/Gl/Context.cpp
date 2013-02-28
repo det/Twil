@@ -1102,12 +1102,14 @@ void initialize(Platform::SymbolLoaderT const & Loader)
 	Loader.loadGlArbSymbol(gGlProcs.TextureStorage2DEXT, "glTextureStorage2DEXT");
 	Loader.loadGlArbSymbol(gGlProcs.TextureStorage3DEXT, "glTextureStorage3DEXT");
 }
-}
 
 }
 }
+}
 
-extern "C" {
+namespace Twil {
+namespace Gl {
+namespace Procs {
 
 void glCullFace(GLenum mode)
 {
@@ -4326,4 +4328,6 @@ void glTextureStorage3DEXT(GLuint texture, GLenum target, GLsizei levels, GLenum
 	checkError();
 }
 
+}
+}
 }

@@ -19,14 +19,13 @@ ManagerT::ManagerT() :
 	generateButtonBitmaps();
 }
 
-
 void ManagerT::generateButtonBitmaps()
 {
 	signed short Roundness = Settings::Button::Roundness;
 
 	signed short BorderSize = 1;
 	signed short CornerSize = BorderSize + Roundness;
-	signed short BitmapSize = BorderSize * 2 + CornerSize * 2 + 1;
+	signed short BitmapSize = BorderSize * 2 + 1 + CornerSize * 2;
 
 	signed short Pos1 = 0;
 	signed short Pos2 = Pos1 + BorderSize;

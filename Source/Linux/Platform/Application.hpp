@@ -4,9 +4,10 @@
 #include "Key.hpp"
 
 #include <cassert>
+#include <cstdlib>
 #include <stdexcept>
 
-#include "Glx.hpp"
+#include <xcb/xcb.h>
 
 namespace Twil {
 namespace Platform {
@@ -17,23 +18,27 @@ class ApplicationT
 	friend class WindowT;
 
 	private:
-	::Display * mDisplay;
-	::Atom mWmDeleteWindow;
-	::Atom mWmFullScreen;
-	::Atom mWmState;
-	::XVisualInfo * mVisual;
-	::GLXFBConfig * mFramebufferConfigs;
-	::XSetWindowAttributes mWindowAttributes;
-	::Colormap mColormap;
-	::GLXContext mContextId;
+	xcb_connection_t * mConnection;
+
+	// We Use void * here and cast later because including the X11 headers polutes our namespace
+	// with all kinds of generically named macros such as "None"
+	void * mDisplay;
+
+	// XXX: port to use libxcb
+	unsigned long mStateAtom;
+	unsigned long mStateFullscreenAtom;
+	unsigned long mDeleteWindowAtom;
+
 	bool mRunning;
+
+	// Non-copyable
+	ApplicationT(ApplicationT &) = delete;
+	ApplicationT & operator=(ApplicationT &) = delete;
 
 	public:
 	/// \throws std::runtime_error on error.
 	ApplicationT();
 	~ApplicationT();
-	ApplicationT(ApplicationT &) = delete;
-	ApplicationT & operator=(ApplicationT &) = delete;
 
 	/// \brief Run the event loop.
 	///
@@ -45,59 +50,73 @@ class ApplicationT
 
 		mRunning = true;
 		while (mRunning)  {
+			// We call update on the Window when all queued events have been proccessed
+			auto GenericEvent = xcb_poll_for_queued_event(mConnection);
+			if (GenericEvent == nullptr) {
+				Window.update();
+				GenericEvent = xcb_wait_for_event(mConnection);
+			}
 
-			XEvent Event;
-			XNextEvent(mDisplay, &Event);
-			auto Y = Window.getHeight() - Event.xbutton.y;
+			switch(GenericEvent->response_type & ~0x80) {
 
-			switch (Event.type) {
-
-			case EnterNotify: {
-				Window.sendMouseEnterWindow(Event.xmotion.x, Y);
+			case XCB_ENTER_NOTIFY: {
+				auto Event = reinterpret_cast<xcb_enter_notify_event_t *>(GenericEvent);
+				signed short Y = Window.getHeight() - Event->event_y;
+				Window.sendMouseEnterWindow(Event->event_x, Y);
 			} break;
 
-			case LeaveNotify: {
-				Window.sendMouseLeaveWindow(Event.xmotion.x, Y);
+			case XCB_LEAVE_NOTIFY: {
+				auto Event = reinterpret_cast<xcb_leave_notify_event_t *>(GenericEvent);
+				signed short Y = Window.getHeight() - Event->event_y;
+				Window.sendMouseLeaveWindow(Event->event_x, Y);
 			} break;
 
-			case MotionNotify: {
-				Window.sendMouseMotion(Event.xmotion.x, Y);
+			case XCB_MOTION_NOTIFY: {
+				auto Event = reinterpret_cast<xcb_motion_notify_event_t *>(GenericEvent);
+				signed short Y = Window.getHeight() - Event->event_y;
+				Window.sendMouseMotion(Event->event_x, Y);
 			} break;
 
-			case ButtonPress: {
-				Window.sendButtonPress(Event.xbutton.x, Y, Event.xbutton.button);
+			case XCB_BUTTON_PRESS: {
+				auto Event = reinterpret_cast<xcb_button_press_event_t *>(GenericEvent);
+				signed short Y = Window.getHeight() - Event->event_y;
+				Window.sendButtonPress(Event->event_x, Y, Event->detail);
 			} break;
 
-			case ButtonRelease: {
-				Window.sendButtonRelease(Event.xbutton.x, Y, Event.xbutton.button);
+			case XCB_BUTTON_RELEASE: {
+				auto Event = reinterpret_cast<xcb_button_press_event_t *>(GenericEvent);
+				signed short Y = Window.getHeight() - Event->event_y;
+				Window.sendButtonRelease(Event->event_x, Y, Event->detail);
 			} break;
 
-			case KeyPress: {
-				auto Keysym = XLookupKeysym(&Event.xkey, 0);
-				Window.sendKeyPress(static_cast<KeyT>(Keysym));
+			case XCB_KEY_PRESS: {
+//				auto Keysym = XLookupKeysym(&Event.xkey, 0);
+//				Window.sendKeyPress(static_cast<KeyT>(Keysym));
 			} break;
 
-			case KeyRelease: {
-				auto Keysym = XLookupKeysym(&Event.xkey, 0);
-				Window.sendKeyRelease(static_cast<KeyT>(Keysym));
+			case XCB_KEY_RELEASE: {
+//				auto Keysym = XLookupKeysym(&Event.xkey, 0);
+//				Window.sendKeyRelease(static_cast<KeyT>(Keysym));
 			} break;
 
-			case ConfigureNotify: {
-				Window.handleResize(Event.xconfigure.width, Event.xconfigure.height);
+			case XCB_CONFIGURE_NOTIFY: {
+				auto Event = reinterpret_cast<xcb_configure_notify_event_t *>(GenericEvent);
+				Window.handleResize(Event->width, Event->height);
 			} break;
 
-			case Expose: {
+			case XCB_EXPOSE: {
 				Window.handleExposed();
 			} break;
 
-			case ClientMessage: {
-				auto WindowAtom = static_cast<Atom>(Event.xclient.data.l[0]);
-				if (WindowAtom == mWmDeleteWindow) Window.handleDeleted();
+			case XCB_CLIENT_MESSAGE: {
+				auto Event = reinterpret_cast<xcb_client_message_event_t *>(GenericEvent);
+				auto Atom = Event->data.data32[0];
+				if (Atom == mDeleteWindowAtom) Window.handleDeleted();
 			} break;
 
 			}
 
-			if (XPending(mDisplay) == 0) Window.update();
+			free(GenericEvent);
 		}
 	}
 

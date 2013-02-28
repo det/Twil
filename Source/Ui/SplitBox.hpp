@@ -2,7 +2,6 @@
 
 #include "Container.hpp"
 #include "WindowBase.hpp"
-
 #include "Theme/Manager.hpp"
 
 namespace Twil {

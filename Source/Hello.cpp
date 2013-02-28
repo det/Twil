@@ -68,8 +68,6 @@ class HelloT
 		getLabel12().setText(U"7");
 		getLabel22().setText(U"8");
 		getTopLabel().setText(U"Top");
-		getWindow().resize(320, 240);
-		getWindow().show();
 		getButton00().Clicked += [&]() { getLabel00().setText(U"Clicked"); };
 		getWindow().Deleted += [&]() { getApplication().stop(); };
 	}

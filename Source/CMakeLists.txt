@@ -35,6 +35,8 @@ set (fonts
 )
 
 if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+	find_package (X11 REQUIRED)
+
 	set (platform_sources
 		Linux/Platform/Key.cpp
 		Linux/Platform/Application.cpp
@@ -45,17 +47,20 @@ if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
 
 	set (platform_search_path
 		Linux
+		${X11_INCLUDE_DIRS}
 	)
 
 	set (platform_libs
 		dl
+		xcb
+		X11-xcb
+		${X11_LIBRARIES}
 	)
 else ()
 	message(FATAL_ERROR "Unsupported platform: ${CMAKE_SYSTEM_NAME}")
 endif ()
 
 set (sources
-	${platform_sources}
 	Attribute/Color1f.cpp
 	Attribute/Color4b.cpp
 	Attribute/Offset1i.cpp
@@ -103,6 +108,7 @@ set (sources
 	Ui/Window.cpp
 	Vertex/FillSolid.cpp
 	Vertex/OutlineGradient.cpp
+	${platform_sources}
 )
 
 set (shaders
@@ -121,7 +127,7 @@ add_executable (hello
 )
 
 find_package (Freetype REQUIRED)
-find_package (X11 REQUIRED)
+find_package (OpenGL REQUIRED)
 find_package (PNG REQUIRED)
 
 include_directories (
@@ -129,14 +135,14 @@ include_directories (
 	Header
 	${platform_search_path}
 	${FREETYPE_INCLUDE_DIRS}
+	${OPENGL_INCLUDE_DIRS}
 	${PNG_INCLUDE_DIRS}
-	${X11_INCLUDE_DIRS}
 )
 
 target_link_libraries (hello
 	${platform_libs}
 	${FREETYPE_LIBRARIES}
-	${X11_LIBRARIES}
+	${OPENGL_LIBRARIES}
 	${PNG_LIBRARIES}
 )
 

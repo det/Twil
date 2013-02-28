@@ -6,7 +6,6 @@
 #include "KeyboardHandler.hpp"
 #include "MouseHandler.hpp"
 #include "WindowBase.hpp"
-
 #include "Gl/Context.hpp"
 #include "Theme/Manager.hpp"
 
@@ -38,10 +37,7 @@ class WindowT :
 		Platform::WindowT{Application},
 		WindowBaseT{this, this},
 		mChild{*this, *this, mThemeManager}
-	{
-		glClear(GL_COLOR_BUFFER_BIT);
-		swapBuffers();
-	}
+	{}
 
 	/// \brief Toggle the fullscreen status of the window.
 	void toggleFullscreen()

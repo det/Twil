@@ -3,7 +3,6 @@
 #include "Settings.hpp"
 #include "StreamArray.hpp"
 #include "TextureArray.hpp"
-
 #include "Ft/Bitmap.hpp"
 #include "Ft/Face.hpp"
 #include "Ft/Library.hpp"

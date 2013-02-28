@@ -1,6 +1,6 @@
 #pragma once
 
-#include <X11/Xlib.h>
+#include <xcb/xcb.h>
 
 namespace Twil {
 namespace Platform {
@@ -12,7 +12,11 @@ class WindowT
 {
 	private:
 	ApplicationT & mApplication;
-	::Window mId;
+	xcb_window_t mId;
+
+	// We Use void * here and cast later because including the X11 headers polutes our namespace
+	// with all kinds of generically named macros such as "None"
+	void * mContext;
 
 	protected:
 	/// \brief Make this window the current rendering context.
@@ -21,12 +25,14 @@ class WindowT
 	/// \brief Swap the front and back buffers.
 	void swapBuffers();
 
+	// Non-copyable
+	WindowT(WindowT &) = delete;
+	WindowT & operator=(WindowT &) = delete;
+
 	public:
 	/// \throws std::runtime_error on error.
 	WindowT(ApplicationT &);
 	~WindowT();
-	WindowT(WindowT &) = delete;
-	WindowT & operator=(WindowT &) = delete;
 
 	/// \brief Show the window.
 	void show();

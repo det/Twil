@@ -2,9 +2,28 @@
 
 #include <GL3/gl3.h>
 
-// This file was mostly auto generated
+namespace Twil {
+namespace Platform {
 
-extern "C" {
+class SymbolLoaderT;
+
+}
+}
+
+namespace Twil {
+namespace Gl {
+namespace Context {
+
+void initialize(Platform::SymbolLoaderT const &);
+
+}
+}
+}
+
+// We define our functions in a namespace and immediately use it so we dont conflict with libGL
+namespace Twil {
+namespace Gl {
+namespace Procs {
 
 void glCullFace(GLenum);
 void glFrontFace(GLenum);
@@ -538,21 +557,7 @@ void glTextureStorage2DEXT(GLuint, GLenum, GLsizei, GLenum, GLsizei, GLsizei);
 void glTextureStorage3DEXT(GLuint, GLenum, GLsizei, GLenum, GLsizei, GLsizei, GLsizei);
 
 }
-
-namespace Twil {
-namespace Platform {
-
-class SymbolLoaderT;
-
 }
 }
 
-namespace Twil {
-namespace Gl {
-namespace Context {
-
-void initialize(Platform::SymbolLoaderT const &);
-
-}
-}
-}
+using namespace Twil::Gl::Procs;

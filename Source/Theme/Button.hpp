@@ -3,7 +3,6 @@
 #include "Drawable.hpp"
 #include "Manager.hpp"
 #include "Settings.hpp"
-
 #include "Vertex/OutlineGradient.hpp"
 
 #include <vector>

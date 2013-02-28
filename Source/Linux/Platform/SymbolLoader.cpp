@@ -1,17 +1,14 @@
 #include "SymbolLoader.hpp"
 
+#include "Glx.hpp"
+
 namespace Twil {
 namespace Platform {
 
-SymbolLoaderT::SymbolLoaderT()
+SymbolLoaderT::FunctionPointerT SymbolLoaderT::loadArb(char const * Symbol)
 {
-	mHandle = dlopen("libGL.so.1", RTLD_LAZY | RTLD_GLOBAL);
-	if (mHandle == nullptr) throw std::runtime_error{"Unable to open the OpenGL library"};
-}
-
-SymbolLoaderT::~SymbolLoaderT()
-{
-	dlclose(mHandle);
+	auto String = reinterpret_cast<GLubyte const *>(Symbol);
+	return glXGetProcAddressARB(String);
 }
 
 }

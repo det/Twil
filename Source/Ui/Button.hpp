@@ -3,7 +3,6 @@
 #include "Container.hpp"
 #include "Event.hpp"
 #include "Window.hpp"
-
 #include "Gl/Context.hpp"
 #include "Theme/Button.hpp"
 
