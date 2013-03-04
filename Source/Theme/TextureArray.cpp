@@ -19,7 +19,11 @@ void TextureArrayT::upload()
 		glBindTexture(GL_TEXTURE_BUFFER, mTexture);
 		glBindBuffer(GL_TEXTURE_BUFFER, mBuffer);
 		glBufferData(GL_TEXTURE_BUFFER, mBytes.capacity(), nullptr, GL_DYNAMIC_DRAW);
-		glBufferSubData(GL_TEXTURE_BUFFER, 0, mBytes.size(), mBytes.data());
+		auto Flags = GL_MAP_WRITE_BIT | GL_MAP_INVALIDATE_BUFFER_BIT;
+		auto BufferPointer = glMapBufferRange(GL_TEXTURE_BUFFER, 0, mBytes.size(), Flags);
+		auto DataPointer = static_cast<GLubyte *>(BufferPointer);
+		std::copy(mBytes.begin(), mBytes.end(), DataPointer);
+		glUnmapBuffer(GL_TEXTURE_BUFFER);
 		glTexBuffer(GL_TEXTURE_BUFFER, GL_R8, mBuffer);
 		glBindBuffer(GL_TEXTURE_BUFFER, 0);
 		glBindTexture(GL_TEXTURE_BUFFER, 0);
@@ -27,7 +31,11 @@ void TextureArrayT::upload()
 	else {
 		// Upload only new data
 		glBindBuffer(GL_TEXTURE_BUFFER, mBuffer);
-		glBufferSubData(GL_TEXTURE_BUFFER, mSize, mBytes.size() - mSize, mBytes.data() + mSize);
+		auto Flags = GL_MAP_WRITE_BIT | GL_MAP_UNSYNCHRONIZED_BIT;
+		auto BufferPointer = glMapBufferRange(GL_TEXTURE_BUFFER, mSize, mBytes.size() - mSize, Flags);
+		auto DataPointer = static_cast<GLubyte *>(BufferPointer);
+		std::copy(mBytes.begin() + mSize, mBytes.end(), DataPointer);
+		glUnmapBuffer(GL_TEXTURE_BUFFER);
 		glBindBuffer(GL_TEXTURE_BUFFER, 0);
 	}
 
