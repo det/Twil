@@ -34,12 +34,16 @@ if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
 		Linux/Platform/Key.hpp
 		Linux/Platform/Application.cpp
 		Linux/Platform/Application.hpp
+		Linux/Platform/FreeDeleter.cpp
+		Linux/Platform/FreeDeleter.hpp
 		Linux/Platform/Glx.cpp
 		Linux/Platform/Glx.hpp
 		Linux/Platform/SymbolLoader.cpp
 		Linux/Platform/SymbolLoader.hpp
 		Linux/Platform/Window.cpp
 		Linux/Platform/Window.hpp
+		Linux/Platform/XDeleter.cpp
+		Linux/Platform/XDeleter.hpp
 	)
 
 	source_group(Platform FILES ${platform_sources})
@@ -241,9 +245,9 @@ target_link_libraries (hello
 )
 
 set (fonts
-        Font/DejaVuSans.ttf
-        Font/DejaVuSans-Bold.ttf
-        Font/DejaVuSansMono.ttf
+		Font/DejaVuSans.ttf
+		Font/DejaVuSans-Bold.ttf
+		Font/DejaVuSansMono.ttf
 )
 
 install (FILES ${fonts} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Font)

@@ -1,7 +1,8 @@
 #pragma once
 
-#include "Window.hpp"
 #include "Key.hpp"
+#include "FreeDeleter.hpp"
+#include "Window.hpp"
 
 #include <cassert>
 #include <cstdlib>
@@ -24,10 +25,11 @@ class ApplicationT
 	// with all kinds of generically named macros such as "None"
 	void * mDisplay;
 
-	// XXX: port to use libxcb
-	unsigned long mStateAtom;
-	unsigned long mStateFullscreenAtom;
-	unsigned long mDeleteWindowAtom;
+	xcb_atom_t mNetWmStateAtom;
+	xcb_atom_t mNetWmStateFullscreenAtom;
+	xcb_atom_t mStringAtom;
+	xcb_atom_t mWmDeleteWindowAtom;
+	xcb_atom_t mWmNameAtom;
 
 	bool mRunning;
 
@@ -56,6 +58,8 @@ class ApplicationT
 				Window.update();
 				GenericEvent = xcb_wait_for_event(mConnection);
 			}
+			// Ensure the pointer gets free'd
+			std::unique_ptr<xcb_generic_event_t, FreeDeleterT> MallocPointer{GenericEvent};
 
 			switch(GenericEvent->response_type & ~0x80) {
 
@@ -111,12 +115,10 @@ class ApplicationT
 			case XCB_CLIENT_MESSAGE: {
 				auto Event = reinterpret_cast<xcb_client_message_event_t *>(GenericEvent);
 				auto Atom = Event->data.data32[0];
-				if (Atom == mDeleteWindowAtom) Window.handleDeleted();
+				if (Atom == mWmDeleteWindowAtom) Window.handleDeleted();
 			} break;
 
 			}
-
-			free(GenericEvent);
 		}
 	}
 

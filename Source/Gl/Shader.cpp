@@ -55,9 +55,9 @@ void ShaderT::compile()
 		GLint LogLength = 0;
 		glGetShaderiv(mId, GL_INFO_LOG_LENGTH , &LogLength);
 		if (LogLength < 1) throw std::runtime_error{"Shader compile error, unable to retrieve log"};
-		std::basic_string<GLchar> Log(static_cast<std::size_t>(LogLength), '\0');
-		glGetShaderInfoLog(mId, LogLength, &LogLength, &Log[0]);
-		std::cout << Log;
+		std::vector<GLchar> Log(static_cast<std::size_t>(LogLength), '\0');
+		glGetShaderInfoLog(mId, LogLength, &LogLength, Log.data());
+		std::cout << Log.data();
 		throw std::runtime_error{"Shader compile error"};
 	}
 }

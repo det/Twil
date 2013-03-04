@@ -70,6 +70,7 @@ class HelloT
 		getTopLabel().setText(U"Top");
 		getButton00().Clicked += [&]() { getLabel00().setText(U"Clicked"); };
 		getWindow().Deleted += [&]() { getApplication().stop(); };
+		getWindow().setTitle("Hello");
 	}
 
 	void run()

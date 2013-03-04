@@ -3,11 +3,14 @@
 #include "Application.hpp"
 #include "Glx.hpp"
 #include "SymbolLoader.hpp"
+#include "XDeleter.hpp"
 #include "Gl/Context.hpp"
 
 #include <cstring>
 #include <cstdint>
 #include <stdexcept>
+
+#include <xcb/xcb_atom.h>
 
 namespace Twil {
 namespace Platform {
@@ -45,6 +48,9 @@ WindowT::WindowT(ApplicationT & Application) :
 	if (FramebufferConfigs == nullptr) {
 		throw std::runtime_error{"Unable to find matching video mode"};
 	}
+
+	// Ensure the pointer gets free'd
+	std::unique_ptr<GLXFBConfig, XDeleterT> FrameBufferPointer{FramebufferConfigs};
 
 	int VisualId = 0;
 	glXGetFBConfigAttrib(Display, FramebufferConfigs[0], GLX_VISUAL_ID , &VisualId);
@@ -108,14 +114,13 @@ WindowT::WindowT(ApplicationT & Application) :
 
 	auto & Config = FramebufferConfigs[0];
 	mContext = glXCreateContextAttribsARB(Display, Config, 0, True, ContextAttribs);
-	XFree(FramebufferConfigs);
 	if (mContext == 0) throw std::runtime_error{"Unable to create OpenGL context"};
 
 	Gl::Context::initialize(Loader);
 
 	// XXX: port to libxcb
-	XStoreName(Display, mId, "OpenGL Window");
-	XSetWMProtocols(Display, mId, &mApplication.mDeleteWindowAtom, 1);
+	Atom DeleteWindowAtom = mApplication.mWmDeleteWindowAtom;
+	XSetWMProtocols(Display, mId, &DeleteWindowAtom, 1);
 	XSync(Display, False);
 
 	xcb_map_window(mApplication.mConnection, mId);
@@ -148,10 +153,10 @@ void WindowT::setFullscreen(bool isFullscreen)
 	xcb_client_message_event_t Message;
 	Message.response_type = XCB_CLIENT_MESSAGE;
 	Message.window = mId;
-	Message.type = mApplication.mStateAtom;
+	Message.type = mApplication.mNetWmStateAtom;
 	Message.format = 32;
 	Message.data.data32[0] = isFullscreen ? 1 : 0;
-	Message.data.data32[1] = mApplication.mStateFullscreenAtom;
+	Message.data.data32[1] = mApplication.mNetWmStateFullscreenAtom;
 	Message.data.data32[2] = 0;
 	auto Pointer = reinterpret_cast<char const *>(&Message);
 	xcb_send_event(mApplication.mConnection, 0, mId, XCB_EVENT_MASK_STRUCTURE_NOTIFY, Pointer);
@@ -178,9 +183,11 @@ void WindowT::resize(unsigned short Width, unsigned short Height)
 
 void WindowT::setTitle(char const * String)
 {
-	// XXX: port to use libxcb
-	auto Display = static_cast< ::Display *>(mApplication.mDisplay);
-	XStoreName(Display, mId, String);
+	xcb_change_property(
+		mApplication.mConnection, XCB_PROP_MODE_REPLACE, mId, mApplication.mWmNameAtom,
+		mApplication.mStringAtom, 8, strlen(String), String
+	);
+	xcb_flush(mApplication.mConnection);
 }
 
 }
