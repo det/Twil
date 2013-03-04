@@ -28,22 +28,23 @@ set (CMAKE_EXE_LINKER_FLAGS_RELEASE "${linker_symbol}")
 set (CMAKE_CXX_FLAGS_RELWITHDEBINFO "${release} ${symbol} ${debug}")
 set (CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO "${linker_symbol}")
 
-set (fonts
-	Font/DejaVuSans.ttf
-	Font/DejaVuSans-Bold.ttf
-	Font/DejaVuSansMono.ttf
-)
-
 if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
-	find_package (X11 REQUIRED)
-
 	set (platform_sources
 		Linux/Platform/Key.cpp
+		Linux/Platform/Key.hpp
 		Linux/Platform/Application.cpp
+		Linux/Platform/Application.hpp
 		Linux/Platform/Glx.cpp
+		Linux/Platform/Glx.hpp
 		Linux/Platform/SymbolLoader.cpp
+		Linux/Platform/SymbolLoader.hpp
 		Linux/Platform/Window.cpp
+		Linux/Platform/Window.hpp
 	)
+
+	source_group(Platform FILES ${platform_sources})
+
+	find_package (X11 REQUIRED)
 
 	set (platform_search_path
 		Linux
@@ -60,58 +61,78 @@ else ()
 	message(FATAL_ERROR "Unsupported platform: ${CMAKE_SYSTEM_NAME}")
 endif ()
 
-set (sources
+set (attribute_sources
 	Attribute/Color1f.cpp
+	Attribute/Color1f.hpp
 	Attribute/Color4b.cpp
+	Attribute/Color4b.hpp
 	Attribute/Offset1i.cpp
+	Attribute/Offset1i.hpp
 	Attribute/Position2f.cpp
+	Attribute/Position2f.hpp
 	Attribute/Position2h.cpp
+	Attribute/Position2h.hpp
 	Attribute/Size2h.cpp
+	Attribute/Size2h.hpp
 	Attribute/Texcoord1f.cpp
+	Attribute/Texcoord1f.hpp
 	Attribute/Texcoord2h.cpp
-	Ft/Bitmap.cpp
-	Ft/Face.cpp
-	Ft/Library.cpp
-	Ft/Outline.cpp
-	Ft/Size.cpp
-	Ft/Stroker.cpp
-	Gl/Buffer.cpp
-	Gl/Context.cpp
-	Gl/Program.cpp
-	Gl/Shader.cpp
-	Gl/Texture.cpp
-	Gl/VertexArray.cpp
-	Loader/Png.cpp
-	Program/FillSolid.cpp
-	Program/OutlineGradient.cpp
-	Theme/Button.cpp
-	Theme/Drawable.cpp
-	Theme/Label.cpp
-	Theme/Manager.cpp
-	Theme/Settings.cpp
-	Theme/StreamArray.cpp
-	Theme/TextureArray.cpp
-	Ui/Application.cpp
-	Ui/Margin.cpp
-	Ui/Button.cpp
-	Ui/Event.cpp
-	Ui/Container.cpp
-	Ui/Centered.cpp
-	Ui/PartitionBox.cpp
-	Ui/KeyboardHandler.cpp
-	Ui/Label.cpp
-	Ui/MouseHandler.cpp
-	Ui/SplitBox.cpp
-	Ui/Tuple.cpp
-	Ui/WindowBase.cpp
-	Ui/Widget.cpp
-	Ui/Window.cpp
-	Vertex/FillSolid.cpp
-	Vertex/OutlineGradient.cpp
-	${platform_sources}
+	Attribute/Texcoord2h.hpp
 )
 
-set (shaders
+source_group(Attribute FILES ${attribute_sources})
+
+set (ft_sources
+	Ft/Bitmap.cpp
+	Ft/Bitmap.hpp
+	Ft/Face.cpp
+	Ft/Face.hpp
+	Ft/Library.cpp
+	Ft/Library.hpp
+	Ft/Outline.cpp
+	Ft/Outline.hpp
+	Ft/Size.cpp
+	Ft/Size.hpp
+	Ft/Stroker.cpp
+	Ft/Stroker.hpp
+)
+
+source_group(Ft FILES ${ft_sources})
+
+set (gl_sources
+	Gl/Buffer.cpp
+	Gl/Buffer.hpp
+	Gl/Context.cpp
+	Gl/Context.hpp
+	Gl/Program.cpp
+	Gl/Program.hpp
+	Gl/Shader.cpp
+	Gl/Shader.hpp
+	Gl/Texture.cpp
+	Gl/Texture.hpp
+	Gl/VertexArray.cpp
+	Gl/VertexArray.hpp
+)
+
+source_group(Gl FILES ${gl_sources})
+
+set (loader_sources
+	Loader/Png.cpp
+	Loader/Png.hpp
+)
+
+source_group(Loader FILES ${loader_sources})
+
+set (program_sources
+	Program/FillSolid.cpp
+	Program/FillSolid.hpp
+	Program/OutlineGradient.cpp
+	Program/OutlineGradient.hpp
+)
+
+source_group(Program FILES ${program_sources})
+
+set (shader_sources
 	Shader/FillSolid.frag
 	Shader/FillSolid.geom
 	Shader/FillSolid.vert
@@ -120,10 +141,83 @@ set (shaders
 	Shader/OutlineGradient.vert
 )
 
+source_group(Shader FILES ${shader_sources})
+
+set (theme_sources
+	Theme/Button.cpp
+	Theme/Button.hpp
+	Theme/Drawable.cpp
+	Theme/Drawable.hpp
+	Theme/Label.cpp
+	Theme/Label.hpp
+	Theme/Manager.cpp
+	Theme/Manager.hpp
+	Theme/Settings.cpp
+	Theme/Settings.hpp
+	Theme/StreamArray.cpp
+	Theme/StreamArray.hpp
+	Theme/TextureArray.cpp
+	Theme/TextureArray.hpp
+)
+
+source_group(Theme FILES ${theme_sources})
+
+set (ui_sources
+	Ui/Application.cpp
+	Ui/Application.hpp
+	Ui/Margin.cpp
+	Ui/Margin.hpp
+	Ui/Button.cpp
+	Ui/Button.hpp
+	Ui/Event.cpp
+	Ui/Event.hpp
+	Ui/Container.cpp
+	Ui/Container.hpp
+	Ui/Centered.cpp
+	Ui/Centered.hpp
+	Ui/PartitionBox.cpp
+	Ui/PartitionBox.hpp
+	Ui/KeyboardHandler.cpp
+	Ui/KeyboardHandler.hpp
+	Ui/Label.cpp
+	Ui/Label.hpp
+	Ui/MouseHandler.cpp
+	Ui/MouseHandler.hpp
+	Ui/SplitBox.cpp
+	Ui/SplitBox.hpp
+	Ui/Tuple.cpp
+	Ui/Tuple.hpp
+	Ui/WindowBase.cpp
+	Ui/WindowBase.hpp
+	Ui/Widget.cpp
+	Ui/Widget.hpp
+	Ui/Window.cpp
+	Ui/Window.hpp
+)
+
+source_group(Ui FILES ${ui_sources})
+
+set (vertex_sources
+	Vertex/FillSolid.cpp
+	Vertex/FillSolid.hpp
+	Vertex/OutlineGradient.cpp
+	Vertex/OutlineGradient.hpp
+)
+
+source_group(Vertex FILES ${vertex_sources})
+
 add_executable (hello
 	Hello.cpp
-	${sources}
-	${shaders}
+	${attribute_sources}
+	${ft_sources}
+	${gl_sources}
+	${loader_sources}
+	${platform_sources}
+	${program_sources}
+	${shader_sources}
+	${theme_sources}
+	${ui_sources}
+	${vertex_sources}
 )
 
 find_package (Freetype REQUIRED)
@@ -146,5 +240,11 @@ target_link_libraries (hello
 	${PNG_LIBRARIES}
 )
 
+set (fonts
+        Font/DejaVuSans.ttf
+        Font/DejaVuSans-Bold.ttf
+        Font/DejaVuSansMono.ttf
+)
+
 install (FILES ${fonts} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Font)
-install (FILES ${shaders} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Shader)
+install (FILES ${shader_sources} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Shader)
