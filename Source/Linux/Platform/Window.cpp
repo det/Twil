@@ -118,10 +118,11 @@ WindowT::WindowT(ApplicationT & Application) :
 
 	Gl::Context::initialize(Loader);
 
-	// XXX: port to libxcb
-	Atom DeleteWindowAtom = mApplication.mWmDeleteWindowAtom;
-	XSetWMProtocols(Display, mId, &DeleteWindowAtom, 1);
-	XSync(Display, False);
+	xcb_atom_t AtomList[] = {mApplication.mWmDeleteWindowAtom};
+	xcb_change_property(
+		mApplication.mConnection, XCB_PROP_MODE_REPLACE, mId,
+		mApplication.mWmProtocolsAtom, mApplication.mAtomAtom, 32, 1, AtomList
+	);
 
 	xcb_map_window(mApplication.mConnection, mId);
 	makeCurrent();

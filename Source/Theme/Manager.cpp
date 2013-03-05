@@ -1,5 +1,7 @@
 #include "Manager.hpp"
 
+#include "Loader/Png.hpp"
+
 namespace Twil {
 namespace Theme {
 
@@ -7,8 +9,10 @@ ManagerT::ManagerT() :
 	mBitmap{mLibrary},
 	mOutline{mLibrary},
 	mStroker{mLibrary},
-	mLabelFace{mLibrary, "Font/DejaVuSans-Bold.ttf", 0},
-	mLabelSize{mLabelFace, 880}
+	mLabelFace{mLibrary, Settings::Label::Font, 0},
+	mLabelSize{mLabelFace, Settings::Label::Size},
+	mRedTexture{GL_R8},
+	mRgbaTexture{GL_RGBA8}
 {
 	// Default GL state
 	glEnable(GL_BLEND);
@@ -67,15 +71,15 @@ void ManagerT::generateButtonBitmaps()
 	mBitmap.resize(BitmapSize, BitmapSize);
 	mBitmap.render(mOutline);
 
-	mButtonCenterInside = mTexture.append(mBitmap.getSubRange(Pos3, Pos3, BorderSize, BorderSize));
-	mButtonBottomInside = mTexture.append(mBitmap.getSubRange(Pos3, Pos1, BorderSize, CornerSize));
-	mButtonTopInside = mTexture.append(mBitmap.getSubRange(Pos3, Pos4, BorderSize, CornerSize));
-	mButtonLeftInside = mTexture.append(mBitmap.getSubRange(Pos1, Pos3, CornerSize, BorderSize));
-	mButtonRightInside = mTexture.append(mBitmap.getSubRange(Pos4, Pos3, CornerSize, BorderSize));
-	mButtonSwInside = mTexture.append(mBitmap.getSubRange(Pos1, Pos1, CornerSize, CornerSize));
-	mButtonSeInside = mTexture.append(mBitmap.getSubRange(Pos4, Pos1, CornerSize, CornerSize));
-	mButtonNeInside = mTexture.append(mBitmap.getSubRange(Pos4, Pos4, CornerSize, CornerSize));
-	mButtonNwInside = mTexture.append(mBitmap.getSubRange(Pos1, Pos4, CornerSize, CornerSize));
+	mButtonCenterInside = mRedTexture.append(mBitmap.getSubRange(Pos3, Pos3, BorderSize, BorderSize));
+	mButtonBottomInside = mRedTexture.append(mBitmap.getSubRange(Pos3, Pos1, BorderSize, CornerSize));
+	mButtonTopInside = mRedTexture.append(mBitmap.getSubRange(Pos3, Pos4, BorderSize, CornerSize));
+	mButtonLeftInside = mRedTexture.append(mBitmap.getSubRange(Pos1, Pos3, CornerSize, BorderSize));
+	mButtonRightInside = mRedTexture.append(mBitmap.getSubRange(Pos4, Pos3, CornerSize, BorderSize));
+	mButtonSwInside = mRedTexture.append(mBitmap.getSubRange(Pos1, Pos1, CornerSize, CornerSize));
+	mButtonSeInside = mRedTexture.append(mBitmap.getSubRange(Pos4, Pos1, CornerSize, CornerSize));
+	mButtonNeInside = mRedTexture.append(mBitmap.getSubRange(Pos4, Pos4, CornerSize, CornerSize));
+	mButtonNwInside = mRedTexture.append(mBitmap.getSubRange(Pos1, Pos4, CornerSize, CornerSize));
 
 	// Outline
 	mStroker.setOptions(BorderSize * 64, FT_STROKER_LINECAP_ROUND, FT_STROKER_LINEJOIN_ROUND, 0);
@@ -84,15 +88,28 @@ void ManagerT::generateButtonBitmaps()
 	mOutline.append(mStroker, FT_STROKER_BORDER_LEFT);
 	mBitmap.render(mOutline);
 
-	mButtonCenterOutside = mTexture.append(mBitmap.getSubRange(Pos3, Pos3, BorderSize, BorderSize));
-	mButtonBottomOutside = mTexture.append(mBitmap.getSubRange(Pos3, Pos1, BorderSize, CornerSize));
-	mButtonTopOutside = mTexture.append(mBitmap.getSubRange(Pos3, Pos4, BorderSize, CornerSize));
-	mButtonLeftOutside = mTexture.append(mBitmap.getSubRange(Pos1, Pos3, CornerSize, BorderSize));
-	mButtonRightOutside = mTexture.append(mBitmap.getSubRange(Pos4, Pos3, CornerSize, BorderSize));
-	mButtonSwOutside = mTexture.append(mBitmap.getSubRange(Pos1, Pos1, CornerSize, CornerSize));
-	mButtonSeOutside = mTexture.append(mBitmap.getSubRange(Pos4, Pos1, CornerSize, CornerSize));
-	mButtonNeOutside = mTexture.append(mBitmap.getSubRange(Pos4, Pos4, CornerSize, CornerSize));
-	mButtonNwOutside = mTexture.append(mBitmap.getSubRange(Pos1, Pos4, CornerSize, CornerSize));
+	mButtonCenterOutside = mRedTexture.append(mBitmap.getSubRange(Pos3, Pos3, BorderSize, BorderSize));
+	mButtonBottomOutside = mRedTexture.append(mBitmap.getSubRange(Pos3, Pos1, BorderSize, CornerSize));
+	mButtonTopOutside = mRedTexture.append(mBitmap.getSubRange(Pos3, Pos4, BorderSize, CornerSize));
+	mButtonLeftOutside = mRedTexture.append(mBitmap.getSubRange(Pos1, Pos3, CornerSize, BorderSize));
+	mButtonRightOutside = mRedTexture.append(mBitmap.getSubRange(Pos4, Pos3, CornerSize, BorderSize));
+	mButtonSwOutside = mRedTexture.append(mBitmap.getSubRange(Pos1, Pos1, CornerSize, CornerSize));
+	mButtonSeOutside = mRedTexture.append(mBitmap.getSubRange(Pos4, Pos1, CornerSize, CornerSize));
+	mButtonNeOutside = mRedTexture.append(mBitmap.getSubRange(Pos4, Pos4, CornerSize, CornerSize));
+	mButtonNwOutside = mRedTexture.append(mBitmap.getSubRange(Pos1, Pos4, CornerSize, CornerSize));
+}
+
+BitmapEntryT const & ManagerT::loadBitmapEntry(char const * Path)
+{
+	auto Iter = mBitmapEntries.find(Path);
+	if (Iter != mBitmapEntries.end()) return Iter->second;
+
+	Loader::PngT Image{Path};
+	unsigned int Offset = mRgbaTexture.append(Image.begin(), Image.end()) / 4;
+
+	BitmapEntryT Entry{Offset, Image.getWidth(), Image.getHeight()};
+	auto Pair = mBitmapEntries.insert({Path, Entry});
+	return Pair.first->second;
 }
 
 GlyphEntryT const & ManagerT::loadGlyphEntry(Ft::FaceT & Face, char32_t Codepoint)
@@ -116,7 +133,7 @@ GlyphEntryT const & ManagerT::loadGlyphEntry(Ft::FaceT & Face, char32_t Codepoin
 
 	mBitmap.resize(Width, Height);
 	mBitmap.render(Face);
-	unsigned int Offset = mTexture.append(mBitmap.begin(), mBitmap.end());
+	unsigned int Offset = mRedTexture.append(mBitmap.begin(), mBitmap.end());
 
 	// Return entry
 	GlyphEntryT Entry{Bearings, Advance, Index, LsbDelta, RsbDelta, Offset, Width, Height};
@@ -128,9 +145,11 @@ void ManagerT::draw(unsigned short Width, unsigned short Height)
 {
 	if (Width == 0 || Height == 0) return;
 
-	mTexture.upload();
+	mRedTexture.upload();
+	mRgbaTexture.upload();
 	mSolidArray.update();
 	mOutlineArray.update();
+	mBitmapArray.update();
 
 	float ScalingX = 2.0 / Width;
 	float ScalingY = 2.0 / Height;
@@ -142,19 +161,30 @@ void ManagerT::draw(unsigned short Width, unsigned short Height)
 	glClearColor(Red, Green, Blue, Alpha);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	glBindTexture(GL_TEXTURE_BUFFER, mTexture);
+	glBindTexture(GL_TEXTURE_BUFFER, mRedTexture);
 
-	glUseProgram(mOutlineGradient);
-	mOutlineGradient.setScaling(ScalingX, ScalingY);
+	glUseProgram(mOutlineGradientProgram);
+	mOutlineGradientProgram.setScaling(ScalingX, ScalingY);
 	glBindVertexArray(mOutlineArray);
 	glDrawArrays(GL_POINTS, 0, mOutlineArray.getSize());
 	glBindVertexArray(0);
 	glUseProgram(0);
 
-	glUseProgram(mFillSolid);
-	mFillSolid.setScaling(ScalingX, ScalingY);
+	glUseProgram(mFillSolidProgram);
+	mFillSolidProgram.setScaling(ScalingX, ScalingY);
 	glBindVertexArray(mSolidArray);
 	glDrawArrays(GL_POINTS, 0, mSolidArray.getSize());
+	glBindVertexArray(0);
+	glUseProgram(0);
+
+	glBindTexture(GL_TEXTURE_BUFFER, 0);
+
+	glBindTexture(GL_TEXTURE_BUFFER, mRgbaTexture);
+
+	glUseProgram(mBitmapProgram);
+	mBitmapProgram.setScaling(ScalingX, ScalingY);
+	glBindVertexArray(mBitmapArray);
+	glDrawArrays(GL_POINTS, 0, mBitmapArray.getSize());
 	glBindVertexArray(0);
 	glUseProgram(0);
 

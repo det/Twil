@@ -147,17 +147,17 @@ void ButtonT::draw(Vertex::OutlineGradientT * Vertices) const
 	Attribute::Color4bT MiddleTopColor;
 	Attribute::Color4bT BottomColor;
 
-	if (mIsDown) {
-		TopColor = Settings::Button::TopDownColor;
-		BottomColor = Settings::Button::BottomDownColor;
-	}
-	else {
-		TopColor = Settings::Button::TopUpColor;
-		BottomColor = Settings::Button::BottomUpColor;
-	}
-
 	// Avoid divide by 0, the colors dont matter for 0 size rectangles
 	if (Height != 0) {
+		if (mIsDown) {
+			TopColor = Settings::Button::TopDownColor;
+			BottomColor = Settings::Button::BottomDownColor;
+		}
+		else {
+			TopColor = Settings::Button::TopUpColor;
+			BottomColor = Settings::Button::BottomUpColor;
+		}
+
 		MiddleBottomColor = mix(TopColor, BottomColor, (ClipMiddleBottom - Bottom) * 65535 / Height);
 		MiddleTopColor = mix(TopColor, BottomColor, (ClipMiddleTop - Bottom) * 65535 / Height);
 	}

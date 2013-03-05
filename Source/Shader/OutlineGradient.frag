@@ -2,7 +2,7 @@
 
 uniform samplerBuffer Texture;
 
-in FragmentData
+in FragmentT
 {
 	flat vec4 BorderColor;
 	flat int Pitch;

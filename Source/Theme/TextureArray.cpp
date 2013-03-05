@@ -5,6 +5,10 @@
 namespace Twil {
 namespace Theme {
 
+TextureArrayT::TextureArrayT(GLenum Format) :
+	mFormat{Format}
+{}
+
 TextureArrayT::operator GLuint()
 {
 	return mTexture;
@@ -24,7 +28,7 @@ void TextureArrayT::upload()
 		auto DataPointer = static_cast<GLubyte *>(BufferPointer);
 		std::copy(mBytes.begin(), mBytes.end(), DataPointer);
 		glUnmapBuffer(GL_TEXTURE_BUFFER);
-		glTexBuffer(GL_TEXTURE_BUFFER, GL_R8, mBuffer);
+		glTexBuffer(GL_TEXTURE_BUFFER, mFormat, mBuffer);
 		glBindBuffer(GL_TEXTURE_BUFFER, 0);
 		glBindTexture(GL_TEXTURE_BUFFER, 0);
 	}

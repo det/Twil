@@ -128,6 +128,8 @@ set (loader_sources
 source_group(Loader FILES ${loader_sources})
 
 set (program_sources
+	Program/Bitmap.cpp
+	Program/Bitmap.hpp
 	Program/FillSolid.cpp
 	Program/FillSolid.hpp
 	Program/OutlineGradient.cpp
@@ -137,6 +139,9 @@ set (program_sources
 source_group(Program FILES ${program_sources})
 
 set (shader_sources
+	Shader/Bitmap.frag
+	Shader/Bitmap.geom
+	Shader/Bitmap.vert
 	Shader/FillSolid.frag
 	Shader/FillSolid.geom
 	Shader/FillSolid.vert
@@ -152,6 +157,8 @@ set (theme_sources
 	Theme/Button.hpp
 	Theme/Drawable.cpp
 	Theme/Drawable.hpp
+	Theme/Image.cpp
+	Theme/Image.hpp
 	Theme/Label.cpp
 	Theme/Label.hpp
 	Theme/Manager.cpp
@@ -179,14 +186,14 @@ set (ui_sources
 	Ui/Container.hpp
 	Ui/Centered.cpp
 	Ui/Centered.hpp
-	Ui/PartitionBox.cpp
-	Ui/PartitionBox.hpp
-	Ui/KeyboardHandler.cpp
-	Ui/KeyboardHandler.hpp
+	Ui/Image.cpp
+	Ui/Image.hpp
 	Ui/Label.cpp
 	Ui/Label.hpp
 	Ui/MouseHandler.cpp
 	Ui/MouseHandler.hpp
+	Ui/PartitionBox.cpp
+	Ui/PartitionBox.hpp
 	Ui/SplitBox.cpp
 	Ui/SplitBox.hpp
 	Ui/Tuple.cpp
@@ -202,6 +209,8 @@ set (ui_sources
 source_group(Ui FILES ${ui_sources})
 
 set (vertex_sources
+	Vertex/Bitmap.cpp
+	Vertex/Bitmap.hpp
 	Vertex/FillSolid.cpp
 	Vertex/FillSolid.hpp
 	Vertex/OutlineGradient.cpp

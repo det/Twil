@@ -9,10 +9,12 @@
 #include "Ft/Outline.hpp"
 #include "Ft/Stroker.hpp"
 #include "Ft/Size.hpp"
+#include "Program/Bitmap.hpp"
 #include "Program/FillSolid.hpp"
 #include "Program/OutlineGradient.hpp"
 #include "Gl/Context.hpp"
 #include "Gl/VertexArray.hpp"
+#include "Vertex/Bitmap.hpp"
 #include "Vertex/FillSolid.hpp"
 #include "Vertex/OutlineGradient.hpp"
 
@@ -26,7 +28,7 @@ class ButtonT;
 class LabelT;
 class Window;
 
-/// \brief Represents a loaded Unicode glyph.
+/// \brief Represents a loaded unicode glyph.
 struct GlyphEntryT
 {
 	FT_Vector Bearings;
@@ -39,10 +41,19 @@ struct GlyphEntryT
 	unsigned short Height;
 };
 
+/// \brief Represents a loaded bitmap.
+struct BitmapEntryT
+{
+	unsigned int Offset;
+	unsigned short Width;
+	unsigned short Height;
+};
+
 /// \brief Manages all rendering for the theme.
 class ManagerT
 {
 	friend class ButtonT;
+	friend class ImageT;
 	friend class LabelT;
 
 	private:
@@ -53,13 +64,17 @@ class ManagerT
 	Ft::FaceT mLabelFace;
 	Ft::SizeT mLabelSize;
 
-	TextureArrayT mTexture;
+	TextureArrayT mRedTexture;
+	TextureArrayT mRgbaTexture;
+	StreamArrayT<Vertex::BitmapT> mBitmapArray;
 	StreamArrayT<Vertex::FillSolidT> mSolidArray;
 	StreamArrayT<Vertex::OutlineGradientT> mOutlineArray;
 
-	Program::FillSolidT mFillSolid;
-	Program::OutlineGradientT mOutlineGradient;
+	Program::BitmapT mBitmapProgram;
+	Program::FillSolidT mFillSolidProgram;
+	Program::OutlineGradientT mOutlineGradientProgram;
 
+	std::unordered_map<std::string, BitmapEntryT> mBitmapEntries;
 	std::unordered_map<char32_t, GlyphEntryT> mFontEntries;
 
 	// Button offsets
@@ -82,17 +97,17 @@ class ManagerT
 	GLuint mButtonNeOutside;
 	GLuint mButtonNwOutside;
 
+	BitmapEntryT const & loadBitmapEntry(char const *);
 	GlyphEntryT const & loadGlyphEntry(Ft::FaceT &, char32_t);
 	void generateButtonBitmaps();
 
 	public:	
 	ManagerT();
 
-	void draw(unsigned short Width, unsigned short Height);
-
 	/// \brief Draw the GUI.
 	///
 	/// All Theme objects must queue their vertex data each time before this is called.
+	void draw(unsigned short Width, unsigned short Height);
 };
 
 }

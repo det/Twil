@@ -25,11 +25,13 @@ class ApplicationT
 	// with all kinds of generically named macros such as "None"
 	void * mDisplay;
 
+	xcb_atom_t mAtomAtom;
 	xcb_atom_t mNetWmStateAtom;
 	xcb_atom_t mNetWmStateFullscreenAtom;
 	xcb_atom_t mStringAtom;
 	xcb_atom_t mWmDeleteWindowAtom;
 	xcb_atom_t mWmNameAtom;
+	xcb_atom_t mWmProtocolsAtom;
 
 	bool mRunning;
 

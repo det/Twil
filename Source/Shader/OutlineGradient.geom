@@ -3,7 +3,7 @@
 layout(points) in;
 layout(triangle_strip, max_vertices=4) out;
 
-in GeometryData
+in GeometryT
 {
 	flat vec4 BorderColor;
 	flat vec4 BottomColor;
@@ -17,7 +17,7 @@ in GeometryData
 	flat int OutsideIndex;
 } Geometry[];
 
-out FragmentData
+out FragmentT
 {
 	flat vec4 BorderColor;
 	flat int Pitch;

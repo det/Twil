@@ -13,7 +13,7 @@ layout(location = 7) in ivec2 TextureSize;
 layout(location = 8) in int InsideIndex;
 layout(location = 9) in int OutsideIndex;
 
-out GeometryData
+out GeometryT
 {
 	flat vec4 BorderColor;
 	flat vec4 BottomColor;

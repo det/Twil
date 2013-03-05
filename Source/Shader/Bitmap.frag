@@ -4,7 +4,6 @@ uniform samplerBuffer Texture;
 
 in FragmentT
 {
-	flat vec4 Color;
 	flat int Pitch;
 	flat int Offset;
 	smooth vec2 Texcoord;
@@ -16,8 +15,7 @@ void main (void)
 {
 	int S = int(Fragment.Texcoord.s);
 	int T = int(Fragment.Texcoord.t);
-	float Red = texelFetch(Texture, Fragment.Offset + S + T * Fragment.Pitch).r;
-	Color = Fragment.Color * vec4(Red);
+	Color = texelFetch(Texture, Fragment.Offset + S + T * Fragment.Pitch);
 }
 
 

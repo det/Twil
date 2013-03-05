@@ -2,7 +2,6 @@
 
 #include "Gl/Context.hpp"
 
-#include <png.h>
 #include <string>
 
 namespace Twil {
@@ -11,12 +10,18 @@ namespace Loader {
 class PngT
 {
 	private:
-	GLuint mId;
+	GLubyte * mBytes;
+	unsigned short mWidth;
+	unsigned short mHeight;
 
 	public:
-	void Load(char const *);
+	PngT(char const *);
+	~PngT();
 
-	void Bind() const;
+	unsigned short getWidth();
+	unsigned short getHeight();
+	GLubyte * begin();
+	GLubyte * end();
 };
 
 }

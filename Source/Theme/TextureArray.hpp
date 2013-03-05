@@ -22,9 +22,10 @@ class TextureArrayT
 	std::vector<GLubyte> mBytes;
 	std::size_t mSize = 0;
 	std::size_t mCapacity = 0;
+	GLenum mFormat;
 
 	public:
-	TextureArrayT() = default;
+	TextureArrayT(GLenum);
 
 	/// \brief Implicit conversion operator so it can be used in gl* functions.
 	operator GLuint();

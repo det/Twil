@@ -25,12 +25,18 @@ ApplicationT::ApplicationT() :
 	XSetEventQueueOwner(Display, XCBOwnsEventQueue);
 
 	// Load atoms
+	auto AtomCookie = xcb_intern_atom(mConnection, 0, 4, "ATOM");
 	auto NetWmStateCookie = xcb_intern_atom(mConnection, 0, 13, "_NET_WM_STATE");
 	auto NetWmStateFullscreenCookie = xcb_intern_atom(mConnection, 0, 24, "_NET_WM_STATE_FULLSCREEN");
 	auto StringCookie = xcb_intern_atom(mConnection, 0, 6, "STRING");
 	auto WmDeleteWindowCookie = xcb_intern_atom(mConnection, 0, 16, "WM_DELETE_WINDOW");
 	auto WmNameCookie = xcb_intern_atom(mConnection, 0, 7, "WM_NAME");
+	auto WmProtocolsCookie = xcb_intern_atom(mConnection, 0, 12, "WM_PROTOCOLS");
 
+
+	std::unique_ptr<xcb_intern_atom_reply_t, FreeDeleterT> AtomReply{
+		xcb_intern_atom_reply(mConnection, AtomCookie, nullptr)
+	};
 	std::unique_ptr<xcb_intern_atom_reply_t, FreeDeleterT> NetWmStateReply{
 		xcb_intern_atom_reply(mConnection, NetWmStateCookie, nullptr)
 	};
@@ -46,12 +52,17 @@ ApplicationT::ApplicationT() :
 	std::unique_ptr<xcb_intern_atom_reply_t, FreeDeleterT> WmNameReply{
 		xcb_intern_atom_reply(mConnection, WmNameCookie, nullptr)
 	};
+	std::unique_ptr<xcb_intern_atom_reply_t, FreeDeleterT> WmProtocolsReply{
+		xcb_intern_atom_reply(mConnection, WmProtocolsCookie, nullptr)
+	};
 
+	mAtomAtom = AtomReply->atom;
 	mNetWmStateAtom = NetWmStateReply->atom;
 	mNetWmStateFullscreenAtom = NetWmStateFullscreenReply->atom;
 	mStringAtom = StringReply->atom;
 	mWmDeleteWindowAtom = WmDeleteWindowReply->atom;
 	mWmNameAtom = WmNameReply->atom;
+	mWmProtocolsAtom = WmProtocolsReply->atom;
 }
 
 ApplicationT::~ApplicationT()

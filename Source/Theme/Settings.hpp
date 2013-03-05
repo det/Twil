@@ -24,6 +24,13 @@ signed short const BaseHeightMargin = 12;
 
 }
 
+namespace Label {
+
+char const * const Font{"Font/DejaVuSans-Bold.ttf"};
+unsigned const Size = 880;
+
+}
+
 namespace Window {
 
 Attribute::Color4bT const BackgroundColor{230, 229, 228, 255};
