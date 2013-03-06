@@ -1,11 +1,10 @@
 #include "Program.hpp"
 
 #include "Shader.hpp"
+#include "Data/UniqueArray.hpp"
 
 #include <iostream>
 #include <stdexcept>
-#include <string>
-#include <vector>
 
 namespace Twil {
 namespace Gl {
@@ -38,7 +37,7 @@ void ProgramT::link()
 	if (!IsLinked) {
 		GLint LogLength = 0;
 		glGetProgramiv(mId, GL_INFO_LOG_LENGTH , &LogLength);
-		std::vector<GLchar> Log(LogLength);
+		auto Log = Data::makeArray<GLchar>(LogLength);
 		glGetProgramInfoLog(mId, LogLength, &LogLength, Log.data());
 		std::cout << Log.data();
 		throw std::runtime_error{"Program link error"};

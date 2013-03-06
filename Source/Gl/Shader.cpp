@@ -1,12 +1,11 @@
 #include "Shader.hpp"
 
 #include "Context.hpp"
+#include "Data/UniqueArray.hpp"
 
 #include <fstream>
 #include <iostream>
 #include <stdexcept>
-#include <string>
-#include <vector>
 
 namespace Twil {
 namespace Gl {
@@ -36,11 +35,11 @@ void ShaderT::loadFile(char const * Path)
 	if (Pos < 0) throw std::runtime_error{"Unable to read shader"};
 	auto Length = static_cast<std::size_t>(Pos);
 	File.seekg(0, std::ios_base::beg);
-	std::vector<GLchar> Data(Length);
-	File.read(Data.data(), Pos);
+	auto Buffer = Data::makeArray<GLchar>(Length);
+	File.read(Buffer.data(), Pos);
 	File.close();
 
-	GLchar const * Sources = Data.data();
+	GLchar const * Sources = Buffer.data();
 	GLint const Lengths = Length;
 	glShaderSource(mId, 1, &Sources, &Lengths);
 }
@@ -55,7 +54,7 @@ void ShaderT::compile()
 		GLint LogLength = 0;
 		glGetShaderiv(mId, GL_INFO_LOG_LENGTH , &LogLength);
 		if (LogLength < 1) throw std::runtime_error{"Shader compile error, unable to retrieve log"};
-		std::vector<GLchar> Log(static_cast<std::size_t>(LogLength), '\0');
+		auto Log = Data::makeArray<GLchar>(LogLength);
 		glGetShaderInfoLog(mId, LogLength, &LogLength, Log.data());
 		std::cout << Log.data();
 		throw std::runtime_error{"Shader compile error"};

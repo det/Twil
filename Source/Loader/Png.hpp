@@ -1,5 +1,6 @@
 #pragma once
 
+#include "Data/UniqueArray.hpp"
 #include "Gl/Context.hpp"
 
 #include <string>
@@ -10,13 +11,12 @@ namespace Loader {
 class PngT
 {
 	private:
-	GLubyte * mBytes;
+	Data::UniqueArrayT<GLubyte> mBytes;
 	unsigned short mWidth;
 	unsigned short mHeight;
 
 	public:
 	PngT(char const *);
-	~PngT();
 
 	unsigned short getWidth();
 	unsigned short getHeight();

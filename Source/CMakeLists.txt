@@ -85,6 +85,8 @@ source_group(Attribute FILES ${attribute_sources})
 set (data_sources
 	Data/FreeDeleter.cpp
 	Data/FreeDeleter.hpp
+	Data/UniqueArray.cpp
+	Data/UniqueArray.hpp
 )
 source_group(Data FILES ${data_sources})
 

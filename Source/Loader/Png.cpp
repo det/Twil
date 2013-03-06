@@ -1,5 +1,7 @@
 #include "Png.hpp"
 
+#include "Data/UniqueArray.hpp"
+
 #include <fstream>
 #include <stdexcept>
 
@@ -7,7 +9,7 @@
 
 namespace {
 
-// Exception safety structs to always release resources
+// Make sure we release our resources on an exception
 
 struct PngPointersT
 {
@@ -17,16 +19,6 @@ struct PngPointersT
 	~PngPointersT()
 	{
 		png_destroy_read_struct(&Png, &Info, nullptr);
-	}
-};
-
-struct RowPointersT
-{
-	png_bytep * Pointers = nullptr;
-
-	~RowPointersT()
-	{
-		delete[] Pointers;
 	}
 };
 
@@ -62,10 +54,10 @@ PngT::PngT(char const * Path) :
 	if (!png_check_sig(Magic, sizeof(Magic))) throw std::runtime_error{"PNG load error"};
 
 	PngPointersT Pointers;
-	Pointers.Png = png_create_read_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
-	if (!Pointers.Png) throw std::runtime_error{"PNG load error"};
+	Pointers.Png = png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
+	if (Pointers.Png == nullptr) throw std::runtime_error{"PNG load error"};
 	Pointers.Info = png_create_info_struct(Pointers.Png);
-	if (!Pointers.Info) throw std::runtime_error{"PNG load error"};
+	if (Pointers.Info == nullptr) throw std::runtime_error{"PNG load error"};
 
 	png_set_read_fn(Pointers.Png, &File, readPngData);
 	png_set_error_fn(Pointers.Png, nullptr, throwPngError, nullptr);
@@ -121,21 +113,15 @@ PngT::PngT(char const * Path) :
 	mHeight = Height;
 
 	// Setup a pointer array.  Each one points at the begening of a row
-	RowPointersT Rows;
-	mBytes = new GLubyte[Width * Height * 4];
-	Rows.Pointers = new png_bytep[Height];
+	mBytes = Data::makeArray<GLubyte>(Width * Height * 4);
+	auto Rows = Data::makeArray<png_bytep>(Height);
 	for (std::size_t I = 0; I < Height; ++I) {
-		Rows.Pointers[I] = mBytes + ((Height - (I + 1)) * Width * 4);
+		Rows[I] = mBytes.data() + ((Height - (I + 1)) * Width * 4);
 	}
 
 	// Read pixel data using row pointers
-	png_read_image(Pointers.Png, Rows.Pointers);
+	png_read_image(Pointers.Png, Rows.data());
 	png_read_end(Pointers.Png, nullptr);
-}
-
-PngT::~PngT()
-{
-	delete[] mBytes;
 }
 
 unsigned short PngT::getWidth()
@@ -150,12 +136,12 @@ unsigned short PngT::getHeight()
 
 GLubyte * PngT::begin()
 {
-	return mBytes;
+	return mBytes.data();
 }
 
 GLubyte * PngT::end()
 {
-	return mBytes + mWidth * mHeight * 4;
+	return mBytes.data() + mWidth * mHeight * 4;
 }
 
 }
