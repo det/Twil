@@ -25,16 +25,17 @@ class ButtonT :
 	WindowBaseT & mWindow;
 	Theme::ButtonT mThemeButton;
 	T mChild;
-	signed short mMouseLeft = 0;
-	signed short mMouseRight = 0;
-	signed short mMouseBottom = 0;
-	signed short mMouseTop = 0;
 	bool mIsPressed;
 	bool mHasMouse;
 
 	bool checkThisContains(signed short X, signed short Y)
 	{
-		return X >= getLeft() && X <= getRight() && Y >= getBottom() && Y <= getTop();
+		return (
+			X >= getLeft() && X >= getClipLeft() &&
+			X <= getRight() && X <= getClipRight() &&
+			Y >= getBottom() && Y >= getClipBottom() &&
+			Y <= getTop() && Y <= getClipTop()
+		);
 	}
 
 	public:
@@ -138,6 +139,26 @@ class ButtonT :
 	signed short getTop() const
 	{
 		return mThemeButton.getTop();
+	}
+
+	signed short getClipLeft() const
+	{
+		return mThemeButton.getClipLeft();
+	}
+
+	signed short getClipBottom() const
+	{
+		return mThemeButton.getClipBottom();
+	}
+
+	signed short getClipRight() const
+	{
+		return mThemeButton.getClipRight();
+	}
+
+	signed short getClipTop() const
+	{
+		return mThemeButton.getClipTop();
 	}
 
 	signed short getBaseWidth() const

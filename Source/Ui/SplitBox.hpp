@@ -16,18 +16,35 @@ class SplitBoxBaseT :
 	ContainerT & mParent;
 	FirstT mFirst;
 	SecondT mSecond;
-	signed short mLeft = 0;
-	signed short mBottom = 0;
-	signed short mRight = 0;
-	signed short mTop = 0;
-	signed short mClipLeft = 0;
-	signed short mClipRight = 0;
-	signed short mClipBottom = 0;
-	signed short mClipTop = 0;
 
-	bool checkThisContains(signed short X, signed short Y)
+	signed short getMouseLeft() const
 	{
-		return X >= mLeft && X <= mRight && Y >= mBottom && Y <= mTop;
+		return std::max<signed short>(getLeft(), getClipLeft());
+	}
+
+	signed short getMouseRight() const
+	{
+		return std::min<signed short>(getRight(), getClipRight());
+	}
+
+	signed short getMouseBottom() const
+	{
+		return std::max<signed short>(getBottom(), getClipBottom());
+	}
+
+	signed short getMouseTop() const
+	{
+		return std::min<signed short>(getTop(), getClipTop());
+	}
+
+	bool checkThisContains(signed short X, signed short Y) const
+	{
+		return (
+			X >= getMouseLeft() && X >= getClipLeft() &&
+			X <= getMouseRight() && X <= getClipRight() &&
+			Y >= getMouseBottom() && Y >= getClipBottom() &&
+			Y <= getMouseTop() && Y <= getClipTop()
+		);
 	}
 
 	public:
@@ -65,42 +82,54 @@ class SplitBoxBaseT :
 	// Widget
 	void moveX(signed short X)
 	{
-		mLeft += X;
-		mRight += X;
-		mClipLeft += X;
-		mClipRight += X;
 		mFirst.moveX(X);
 		mSecond.moveX(X);
 	}
 
 	void moveY(signed short Y)
 	{
-		mBottom += Y;
-		mTop += Y;
-		mClipBottom += Y;
-		mClipTop += Y;
 		mFirst.moveY(Y);
 		mSecond.moveY(Y);
 	}
 
 	signed short getLeft() const
 	{
-		return mLeft;
+		return mFirst.getLeft();
 	}
 
 	signed short getBottom() const
 	{
-		return mBottom;
+		return mFirst.getBottom();
 	}
 
 	signed short getRight() const
 	{
-		return mRight;
+		return mSecond.getRight();
 	}
 
 	signed short getTop() const
 	{
-		return mTop;
+		return mSecond.getTop();
+	}
+
+	signed short getClipLeft() const
+	{
+		return mFirst.getClipLeft();
+	}
+
+	signed short getClipBottom() const
+	{
+		return mFirst.getClipBottom();
+	}
+
+	signed short getClipRight() const
+	{
+		return mSecond.getClipRight();
+	}
+
+	signed short getClipTop() const
+	{
+		return mSecond.getClipTop();
 	}
 };
 
@@ -113,14 +142,6 @@ class SplitBoxHorizontalT :
 	using SplitBoxBaseT<FirstT, SecondT>::mParent;
 	using SplitBoxBaseT<FirstT, SecondT>::mFirst;
 	using SplitBoxBaseT<FirstT, SecondT>::mSecond;
-	using SplitBoxBaseT<FirstT, SecondT>::mLeft;
-	using SplitBoxBaseT<FirstT, SecondT>::mBottom;
-	using SplitBoxBaseT<FirstT, SecondT>::mRight;
-	using SplitBoxBaseT<FirstT, SecondT>::mTop;
-	using SplitBoxBaseT<FirstT, SecondT>::mClipLeft;
-	using SplitBoxBaseT<FirstT, SecondT>::mClipRight;
-	using SplitBoxBaseT<FirstT, SecondT>::mClipBottom;
-	using SplitBoxBaseT<FirstT, SecondT>::mClipTop;
 	using SplitBoxBaseT<FirstT, SecondT>::checkThisContains;
 
 	public:
@@ -132,8 +153,6 @@ class SplitBoxHorizontalT :
 	// Widget
 	void resizeHeight(signed short Y)
 	{
-		mTop += Y;
-		mClipTop += Y;
 		mFirst.resizeHeight(Y);
 		mSecond.resizeHeight(Y);
 	}
@@ -174,7 +193,9 @@ class SplitBoxHorizontalT :
 	}
 
 	void handleChildBaseHeightChanged(void *) final
-	{}
+	{
+		mParent.handleChildBaseHeightChanged(this);
+	}
 };
 
 /// \brief Functionality shared by all vertical split boxes.
@@ -186,14 +207,6 @@ class SplitBoxVerticalT :
 	using SplitBoxBaseT<FirstT, SecondT>::mParent;
 	using SplitBoxBaseT<FirstT, SecondT>::mFirst;
 	using SplitBoxBaseT<FirstT, SecondT>::mSecond;
-	using SplitBoxBaseT<FirstT, SecondT>::mLeft;
-	using SplitBoxBaseT<FirstT, SecondT>::mBottom;
-	using SplitBoxBaseT<FirstT, SecondT>::mRight;
-	using SplitBoxBaseT<FirstT, SecondT>::mTop;
-	using SplitBoxBaseT<FirstT, SecondT>::mClipLeft;
-	using SplitBoxBaseT<FirstT, SecondT>::mClipRight;
-	using SplitBoxBaseT<FirstT, SecondT>::mClipBottom;
-	using SplitBoxBaseT<FirstT, SecondT>::mClipTop;
 	using SplitBoxBaseT<FirstT, SecondT>::checkThisContains;
 
 	public:
@@ -205,8 +218,6 @@ class SplitBoxVerticalT :
 	// Widget
 	void resizeWidth(signed short X)
 	{
-		mRight += X;
-		mClipRight += X;
 		mFirst.resizeWidth(X);
 		mSecond.resizeWidth(X);
 	}
@@ -247,7 +258,9 @@ class SplitBoxVerticalT :
 	}
 
 	void handleChildBaseWidthChanged(void *) final
-	{}
+	{
+		mParent.handleChildBaseWidthChanged(this);
+	}
 };
 
 template<bool IsHorizontal, bool IsFirstStatic, typename FirstT, typename SecondT>
@@ -262,18 +275,11 @@ template<typename FirstT, typename SecondT>
 class SplitBoxT<true, true, FirstT, SecondT> :
 	public SplitBoxHorizontalT<FirstT, SecondT>
 {
-	private:
+	protected:
 	using SplitBoxBaseT<FirstT, SecondT>::mParent;
 	using SplitBoxBaseT<FirstT, SecondT>::mFirst;
 	using SplitBoxBaseT<FirstT, SecondT>::mSecond;
-	using SplitBoxBaseT<FirstT, SecondT>::mLeft;
-	using SplitBoxBaseT<FirstT, SecondT>::mBottom;
-	using SplitBoxBaseT<FirstT, SecondT>::mRight;
-	using SplitBoxBaseT<FirstT, SecondT>::mTop;
-	using SplitBoxBaseT<FirstT, SecondT>::mClipLeft;
-	using SplitBoxBaseT<FirstT, SecondT>::mClipRight;
-	using SplitBoxBaseT<FirstT, SecondT>::mClipBottom;
-	using SplitBoxBaseT<FirstT, SecondT>::mClipTop;
+	using SplitBoxBaseT<FirstT, SecondT>::getMouseRight;
 
 	void layout()
 	{
@@ -281,7 +287,7 @@ class SplitBoxT<true, true, FirstT, SecondT> :
 		mFirst.resizeWidth(Delta);
 		mSecond.moveX(Delta);
 		mSecond.resizeWidth(-Delta);
-		mFirst.setClipRight(std::min(mRight, mClipRight));
+		mFirst.setClipRight(getMouseRight());
 	}
 
 	public:
@@ -295,10 +301,8 @@ class SplitBoxT<true, true, FirstT, SecondT> :
 	// Widget
 	void resizeWidth(signed short X)
 	{
-		mRight += X;
-		mClipRight += X;
 		mSecond.resizeWidth(X);
-		mFirst.setClipRight(std::min(mRight, mClipRight));
+		mFirst.setClipRight(getMouseRight());
 	}
 
 	void setClipLeft(signed short X)
@@ -309,7 +313,7 @@ class SplitBoxT<true, true, FirstT, SecondT> :
 
 	void setClipRight(signed short X)
 	{
-		mFirst.setClipRight(std::min(mRight, mClipRight));
+		mFirst.setClipRight(getMouseRight());
 		mSecond.setClipRight(X);
 	}
 
@@ -317,6 +321,7 @@ class SplitBoxT<true, true, FirstT, SecondT> :
 	void handleChildBaseWidthChanged(void * Child) final
 	{
 		if (Child == &mFirst) layout();
+		mParent.handleChildBaseWidthChanged(this);
 	}
 };
 
@@ -330,18 +335,11 @@ template<typename FirstT, typename SecondT>
 class SplitBoxT<true, false, FirstT, SecondT> :
 	public SplitBoxHorizontalT<FirstT, SecondT>
 {
-	private:
+	protected:
 	using SplitBoxBaseT<FirstT, SecondT>::mParent;
 	using SplitBoxBaseT<FirstT, SecondT>::mFirst;
 	using SplitBoxBaseT<FirstT, SecondT>::mSecond;
-	using SplitBoxBaseT<FirstT, SecondT>::mLeft;
-	using SplitBoxBaseT<FirstT, SecondT>::mBottom;
-	using SplitBoxBaseT<FirstT, SecondT>::mRight;
-	using SplitBoxBaseT<FirstT, SecondT>::mTop;
-	using SplitBoxBaseT<FirstT, SecondT>::mClipLeft;
-	using SplitBoxBaseT<FirstT, SecondT>::mClipRight;
-	using SplitBoxBaseT<FirstT, SecondT>::mClipBottom;
-	using SplitBoxBaseT<FirstT, SecondT>::mClipTop;
+	using SplitBoxBaseT<FirstT, SecondT>::getMouseLeft;
 
 	void layout()
 	{
@@ -349,7 +347,7 @@ class SplitBoxT<true, false, FirstT, SecondT> :
 		mFirst.resizeWidth(-Delta);
 		mSecond.moveX(-Delta);
 		mSecond.resizeWidth(Delta);
-		mSecond.setClipLeft(std::max(mLeft, mClipLeft));
+		mSecond.setClipLeft(getMouseLeft());
 	}
 
 	public:
@@ -363,17 +361,15 @@ class SplitBoxT<true, false, FirstT, SecondT> :
 	// Widget
 	void resizeWidth(signed short X)
 	{
-		mRight += X;
-		mClipRight += X;
 		mFirst.resizeWidth(X);
 		mSecond.moveX(X);
-		mSecond.setClipLeft(std::max(mLeft, mClipLeft));
+		mSecond.setClipLeft(getMouseLeft());
 	}
 
 	void setClipLeft(signed short X)
 	{
 		mFirst.setClipLeft(X);
-		mSecond.setClipLeft(std::max(mLeft, mClipLeft));
+		mSecond.setClipLeft(getMouseLeft());
 	}
 
 	void setClipRight(signed short X)
@@ -386,6 +382,7 @@ class SplitBoxT<true, false, FirstT, SecondT> :
 	void handleChildBaseWidthChanged(void * Child) final
 	{
 		if (Child == &mSecond) layout();
+		mParent.handleChildBaseWidthChanged(this);
 	}
 };
 
@@ -399,18 +396,11 @@ template<typename FirstT, typename SecondT>
 class SplitBoxT<false, true, FirstT, SecondT> :
 	public SplitBoxVerticalT<FirstT, SecondT>
 {
-	private:
+	protected:
 	using SplitBoxBaseT<FirstT, SecondT>::mParent;
 	using SplitBoxBaseT<FirstT, SecondT>::mFirst;
 	using SplitBoxBaseT<FirstT, SecondT>::mSecond;
-	using SplitBoxBaseT<FirstT, SecondT>::mLeft;
-	using SplitBoxBaseT<FirstT, SecondT>::mBottom;
-	using SplitBoxBaseT<FirstT, SecondT>::mRight;
-	using SplitBoxBaseT<FirstT, SecondT>::mTop;
-	using SplitBoxBaseT<FirstT, SecondT>::mClipLeft;
-	using SplitBoxBaseT<FirstT, SecondT>::mClipRight;
-	using SplitBoxBaseT<FirstT, SecondT>::mClipBottom;
-	using SplitBoxBaseT<FirstT, SecondT>::mClipTop;
+	using SplitBoxBaseT<FirstT, SecondT>::getMouseTop;
 
 	void layout()
 	{
@@ -418,7 +408,7 @@ class SplitBoxT<false, true, FirstT, SecondT> :
 		mFirst.resizeHeight(Delta);
 		mSecond.moveY(Delta);
 		mSecond.resizeHeight(-Delta);
-		mFirst.setClipTop(std::min(mTop, mClipTop));
+		mFirst.setClipTop(getMouseTop());
 	}
 
 	public:
@@ -432,10 +422,8 @@ class SplitBoxT<false, true, FirstT, SecondT> :
 	// Widget
 	void resizeHeight(signed short Y)
 	{
-		mTop += Y;
-		mClipTop += Y;
 		mSecond.resizeHeight(Y);
-		mFirst.setClipTop(std::min(mTop, mClipTop));
+		mFirst.setClipTop(getMouseTop());
 	}
 
 	void setClipBottom(signed short Y)
@@ -446,7 +434,7 @@ class SplitBoxT<false, true, FirstT, SecondT> :
 
 	void setClipTop(signed short Y)
 	{
-		mFirst.setClipTop(std::min(mTop, mClipTop));
+		mFirst.setClipTop(getMouseTop());
 		mSecond.setClipTop(Y);
 	}
 
@@ -454,6 +442,7 @@ class SplitBoxT<false, true, FirstT, SecondT> :
 	void handleChildBaseHeightChanged(void * Child) final
 	{
 		if (Child == &mFirst) layout();
+		mParent.handleChildBaseHeightChanged(this);
 	}
 };
 
@@ -467,18 +456,11 @@ template<typename FirstT, typename SecondT>
 class SplitBoxT<false, false, FirstT, SecondT> :
 	public SplitBoxVerticalT<FirstT, SecondT>
 {
-	private:
+	protected:
 	using SplitBoxBaseT<FirstT, SecondT>::mParent;
 	using SplitBoxBaseT<FirstT, SecondT>::mFirst;
 	using SplitBoxBaseT<FirstT, SecondT>::mSecond;
-	using SplitBoxBaseT<FirstT, SecondT>::mLeft;
-	using SplitBoxBaseT<FirstT, SecondT>::mBottom;
-	using SplitBoxBaseT<FirstT, SecondT>::mRight;
-	using SplitBoxBaseT<FirstT, SecondT>::mTop;
-	using SplitBoxBaseT<FirstT, SecondT>::mClipLeft;
-	using SplitBoxBaseT<FirstT, SecondT>::mClipRight;
-	using SplitBoxBaseT<FirstT, SecondT>::mClipBottom;
-	using SplitBoxBaseT<FirstT, SecondT>::mClipTop;
+	using SplitBoxBaseT<FirstT, SecondT>::getMouseBottom;
 
 	void layout()
 	{
@@ -486,7 +468,7 @@ class SplitBoxT<false, false, FirstT, SecondT> :
 		mFirst.resizeHeight(-Delta);
 		mSecond.moveY(-Delta);
 		mSecond.resizeHeight(Delta);
-		mSecond.setClipBottom(std::max(mBottom, mClipBottom));
+		mSecond.setClipBottom(getMouseBottom());
 	}
 
 	public:
@@ -500,17 +482,15 @@ class SplitBoxT<false, false, FirstT, SecondT> :
 	// Widget
 	void resizeHeight(signed short Y)
 	{
-		mTop += Y;
-		mClipTop += Y;
 		mFirst.resizeHeight(Y);
 		mSecond.moveY(Y);
-		mSecond.setClipBottom(std::max(mBottom, mClipBottom));
+		mSecond.setClipBottom(getMouseBottom());
 	}
 
 	void setClipBottom(signed short Y)
 	{
 		mFirst.setClipBottom(Y);
-		mSecond.setClipBottom(std::max(mBottom, mClipBottom));
+		mSecond.setClipBottom(getMouseBottom());
 	}
 
 	void setClipTop(signed short Y)
@@ -523,6 +503,7 @@ class SplitBoxT<false, false, FirstT, SecondT> :
 	void handleChildBaseHeightChanged(void * Child) final
 	{
 		if (Child == &mSecond) layout();
+		mParent.handleChildBaseHeightChanged(this);
 	}
 };
 

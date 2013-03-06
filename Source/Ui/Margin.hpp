@@ -21,14 +21,15 @@ class MarginT :
 	ContainerT & mParent;
 	WindowBaseT & mWindow;
 	T mChild;
-	signed short mLeft = 0;
-	signed short mBottom = 0;
-	signed short mRight = 0;
-	signed short mTop = 0;
 
 	bool checkThisContains(signed short X, signed short Y)
 	{
-		return X >= mLeft && X <= mRight &&	Y >= mBottom && Y <= mTop;
+		return (
+			X >= getLeft() && X >= getClipLeft() &&
+			X <= getRight() && X <= getClipRight() &&
+			Y >= getBottom() && Y >= getClipBottom() &&
+			Y <= getTop() && Y <= getClipTop()
+		);
 	}
 
 	bool checkChildContains(signed short X, signed short Y)
@@ -67,27 +68,21 @@ class MarginT :
 	// Widget
 	void moveX(signed short X)
 	{
-		mLeft += X;
-		mRight += X;
 		mChild.moveX(X);
 	}
 
 	void moveY(signed short Y)
 	{
-		mBottom += Y;
-		mTop += Y;
 		mChild.moveY(Y);
 	}
 
 	void resizeWidth(signed short X)
 	{
-		mRight += X;
 		mChild.resizeWidth(X);
 	}
 
 	void resizeHeight(signed short Y)
 	{
-		mTop += Y;
 		mChild.resizeHeight(Y);
 	}
 
@@ -96,14 +91,14 @@ class MarginT :
 		mChild.setClipLeft(X);
 	}
 
-	void setClipBottom(signed short Y)
-	{
-		mChild.setClipBottom(Y);
-	}
-
 	void setClipRight(signed short X)
 	{
 		mChild.setClipRight(X);
+	}
+
+	void setClipBottom(signed short Y)
+	{
+		mChild.setClipBottom(Y);
 	}
 
 	void setClipTop(signed short Y)
@@ -113,22 +108,42 @@ class MarginT :
 
 	signed short getLeft() const
 	{
-		return mLeft;
+		return mChild.getLeft() - SpaceX;
 	}
 
 	signed short getBottom() const
 	{
-		return mBottom;
+		return mChild.getBottom() - SpaceY;
 	}
 
 	signed short getRight() const
 	{
-		return mRight;
+		return mChild.getRight() + SpaceY;
 	}
 
 	signed short getTop() const
 	{
-		return mTop;
+		return mChild.getTop() + SpaceY;
+	}
+
+	signed short getClipLeft() const
+	{
+		return mChild.getClipLeft();
+	}
+
+	signed short getClipBottom() const
+	{
+		return mChild.getClipBottom();
+	}
+
+	signed short getClipRight() const
+	{
+		return mChild.getClipRight();
+	}
+
+	signed short getClipTop() const
+	{
+		return mChild.getClipTop();
 	}
 
 	signed short getBaseWidth() const

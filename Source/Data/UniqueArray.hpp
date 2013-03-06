@@ -21,10 +21,10 @@ class UniqueArrayT
 	private:
 	T * mPointer;
 
+	public:
 	UniqueArrayT(UniqueArrayT const &) = delete;
 	UniqueArrayT<T> & operator=(UniqueArrayT<T> const &) = delete;
 
-	public:
 	UniqueArrayT() :
 		mPointer{nullptr}
 	{}
@@ -52,9 +52,9 @@ class UniqueArrayT
 		return *this;
 	}
 
-	bool operator==(std::nullptr_t)
+	bool operator==(T * Pointer)
 	{
-		return mPointer == nullptr;
+		return mPointer == Pointer;
 	}
 
 	void swap(UniqueArrayT<T> & Other)
@@ -76,6 +76,13 @@ class UniqueArrayT
 	{
 		UniqueArrayT<T> Temp{Pointer};
 		*this = std::move(Temp);
+	}
+
+	T * release()
+	{
+		T * Temp = nullptr;
+		std::swap(mPointer, Temp);
+		return Temp;
 	}
 
 	T * data()

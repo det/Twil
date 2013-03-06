@@ -100,6 +100,11 @@ struct TupleElementT<0, T, ArgsT ...>
 	{
 		return Tuple.Head;
 	}
+
+	ElementT const & get(TupleT<T, ArgsT ...> const & Tuple)
+	{
+		return Tuple.Head;
+	}
 };
 
 template<typename T>
@@ -111,6 +116,11 @@ struct TupleElementT<0, T>
 	{
 		return Value;
 	}
+
+	ElementT const & get(T const & Value)
+	{
+		return Value;
+	}
 };
 
 template<std::size_t I, typename T, typename ... ArgsT>
@@ -119,6 +129,11 @@ struct TupleElementT
 	typedef typename TupleElementT<I - 1, ArgsT ...>::ElementT ElementT;
 
 	ElementT & get(TupleT<T, ArgsT ...> & Tuple)
+	{
+		return TupleElementT<I - 1, ArgsT ...>().get(Tuple.Tail);
+	}
+
+	ElementT const & get(TupleT<T, ArgsT ...> const & Tuple)
 	{
 		return TupleElementT<I - 1, ArgsT ...>().get(Tuple.Tail);
 	}

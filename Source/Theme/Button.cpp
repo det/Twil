@@ -298,6 +298,26 @@ signed short ButtonT::getTop() const
 	return mTop;
 }
 
+signed short ButtonT::getClipLeft() const
+{
+	return mClipLeft;
+}
+
+signed short ButtonT::getClipRight() const
+{
+	return mClipRight;
+}
+
+signed short ButtonT::getClipBottom() const
+{
+	return mClipBottom;
+}
+
+signed short ButtonT::getClipTop() const
+{
+	return mClipTop;
+}
+
 signed short ButtonT::getBaseWidth(signed short Width) const
 {
 	return Width + Settings::Button::BaseWidthMargin;

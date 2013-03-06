@@ -24,7 +24,6 @@ class CenteredT
 
 	signed short getLayoutClipLeft() const;
 	signed short getLayoutClipRight() const;
-
 	signed short getLayoutClipBottom() const;
 	signed short getLayoutClipTop() const;
 
@@ -43,6 +42,11 @@ class CenteredT
 	signed short getRight() const;
 	signed short getBottom() const;
 	signed short getTop() const;
+
+	signed short getClipLeft() const;
+	signed short getClipRight() const;
+	signed short getClipBottom() const;
+	signed short getClipTop() const;
 };
 
 }

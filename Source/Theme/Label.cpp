@@ -2,6 +2,8 @@
 
 #include "Manager.hpp"
 
+#include <iostream>
+
 namespace Twil {
 namespace Theme {
 
@@ -123,7 +125,6 @@ void LabelT::moveX(signed short X)
 	mLeft += X;
 	mClipLeft += X;
 	mClipRight += X;
-
 	mManager.mSolidArray.markNeedsRedraw(*this);
 }
 
@@ -132,7 +133,6 @@ void LabelT::moveY(signed short Y)
 	mBottom += Y;
 	mClipBottom += Y;
 	mClipTop += Y;
-
 	mManager.mSolidArray.markNeedsRedraw(*this);
 }
 
@@ -154,6 +154,26 @@ signed short LabelT::getRight() const
 signed short LabelT::getTop() const
 {
 	return mBottom + mHeight;
+}
+
+signed short LabelT::getClipLeft() const
+{
+	return mClipLeft;
+}
+
+signed short LabelT::getClipRight() const
+{
+	return mClipRight;
+}
+
+signed short LabelT::getClipBottom() const
+{
+	return mClipBottom;
+}
+
+signed short LabelT::getClipTop() const
+{
+	return mClipTop;
 }
 
 signed short LabelT::getBaseWidth() const

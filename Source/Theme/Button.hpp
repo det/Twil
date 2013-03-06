@@ -35,16 +35,16 @@ class ButtonT :
 	/// \brief Sets whether the button is up or down.
 	void setIsDown(bool IsDown);
 
-	/// \returns The left margin for the theme
+	/// \returns The left margin for the theme.
 	signed short getLeftMargin() const;
 
-	/// \returns The right margin for the theme
+	/// \returns The right margin for the theme.
 	signed short getRightMargin() const;
 
-	/// \returns The bottom margin for the theme
+	/// \returns The bottom margin for the theme.
 	signed short getBottomMargin() const;
 
-	/// \returns The top margin for the theme
+	/// \returns The top margin for the theme.
 	signed short getTopMargin() const;
 
 	// Drawable
@@ -66,6 +66,11 @@ class ButtonT :
 	signed short getBottom() const;
 	signed short getRight() const;
 	signed short getTop() const;
+
+	signed short getClipLeft() const;
+	signed short getClipRight() const;
+	signed short getClipBottom() const;
+	signed short getClipTop() const;
 
 	signed short getBaseWidth(signed short) const;
 	signed short getBaseHeight(signed short) const;

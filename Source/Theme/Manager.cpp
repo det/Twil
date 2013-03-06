@@ -105,6 +105,7 @@ BitmapEntryT const & ManagerT::loadBitmapEntry(char const * Path)
 	if (Iter != mBitmapEntries.end()) return Iter->second;
 
 	Loader::PngT Image{Path};
+	// The offset that OpenGL needs is pixel offset, not the byte offset, so divide by 4
 	unsigned int Offset = mRgbaTexture.append(Image.begin(), Image.end()) / 4;
 
 	BitmapEntryT Entry{Offset, Image.getWidth(), Image.getHeight()};

@@ -33,15 +33,14 @@ void ShaderT::loadFile(char const * Path)
 	File.seekg(0, std::ios_base::end);
 	auto Pos = File.tellg();
 	if (Pos < 0) throw std::runtime_error{"Unable to read shader"};
-	auto Length = static_cast<std::size_t>(Pos);
 	File.seekg(0, std::ios_base::beg);
-	auto Buffer = Data::makeArray<GLchar>(Length);
+	auto Buffer = Data::makeArray<GLchar>(static_cast<std::size_t>(Pos));
 	File.read(Buffer.data(), Pos);
 	File.close();
 
-	GLchar const * Sources = Buffer.data();
-	GLint const Lengths = Length;
-	glShaderSource(mId, 1, &Sources, &Lengths);
+	GLchar const * Sources[] = {Buffer.data()};
+	GLint const Lengths[] = {static_cast<GLint>(Pos)};
+	glShaderSource(mId, 1, Sources, Lengths);
 }
 
 void ShaderT::compile()

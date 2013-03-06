@@ -47,7 +47,12 @@ class LabelT :
 
 	bool checkThisContains(signed short X, signed short Y)
 	{
-		return X >= getLeft() && X <= getRight() && Y >= getBottom() && Y <= getTop();
+		return (
+			X >= getLeft() && X >= getClipLeft() &&
+			X <= getRight() && X <= getClipRight() &&
+			Y >= getBottom() && Y >= getClipBottom() &&
+			Y <= getTop() && Y <= getClipTop()
+		);
 	}
 
 	public:
@@ -135,6 +140,26 @@ class LabelT :
 	signed short getTop() const
 	{
 		return mLayout.getTop();
+	}
+
+	signed short getClipLeft() const
+	{
+		return mLayout.getClipLeft();
+	}
+
+	signed short getClipBottom() const
+	{
+		return mLayout.getClipBottom();
+	}
+
+	signed short getClipRight() const
+	{
+		return mLayout.getClipRight();
+	}
+
+	signed short getClipTop() const
+	{
+		return mLayout.getClipTop();
 	}
 
 	signed short getBaseWidth() const

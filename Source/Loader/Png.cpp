@@ -115,9 +115,7 @@ PngT::PngT(char const * Path) :
 	// Setup a pointer array.  Each one points at the begening of a row
 	mBytes = Data::makeArray<GLubyte>(Width * Height * 4);
 	auto Rows = Data::makeArray<png_bytep>(Height);
-	for (std::size_t I = 0; I < Height; ++I) {
-		Rows[I] = mBytes.data() + ((Height - (I + 1)) * Width * 4);
-	}
+	for (std::size_t I = 0; I < Height; ++I) Rows[I] = &mBytes[(Height - I - 1) * Width * 4];
 
 	// Read pixel data using row pointers
 	png_read_image(Pointers.Png, Rows.data());

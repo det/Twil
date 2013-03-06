@@ -2,8 +2,6 @@
 
 #include "Manager.hpp"
 
-#include <iostream>
-
 namespace Twil {
 namespace Theme {
 
@@ -20,7 +18,6 @@ void ImageT::setImage(char const * Path)
 	mWidth = Entry.Width;
 	mHeight = Entry.Height;
 	mManager.mBitmapArray.markNeedsRedraw(*this);
-
 }
 
 void ImageT::setClipLeft(signed short X)
@@ -123,6 +120,26 @@ signed short ImageT::getRight() const
 signed short ImageT::getTop() const
 {
 	return mBottom + mHeight;
+}
+
+signed short ImageT::getClipLeft() const
+{
+	return mClipLeft;
+}
+
+signed short ImageT::getClipRight() const
+{
+	return mClipRight;
+}
+
+signed short ImageT::getClipBottom() const
+{
+	return mClipBottom;
+}
+
+signed short ImageT::getClipTop() const
+{
+	return mClipTop;
 }
 
 signed short ImageT::getBaseWidth() const

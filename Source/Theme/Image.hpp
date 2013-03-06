@@ -51,6 +51,11 @@ class ImageT :
 	signed short getRight() const;
 	signed short getTop() const;
 
+	signed short getClipLeft() const;
+	signed short getClipRight() const;
+	signed short getClipBottom() const;
+	signed short getClipTop() const;
+
 	signed short getBaseWidth() const;
 	signed short getBaseHeight() const;
 };

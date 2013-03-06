@@ -23,16 +23,17 @@ class PartitionBoxBaseT :
 	protected:
 	ContainerT & mParent;
 	TupleT<ArgsT ...> mChildren;
-	signed short mLeft = 0;
-	signed short mBottom = 0;
-	signed short mRight = 0;
-	signed short mTop = 0;
 
-	static signed short const mSize = static_cast<signed short>(sizeof ... (ArgsT));
+	static signed short const mSize = sizeof ... (ArgsT);
 
 	bool checkThisContains(signed short X, signed short Y)
 	{
-		return X >= mLeft && X <= mRight && Y >= mBottom && Y <= mTop;
+		return (
+			X >= getLeft() && X >= getClipLeft() &&
+			X <= getRight() && X <= getClipRight() &&
+			Y >= getBottom() && Y >= getClipBottom() &&
+			Y <= getTop() && Y <= getClipTop()
+		);
 	}
 
 	public:
@@ -74,8 +75,6 @@ class PartitionBoxBaseT :
 
 	void moveX(signed short X)
 	{
-		mLeft += X;
-		mRight += X;
 		mChildren.iterate(MoveXFunctorT{X});
 	}
 
@@ -92,8 +91,6 @@ class PartitionBoxBaseT :
 
 	void moveY(signed short Y)
 	{
-		mBottom += Y;
-		mTop += Y;
 		mChildren.iterate(MoveYFunctorT{Y});
 	}
 
@@ -172,22 +169,42 @@ class PartitionBoxBaseT :
 
 	signed short getLeft() const
 	{
-		return mLeft;
+		return getChild<0>().getLeft();
 	}
 
 	signed short getBottom() const
 	{
-		return mBottom;
+		return getChild<0>().getBottom();
 	}
 
 	signed short getRight() const
 	{
-		return mRight;
+		return getChild<mSize - 1>().getRight();
 	}
 
 	signed short getTop() const
 	{
-		return mTop;
+		return getChild<mSize - 1>().getTop();
+	}
+
+	signed short getClipLeft() const
+	{
+		return getChild<0>().getClipLeft();
+	}
+
+	signed short getClipBottom() const
+	{
+		return getChild<0>().getClipBottom();
+	}
+
+	signed short getClipRight() const
+	{
+		return getChild<mSize - 1>().getClipRight();
+	}
+
+	signed short getClipTop() const
+	{
+		return getChild<mSize - 1>().getClipTop();
 	}
 
 	struct MaxWidthFunctorT
@@ -240,16 +257,17 @@ class PartitionBoxT<true, ArgsT ...> :
 	private:
 	using PartitionBoxBaseT<ArgsT ...>::mParent;
 	using PartitionBoxBaseT<ArgsT ...>::mChildren;
-	using PartitionBoxBaseT<ArgsT ...>::mLeft;
-	using PartitionBoxBaseT<ArgsT ...>::mBottom;
-	using PartitionBoxBaseT<ArgsT ...>::mRight;
-	using PartitionBoxBaseT<ArgsT ...>::mTop;
 	using PartitionBoxBaseT<ArgsT ...>::mSize;
 	using PartitionBoxBaseT<ArgsT ...>::checkThisContains;
 	using typename PartitionBoxBaseT<ArgsT ...>::MaxWidthFunctorT;
 	using typename PartitionBoxBaseT<ArgsT ...>::MaxHeightFunctorT;
 
 	public:
+	using PartitionBoxBaseT<ArgsT ...>::getLeft;
+	using PartitionBoxBaseT<ArgsT ...>::getBottom;
+	using PartitionBoxBaseT<ArgsT ...>::getRight;
+	using PartitionBoxBaseT<ArgsT ...>::getTop;
+
 	// PartitionBox
 	PartitionBoxT(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Theme) :
 		PartitionBoxBaseT<ArgsT ...>{Parent, Window, Theme}
@@ -261,13 +279,14 @@ class PartitionBoxT<true, ArgsT ...> :
 		signed short Left;
 		signed short BoxWidth;
 		signed short Mod;
+		signed short Direction;
 
 		template<typename T>
 		void operator()(T & Child)
 		{
 			signed short Width = BoxWidth;
 			if (Mod > 0) {
-				++Width;
+				Width += Direction;
 				--Mod;
 			}
 			Child.moveX(Left - Child.getLeft());
@@ -278,11 +297,19 @@ class PartitionBoxT<true, ArgsT ...> :
 
 	void resizeWidth(signed short X)
 	{
-		mRight += X;
-		signed short Width = mRight - mLeft;
+		signed short Width = getRight() + X - getLeft();
 		signed short BoxWidth = Width / mSize;
-		signed short Mod = Width % mSize;
-		mChildren.iterate(ResizeWidthFunctorT{mLeft, BoxWidth, Mod});
+		signed short Mod;
+		signed short Direction;
+		if (Width >= 0) {
+			Mod = Width % mSize;
+			Direction = 1;
+		}
+		else {
+			Mod = -Width % mSize;
+			Direction = -1;
+		}
+		mChildren.iterate(ResizeWidthFunctorT{getLeft(), BoxWidth, Mod, Direction});
 	}
 
 	struct ResizeHeightFunctorT
@@ -298,7 +325,6 @@ class PartitionBoxT<true, ArgsT ...> :
 
 	void resizeHeight(signed short Y)
 	{
-		mTop += Y;
 		mChildren.iterate(ResizeHeightFunctorT{Y});
 	}
 
@@ -359,16 +385,17 @@ class PartitionBoxT<false, ArgsT ...> :
 	private:
 	using PartitionBoxBaseT<ArgsT ...>::mParent;
 	using PartitionBoxBaseT<ArgsT ...>::mChildren;
-	using PartitionBoxBaseT<ArgsT ...>::mLeft;
-	using PartitionBoxBaseT<ArgsT ...>::mBottom;
-	using PartitionBoxBaseT<ArgsT ...>::mRight;
-	using PartitionBoxBaseT<ArgsT ...>::mTop;
 	using PartitionBoxBaseT<ArgsT ...>::mSize;
 	using PartitionBoxBaseT<ArgsT ...>::checkThisContains;
 	using typename PartitionBoxBaseT<ArgsT ...>::MaxWidthFunctorT;
 	using typename PartitionBoxBaseT<ArgsT ...>::MaxHeightFunctorT;
 
 	public:
+	using PartitionBoxBaseT<ArgsT ...>::getLeft;
+	using PartitionBoxBaseT<ArgsT ...>::getBottom;
+	using PartitionBoxBaseT<ArgsT ...>::getRight;
+	using PartitionBoxBaseT<ArgsT ...>::getTop;
+
 	// PartitionBox
 	PartitionBoxT(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Theme) :
 		PartitionBoxBaseT<ArgsT ...>{Parent, Window, Theme}
@@ -388,7 +415,6 @@ class PartitionBoxT<false, ArgsT ...> :
 
 	void resizeWidth(signed short X)
 	{
-		mRight += X;
 		mChildren.iterate(ResizeWidthFunctorT{X});
 	}
 
@@ -397,13 +423,14 @@ class PartitionBoxT<false, ArgsT ...> :
 		signed short Bottom;
 		signed short BoxHeight;
 		signed short Mod;
+		signed short Direction;
 
 		template<typename T>
 		void operator()(T & Child)
 		{
 			signed short Height = BoxHeight;
 			if (Mod > 0) {
-				++Height;
+				Height += Direction;
 				--Mod;
 			}
 			Child.moveY(Bottom - Child.getBottom());
@@ -414,11 +441,19 @@ class PartitionBoxT<false, ArgsT ...> :
 
 	void resizeHeight(signed short Y)
 	{
-		mTop += Y;
-		signed short Height = mTop - mBottom;
+		signed short Height = getTop() + Y - getBottom();
 		signed short BoxHeight = Height / mSize;
-		signed short Mod = Height % mSize;
-		mChildren.iterate(ResizeHeightFunctorT{mBottom, BoxHeight, Mod});
+		signed short Mod;
+		signed short Direction;
+		if (Height >= 0) {
+			Mod = Height % mSize;
+			Direction = 1;
+		}
+		else {
+			Mod = -Height % mSize;
+			Direction = -1;
+		}
+		mChildren.iterate(ResizeHeightFunctorT{getBottom(), BoxHeight, Mod, Direction});
 	}
 
 	signed short getBaseWidth() const

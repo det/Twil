@@ -45,6 +45,18 @@ class WidgetT
 	/// \returns The top position bound.
 	virtual signed short getTop() const = 0;
 
+	/// \returns The left clip line.
+	virtual signed short getClipLeft() const = 0;
+
+	/// \returns The right clip line.
+	virtual signed short getClipRight() const = 0;
+
+	/// \returns The bottom clip line.
+	virtual signed short getClipBottom() const = 0;
+
+	/// \returns The top clip line.
+	virtual signed short getClipTop() const = 0;
+
 	/// \returns The base width.
 	virtual signed short getBaseWidth() const = 0;
 

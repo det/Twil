@@ -103,5 +103,25 @@ signed short CenteredT::getTop() const
 	return mTop;
 }
 
+signed short CenteredT::getClipLeft() const
+{
+	return mClipLeft;
+}
+
+signed short CenteredT::getClipRight() const
+{
+	return mClipRight;
+}
+
+signed short CenteredT::getClipBottom() const
+{
+	return mClipBottom;
+}
+
+signed short CenteredT::getClipTop() const
+{
+	return mClipTop;
+}
+
 }
 }
