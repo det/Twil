@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Key.hpp"
-#include "FreeDeleter.hpp"
 #include "Window.hpp"
+#include "Data/FreeDeleter.hpp"
 
 #include <cassert>
 #include <cstdlib>
@@ -61,9 +61,10 @@ class ApplicationT
 				GenericEvent = xcb_wait_for_event(mConnection);
 			}
 			// Ensure the pointer gets free'd
-			std::unique_ptr<xcb_generic_event_t, FreeDeleterT> MallocPointer{GenericEvent};
+			using EventDeleterT = Data::FreeDeleterT<xcb_generic_event_t>;
+			std::unique_ptr<xcb_generic_event_t, EventDeleterT> EventPointer{GenericEvent};
 
-			switch(GenericEvent->response_type & ~0x80) {
+			switch(EventPointer->response_type & ~0x80) {
 
 			case XCB_ENTER_NOTIFY: {
 				auto Event = reinterpret_cast<xcb_enter_notify_event_t *>(GenericEvent);

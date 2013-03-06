@@ -8,9 +8,13 @@
 namespace Twil {
 namespace Platform {
 
+template<typename T>
 struct XDeleterT
 {
-	void operator()(void *);
+	void operator()(T * Object)
+	{
+		XFree(Object);
+	}
 };
 
 }

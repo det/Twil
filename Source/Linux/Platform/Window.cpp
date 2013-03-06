@@ -3,7 +3,6 @@
 #include "Application.hpp"
 #include "Glx.hpp"
 #include "SymbolLoader.hpp"
-#include "XDeleter.hpp"
 #include "Gl/Context.hpp"
 
 #include <cstring>
@@ -11,6 +10,23 @@
 #include <stdexcept>
 
 #include <xcb/xcb_atom.h>
+
+namespace {
+
+
+// Exception safety struct to always release resources
+
+struct FrameBufferConfigsT
+{
+	GLXFBConfig * Array = nullptr;
+
+	~FrameBufferConfigsT()
+	{
+		if (Array != nullptr) XFree(Array);
+	}
+};
+
+}
 
 namespace Twil {
 namespace Platform {
@@ -38,22 +54,20 @@ WindowT::WindowT(ApplicationT & Application) :
 
 	int FramebufferCount;
 	auto XScreen = DefaultScreen(Display);
-	auto FramebufferConfigs = glXChooseFBConfig(
+	FrameBufferConfigsT Configs;
+	Configs.Array = glXChooseFBConfig(
 		Display,
 		XScreen,
 		VisualAttributes,
 		&FramebufferCount
 	);
 
-	if (FramebufferConfigs == nullptr) {
+	if (Configs.Array == nullptr) {
 		throw std::runtime_error{"Unable to find matching video mode"};
 	}
 
-	// Ensure the pointer gets free'd
-	std::unique_ptr<GLXFBConfig, XDeleterT> FrameBufferPointer{FramebufferConfigs};
-
 	int VisualId = 0;
-	glXGetFBConfigAttrib(Display, FramebufferConfigs[0], GLX_VISUAL_ID , &VisualId);
+	glXGetFBConfigAttrib(Display, Configs.Array[0], GLX_VISUAL_ID , &VisualId);
 
 	auto Colormap = xcb_generate_id(mApplication.mConnection);
 	mId = xcb_generate_id(mApplication.mConnection);
@@ -112,7 +126,7 @@ WindowT::WindowT(ApplicationT & Application) :
 		None
 	};
 
-	auto & Config = FramebufferConfigs[0];
+	auto & Config = Configs.Array[0];
 	mContext = glXCreateContextAttribsARB(Display, Config, 0, True, ContextAttribs);
 	if (mContext == 0) throw std::runtime_error{"Unable to create OpenGL context"};
 

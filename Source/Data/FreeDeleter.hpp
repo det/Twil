@@ -4,11 +4,15 @@
 #include <memory>
 
 namespace Twil {
-namespace Platform {
+namespace Data {
 
+template<typename T>
 struct FreeDeleterT
 {
-	void operator()(void *);
+	void operator()(T * Object)
+	{
+		std::free(Object);
+	}
 };
 
 }

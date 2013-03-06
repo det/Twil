@@ -34,16 +34,12 @@ if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
 		Linux/Platform/Key.hpp
 		Linux/Platform/Application.cpp
 		Linux/Platform/Application.hpp
-		Linux/Platform/FreeDeleter.cpp
-		Linux/Platform/FreeDeleter.hpp
 		Linux/Platform/Glx.cpp
 		Linux/Platform/Glx.hpp
 		Linux/Platform/SymbolLoader.cpp
 		Linux/Platform/SymbolLoader.hpp
 		Linux/Platform/Window.cpp
 		Linux/Platform/Window.hpp
-		Linux/Platform/XDeleter.cpp
-		Linux/Platform/XDeleter.hpp
 	)
 
 	source_group(Platform FILES ${platform_sources})
@@ -85,6 +81,12 @@ set (attribute_sources
 )
 
 source_group(Attribute FILES ${attribute_sources})
+
+set (data_sources
+	Data/FreeDeleter.cpp
+	Data/FreeDeleter.hpp
+)
+source_group(Data FILES ${data_sources})
 
 set (ft_sources
 	Ft/Bitmap.cpp
@@ -222,6 +224,7 @@ source_group(Vertex FILES ${vertex_sources})
 add_executable (hello
 	Hello.cpp
 	${attribute_sources}
+	${data_sources}
 	${ft_sources}
 	${gl_sources}
 	${loader_sources}
@@ -254,9 +257,9 @@ target_link_libraries (hello
 )
 
 set (fonts
-		Font/DejaVuSans.ttf
-		Font/DejaVuSans-Bold.ttf
-		Font/DejaVuSansMono.ttf
+	Font/DejaVuSans.ttf
+	Font/DejaVuSans-Bold.ttf
+	Font/DejaVuSansMono.ttf
 )
 
 install (FILES ${fonts} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Font)

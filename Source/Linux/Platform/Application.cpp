@@ -1,7 +1,6 @@
 #include "Application.hpp"
 
 #include "Glx.hpp"
-#include "FreeDeleter.hpp"
 #include "SymbolLoader.hpp"
 
 #include <stdexcept>
@@ -33,28 +32,14 @@ ApplicationT::ApplicationT() :
 	auto WmNameCookie = xcb_intern_atom(mConnection, 0, 7, "WM_NAME");
 	auto WmProtocolsCookie = xcb_intern_atom(mConnection, 0, 12, "WM_PROTOCOLS");
 
-
-	std::unique_ptr<xcb_intern_atom_reply_t, FreeDeleterT> AtomReply{
-		xcb_intern_atom_reply(mConnection, AtomCookie, nullptr)
-	};
-	std::unique_ptr<xcb_intern_atom_reply_t, FreeDeleterT> NetWmStateReply{
-		xcb_intern_atom_reply(mConnection, NetWmStateCookie, nullptr)
-	};
-	std::unique_ptr<xcb_intern_atom_reply_t, FreeDeleterT> NetWmStateFullscreenReply{
-		xcb_intern_atom_reply(mConnection, NetWmStateFullscreenCookie, nullptr)
-	};
-	std::unique_ptr<xcb_intern_atom_reply_t, FreeDeleterT> StringReply{
-		xcb_intern_atom_reply(mConnection, StringCookie, nullptr)
-	};
-	std::unique_ptr<xcb_intern_atom_reply_t, FreeDeleterT> WmDeleteWindowReply{
-		xcb_intern_atom_reply(mConnection, WmDeleteWindowCookie, nullptr)
-	};
-	std::unique_ptr<xcb_intern_atom_reply_t, FreeDeleterT> WmNameReply{
-		xcb_intern_atom_reply(mConnection, WmNameCookie, nullptr)
-	};
-	std::unique_ptr<xcb_intern_atom_reply_t, FreeDeleterT> WmProtocolsReply{
-		xcb_intern_atom_reply(mConnection, WmProtocolsCookie, nullptr)
-	};
+	using ReplyT = std::unique_ptr<xcb_intern_atom_reply_t, Data::FreeDeleterT<xcb_intern_atom_reply_t>>;
+	ReplyT AtomReply{xcb_intern_atom_reply(mConnection, AtomCookie, nullptr)};
+	ReplyT NetWmStateReply{xcb_intern_atom_reply(mConnection, NetWmStateCookie, nullptr)};
+	ReplyT NetWmStateFullscreenReply{xcb_intern_atom_reply(mConnection, NetWmStateFullscreenCookie, nullptr)};
+	ReplyT StringReply{xcb_intern_atom_reply(mConnection, StringCookie, nullptr)};
+	ReplyT WmDeleteWindowReply{xcb_intern_atom_reply(mConnection, WmDeleteWindowCookie, nullptr)};
+	ReplyT WmNameReply{xcb_intern_atom_reply(mConnection, WmNameCookie, nullptr)};
+	ReplyT WmProtocolsReply{xcb_intern_atom_reply(mConnection, WmProtocolsCookie, nullptr)};
 
 	mAtomAtom = AtomReply->atom;
 	mNetWmStateAtom = NetWmStateReply->atom;
