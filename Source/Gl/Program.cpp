@@ -1,7 +1,7 @@
 #include "Program.hpp"
 
 #include "Shader.hpp"
-#include "Data/UniqueArray.hpp"
+#include "Data/Memory.hpp"
 
 #include <iostream>
 #include <stdexcept>
@@ -38,8 +38,8 @@ void ProgramT::link()
 		GLint LogLength = 0;
 		glGetProgramiv(mId, GL_INFO_LOG_LENGTH , &LogLength);
 		auto Log = Data::makeArray<GLchar>(LogLength);
-		glGetProgramInfoLog(mId, LogLength, &LogLength, Log.data());
-		std::cout << Log.data();
+		glGetProgramInfoLog(mId, LogLength, &LogLength, Log.get());
+		std::cout << Log.get();
 		throw std::runtime_error{"Program link error"};
 	}
 }

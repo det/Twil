@@ -1,7 +1,7 @@
 #include "Shader.hpp"
 
 #include "Context.hpp"
-#include "Data/UniqueArray.hpp"
+#include "Data/Memory.hpp"
 
 #include <fstream>
 #include <iostream>
@@ -35,10 +35,10 @@ void ShaderT::loadFile(char const * Path)
 	if (Pos < 0) throw std::runtime_error{"Unable to read shader"};
 	File.seekg(0, std::ios_base::beg);
 	auto Buffer = Data::makeArray<GLchar>(static_cast<std::size_t>(Pos));
-	File.read(Buffer.data(), Pos);
+	File.read(Buffer.get(), Pos);
 	File.close();
 
-	GLchar const * Sources[] = {Buffer.data()};
+	GLchar const * Sources[] = {Buffer.get()};
 	GLint const Lengths[] = {static_cast<GLint>(Pos)};
 	glShaderSource(mId, 1, Sources, Lengths);
 }
@@ -54,8 +54,8 @@ void ShaderT::compile()
 		glGetShaderiv(mId, GL_INFO_LOG_LENGTH , &LogLength);
 		if (LogLength < 1) throw std::runtime_error{"Shader compile error, unable to retrieve log"};
 		auto Log = Data::makeArray<GLchar>(LogLength);
-		glGetShaderInfoLog(mId, LogLength, &LogLength, Log.data());
-		std::cout << Log.data();
+		glGetShaderInfoLog(mId, LogLength, &LogLength, Log.get());
+		std::cout << Log.get();
 		throw std::runtime_error{"Shader compile error"};
 	}
 }

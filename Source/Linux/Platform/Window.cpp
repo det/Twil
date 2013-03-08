@@ -3,7 +3,7 @@
 #include "Application.hpp"
 #include "Glx.hpp"
 #include "SymbolLoader.hpp"
-#include "Data/UniqueArray.hpp"
+#include "Data/Memory.hpp"
 #include "Gl/Context.hpp"
 
 #include <cstring>
@@ -52,7 +52,7 @@ WindowT::WindowT(ApplicationT & Application) :
 	int FramebufferCount;
 	auto XScreen = DefaultScreen(Display);
 
-	Data::UniqueArrayT<GLXFBConfig, XDeleterT<GLXFBConfig>> Configs{glXChooseFBConfig(
+	std::unique_ptr<GLXFBConfig[], XDeleterT<GLXFBConfig>> Configs{glXChooseFBConfig(
 		Display,
 		XScreen,
 		VisualAttributes,

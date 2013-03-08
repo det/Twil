@@ -1,6 +1,6 @@
 #include "Png.hpp"
 
-#include "Data/UniqueArray.hpp"
+#include "Data/Memory.hpp"
 
 #include <fstream>
 #include <stdexcept>
@@ -118,7 +118,7 @@ PngT::PngT(char const * Path) :
 	for (std::size_t I = 0; I < Height; ++I) Rows[I] = &mBytes[(Height - I - 1) * Width * 4];
 
 	// Read pixel data using row pointers
-	png_read_image(Pointers.Png, Rows.data());
+	png_read_image(Pointers.Png, Rows.get());
 	png_read_end(Pointers.Png, nullptr);
 }
 
@@ -134,12 +134,12 @@ unsigned short PngT::getHeight()
 
 GLubyte * PngT::begin()
 {
-	return mBytes.data();
+	return mBytes.get();
 }
 
 GLubyte * PngT::end()
 {
-	return mBytes.data() + mWidth * mHeight * 4;
+	return mBytes.get() + mWidth * mHeight * 4;
 }
 
 }
