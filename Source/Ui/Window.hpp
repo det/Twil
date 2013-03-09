@@ -56,13 +56,13 @@ class WindowT :
 	}
 
 	/// \returns The width.
-	unsigned short getWidth()
+	unsigned short getWidth() const
 	{
 		return mWidth;
 	}
 
 	/// \returns The height.
-	unsigned short getHeight()
+	unsigned short getHeight() const
 	{
 		return mHeight;
 	}
@@ -82,7 +82,7 @@ class WindowT :
 	// Window
 	void handleExposed()
 	{
-		mNeedsDraw = true;
+		mManager.markNeedsRedraw();
 	}
 
 	void handleDeleted()
@@ -98,16 +98,11 @@ class WindowT :
 		auto ChildHeight = mChild.getTop();
 		if (Width != ChildWidth) mChild.resizeWidth(mWidth - ChildWidth);
 		if (Height != ChildHeight) mChild.resizeHeight(mHeight - ChildHeight);
-		mNeedsDraw = true;
 	}
 
 	void update()
 	{
-		if (mNeedsDraw) {
-			mManager.draw(mWidth, mHeight);
-			swapBuffers();
-			mNeedsDraw = false;
-		}
+		if (mManager.update(mWidth, mHeight)) swapBuffers();
 	}
 
 	// Container

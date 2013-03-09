@@ -12,7 +12,8 @@ ManagerT::ManagerT() :
 	mLabelFace{mLibrary, Settings::Label::Font, 0},
 	mLabelSize{mLabelFace, Settings::Label::Size},
 	mRedTexture{GL_R8},
-	mRgbaTexture{GL_RGBA8}
+	mRgbaTexture{GL_RGBA8},
+	mNeedsRedraw{false}
 {
 	// Default GL state
 	glEnable(GL_BLEND);
@@ -142,15 +143,20 @@ GlyphEntryT const & ManagerT::loadGlyphEntry(Ft::FaceT & Face, char32_t Codepoin
 	return Pair.first->second;
 }
 
-void ManagerT::draw(unsigned short Width, unsigned short Height)
+void ManagerT::markNeedsRedraw()
 {
-	if (Width == 0 || Height == 0) return;
+	mNeedsRedraw = true;
+}
 
+bool ManagerT::update(unsigned short Width, unsigned short Height)
+{
 	mRedTexture.upload();
 	mRgbaTexture.upload();
-	mSolidArray.update();
-	mOutlineArray.update();
-	mBitmapArray.update();
+	mNeedsRedraw |= mSolidArray.update();
+	mNeedsRedraw |= mOutlineArray.update();
+	mNeedsRedraw |= mBitmapArray.update();
+
+	if (!mNeedsRedraw || Width == 0 || Height == 0) return false;
 
 	float ScalingX = 2.0 / Width;
 	float ScalingY = 2.0 / Height;
@@ -190,6 +196,9 @@ void ManagerT::draw(unsigned short Width, unsigned short Height)
 	glUseProgram(0);
 
 	glBindTexture(GL_TEXTURE_BUFFER, 0);
+
+	mNeedsRedraw = false;
+	return true;
 }
 
 }

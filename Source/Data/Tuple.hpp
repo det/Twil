@@ -35,6 +35,11 @@ void iterate(std::tuple<ArgsT ...> & Tuple, FunctorT Functor)
 	IterateFunctor<0, ArgsT ...>{}(Tuple, Functor);
 }
 
+template<typename FunctorT, typename ... ArgsT>
+void iterate(std::tuple<ArgsT ...> const & Tuple, FunctorT Functor)
+{
+	IterateFunctor<0, ArgsT ...>{}(Tuple, Functor);
+}
 
 // iterateUntil
 
@@ -61,6 +66,12 @@ struct IterateUntilFunctor<N>
 
 template<typename FunctorT, typename ... ArgsT>
 void iterateUntil(std::tuple<ArgsT ...> & Tuple, FunctorT Functor)
+{
+	IterateUntilFunctor<0, ArgsT ...>{}(Tuple, Functor);
+}
+
+template<typename FunctorT, typename ... ArgsT>
+void iterateUntil(std::tuple<ArgsT ...> const & Tuple, FunctorT Functor)
 {
 	IterateUntilFunctor<0, ArgsT ...>{}(Tuple, Functor);
 }

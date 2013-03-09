@@ -14,7 +14,6 @@ class WindowBaseT
 	protected:
 	KeyboardHandlerT * mKeyboardHandler = nullptr;
 	MouseHandlerT * mMouseHandler = nullptr;
-	bool mNeedsDraw = false;
 
 	public:
 	/// \brief Set the keyboard handler.
@@ -22,9 +21,6 @@ class WindowBaseT
 
 	/// \brief Set the mouse handler.
 	void setMouseHandler(MouseHandlerT &);
-
-	/// \brief Tell the window a draw is needs to happen.
-	void markNeedsDraw();
 
 	void sendMouseEnterWindow(signed short, signed short);
 	void sendMouseLeaveWindow(signed short, signed short);

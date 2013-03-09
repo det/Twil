@@ -69,7 +69,6 @@ class LabelT :
 	{
 		mText = Text;
 		mTheme.setText(Text);
-		mWindow->markNeedsDraw();
 		layoutX();
 		mParent->handleChildBaseWidthChanged(this);
 	}

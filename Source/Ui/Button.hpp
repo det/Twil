@@ -200,7 +200,6 @@ class ButtonT :
 		if (Index == 1) {
 			mIsPressed = true;
 			mTheme.setIsDown(true);
-			mWindow->markNeedsDraw();
 		}
 	}
 
@@ -211,7 +210,6 @@ class ButtonT :
 			if (mHasMouse) {
 				mIsPressed = false;
 				mTheme.setIsDown(false);
-				mWindow->markNeedsDraw();
 				Clicked();
 			}
 			else {
@@ -229,7 +227,6 @@ class ButtonT :
 			mHasMouse = false;
 			if (mIsPressed) {
 				mTheme.setIsDown(false);
-				mWindow->markNeedsDraw();
 			}
 			else mParent->releaseMouse(X, Y);
 		}
@@ -237,7 +234,6 @@ class ButtonT :
 			mHasMouse = true;
 			if (mIsPressed) {
 				mTheme.setIsDown(true);
-				mWindow->markNeedsDraw();
 			}
 		}
 	}

@@ -115,29 +115,31 @@ PngT::PngT(char const * Path) :
 	// Setup a pointer array.  Each one points at the begening of a row
 	mBytes = Data::makeArray<GLubyte>(Width * Height * 4);
 	auto Rows = Data::makeArray<png_bytep>(Height);
-	for (std::size_t I = 0; I < Height; ++I) Rows[I] = &mBytes[(Height - I - 1) * Width * 4];
+	for (std::size_t I = 0; I < Height; ++I) {
+		Rows[I] = mBytes.get() + (Height - I - 1) * Width * 4;
+	}
 
 	// Read pixel data using row pointers
 	png_read_image(Pointers.Png, Rows.get());
 	png_read_end(Pointers.Png, nullptr);
 }
 
-unsigned short PngT::getWidth()
+unsigned short PngT::getWidth() const
 {
 	return mWidth;
 }
 
-unsigned short PngT::getHeight()
+unsigned short PngT::getHeight() const
 {
 	return mHeight;
 }
 
-GLubyte * PngT::begin()
+GLubyte const * PngT::begin() const
 {
 	return mBytes.get();
 }
 
-GLubyte * PngT::end()
+GLubyte const * PngT::end() const
 {
 	return mBytes.get() + mWidth * mHeight * 4;
 }

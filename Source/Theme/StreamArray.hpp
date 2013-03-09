@@ -119,7 +119,9 @@ class StreamArrayT
 	}
 
 	/// \brief Compact the array if needed, upload the array if needed.
-	void update()
+	///
+	/// \returns true if the array was uploaded
+	bool update()
 	{
 		if (mNeedsCompact) {
 			compact();
@@ -128,7 +130,9 @@ class StreamArrayT
 		if (mNeedsRedraw) {
 			upload();
 			mNeedsRedraw = false;
+			return true;
 		}
+		return false;
 	}
 
 	/// \returns The number of vertices in the queue.

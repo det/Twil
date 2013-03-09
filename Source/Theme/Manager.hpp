@@ -77,6 +77,8 @@ class ManagerT
 	std::unordered_map<char const *, BitmapEntryT> mBitmapEntries;
 	std::unordered_map<char32_t, GlyphEntryT> mFontEntries;
 
+	bool mNeedsRedraw;
+
 	// Button offsets
 	GLuint mButtonCenterInside;
 	GLuint mButtonLeftInside;
@@ -104,10 +106,14 @@ class ManagerT
 	public:	
 	ManagerT();
 
-	/// \brief Draw the GUI.
+	/// \brief Make sure the GUI is drawn on the next update call
+	void markNeedsRedraw();
+
+	/// \brief Draw the GUI if needed
 	///
+	/// \returns true if the GUI was drawn.
 	/// All Theme objects must queue their vertex data each time before this is called.
-	void draw(unsigned short Width, unsigned short Height);
+	bool update(unsigned short Width, unsigned short Height);
 };
 
 }

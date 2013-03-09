@@ -52,10 +52,5 @@ void WindowBaseT::sendButtonRelease(signed short X, signed short Y, unsigned cha
 	mMouseHandler->handleButtonRelease(X, Y, Button);
 }
 
-void WindowBaseT::markNeedsDraw()
-{
-	mNeedsDraw = true;
-}
-
 }
 }

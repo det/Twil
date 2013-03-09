@@ -68,7 +68,6 @@ class ImageT :
 	void setImage(char const * Path)
 	{
 		mTheme.setImage(Path);
-		mWindow->markNeedsDraw();
 		layoutX();
 		layoutY();
 		mParent->handleChildBaseWidthChanged(this);

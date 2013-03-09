@@ -18,10 +18,10 @@ class PngT
 	public:
 	PngT(char const *);
 
-	unsigned short getWidth();
-	unsigned short getHeight();
-	GLubyte * begin();
-	GLubyte * end();
+	unsigned short getWidth() const;
+	unsigned short getHeight() const;
+	GLubyte const * begin() const;
+	GLubyte const * end() const;
 };
 
 }
