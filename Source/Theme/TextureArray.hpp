@@ -49,7 +49,7 @@ class TextureArrayT
 	}
 
 	/// \brief Syncs the local buffer with OpenGL.
-	void upload();
+	void update();
 };
 
 }

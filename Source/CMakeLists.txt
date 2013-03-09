@@ -186,16 +186,20 @@ set (ui_sources
 	Ui/Centered.hpp
 	Ui/Image.cpp
 	Ui/Image.hpp
+	Ui/KeyboardHandler.cpp
+	Ui/KeyboardHandler.hpp
+	Ui/KeyboardManager.cpp
+	Ui/KeyboardManager.hpp
 	Ui/Label.cpp
 	Ui/Label.hpp
 	Ui/MouseHandler.cpp
 	Ui/MouseHandler.hpp
+	Ui/MouseManager.cpp
+	Ui/MouseManager.hpp
 	Ui/PartitionBox.cpp
 	Ui/PartitionBox.hpp
 	Ui/SplitBox.cpp
 	Ui/SplitBox.hpp
-	Ui/WindowBase.cpp
-	Ui/WindowBase.hpp
 	Ui/Widget.cpp
 	Ui/Widget.hpp
 	Ui/Window.cpp

@@ -12,7 +12,7 @@ namespace Twil {
 namespace Ui {
 
 class ContainerT;
-class WindowBaseT;
+class MouseManagerT;
 
 // WidgetT
 class WidgetT
@@ -20,7 +20,8 @@ class WidgetT
 	public:
 	virtual ~WidgetT() {}
 
-	virtual void init(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Manager) = 0;
+	/// \brief Initialize the widget
+	virtual void init(ContainerT & Parent, Theme::ManagerT & Manager) = 0;
 
 	/// \brief Move the left and right position and clipping bounds.
 	virtual void moveX(signed short Delta) = 0;
@@ -77,7 +78,7 @@ class WidgetT
 	virtual signed short getBaseHeight() const = 0;
 
 	/// \brief Take control of the mouse or pass it to someone else.
-	virtual void delegateMouse(signed short, signed short) = 0;
+	virtual void delegateMouse(MouseManagerT & Manager, signed short X, signed short Y) = 0;
 };
 
 }

@@ -14,7 +14,7 @@ TextureArrayT::operator GLuint()
 	return mTexture;
 }
 
-void TextureArrayT::upload()
+void TextureArrayT::update()
 {
 	if (mBytes.size() == mSize) return;
 

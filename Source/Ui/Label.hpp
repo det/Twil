@@ -2,7 +2,7 @@
 
 #include "Container.hpp"
 #include "MouseHandler.hpp"
-#include "WindowBase.hpp"
+#include "MouseManager.hpp"
 #include "Theme/Label.hpp"
 
 #include <string>
@@ -23,26 +23,25 @@ class LabelT :
 {
 	private:
 	ContainerT * mParent;
-	WindowBaseT * mWindow;
 	LayoutT mLayout;
-	Theme::LabelT mTheme;
+	Theme::LabelT mThemeLabel;
 	std::u32string mText;
 
 	private:
 	void layoutX()
 	{
-		signed short Delta = mLayout.getLayoutLeft(getBaseWidth()) - mTheme.getLeft();
-		mTheme.moveX(Delta);
-		mTheme.setClipLeft(mLayout.getLayoutClipLeft());
-		mTheme.setClipRight(mLayout.getLayoutClipRight());
+		signed short Delta = mLayout.getLayoutLeft(getBaseWidth()) - mThemeLabel.getLeft();
+		mThemeLabel.moveX(Delta);
+		mThemeLabel.setClipLeft(mLayout.getLayoutClipLeft());
+		mThemeLabel.setClipRight(mLayout.getLayoutClipRight());
 	}
 
 	void layoutY()
 	{
-		signed short Delta = mLayout.getLayoutBottom(getBaseHeight()) - mTheme.getBottom();
-		mTheme.moveY(Delta);
-		mTheme.setClipBottom(mLayout.getLayoutClipBottom());
-		mTheme.setClipTop(mLayout.getLayoutClipTop());
+		signed short Delta = mLayout.getLayoutBottom(getBaseHeight()) - mThemeLabel.getBottom();
+		mThemeLabel.moveY(Delta);
+		mThemeLabel.setClipBottom(mLayout.getLayoutClipBottom());
+		mThemeLabel.setClipTop(mLayout.getLayoutClipTop());
 	}
 
 	bool checkThisContains(signed short X, signed short Y)
@@ -57,18 +56,17 @@ class LabelT :
 
 	public:
 	// Label
-	void init(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Manager)
+	void init(ContainerT & Parent, Theme::ManagerT & ThemeManager)
 	{
 		mParent = &Parent;
-		mWindow = &Window;
-		mTheme.init(Manager);
+		mThemeLabel.init(ThemeManager);
 	}
 
 	/// \brief Set the text that the label displays.
 	void setText(std::u32string const & Text)
 	{
 		mText = Text;
-		mTheme.setText(Text);
+		mThemeLabel.setText(Text);
 		layoutX();
 		mParent->handleChildBaseWidthChanged(this);
 	}
@@ -77,13 +75,13 @@ class LabelT :
 	void moveX(signed short X)
 	{
 		mLayout.moveX(X);
-		mTheme.moveX(X);
+		mThemeLabel.moveX(X);
 	}
 
 	void moveY(signed short Y)
 	{
 		mLayout.moveY(Y);
-		mTheme.moveY(Y);
+		mThemeLabel.moveY(Y);
 	}
 
 	void resizeWidth(signed short X)
@@ -101,25 +99,25 @@ class LabelT :
 	void setClipLeft(signed short X)
 	{
 		mLayout.setClipLeft(X);
-		mTheme.setClipLeft(mLayout.getLayoutClipLeft());
+		mThemeLabel.setClipLeft(mLayout.getLayoutClipLeft());
 	}
 
 	void setClipRight(signed short X)
 	{
 		mLayout.setClipRight(X);
-		mTheme.setClipRight(mLayout.getLayoutClipRight());
+		mThemeLabel.setClipRight(mLayout.getLayoutClipRight());
 	}
 
 	void setClipBottom(signed short Y)
 	{
 		mLayout.setClipBottom(Y);
-		mTheme.setClipBottom(mLayout.getLayoutClipBottom());
+		mThemeLabel.setClipBottom(mLayout.getLayoutClipBottom());
 	}
 
 	void setClipTop(signed short Y)
 	{
 		mLayout.setClipTop(Y);
-		mTheme.setClipTop(mLayout.getLayoutClipTop());
+		mThemeLabel.setClipTop(mLayout.getLayoutClipTop());
 	}
 
 	signed short getLeft() const
@@ -164,23 +162,23 @@ class LabelT :
 
 	signed short getBaseWidth() const
 	{
-		return mTheme.getBaseWidth();
+		return mThemeLabel.getBaseWidth();
 	}
 
 	signed short getBaseHeight() const
 	{
-		return mTheme.getBaseHeight();
+		return mThemeLabel.getBaseHeight();
 	}
 
-	void delegateMouse(signed short, signed short)
+	void delegateMouse(MouseManagerT & MouseManager, signed short, signed short)
 	{
-		mWindow->setMouseHandler(*this);
+		MouseManager.setHandler(*this);
 	}
 
 	// MouseHandler
-	void handleMouseMotion(signed short X, signed short Y) final
+	void handleMouseMotion(MouseManagerT & MouseManager, signed short X, signed short Y) final
 	{
-		if (!checkThisContains(X, Y)) mParent->releaseMouse(X, Y);
+		if (!checkThisContains(X, Y)) mParent->releaseMouse(MouseManager, X, Y);
 	}
 };
 

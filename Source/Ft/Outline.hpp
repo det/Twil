@@ -33,7 +33,7 @@ class OutlineT
 	OutlineT & operator=(OutlineT &) = delete;
 
 	public:
-	OutlineT(LibraryT const &);
+	OutlineT();
 	~OutlineT();
 
 	/// \brief Reserve enough space to hold an amount of points

@@ -18,13 +18,6 @@ class WindowT
 	// with all kinds of generically named macros such as "None"
 	void * mContext;
 
-	protected:
-	/// \brief Make this window the current rendering context.
-	void makeCurrent();
-
-	/// \brief Swap the front and back buffers.
-	void swapBuffers();
-
 	// Non-copyable
 	WindowT(WindowT &) = delete;
 	WindowT & operator=(WindowT &) = delete;
@@ -34,19 +27,17 @@ class WindowT
 	WindowT(ApplicationT &);
 	~WindowT();
 
-	/// \brief Show the window.
+	/// \brief Make this window the current rendering context.
+	void makeCurrent();
+
+	/// \brief Swap the front and back buffers.
+	void swapBuffers();
+
+	// Documented in Ui::Window
 	void show();
-
-	/// \brief Hide the window.
 	void hide();
-
-	/// \brief Set whether the window is fullscreen.
 	void setFullscreen(bool IsFullScreen);
-
-	/// \brief Resize the window.
 	void resize(unsigned short Width, unsigned short Height);
-
-	/// \brief Set the title.
 	void setTitle(char const * String);
 };
 

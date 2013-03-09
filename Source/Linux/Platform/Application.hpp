@@ -52,6 +52,9 @@ class ApplicationT
 	{
 		assert(mRunning == false);
 
+		auto & MouseManager = Window.getMouseManager();
+//		auto & KeyboardManager = Window.getKeyboardManager();
+
 		mRunning = true;
 		while (mRunning)  {
 			// We call update on the Window when all queued events have been proccessed
@@ -69,41 +72,41 @@ class ApplicationT
 			case XCB_ENTER_NOTIFY: {
 				auto Event = reinterpret_cast<xcb_enter_notify_event_t *>(GenericEvent);
 				signed short Y = Window.getHeight() - Event->event_y;
-				Window.sendMouseEnterWindow(Event->event_x, Y);
+				MouseManager.handleMouseEnterWindow(Event->event_x, Y);
 			} break;
 
 			case XCB_LEAVE_NOTIFY: {
 				auto Event = reinterpret_cast<xcb_leave_notify_event_t *>(GenericEvent);
 				signed short Y = Window.getHeight() - Event->event_y;
-				Window.sendMouseLeaveWindow(Event->event_x, Y);
+				MouseManager.handleMouseLeaveWindow(Event->event_x, Y);
 			} break;
 
 			case XCB_MOTION_NOTIFY: {
 				auto Event = reinterpret_cast<xcb_motion_notify_event_t *>(GenericEvent);
 				signed short Y = Window.getHeight() - Event->event_y;
-				Window.sendMouseMotion(Event->event_x, Y);
+				MouseManager.handleMouseMotion(Event->event_x, Y);
 			} break;
 
 			case XCB_BUTTON_PRESS: {
 				auto Event = reinterpret_cast<xcb_button_press_event_t *>(GenericEvent);
 				signed short Y = Window.getHeight() - Event->event_y;
-				Window.sendButtonPress(Event->event_x, Y, Event->detail);
+				MouseManager.handleButtonPress(Event->event_x, Y, Event->detail);
 			} break;
 
 			case XCB_BUTTON_RELEASE: {
 				auto Event = reinterpret_cast<xcb_button_press_event_t *>(GenericEvent);
 				signed short Y = Window.getHeight() - Event->event_y;
-				Window.sendButtonRelease(Event->event_x, Y, Event->detail);
+				MouseManager.handleButtonRelease(Event->event_x, Y, Event->detail);
 			} break;
 
 			case XCB_KEY_PRESS: {
 //				auto Keysym = XLookupKeysym(&Event.xkey, 0);
-//				Window.sendKeyPress(static_cast<KeyT>(Keysym));
+//				KeyboardManager.handleKeyPress(static_cast<KeyT>(Keysym));
 			} break;
 
 			case XCB_KEY_RELEASE: {
 //				auto Keysym = XLookupKeysym(&Event.xkey, 0);
-//				Window.sendKeyRelease(static_cast<KeyT>(Keysym));
+//				KeyboardManager.handleKeyRelease(static_cast<KeyT>(Keysym));
 			} break;
 
 			case XCB_CONFIGURE_NOTIFY: {

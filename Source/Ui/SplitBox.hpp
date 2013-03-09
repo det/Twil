@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Container.hpp"
-#include "WindowBase.hpp"
+#include "MouseManager.hpp"
 #include "Theme/Manager.hpp"
 
 namespace Twil {
@@ -49,11 +49,11 @@ class SplitBoxBaseT :
 
 	public:
 	// SplitBox
-	void init(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Manager)
+	void init(ContainerT & Parent, Theme::ManagerT & ThemeManager)
 	{
 		mParent = &Parent;
-		mFirst.init(*this, Window, Manager);
-		mSecond.init(*this, Window, Manager);
+		mFirst.init(*this, ThemeManager);
+		mSecond.init(*this, ThemeManager);
 	}
 
 	/// \returns a reference to the first child.
@@ -175,7 +175,7 @@ class SplitBoxHorizontalT :
 		return std::max(mFirst.getBaseHeight(), mSecond.getBaseHeight());
 	}
 
-	void delegateMouse(signed short X, signed short Y)
+	void delegateMouse(MouseManagerT & MouseManager, signed short X, signed short Y)
 	{
 		if (X < mSecond.getLeft()) mFirst.delegateMouse(X, Y);
 		else mSecond.delegateMouse(X, Y);
@@ -235,17 +235,17 @@ class SplitBoxVerticalT :
 		return mFirst.getBaseHeight() + mSecond.getBaseHeight();
 	}
 
-	void delegateMouse(signed short X, signed short Y)
+	void delegateMouse(MouseManagerT & MouseManager, signed short X, signed short Y)
 	{
-		if (Y < mSecond.getBottom()) mFirst.delegateMouse(X, Y);
-		else mSecond.delegateMouse(X, Y);
+		if (Y < mSecond.getBottom()) mFirst.delegateMouse(MouseManager, X, Y);
+		else mSecond.delegateMouse(MouseManager, X, Y);
 	}
 
 	// Container
-	void releaseMouse(signed short X, signed short Y) final
+	void releaseMouse(MouseManagerT & MouseManager, signed short X, signed short Y) final
 	{
-		if (checkThisContains(X, Y)) delegateMouse(X, Y);
-		else mParent->releaseMouse(X, Y);
+		if (checkThisContains(X, Y)) delegateMouse(MouseManager, X, Y);
+		else mParent->releaseMouse(MouseManager, X, Y);
 	}
 
 	void handleChildBaseWidthChanged(void *) final
@@ -267,10 +267,10 @@ class SplitBoxT<true, true, FirstT, SecondT> :
 	public SplitBoxHorizontalT<FirstT, SecondT>
 {
 	protected:
-	using SplitBoxBaseT<FirstT, SecondT>::mParent;
-	using SplitBoxBaseT<FirstT, SecondT>::mFirst;
-	using SplitBoxBaseT<FirstT, SecondT>::mSecond;
-	using SplitBoxBaseT<FirstT, SecondT>::getMouseRight;
+	using SplitBoxHorizontalT<FirstT, SecondT>::mParent;
+	using SplitBoxHorizontalT<FirstT, SecondT>::mFirst;
+	using SplitBoxHorizontalT<FirstT, SecondT>::mSecond;
+	using SplitBoxHorizontalT<FirstT, SecondT>::getMouseRight;
 
 	void layout()
 	{
@@ -283,9 +283,9 @@ class SplitBoxT<true, true, FirstT, SecondT> :
 
 	public:
 	// SplitBox
-	void init(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Manager)
+	void init(ContainerT & Parent, MouseManagerT & MouseManager, Theme::ManagerT & ThemeManager)
 	{
-		SplitBoxHorizontalT<FirstT, SecondT>::init(Parent, Window, Manager);
+		SplitBoxHorizontalT<FirstT, SecondT>::init(Parent, MouseManager, ThemeManager);
 		layout();
 	}
 
@@ -327,10 +327,10 @@ class SplitBoxT<true, false, FirstT, SecondT> :
 	public SplitBoxHorizontalT<FirstT, SecondT>
 {
 	protected:
-	using SplitBoxBaseT<FirstT, SecondT>::mParent;
-	using SplitBoxBaseT<FirstT, SecondT>::mFirst;
-	using SplitBoxBaseT<FirstT, SecondT>::mSecond;
-	using SplitBoxBaseT<FirstT, SecondT>::getMouseLeft;
+	using SplitBoxHorizontalT<FirstT, SecondT>::mParent;
+	using SplitBoxHorizontalT<FirstT, SecondT>::mFirst;
+	using SplitBoxHorizontalT<FirstT, SecondT>::mSecond;
+	using SplitBoxHorizontalT<FirstT, SecondT>::getMouseLeft;
 
 	void layout()
 	{
@@ -343,9 +343,9 @@ class SplitBoxT<true, false, FirstT, SecondT> :
 
 	public:
 	// SplitBox
-	void init(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Manager)
+	void init(ContainerT & Parent, MouseManagerT & MouseManager, Theme::ManagerT & ThemeManager)
 	{
-		SplitBoxHorizontalT<FirstT, SecondT>::init(Parent, Window, Manager);
+		SplitBoxHorizontalT<FirstT, SecondT>::init(Parent, MouseManager, ThemeManager);
 		layout();
 	}
 
@@ -388,10 +388,10 @@ class SplitBoxT<false, true, FirstT, SecondT> :
 	public SplitBoxVerticalT<FirstT, SecondT>
 {
 	protected:
-	using SplitBoxBaseT<FirstT, SecondT>::mParent;
-	using SplitBoxBaseT<FirstT, SecondT>::mFirst;
-	using SplitBoxBaseT<FirstT, SecondT>::mSecond;
-	using SplitBoxBaseT<FirstT, SecondT>::getMouseTop;
+	using SplitBoxVerticalT<FirstT, SecondT>::mParent;
+	using SplitBoxVerticalT<FirstT, SecondT>::mFirst;
+	using SplitBoxVerticalT<FirstT, SecondT>::mSecond;
+	using SplitBoxVerticalT<FirstT, SecondT>::getMouseTop;
 
 	void layout()
 	{
@@ -404,9 +404,9 @@ class SplitBoxT<false, true, FirstT, SecondT> :
 
 	public:
 	// SplitBox
-	void init(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Manager)
+	void init(ContainerT & Parent, Theme::ManagerT & ThemeManager)
 	{
-		SplitBoxVerticalT<FirstT, SecondT>::init(Parent, Window, Manager);
+		SplitBoxVerticalT<FirstT, SecondT>::init(Parent, ThemeManager);
 		layout();
 	}
 
@@ -448,10 +448,10 @@ class SplitBoxT<false, false, FirstT, SecondT> :
 	public SplitBoxVerticalT<FirstT, SecondT>
 {
 	protected:
-	using SplitBoxBaseT<FirstT, SecondT>::mParent;
-	using SplitBoxBaseT<FirstT, SecondT>::mFirst;
-	using SplitBoxBaseT<FirstT, SecondT>::mSecond;
-	using SplitBoxBaseT<FirstT, SecondT>::getMouseBottom;
+	using SplitBoxVerticalT<FirstT, SecondT>::mParent;
+	using SplitBoxVerticalT<FirstT, SecondT>::mFirst;
+	using SplitBoxVerticalT<FirstT, SecondT>::mSecond;
+	using SplitBoxVerticalT<FirstT, SecondT>::getMouseBottom;
 
 	void layout()
 	{
@@ -464,9 +464,9 @@ class SplitBoxT<false, false, FirstT, SecondT> :
 
 	public:
 	// SplitBox
-	void init(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Manager)
+	void init(ContainerT & Parent, Theme::ManagerT & ThemeManager)
 	{
-		SplitBoxVerticalT<FirstT, SecondT>::init(Parent, Window, Manager);
+		SplitBoxVerticalT<FirstT, SecondT>::init(Parent, ThemeManager);
 		layout();
 	}
 

@@ -127,7 +127,7 @@ class StreamArrayT
 			compact();
 			mNeedsCompact = false;
 		}
-		if (mNeedsRedraw) {
+		if (mNeedsCompact || mNeedsRedraw) {
 			upload();
 			mNeedsRedraw = false;
 			return true;

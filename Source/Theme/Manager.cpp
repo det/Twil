@@ -7,7 +7,6 @@ namespace Theme {
 
 ManagerT::ManagerT() :
 	mBitmap{mLibrary},
-	mOutline{mLibrary},
 	mStroker{mLibrary},
 	mLabelFace{mLibrary, Settings::Label::Font, 0},
 	mLabelSize{mLabelFace, Settings::Label::Size},
@@ -150,8 +149,8 @@ void ManagerT::markNeedsRedraw()
 
 bool ManagerT::update(unsigned short Width, unsigned short Height)
 {
-	mRedTexture.upload();
-	mRgbaTexture.upload();
+	mRedTexture.update();
+	mRgbaTexture.update();
 	mNeedsRedraw |= mSolidArray.update();
 	mNeedsRedraw |= mOutlineArray.update();
 	mNeedsRedraw |= mBitmapArray.update();

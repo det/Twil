@@ -4,8 +4,9 @@
 #include "Container.hpp"
 #include "Event.hpp"
 #include "KeyboardHandler.hpp"
+#include "KeyboardManager.hpp"
 #include "MouseHandler.hpp"
-#include "WindowBase.hpp"
+#include "MouseManager.hpp"
 #include "Gl/Context.hpp"
 #include "Theme/Manager.hpp"
 
@@ -16,36 +17,80 @@ namespace Ui {
 /// \param T The type of the child widget.
 template <typename T>
 class WindowT :
-	public Platform::WindowT,
-	public WindowBaseT,
 	public ContainerT,
 	public KeyboardHandlerT,
 	public MouseHandlerT
 {
 	private:
-	Theme::ManagerT mManager;
+	Platform::WindowT mPlatformWindow;
+	Theme::ManagerT mThemeManager;
+	KeyboardManagerT mKeyboardManager;
+	MouseManagerT mMouseManager;
 	T mChild;
-	unsigned short mWidth = 0;
-	unsigned short mHeight = 0;
 	bool mIsFullscreen = false;
 
 	// Non-copyable
 	WindowT(WindowT const &) = delete;
 	WindowT & operator=(WindowT const &) = delete;
 
+	bool checkChildContains(signed short X, signed short Y)
+	{
+		return X >= 0 && X <= mChild.getRight() && Y >= 0 && Y <= mChild.getTop();
+	}
+
 	public:
 	// Window
 	EventT<> Deleted;
 
 	WindowT(Platform::ApplicationT & Application) :
-		Platform::WindowT{Application}
+		mPlatformWindow{Application}
 	{}
 
 	void init()
 	{
-		mKeyboardHandler = this;
-		mMouseHandler = this;
-		mChild.init(*this, *this, mManager);
+		mMouseManager.setHandler(*this);
+		mKeyboardManager.setHandler(*this);
+		mChild.init(*this, mThemeManager);
+	}
+
+	MouseManagerT & getMouseManager()
+	{
+		return mMouseManager;
+	}
+
+	KeyboardManagerT & getKeyboardManager()
+	{
+		return mKeyboardManager;
+	}
+
+	/// \brief Show the window.
+	void show()
+	{
+		mPlatformWindow.show();
+	}
+
+	/// \brief Hide the window.
+	void hide()
+	{
+		mPlatformWindow.hide();
+	}
+
+	/// \brief Set whether the window is fullscreen.
+	void setFullscreen(bool IsFullScreen)
+	{
+		mPlatformWindow.setFullscreen(IsFullScreen);
+	}
+
+	/// \brief Resize the window.
+	void resize(unsigned short Width, unsigned short Height)
+	{
+		mPlatformWindow.resize(Width, Height);
+	}
+
+	/// \brief Set the title.
+	void setTitle(char const * String)
+	{
+		mPlatformWindow.setTitle(String);
 	}
 
 	/// \brief Toggle the fullscreen status of the window.
@@ -58,13 +103,13 @@ class WindowT :
 	/// \returns The width.
 	unsigned short getWidth() const
 	{
-		return mWidth;
+		return mChild.getRight();
 	}
 
 	/// \returns The height.
 	unsigned short getHeight() const
 	{
-		return mHeight;
+		return mChild.getTop();
 	}
 
 	/// \returns A reference to the child.
@@ -79,10 +124,9 @@ class WindowT :
 		return mChild;
 	}
 
-	// Window
 	void handleExposed()
 	{
-		mManager.markNeedsRedraw();
+		mThemeManager.markNeedsRedraw();
 	}
 
 	void handleDeleted()
@@ -92,23 +136,19 @@ class WindowT :
 
 	void handleResize(unsigned short Width, unsigned short Height)
 	{
-		mWidth = Width;
-		mHeight = Height;
-		auto ChildWidth = mChild.getRight();
-		auto ChildHeight = mChild.getTop();
-		if (Width != ChildWidth) mChild.resizeWidth(mWidth - ChildWidth);
-		if (Height != ChildHeight) mChild.resizeHeight(mHeight - ChildHeight);
+		if (Width != getWidth()) mChild.resizeWidth(Width - getWidth());
+		if (Height != getHeight()) mChild.resizeHeight(Height - getHeight());
 	}
 
 	void update()
 	{
-		if (mManager.update(mWidth, mHeight)) swapBuffers();
+		if (mThemeManager.update(getWidth(), getHeight())) mPlatformWindow.swapBuffers();
 	}
 
 	// Container
-	void releaseMouse(signed short, signed short) final
+	void releaseMouse(MouseManagerT & Manager, signed short, signed short) final
 	{
-		setMouseHandler(*this);
+		Manager.setHandler(*this);
 	}
 
 	void handleChildBaseWidthChanged(void *) final
@@ -118,14 +158,9 @@ class WindowT :
 	{}
 
 	// MouseHandler
-	void handleMouseEnterWindow(signed short X, signed short Y) final
+	void handleMouseMotion(MouseManagerT & Manager, signed short X, signed short Y) final
 	{
-		mChild.delegateMouse(X, Y);
-	}
-
-	void handleMouseMotion(signed short X, signed short Y) final
-	{
-		if (X >= 0 && X <= mWidth && Y >= 0 && Y <= mHeight) mChild.delegateMouse(X, Y);
+		if (checkChildContains(X, Y)) mChild.delegateMouse(Manager, X, Y);
 	}
 };
 
