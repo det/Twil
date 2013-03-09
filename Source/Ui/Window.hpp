@@ -23,21 +23,30 @@ class WindowT :
 	public MouseHandlerT
 {
 	private:
-	Theme::ManagerT mThemeManager;
+	Theme::ManagerT mManager;
 	T mChild;
 	unsigned short mWidth = 0;
 	unsigned short mHeight = 0;
 	bool mIsFullscreen = false;
+
+	// Non-copyable
+	WindowT(WindowT const &) = delete;
+	WindowT & operator=(WindowT const &) = delete;
 
 	public:
 	// Window
 	EventT<> Deleted;
 
 	WindowT(Platform::ApplicationT & Application) :
-		Platform::WindowT{Application},
-		WindowBaseT{this, this},
-		mChild{*this, *this, mThemeManager}
+		Platform::WindowT{Application}
 	{}
+
+	void init()
+	{
+		mKeyboardHandler = this;
+		mMouseHandler = this;
+		mChild.init(*this, *this, mManager);
+	}
 
 	/// \brief Toggle the fullscreen status of the window.
 	void toggleFullscreen()
@@ -95,7 +104,7 @@ class WindowT :
 	void update()
 	{
 		if (mNeedsDraw) {
-			mThemeManager.draw(mWidth, mHeight);
+			mManager.draw(mWidth, mHeight);
 			swapBuffers();
 			mNeedsDraw = false;
 		}

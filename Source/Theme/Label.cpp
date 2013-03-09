@@ -2,29 +2,27 @@
 
 #include "Manager.hpp"
 
-#include <iostream>
-
 namespace Twil {
 namespace Theme {
 
-LabelT::LabelT(ManagerT & Manager) :
-	mManager(Manager) // Gcc bug prevents brace initialization syntax here
+void LabelT::init(ManagerT & Manager)
 {
-	mManager.mSolidArray.allocate(*this, 0);
-	mHeight = mManager.mLabelSize.getHeight() / 64;
+	mManager = &Manager;
+	mManager->mSolidArray.allocate(*this, 0);
+	mHeight = mManager->mLabelSize.getHeight() / 64;
 }
 
 void LabelT::setText(std::u32string const & Text)
 {
 	mGlyphs.clear();
-	auto & Face = mManager.mLabelFace;
-	Face.setActiveSize(mManager.mLabelSize);
+	auto & Face = mManager->mLabelFace;
+	Face.setActiveSize(mManager->mLabelSize);
 
-	FT_Vector Pen{0, -mManager.mLabelSize.getDescender()};
-	GlyphEntryT PreviousEntry{}; // Zero-initialize
+	FT_Vector Pen{0, -mManager->mLabelSize.getDescender()};
+	GlyphEntryT PreviousEntry{};
 
 	for (auto Codepoint : Text) {
-		auto Entry = mManager.loadGlyphEntry(Face, Codepoint);
+		auto Entry = mManager->loadGlyphEntry(Face, Codepoint);
 
 		// We can hit a divide by 0 in clipping without this check
 		if (Entry.Width == 0 || Entry.Height == 0) continue;
@@ -55,32 +53,32 @@ void LabelT::setText(std::u32string const & Text)
 	}
 
 	mWidth = Pen.x / 64;
-	mManager.mSolidArray.resize(*this, mGlyphs.size());
-	mManager.mSolidArray.markNeedsRedraw(*this);
+	mManager->mSolidArray.resize(*this, mGlyphs.size());
+	mManager->mSolidArray.markNeedsRedraw(*this);
 }
 
 void LabelT::setClipLeft(signed short X)
 {
 	mClipLeft = X;
-	mManager.mSolidArray.markNeedsRedraw(*this);
+	mManager->mSolidArray.markNeedsRedraw(*this);
 }
 
 void LabelT::setClipRight(signed short X)
 {
 	mClipRight = X;
-	mManager.mSolidArray.markNeedsRedraw(*this);
+	mManager->mSolidArray.markNeedsRedraw(*this);
 }
 
 void LabelT::setClipBottom(signed short Y)
 {
 	mClipBottom = Y;
-	mManager.mSolidArray.markNeedsRedraw(*this);
+	mManager->mSolidArray.markNeedsRedraw(*this);
 }
 
 void LabelT::setClipTop(signed short Y)
 {
 	mClipTop = Y;
-	mManager.mSolidArray.markNeedsRedraw(*this);
+	mManager->mSolidArray.markNeedsRedraw(*this);
 }
 
 void LabelT::draw(Vertex::FillSolidT * Vertices) const
@@ -125,7 +123,7 @@ void LabelT::moveX(signed short X)
 	mLeft += X;
 	mClipLeft += X;
 	mClipRight += X;
-	mManager.mSolidArray.markNeedsRedraw(*this);
+	mManager->mSolidArray.markNeedsRedraw(*this);
 }
 
 void LabelT::moveY(signed short Y)
@@ -133,7 +131,7 @@ void LabelT::moveY(signed short Y)
 	mBottom += Y;
 	mClipBottom += Y;
 	mClipTop += Y;
-	mManager.mSolidArray.markNeedsRedraw(*this);
+	mManager->mSolidArray.markNeedsRedraw(*this);
 }
 
 signed short LabelT::getLeft() const

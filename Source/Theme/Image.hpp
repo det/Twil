@@ -17,7 +17,7 @@ class ImageT :
 	DrawableT<Vertex::BitmapT>
 {
 	private:	
-	ManagerT & mManager;
+	ManagerT * mManager;
 	unsigned int mOffset = 0;
 	signed short mLeft = 0;
 	signed short mBottom = 0;
@@ -29,7 +29,7 @@ class ImageT :
 	short mClipTop = 0;
 
 	public:
-	ImageT(ManagerT &);
+	void init(ManagerT &);
 
 	/// \brief Sets the text to display.
 	void setImage(char const *);

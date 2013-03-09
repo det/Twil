@@ -12,10 +12,10 @@ namespace Twil {
 namespace Ft {
 
 FaceT::FaceT(LibraryT & Library, char const * Path, FT_Long Index) :
-	mLibrary(Library), // Gcc bug prevents brace initialization syntax here
+	mLibrary{&Library},
 	mId{nullptr}
 {
-	auto Error = FT_New_Face(mLibrary.mId, Path, Index, &mId);
+	auto Error = FT_New_Face(mLibrary->mId, Path, Index, &mId);
 	if (Error) throw std::runtime_error{"Unable to load font face"};
 }
 

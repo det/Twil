@@ -2,7 +2,7 @@
 
 #include "Key.hpp"
 #include "Window.hpp"
-#include "Data/FreeDeleter.hpp"
+#include "Data/Memory.hpp"
 
 #include <cassert>
 #include <cstdlib>

@@ -41,7 +41,7 @@ class SubBitmapIteratorT : public std::iterator<std::input_iterator_tag, unsigne
 class BitmapT
 {
 	private:
-	LibraryT & mLibrary;
+	LibraryT * mLibrary;
 	FT_Bitmap mId;
 	std::size_t mCapacity;
 

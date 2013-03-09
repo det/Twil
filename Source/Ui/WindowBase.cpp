@@ -6,12 +6,6 @@
 namespace Twil {
 namespace Ui {
 
-WindowBaseT::WindowBaseT(KeyboardHandlerT * KeyboardHandler, MouseHandlerT * MouseHandler) :
-	mKeyboardHandler{KeyboardHandler},
-	mMouseHandler{MouseHandler},
-	mNeedsDraw{false}
-{}
-
 void WindowBaseT::setKeyboardHandler(KeyboardHandlerT & KeyboardHandler)
 {
 	mKeyboardHandler = &KeyboardHandler;

@@ -14,7 +14,6 @@ class HelloT
 {
 	private:
 	using CenteredT = Twil::Ui::CenteredT;
-
 	using ImageT = Twil::Ui::ImageT<CenteredT>;
 	using LabelT = Twil::Ui::LabelT<CenteredT>;
 	using ImageButtonT = Twil::Ui::ButtonT<ImageT>;

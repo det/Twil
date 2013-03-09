@@ -25,7 +25,7 @@ class LabelT :
 	DrawableT<Vertex::FillSolidT>
 {
 	private:	
-	ManagerT & mManager;
+	ManagerT * mManager;
 	std::vector<LabelGlyph> mGlyphs;
 	signed short mLeft = 0;
 	signed short mBottom = 0;
@@ -37,7 +37,7 @@ class LabelT :
 	short mClipTop = 0;
 
 	public:
-	LabelT(ManagerT &);
+	void init(ManagerT &);
 
 	/// \brief Sets the text to display.
 	void setText(std::u32string const & Text);

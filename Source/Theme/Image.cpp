@@ -5,50 +5,50 @@
 namespace Twil {
 namespace Theme {
 
-ImageT::ImageT(ManagerT & Manager) :
-	mManager(Manager) // Gcc bug prevents brace initialization syntax here
+void ImageT::init(ManagerT & Manager)
 {
-	mManager.mBitmapArray.allocate(*this, 1);
+	mManager = &Manager;
+	mManager->mBitmapArray.allocate(*this, 1);
 }
 
 void ImageT::setImage(char const * Path)
 {
-	auto Entry = mManager.loadBitmapEntry(Path);
+	auto Entry = mManager->loadBitmapEntry(Path);
 	mOffset = Entry.Offset;
 	mWidth = Entry.Width;
 	mHeight = Entry.Height;
-	mManager.mBitmapArray.markNeedsRedraw(*this);
+	mManager->mBitmapArray.markNeedsRedraw(*this);
 }
 
 void ImageT::setClipLeft(signed short X)
 {
 	mClipLeft = X;
-	mManager.mBitmapArray.markNeedsRedraw(*this);
+	mManager->mBitmapArray.markNeedsRedraw(*this);
 }
 
 void ImageT::setClipRight(signed short X)
 {
 	mClipRight = X;
-	mManager.mBitmapArray.markNeedsRedraw(*this);
+	mManager->mBitmapArray.markNeedsRedraw(*this);
 }
 
 void ImageT::setClipBottom(signed short Y)
 {
 	mClipBottom = Y;
-	mManager.mBitmapArray.markNeedsRedraw(*this);
+	mManager->mBitmapArray.markNeedsRedraw(*this);
 }
 
 void ImageT::setClipTop(signed short Y)
 {
 	mClipTop = Y;
-	mManager.mBitmapArray.markNeedsRedraw(*this);
+	mManager->mBitmapArray.markNeedsRedraw(*this);
 }
 
 void ImageT::draw(Vertex::BitmapT * Vertices) const
 {
 	// Avoid divide by 0
 	if (mWidth == 0 || mHeight == 0) {
-		Vertices[0] = {}; // Zero-initizialize
+		Vertices[0] = {};
 		return;
 	}
 
@@ -90,7 +90,7 @@ void ImageT::moveX(signed short X)
 	mClipLeft += X;
 	mClipRight += X;
 
-	mManager.mBitmapArray.markNeedsRedraw(*this);
+	mManager->mBitmapArray.markNeedsRedraw(*this);
 }
 
 void ImageT::moveY(signed short Y)
@@ -99,7 +99,7 @@ void ImageT::moveY(signed short Y)
 	mClipBottom += Y;
 	mClipTop += Y;
 
-	mManager.mBitmapArray.markNeedsRedraw(*this);
+	mManager->mBitmapArray.markNeedsRedraw(*this);
 }
 
 signed short ImageT::getLeft() const

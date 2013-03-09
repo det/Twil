@@ -74,7 +74,7 @@ class ManagerT
 	Program::FillSolidT mFillSolidProgram;
 	Program::OutlineGradientT mOutlineGradientProgram;
 
-	std::unordered_map<std::string, BitmapEntryT> mBitmapEntries;
+	std::unordered_map<char const *, BitmapEntryT> mBitmapEntries;
 	std::unordered_map<char32_t, GlyphEntryT> mFontEntries;
 
 	// Button offsets

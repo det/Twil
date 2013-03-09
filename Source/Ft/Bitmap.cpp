@@ -21,7 +21,7 @@ void renderSpans(int Y, int Count, FT_Span const * Spans, void * User)
 
 void renderOutline(FT_Library & Library, FT_Outline & Outline, FT_Bitmap & Bitmap)
 {
-	FT_Raster_Params Params{}; // zero-initialize
+	FT_Raster_Params Params{};
 	Params.flags = FT_RASTER_FLAG_AA | FT_RASTER_FLAG_DIRECT;
 	Params.gray_spans = renderSpans;
 	Params.user = &Bitmap;
@@ -76,8 +76,8 @@ unsigned char SubBitmapIteratorT::operator*() const
 // Bitmap
 
 BitmapT::BitmapT(LibraryT & Library) :
-	mLibrary(Library), // Gcc bug prevents brace initialization syntax here
-	mId{}, // Zero initialize
+	mLibrary{&Library},
+	mId{},
 	mCapacity{0}
 {
 	mId.pixel_mode = FT_PIXEL_MODE_GRAY;
@@ -108,12 +108,12 @@ void BitmapT::resize(std::size_t Width, std::size_t Height)
 
 void BitmapT::render(OutlineT & Outline)
 {
-	renderOutline(mLibrary.mId, Outline.mId, mId);
+	renderOutline(mLibrary->mId, Outline.mId, mId);
 }
 
 void BitmapT::render(FaceT & Face)
 {
-	renderOutline(mLibrary.mId, Face.mId->glyph->outline, mId);
+	renderOutline(mLibrary->mId, Face.mId->glyph->outline, mId);
 }
 
 BitmapT::~BitmapT()

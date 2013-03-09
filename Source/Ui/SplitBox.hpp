@@ -13,7 +13,7 @@ class SplitBoxBaseT :
 	public ContainerT
 {
 	protected:
-	ContainerT & mParent;
+	ContainerT * mParent;
 	FirstT mFirst;
 	SecondT mSecond;
 
@@ -49,11 +49,12 @@ class SplitBoxBaseT :
 
 	public:
 	// SplitBox
-	SplitBoxBaseT(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Theme) :
-		mParent(Parent), // Gcc bug prevents brace initialization syntax here
-		mFirst{*this, Window, Theme},
-		mSecond{*this, Window, Theme}
-	{}
+	void init(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Manager)
+	{
+		mParent = &Parent;
+		mFirst.init(*this, Window, Manager);
+		mSecond.init(*this, Window, Manager);
+	}
 
 	/// \returns a reference to the first child.
 	FirstT & getFirst()
@@ -145,11 +146,6 @@ class SplitBoxHorizontalT :
 	using SplitBoxBaseT<FirstT, SecondT>::checkThisContains;
 
 	public:
-	// SplitBox
-	SplitBoxHorizontalT(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Theme) :
-		SplitBoxBaseT<FirstT, SecondT>{Parent, Window, Theme}
-	{}
-
 	// Widget
 	void resizeHeight(signed short Y)
 	{
@@ -189,12 +185,12 @@ class SplitBoxHorizontalT :
 	void releaseMouse(signed short X, signed short Y) final
 	{
 		if (checkThisContains(X, Y)) delegateMouse(X, Y);
-		else mParent.releaseMouse(X, Y);
+		else mParent->releaseMouse(X, Y);
 	}
 
 	void handleChildBaseHeightChanged(void *) final
 	{
-		mParent.handleChildBaseHeightChanged(this);
+		mParent->handleChildBaseHeightChanged(this);
 	}
 };
 
@@ -210,11 +206,6 @@ class SplitBoxVerticalT :
 	using SplitBoxBaseT<FirstT, SecondT>::checkThisContains;
 
 	public:
-	// SplitBox
-	SplitBoxVerticalT(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Theme) :
-		SplitBoxBaseT<FirstT, SecondT>{Parent, Window, Theme}
-	{}
-
 	// Widget
 	void resizeWidth(signed short X)
 	{
@@ -254,12 +245,12 @@ class SplitBoxVerticalT :
 	void releaseMouse(signed short X, signed short Y) final
 	{
 		if (checkThisContains(X, Y)) delegateMouse(X, Y);
-		else mParent.releaseMouse(X, Y);
+		else mParent->releaseMouse(X, Y);
 	}
 
 	void handleChildBaseWidthChanged(void *) final
 	{
-		mParent.handleChildBaseWidthChanged(this);
+		mParent->handleChildBaseWidthChanged(this);
 	}
 };
 
@@ -292,9 +283,9 @@ class SplitBoxT<true, true, FirstT, SecondT> :
 
 	public:
 	// SplitBox
-	SplitBoxT(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Theme) :
-		SplitBoxHorizontalT<FirstT, SecondT>{Parent, Window, Theme}
+	void init(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Manager)
 	{
+		SplitBoxHorizontalT<FirstT, SecondT>::init(Parent, Window, Manager);
 		layout();
 	}
 
@@ -321,7 +312,7 @@ class SplitBoxT<true, true, FirstT, SecondT> :
 	void handleChildBaseWidthChanged(void * Child) final
 	{
 		if (Child == &mFirst) layout();
-		mParent.handleChildBaseWidthChanged(this);
+		mParent->handleChildBaseWidthChanged(this);
 	}
 };
 
@@ -352,9 +343,9 @@ class SplitBoxT<true, false, FirstT, SecondT> :
 
 	public:
 	// SplitBox
-	SplitBoxT(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Theme) :
-		SplitBoxHorizontalT<FirstT, SecondT>{Parent, Window, Theme}
+	void init(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Manager)
 	{
+		SplitBoxHorizontalT<FirstT, SecondT>::init(Parent, Window, Manager);
 		layout();
 	}
 
@@ -382,7 +373,7 @@ class SplitBoxT<true, false, FirstT, SecondT> :
 	void handleChildBaseWidthChanged(void * Child) final
 	{
 		if (Child == &mSecond) layout();
-		mParent.handleChildBaseWidthChanged(this);
+		mParent->handleChildBaseWidthChanged(this);
 	}
 };
 
@@ -413,9 +404,9 @@ class SplitBoxT<false, true, FirstT, SecondT> :
 
 	public:
 	// SplitBox
-	SplitBoxT(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Theme) :
-		SplitBoxVerticalT<FirstT, SecondT>{Parent, Window, Theme}
+	void init(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Manager)
 	{
+		SplitBoxVerticalT<FirstT, SecondT>::init(Parent, Window, Manager);
 		layout();
 	}
 
@@ -442,7 +433,7 @@ class SplitBoxT<false, true, FirstT, SecondT> :
 	void handleChildBaseHeightChanged(void * Child) final
 	{
 		if (Child == &mFirst) layout();
-		mParent.handleChildBaseHeightChanged(this);
+		mParent->handleChildBaseHeightChanged(this);
 	}
 };
 
@@ -473,9 +464,9 @@ class SplitBoxT<false, false, FirstT, SecondT> :
 
 	public:
 	// SplitBox
-	SplitBoxT(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Theme) :
-		SplitBoxVerticalT<FirstT, SecondT>{Parent, Window, Theme}
+	void init(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Manager)
 	{
+		SplitBoxVerticalT<FirstT, SecondT>::init(Parent, Window, Manager);
 		layout();
 	}
 
@@ -503,7 +494,7 @@ class SplitBoxT<false, false, FirstT, SecondT> :
 	void handleChildBaseHeightChanged(void * Child) final
 	{
 		if (Child == &mSecond) layout();
-		mParent.handleChildBaseHeightChanged(this);
+		mParent->handleChildBaseHeightChanged(this);
 	}
 };
 

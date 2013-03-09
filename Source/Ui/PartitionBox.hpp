@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Container.hpp"
-#include "Tuple.hpp"
+#include "Data/Tuple.hpp"
 
 #include <algorithm>
 
@@ -21,8 +21,8 @@ class PartitionBoxBaseT :
 	public ContainerT
 {
 	protected:
-	ContainerT & mParent;
-	TupleT<ArgsT ...> mChildren;
+	ContainerT * mParent;
+	std::tuple<ArgsT ...> mChildren;
 
 	static signed short const mSize = sizeof ... (ArgsT);
 
@@ -38,27 +38,41 @@ class PartitionBoxBaseT :
 
 	public:
 	// PartitionBoxBase
-	PartitionBoxBaseT(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Theme) :
-		mParent(Parent), // Gcc bug prevents brace initialization syntax here
-		mChildren{*this, Window, Theme}
-	{}
+	struct InitFunctorT
+	{
+		ContainerT & Parent;
+		WindowBaseT & Window;
+		Theme::ManagerT & Manager;
+
+		template<typename T>
+		void operator()(T & Child)
+		{
+			Child.init(Parent, Window, Manager);
+		}
+	};
+
+	void init(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Manager)
+	{
+		mParent = &Parent;
+		Data::iterate(mChildren, InitFunctorT{*this, Window, Manager});
+	}
 
 	/// \returns A reference to a child widget.
 	///
 	/// \param I Index of the child
 	template<std::size_t I>
-	typename TupleElementT<I, ArgsT ...>::ElementT & getChild()
+	typename std::tuple_element<I, std::tuple<ArgsT ...>>::type & getChild()
 	{
-		return TupleElementT<I, ArgsT ...>().get(mChildren);
+		return std::get<I>(mChildren);
 	}
 
 	/// \returns A const reference to a child widget.
 	///
 	/// \param I Index of the child
 	template<std::size_t I>
-	typename TupleElementT<I, ArgsT ...>::ElementT const & getChild() const
+	typename std::tuple_element<I, std::tuple<ArgsT ...>>::type const & getChild() const
 	{
-		return TupleElementT<I, ArgsT ...>().get(mChildren);
+		return std::get<I>(mChildren);
 	}
 
 	// Widget
@@ -75,7 +89,7 @@ class PartitionBoxBaseT :
 
 	void moveX(signed short X)
 	{
-		mChildren.iterate(MoveXFunctorT{X});
+		Data::iterate(mChildren, MoveXFunctorT{X});
 	}
 
 	struct MoveYFunctorT
@@ -91,7 +105,7 @@ class PartitionBoxBaseT :
 
 	void moveY(signed short Y)
 	{
-		mChildren.iterate(MoveYFunctorT{Y});
+		Data::iterate(mChildren, MoveYFunctorT{Y});
 	}
 
 	struct SetClipLeftFunctorT
@@ -107,7 +121,7 @@ class PartitionBoxBaseT :
 
 	void setClipLeft(signed short X)
 	{
-		mChildren.iterate(SetClipLeftFunctorT{X});
+		Data::iterate(mChildren, SetClipLeftFunctorT{X});
 	}
 
 	struct SetClipBottomFunctorT
@@ -123,7 +137,7 @@ class PartitionBoxBaseT :
 
 	void setClipBottom(signed short Y)
 	{
-		mChildren.iterate(SetClipBottomFunctorT{Y});
+		Data::iterate(mChildren, SetClipBottomFunctorT{Y});
 	}
 
 	struct SetClipRightFunctorT
@@ -139,7 +153,7 @@ class PartitionBoxBaseT :
 
 	void setClipRight(signed short X)
 	{
-		mChildren.iterate(SetClipRightFunctorT{X});
+		Data::iterate(mChildren, SetClipRightFunctorT{X});
 	}
 
 	struct SetClipTopFunctorT
@@ -155,7 +169,7 @@ class PartitionBoxBaseT :
 
 	void setClipTop(signed short Y)
 	{
-		mChildren.iterate(SetClipTopFunctorT{Y});
+		Data::iterate(mChildren, SetClipTopFunctorT{Y});
 	}
 
 	struct DrawFunctorT
@@ -232,12 +246,12 @@ class PartitionBoxBaseT :
 	// Container
 	void handleChildBaseWidthChanged(void *) final
 	{
-		mParent.handleChildBaseWidthChanged(this);
+		mParent->handleChildBaseWidthChanged(this);
 	}
 
 	void handleChildBaseHeightChanged(void *) final
 	{
-		mParent.handleChildBaseHeightChanged(this);
+		mParent->handleChildBaseHeightChanged(this);
 	}
 };
 
@@ -267,11 +281,6 @@ class PartitionBoxT<true, ArgsT ...> :
 	using PartitionBoxBaseT<ArgsT ...>::getBottom;
 	using PartitionBoxBaseT<ArgsT ...>::getRight;
 	using PartitionBoxBaseT<ArgsT ...>::getTop;
-
-	// PartitionBox
-	PartitionBoxT(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Theme) :
-		PartitionBoxBaseT<ArgsT ...>{Parent, Window, Theme}
-	{}
 
 	// Widget
 	struct ResizeWidthFunctorT
@@ -309,7 +318,7 @@ class PartitionBoxT<true, ArgsT ...> :
 			Mod = -Width % mSize;
 			Direction = -1;
 		}
-		mChildren.iterate(ResizeWidthFunctorT{getLeft(), BoxWidth, Mod, Direction});
+		Data::iterate(mChildren, ResizeWidthFunctorT{getLeft(), BoxWidth, Mod, Direction});
 	}
 
 	struct ResizeHeightFunctorT
@@ -325,20 +334,20 @@ class PartitionBoxT<true, ArgsT ...> :
 
 	void resizeHeight(signed short Y)
 	{
-		mChildren.iterate(ResizeHeightFunctorT{Y});
+		Data::iterate(mChildren, ResizeHeightFunctorT{Y});
 	}
 
 	signed short getBaseWidth() const
 	{
 		signed short MaxWidth = 0;
-		mChildren.iterate(MaxWidthFunctorT{MaxWidth});
+		Data::iterate(mChildren, MaxWidthFunctorT{MaxWidth});
 		return MaxWidth * mSize;
 	}
 
 	signed short getBaseHeight() const
 	{
 		signed short MaxHeight = 0;
-		mChildren.iterate(MaxHeightFunctorT{MaxHeight});
+		Data::iterate(mChildren, MaxHeightFunctorT{MaxHeight});
 		return MaxHeight;
 	}
 
@@ -360,14 +369,14 @@ class PartitionBoxT<true, ArgsT ...> :
 
 	void delegateMouse(signed short X, signed short Y)
 	{
-		mChildren.iterateUntil(DelegateMouseFunctorT{X, Y});
+		Data::iterateUntil(mChildren, DelegateMouseFunctorT{X, Y});
 	}
 
 	// Container
 	void releaseMouse(signed short X, signed short Y) final
 	{
 		if (checkThisContains(X, Y)) delegateMouse(X, Y);
-		else mParent.releaseMouse(X, Y);
+		else mParent->releaseMouse(X, Y);
 	}
 
 };
@@ -396,11 +405,6 @@ class PartitionBoxT<false, ArgsT ...> :
 	using PartitionBoxBaseT<ArgsT ...>::getRight;
 	using PartitionBoxBaseT<ArgsT ...>::getTop;
 
-	// PartitionBox
-	PartitionBoxT(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Theme) :
-		PartitionBoxBaseT<ArgsT ...>{Parent, Window, Theme}
-	{}
-
 	// Widget
 	struct ResizeWidthFunctorT
 	{
@@ -415,7 +419,7 @@ class PartitionBoxT<false, ArgsT ...> :
 
 	void resizeWidth(signed short X)
 	{
-		mChildren.iterate(ResizeWidthFunctorT{X});
+		Data::iterate(mChildren, ResizeWidthFunctorT{X});
 	}
 
 	struct ResizeHeightFunctorT
@@ -453,20 +457,20 @@ class PartitionBoxT<false, ArgsT ...> :
 			Mod = -Height % mSize;
 			Direction = -1;
 		}
-		mChildren.iterate(ResizeHeightFunctorT{getBottom(), BoxHeight, Mod, Direction});
+		Data::iterate(mChildren, ResizeHeightFunctorT{getBottom(), BoxHeight, Mod, Direction});
 	}
 
 	signed short getBaseWidth() const
 	{
 		signed short MaxWidth = 0;
-		mChildren.iterate(MaxWidthFunctorT{MaxWidth});
+		Data::iterate(mChildren, MaxWidthFunctorT{MaxWidth});
 		return MaxWidth;
 	}
 
 	signed short getBaseHeight() const
 	{
 		signed short MaxHeight = 0;
-		mChildren.iterate(MaxHeightFunctorT{MaxHeight});
+		Data::iterate(mChildren, MaxHeightFunctorT{MaxHeight});
 		return MaxHeight * mSize;
 	}
 
@@ -488,14 +492,14 @@ class PartitionBoxT<false, ArgsT ...> :
 
 	void delegateMouse(signed short X, signed short Y)
 	{
-		mChildren.iterateUntil(DelegateMouseFunctorT{X, Y});
+		Data::iterateUntil(mChildren, DelegateMouseFunctorT{X, Y});
 	}
 
 	// Container
 	void releaseMouse(signed short X, signed short Y) final
 	{
 		if (checkThisContains(X, Y)) delegateMouse(X, Y);
-		else mParent.releaseMouse(X, Y);
+		else mParent->releaseMouse(X, Y);
 	}
 };
 

@@ -1,13 +1,26 @@
 #pragma once
 
 namespace Twil {
+namespace Theme {
+
+class ManagerT;
+
+}
+}
+
+namespace Twil {
 namespace Ui {
+
+class ContainerT;
+class WindowBaseT;
 
 // WidgetT
 class WidgetT
 {
 	public:
 	virtual ~WidgetT() {}
+
+	virtual void init(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Manager) = 0;
 
 	/// \brief Move the left and right position and clipping bounds.
 	virtual void moveX(signed short Delta) = 0;

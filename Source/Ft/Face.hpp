@@ -20,7 +20,7 @@ class FaceT
 	friend class StrokerT;
 
 	private:
-	LibraryT & mLibrary;
+	LibraryT * mLibrary;
 	FT_Face mId;
 
 	// Non copyable

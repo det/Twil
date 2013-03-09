@@ -12,11 +12,9 @@ class MouseHandlerT;
 class WindowBaseT
 {
 	protected:
-	KeyboardHandlerT * mKeyboardHandler;
-	MouseHandlerT * mMouseHandler;
-	bool mNeedsDraw;
-
-	WindowBaseT(KeyboardHandlerT *, MouseHandlerT *);
+	KeyboardHandlerT * mKeyboardHandler = nullptr;
+	MouseHandlerT * mMouseHandler = nullptr;
+	bool mNeedsDraw = false;
 
 	public:
 	/// \brief Set the keyboard handler.

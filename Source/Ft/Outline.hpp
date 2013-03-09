@@ -23,7 +23,6 @@ class OutlineT
 	friend class StrokerT;
 
 	private:
-	LibraryT const & mLibrary;
 	FT_Outline mId;
 	FT_Vector mA;
 	short mPointCapacity;

@@ -22,27 +22,27 @@ class LabelT :
 	public MouseHandlerT
 {
 	private:
-	ContainerT & mParent;
-	WindowBaseT & mWindow;
+	ContainerT * mParent;
+	WindowBaseT * mWindow;
 	LayoutT mLayout;
-	Theme::LabelT mThemeLabel;
+	Theme::LabelT mTheme;
 	std::u32string mText;
 
 	private:
 	void layoutX()
 	{
-		signed short Delta = mLayout.getLayoutLeft(getBaseWidth()) - mThemeLabel.getLeft();
-		mThemeLabel.moveX(Delta);
-		mThemeLabel.setClipLeft(mLayout.getLayoutClipLeft());
-		mThemeLabel.setClipRight(mLayout.getLayoutClipRight());
+		signed short Delta = mLayout.getLayoutLeft(getBaseWidth()) - mTheme.getLeft();
+		mTheme.moveX(Delta);
+		mTheme.setClipLeft(mLayout.getLayoutClipLeft());
+		mTheme.setClipRight(mLayout.getLayoutClipRight());
 	}
 
 	void layoutY()
 	{
-		signed short Delta = mLayout.getLayoutBottom(getBaseHeight()) - mThemeLabel.getBottom();
-		mThemeLabel.moveY(Delta);
-		mThemeLabel.setClipBottom(mLayout.getLayoutClipBottom());
-		mThemeLabel.setClipTop(mLayout.getLayoutClipTop());
+		signed short Delta = mLayout.getLayoutBottom(getBaseHeight()) - mTheme.getBottom();
+		mTheme.moveY(Delta);
+		mTheme.setClipBottom(mLayout.getLayoutClipBottom());
+		mTheme.setClipTop(mLayout.getLayoutClipTop());
 	}
 
 	bool checkThisContains(signed short X, signed short Y)
@@ -57,33 +57,34 @@ class LabelT :
 
 	public:
 	// Label
-	LabelT(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Theme) :
-		mParent(Parent), // Gcc bug prevents brace initialization syntax here
-		mWindow(Window), // Gcc bug prevents brace initialization syntax here
-		mThemeLabel{Theme}
-	{}
+	void init(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Manager)
+	{
+		mParent = &Parent;
+		mWindow = &Window;
+		mTheme.init(Manager);
+	}
 
 	/// \brief Set the text that the label displays.
 	void setText(std::u32string const & Text)
 	{
 		mText = Text;
-		mThemeLabel.setText(Text);
-		mWindow.markNeedsDraw();
+		mTheme.setText(Text);
+		mWindow->markNeedsDraw();
 		layoutX();
-		mParent.handleChildBaseWidthChanged(this);
+		mParent->handleChildBaseWidthChanged(this);
 	}
 
 	// Widget
 	void moveX(signed short X)
 	{
 		mLayout.moveX(X);
-		mThemeLabel.moveX(X);
+		mTheme.moveX(X);
 	}
 
 	void moveY(signed short Y)
 	{
 		mLayout.moveY(Y);
-		mThemeLabel.moveY(Y);
+		mTheme.moveY(Y);
 	}
 
 	void resizeWidth(signed short X)
@@ -101,25 +102,25 @@ class LabelT :
 	void setClipLeft(signed short X)
 	{
 		mLayout.setClipLeft(X);
-		mThemeLabel.setClipLeft(mLayout.getLayoutClipLeft());
+		mTheme.setClipLeft(mLayout.getLayoutClipLeft());
 	}
 
 	void setClipRight(signed short X)
 	{
 		mLayout.setClipRight(X);
-		mThemeLabel.setClipRight(mLayout.getLayoutClipRight());
+		mTheme.setClipRight(mLayout.getLayoutClipRight());
 	}
 
 	void setClipBottom(signed short Y)
 	{
 		mLayout.setClipBottom(Y);
-		mThemeLabel.setClipBottom(mLayout.getLayoutClipBottom());
+		mTheme.setClipBottom(mLayout.getLayoutClipBottom());
 	}
 
 	void setClipTop(signed short Y)
 	{
 		mLayout.setClipTop(Y);
-		mThemeLabel.setClipTop(mLayout.getLayoutClipTop());
+		mTheme.setClipTop(mLayout.getLayoutClipTop());
 	}
 
 	signed short getLeft() const
@@ -164,23 +165,23 @@ class LabelT :
 
 	signed short getBaseWidth() const
 	{
-		return mThemeLabel.getBaseWidth();
+		return mTheme.getBaseWidth();
 	}
 
 	signed short getBaseHeight() const
 	{
-		return mThemeLabel.getBaseHeight();
+		return mTheme.getBaseHeight();
 	}
 
 	void delegateMouse(signed short, signed short)
 	{
-		mWindow.setMouseHandler(*this);
+		mWindow->setMouseHandler(*this);
 	}
 
 	// MouseHandler
 	void handleMouseMotion(signed short X, signed short Y) final
 	{
-		if (!checkThisContains(X, Y)) mParent.releaseMouse(X, Y);
+		if (!checkThisContains(X, Y)) mParent->releaseMouse(X, Y);
 	}
 };
 

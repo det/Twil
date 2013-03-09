@@ -3,16 +3,16 @@
 namespace Twil {
 namespace Theme {
 
-ButtonT::ButtonT(ManagerT & Manager) :
-	mManager(Manager) // Gcc bug prevents brace initialization syntax here
+void ButtonT::init(ManagerT & Manager)
 {
-	mManager.mOutlineArray.allocate(*this, 9);
+	mManager = &Manager;
+	mManager->mOutlineArray.allocate(*this, 9);
 }
 
 void ButtonT::setIsDown(bool IsDown)
 {
 	mIsDown = IsDown;
-	mManager.mOutlineArray.markNeedsRedraw(*this);
+	mManager->mOutlineArray.markNeedsRedraw(*this);
 }
 
 signed short ButtonT::getLeftMargin() const
@@ -41,7 +41,7 @@ void ButtonT::moveX(signed short X)
 	mRight += X;
 	mClipLeft += X;
 	mClipRight += X;
-	mManager.mOutlineArray.markNeedsRedraw(*this);
+	mManager->mOutlineArray.markNeedsRedraw(*this);
 }
 
 void ButtonT::moveY(signed short Y)
@@ -50,45 +50,45 @@ void ButtonT::moveY(signed short Y)
 	mTop += Y;
 	mClipBottom += Y;
 	mClipTop += Y;
-	mManager.mOutlineArray.markNeedsRedraw(*this);
+	mManager->mOutlineArray.markNeedsRedraw(*this);
 }
 
 void ButtonT::resizeWidth(signed short X)
 {
 	mRight += X;
 	mClipRight += X;
-	mManager.mOutlineArray.markNeedsRedraw(*this);
+	mManager->mOutlineArray.markNeedsRedraw(*this);
 }
 
 void ButtonT::resizeHeight(signed short Y)
 {
 	mTop += Y;
 	mClipTop += Y;
-	mManager.mOutlineArray.markNeedsRedraw(*this);
+	mManager->mOutlineArray.markNeedsRedraw(*this);
 }
 
 void ButtonT::setClipLeft(signed short X)
 {
 	mClipLeft = X;
-	mManager.mOutlineArray.markNeedsRedraw(*this);
+	mManager->mOutlineArray.markNeedsRedraw(*this);
 }
 
 void ButtonT::setClipRight(signed short X)
 {
 	mClipRight = X;
-	mManager.mOutlineArray.markNeedsRedraw(*this);
+	mManager->mOutlineArray.markNeedsRedraw(*this);
 }
 
 void ButtonT::setClipBottom(signed short Y)
 {
 	mClipBottom = Y;
-	mManager.mOutlineArray.markNeedsRedraw(*this);
+	mManager->mOutlineArray.markNeedsRedraw(*this);
 }
 
 void ButtonT::setClipTop(signed short Y)
 {
 	mClipTop = Y;
-	mManager.mOutlineArray.markNeedsRedraw(*this);
+	mManager->mOutlineArray.markNeedsRedraw(*this);
 }
 
 void ButtonT::draw(Vertex::OutlineGradientT * Vertices) const
@@ -172,8 +172,8 @@ void ButtonT::draw(Vertex::OutlineGradientT * Vertices) const
 	Vertices[0].PositionMin = {ClipLeft, ClipBottom};
 	Vertices[0].PositionMax = {ClipMiddleLeft, ClipMiddleBottom};
 	Vertices[0].TextureSize = {mCornerSize, mCornerSize};
-	Vertices[0].InsideIndex = {mManager.mButtonSwInside};
-	Vertices[0].OutsideIndex = {mManager.mButtonSwOutside};
+	Vertices[0].InsideIndex = {mManager->mButtonSwInside};
+	Vertices[0].OutsideIndex = {mManager->mButtonSwOutside};
 
 	Vertices[1].BorderColor = Settings::Button::BorderColor;
 	Vertices[1].BottomColor = BottomColor;
@@ -185,8 +185,8 @@ void ButtonT::draw(Vertex::OutlineGradientT * Vertices) const
 	Vertices[1].PositionMin = {ClipMiddleRight, ClipBottom};
 	Vertices[1].PositionMax = {ClipRight, ClipMiddleBottom};
 	Vertices[1].TextureSize = {mCornerSize, mCornerSize};
-	Vertices[1].InsideIndex = {mManager.mButtonSeInside};
-	Vertices[1].OutsideIndex = {mManager.mButtonSeOutside};
+	Vertices[1].InsideIndex = {mManager->mButtonSeInside};
+	Vertices[1].OutsideIndex = {mManager->mButtonSeOutside};
 
 	Vertices[2].BorderColor = Settings::Button::BorderColor;
 	Vertices[2].BottomColor = MiddleTopColor;
@@ -198,8 +198,8 @@ void ButtonT::draw(Vertex::OutlineGradientT * Vertices) const
 	Vertices[2].PositionMin = {ClipMiddleRight, ClipMiddleTop};
 	Vertices[2].PositionMax = {ClipRight, ClipTop};
 	Vertices[2].TextureSize = {mCornerSize, mCornerSize};
-	Vertices[2].InsideIndex = {mManager.mButtonNeInside};
-	Vertices[2].OutsideIndex = {mManager.mButtonNeOutside};
+	Vertices[2].InsideIndex = {mManager->mButtonNeInside};
+	Vertices[2].OutsideIndex = {mManager->mButtonNeOutside};
 
 	Vertices[3].BorderColor = Settings::Button::BorderColor;
 	Vertices[3].BottomColor = MiddleTopColor;
@@ -211,8 +211,8 @@ void ButtonT::draw(Vertex::OutlineGradientT * Vertices) const
 	Vertices[3].PositionMin = {ClipLeft, ClipMiddleTop};
 	Vertices[3].PositionMax = {ClipMiddleLeft, ClipTop};
 	Vertices[3].TextureSize = {mCornerSize, mCornerSize};
-	Vertices[3].InsideIndex = {mManager.mButtonNwInside};
-	Vertices[3].OutsideIndex = {mManager.mButtonNwOutside};
+	Vertices[3].InsideIndex = {mManager->mButtonNwInside};
+	Vertices[3].OutsideIndex = {mManager->mButtonNwOutside};
 
 	Vertices[4].BorderColor = Settings::Button::BorderColor;
 	Vertices[4].BottomColor = BottomColor;
@@ -224,8 +224,8 @@ void ButtonT::draw(Vertex::OutlineGradientT * Vertices) const
 	Vertices[4].PositionMin = {ClipMiddleLeft, ClipBottom};
 	Vertices[4].PositionMax = {ClipMiddleRight, ClipMiddleBottom};
 	Vertices[4].TextureSize = {mBorderSize, mCornerSize};
-	Vertices[4].InsideIndex = {mManager.mButtonBottomInside};
-	Vertices[4].OutsideIndex = {mManager.mButtonBottomOutside};
+	Vertices[4].InsideIndex = {mManager->mButtonBottomInside};
+	Vertices[4].OutsideIndex = {mManager->mButtonBottomOutside};
 
 	Vertices[5].BorderColor = Settings::Button::BorderColor;
 	Vertices[5].BottomColor = MiddleTopColor;
@@ -237,8 +237,8 @@ void ButtonT::draw(Vertex::OutlineGradientT * Vertices) const
 	Vertices[5].PositionMin = {ClipMiddleLeft, ClipMiddleTop};
 	Vertices[5].PositionMax = {ClipMiddleRight, ClipTop};
 	Vertices[5].TextureSize = {mBorderSize, mCornerSize};
-	Vertices[5].InsideIndex = {mManager.mButtonTopInside};
-	Vertices[5].OutsideIndex = {mManager.mButtonTopOutside};
+	Vertices[5].InsideIndex = {mManager->mButtonTopInside};
+	Vertices[5].OutsideIndex = {mManager->mButtonTopOutside};
 
 	Vertices[6].BorderColor = Settings::Button::BorderColor;
 	Vertices[6].BottomColor = MiddleBottomColor;
@@ -250,8 +250,8 @@ void ButtonT::draw(Vertex::OutlineGradientT * Vertices) const
 	Vertices[6].PositionMin = {ClipLeft, ClipMiddleBottom};
 	Vertices[6].PositionMax = {ClipMiddleLeft, ClipMiddleTop};
 	Vertices[6].TextureSize = {mCornerSize, mBorderSize};
-	Vertices[6].InsideIndex = {mManager.mButtonLeftInside};
-	Vertices[6].OutsideIndex = {mManager.mButtonLeftOutside};
+	Vertices[6].InsideIndex = {mManager->mButtonLeftInside};
+	Vertices[6].OutsideIndex = {mManager->mButtonLeftOutside};
 
 	Vertices[7].BorderColor = Settings::Button::BorderColor;
 	Vertices[7].BottomColor = MiddleBottomColor;
@@ -263,8 +263,8 @@ void ButtonT::draw(Vertex::OutlineGradientT * Vertices) const
 	Vertices[7].PositionMin = {ClipMiddleRight, ClipMiddleBottom};
 	Vertices[7].PositionMax = {ClipRight, ClipMiddleTop};
 	Vertices[7].TextureSize = {mCornerSize, mBorderSize};
-	Vertices[7].InsideIndex = {mManager.mButtonRightInside};
-	Vertices[7].OutsideIndex = {mManager.mButtonRightOutside};
+	Vertices[7].InsideIndex = {mManager->mButtonRightInside};
+	Vertices[7].OutsideIndex = {mManager->mButtonRightOutside};
 
 	Vertices[8].BorderColor = Settings::Button::BorderColor;
 	Vertices[8].BottomColor = MiddleBottomColor;
@@ -274,8 +274,8 @@ void ButtonT::draw(Vertex::OutlineGradientT * Vertices) const
 	Vertices[8].PositionMin = {ClipMiddleLeft, ClipMiddleBottom};
 	Vertices[8].PositionMax = {ClipMiddleRight, ClipMiddleTop};
 	Vertices[8].TextureSize = {mBorderSize, mBorderSize};
-	Vertices[8].InsideIndex = {mManager.mButtonCenterInside};
-	Vertices[8].OutsideIndex = {mManager.mButtonCenterOutside};
+	Vertices[8].InsideIndex = {mManager->mButtonCenterInside};
+	Vertices[8].OutsideIndex = {mManager->mButtonCenterOutside};
 }
 
 signed short ButtonT::getLeft() const

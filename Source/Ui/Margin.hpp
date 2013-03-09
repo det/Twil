@@ -18,8 +18,8 @@ class MarginT :
 	public ContainerT,
 	public MouseHandlerT
 {
-	ContainerT & mParent;
-	WindowBaseT & mWindow;
+	ContainerT * mParent;
+	WindowBaseT * mWindow;
 	T mChild;
 
 	bool checkThisContains(signed short X, signed short Y)
@@ -42,11 +42,12 @@ class MarginT :
 
 	public:
 	// Margin
-	MarginT(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Theme) :
-		mParent(Parent), // Gcc bug prevents brace initialization syntax here
-		mWindow(Window), // Gcc bug prevents brace initialization syntax here
-		mChild{*this, Window, Theme}
+	void init(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Manager)
 	{
+		mParent = &Parent;
+		mWindow = &Window;
+
+		mChild.init(*this, Window, Manager);
 		mChild.moveX(SpaceX);
 		mChild.moveY(SpaceY);
 		mChild.resizeWidth(-SpaceX * 2);
@@ -159,31 +160,31 @@ class MarginT :
 	void delegateMouse(signed short X, signed short Y)
 	{
 		if (checkChildContains(X, Y)) mChild.delegateMouse(X, Y);
-		else mWindow.setMouseHandler(*this);
+		else mWindow->setMouseHandler(*this);
 	}
 
 	// Container
 	void handleChildBaseWidthChanged(void *) final
 	{
-		mParent.handleChildBaseWidthChanged(this);
+		mParent->handleChildBaseWidthChanged(this);
 	}
 
 	void handleChildBaseHeightChanged(void *) final
 	{
-		mParent.handleChildBaseHeightChanged(this);
+		mParent->handleChildBaseHeightChanged(this);
 	}
 
 	void releaseMouse(signed short X, signed short Y) final
 	{
-		if (checkThisContains(X, Y)) mWindow.setMouseHandler(*this);
-		else mParent.releaseMouse(X, Y);
+		if (checkThisContains(X, Y)) mWindow->setMouseHandler(*this);
+		else mParent->releaseMouse(X, Y);
 	}
 
 	// MouseHandler
 	void handleMouseMotion(signed short X, signed short Y) final
 	{
 		if (checkChildContains(X, Y)) mChild.delegateMouse(X, Y);
-		if (!checkThisContains(X, Y)) mParent.releaseMouse(X, Y);
+		if (!checkThisContains(X, Y)) mParent->releaseMouse(X, Y);
 	}
 };
 

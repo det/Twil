@@ -15,7 +15,7 @@ class ButtonT :
 	public DrawableT<Vertex::OutlineGradientT>
 {
 	private:
-	ManagerT & mManager;
+	ManagerT * mManager;
 	signed short mLeft = 0;
 	signed short mBottom = 0;
 	signed short mRight = 0;
@@ -30,7 +30,7 @@ class ButtonT :
 	static signed short const mCornerSize = mBorderSize + Settings::Button::Roundness;
 
 	public:
-	ButtonT(ManagerT &);
+	void init(ManagerT &);
 
 	/// \brief Sets whether the button is up or down.
 	void setIsDown(bool IsDown);

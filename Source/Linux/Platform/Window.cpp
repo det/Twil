@@ -29,9 +29,9 @@ namespace Twil {
 namespace Platform {
 
 WindowT::WindowT(ApplicationT & Application) :
-	mApplication(Application) // Gcc bug prevents brace initialization syntax here
+	mApplication{&Application}
 {
-	auto Display = static_cast< ::Display *>(mApplication.mDisplay);
+	auto Display = static_cast< ::Display *>(mApplication->mDisplay);
 	SymbolLoaderT Loader;
 	Glx::initialize(Loader);
 
@@ -67,11 +67,11 @@ WindowT::WindowT(ApplicationT & Application) :
 	int VisualId = 0;
 	glXGetFBConfigAttrib(Display, Config, GLX_VISUAL_ID , &VisualId);
 
-	auto Colormap = xcb_generate_id(mApplication.mConnection);
-	mId = xcb_generate_id(mApplication.mConnection);
+	auto Colormap = xcb_generate_id(mApplication->mConnection);
+	mId = xcb_generate_id(mApplication->mConnection);
 
 	// Find XCB screen
-	auto Setup = xcb_get_setup(mApplication.mConnection);
+	auto Setup = xcb_get_setup(mApplication->mConnection);
 	auto ScreenIter = xcb_setup_roots_iterator(Setup);
 	int ScreenNum = XScreen;
 	while (ScreenIter.rem > 0 && ScreenNum > 0) {
@@ -81,7 +81,7 @@ WindowT::WindowT(ApplicationT & Application) :
 	auto Screen = ScreenIter.data;
 
 	xcb_create_colormap(
-		mApplication.mConnection,
+		mApplication->mConnection,
 		XCB_COLORMAP_ALLOC_NONE,
 		Colormap,
 		Screen->root,
@@ -103,7 +103,7 @@ WindowT::WindowT(ApplicationT & Application) :
 	uint32_t ValueMask = XCB_CW_BORDER_PIXEL | XCB_CW_EVENT_MASK | XCB_CW_COLORMAP;
 
 	xcb_create_window(
-		mApplication.mConnection,
+		mApplication->mConnection,
 		XCB_COPY_FROM_PARENT,
 		mId,
 		Screen->root,
@@ -129,34 +129,34 @@ WindowT::WindowT(ApplicationT & Application) :
 
 	Gl::Context::initialize(Loader);
 
-	xcb_atom_t AtomList[] = {mApplication.mWmDeleteWindowAtom};
+	xcb_atom_t AtomList[] = {mApplication->mWmDeleteWindowAtom};
 	xcb_change_property(
-		mApplication.mConnection, XCB_PROP_MODE_REPLACE, mId,
-		mApplication.mWmProtocolsAtom, mApplication.mAtomAtom, 32, 1, AtomList
+		mApplication->mConnection, XCB_PROP_MODE_REPLACE, mId,
+		mApplication->mWmProtocolsAtom, mApplication->mAtomAtom, 32, 1, AtomList
 	);
 
-	xcb_map_window(mApplication.mConnection, mId);
+	xcb_map_window(mApplication->mConnection, mId);
 	makeCurrent();
 }
 
 WindowT::~WindowT()
 {
-	auto Display = static_cast< ::Display *>(mApplication.mDisplay);
+	auto Display = static_cast< ::Display *>(mApplication->mDisplay);
 	auto Context = static_cast<GLXContext>(mContext);
 	glXDestroyContext(Display, Context);
-	xcb_destroy_window(mApplication.mConnection, mId);
+	xcb_destroy_window(mApplication->mConnection, mId);
 }
 
 void WindowT::makeCurrent()
 {
-	auto Display = static_cast< ::Display *>(mApplication.mDisplay);
+	auto Display = static_cast< ::Display *>(mApplication->mDisplay);
 	auto Context = static_cast<GLXContext>(mContext);
 	glXMakeCurrent(Display, mId, Context);
 }
 
 void WindowT::swapBuffers()
 {
-	auto Display = static_cast< ::Display *>(mApplication.mDisplay);
+	auto Display = static_cast< ::Display *>(mApplication->mDisplay);
 	glXSwapBuffers(Display, mId);
 }
 
@@ -165,41 +165,41 @@ void WindowT::setFullscreen(bool isFullscreen)
 	xcb_client_message_event_t Message;
 	Message.response_type = XCB_CLIENT_MESSAGE;
 	Message.window = mId;
-	Message.type = mApplication.mNetWmStateAtom;
+	Message.type = mApplication->mNetWmStateAtom;
 	Message.format = 32;
 	Message.data.data32[0] = isFullscreen ? 1 : 0;
-	Message.data.data32[1] = mApplication.mNetWmStateFullscreenAtom;
+	Message.data.data32[1] = mApplication->mNetWmStateFullscreenAtom;
 	Message.data.data32[2] = 0;
 	auto Pointer = reinterpret_cast<char const *>(&Message);
-	xcb_send_event(mApplication.mConnection, 0, mId, XCB_EVENT_MASK_STRUCTURE_NOTIFY, Pointer);
-	xcb_flush(mApplication.mConnection);
+	xcb_send_event(mApplication->mConnection, 0, mId, XCB_EVENT_MASK_STRUCTURE_NOTIFY, Pointer);
+	xcb_flush(mApplication->mConnection);
 }
 
 void WindowT::show()
 {
-	xcb_map_window(mApplication.mConnection, mId);
+	xcb_map_window(mApplication->mConnection, mId);
 }
 
 void WindowT::hide()
 {
-	xcb_unmap_window(mApplication.mConnection, mId);
+	xcb_unmap_window(mApplication->mConnection, mId);
 }
 
 void WindowT::resize(unsigned short Width, unsigned short Height)
 {
 	uint16_t Mask = XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT;
 	uint32_t ValueList[] = {Width, Height, XCB_NONE};
-	xcb_configure_window(mApplication.mConnection, mId, Mask, ValueList);
-	xcb_flush(mApplication.mConnection);
+	xcb_configure_window(mApplication->mConnection, mId, Mask, ValueList);
+	xcb_flush(mApplication->mConnection);
 }
 
 void WindowT::setTitle(char const * String)
 {
 	xcb_change_property(
-		mApplication.mConnection, XCB_PROP_MODE_REPLACE, mId, mApplication.mWmNameAtom,
-		mApplication.mStringAtom, 8, strlen(String), String
+		mApplication->mConnection, XCB_PROP_MODE_REPLACE, mId, mApplication->mWmNameAtom,
+		mApplication->mStringAtom, 8, strlen(String), String
 	);
-	xcb_flush(mApplication.mConnection);
+	xcb_flush(mApplication->mConnection);
 }
 
 }

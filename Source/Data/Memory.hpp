@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdlib>
 #include <memory>
 
 namespace Twil {
@@ -16,6 +17,15 @@ std::unique_ptr<T[]> makeArray(std::size_t Size)
 {
 	return std::unique_ptr<T[]>{new T[Size]};
 }
+
+template<typename T>
+struct FreeDeleterT
+{
+	void operator()(T * Object)
+	{
+		std::free(Object);
+	}
+};
 
 }
 }

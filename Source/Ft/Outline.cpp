@@ -9,8 +9,7 @@ namespace Twil {
 namespace Ft {
 
 OutlineT::OutlineT(LibraryT const & Library) :
-	mLibrary(Library), // Gcc bug prevents brace initialization syntax here
-	mId{}, // zero-initialize
+	mId{},
 	mPointCapacity{0},
 	mContourCapacity{0}
 {}

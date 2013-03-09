@@ -19,7 +19,9 @@ class ApplicationT
 	public:
 	ApplicationT() :
 		mChild{mApplication}
-	{}
+	{
+		mChild.init();
+	}
 
 	/// \brief Start the event loop.
 	void run()

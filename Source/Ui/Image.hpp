@@ -22,27 +22,27 @@ class ImageT :
 	public MouseHandlerT
 {
 	private:
-	ContainerT & mParent;
-	WindowBaseT & mWindow;
+	ContainerT * mParent;
+	WindowBaseT * mWindow;
 	LayoutT mLayout;
-	Theme::ImageT mThemeImage;
+	Theme::ImageT mTheme;
 	std::u32string mText;
 
 	private:
 	void layoutX()
 	{
-		signed short Delta = mLayout.getLayoutLeft(getBaseWidth()) - mThemeImage.getLeft();
-		mThemeImage.moveX(Delta);
-		mThemeImage.setClipLeft(mLayout.getLayoutClipLeft());
-		mThemeImage.setClipRight(mLayout.getLayoutClipRight());
+		signed short Delta = mLayout.getLayoutLeft(getBaseWidth()) - mTheme.getLeft();
+		mTheme.moveX(Delta);
+		mTheme.setClipLeft(mLayout.getLayoutClipLeft());
+		mTheme.setClipRight(mLayout.getLayoutClipRight());
 	}
 
 	void layoutY()
 	{
-		signed short Delta = mLayout.getLayoutBottom(getBaseHeight()) - mThemeImage.getBottom();
-		mThemeImage.moveY(Delta);
-		mThemeImage.setClipBottom(mLayout.getLayoutClipBottom());
-		mThemeImage.setClipTop(mLayout.getLayoutClipTop());
+		signed short Delta = mLayout.getLayoutBottom(getBaseHeight()) - mTheme.getBottom();
+		mTheme.moveY(Delta);
+		mTheme.setClipBottom(mLayout.getLayoutClipBottom());
+		mTheme.setClipTop(mLayout.getLayoutClipTop());
 	}
 
 	bool checkThisContains(signed short X, signed short Y)
@@ -57,34 +57,35 @@ class ImageT :
 
 	public:
 	// Image
-	ImageT(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Theme) :
-		mParent(Parent), // Gcc bug prevents brace initialization syntax here
-		mWindow(Window), // Gcc bug prevents brace initialization syntax here
-		mThemeImage{Theme}
-	{}
+	void init(ContainerT & Parent, WindowBaseT & Window, Theme::ManagerT & Manager)
+	{
+		mParent = &Parent;
+		mWindow = &Window;
+		mTheme.init(Manager);
+	}
 
 	/// \brief Set the bitmap that the Image displays.
 	void setImage(char const * Path)
 	{
-		mThemeImage.setImage(Path);
-		mWindow.markNeedsDraw();
+		mTheme.setImage(Path);
+		mWindow->markNeedsDraw();
 		layoutX();
 		layoutY();
-		mParent.handleChildBaseWidthChanged(this);
-		mParent.handleChildBaseHeightChanged(this);
+		mParent->handleChildBaseWidthChanged(this);
+		mParent->handleChildBaseHeightChanged(this);
 	}
 
 	// Widget
 	void moveX(signed short X)
 	{
 		mLayout.moveX(X);
-		mThemeImage.moveX(X);
+		mTheme.moveX(X);
 	}
 
 	void moveY(signed short Y)
 	{
 		mLayout.moveY(Y);
-		mThemeImage.moveY(Y);
+		mTheme.moveY(Y);
 	}
 
 	void resizeWidth(signed short X)
@@ -102,25 +103,25 @@ class ImageT :
 	void setClipLeft(signed short X)
 	{
 		mLayout.setClipLeft(X);
-		mThemeImage.setClipLeft(mLayout.getLayoutClipLeft());
+		mTheme.setClipLeft(mLayout.getLayoutClipLeft());
 	}
 
 	void setClipRight(signed short X)
 	{
 		mLayout.setClipRight(X);
-		mThemeImage.setClipRight(mLayout.getLayoutClipRight());
+		mTheme.setClipRight(mLayout.getLayoutClipRight());
 	}
 
 	void setClipBottom(signed short Y)
 	{
 		mLayout.setClipBottom(Y);
-		mThemeImage.setClipBottom(mLayout.getLayoutClipBottom());
+		mTheme.setClipBottom(mLayout.getLayoutClipBottom());
 	}
 
 	void setClipTop(signed short Y)
 	{
 		mLayout.setClipTop(Y);
-		mThemeImage.setClipTop(mLayout.getLayoutClipTop());
+		mTheme.setClipTop(mLayout.getLayoutClipTop());
 	}
 
 	signed short getLeft() const
@@ -165,23 +166,23 @@ class ImageT :
 
 	signed short getBaseWidth() const
 	{
-		return mThemeImage.getBaseWidth();
+		return mTheme.getBaseWidth();
 	}
 
 	signed short getBaseHeight() const
 	{
-		return mThemeImage.getBaseHeight();
+		return mTheme.getBaseHeight();
 	}
 
 	void delegateMouse(signed short, signed short)
 	{
-		mWindow.setMouseHandler(*this);
+		mWindow->setMouseHandler(*this);
 	}
 
 	// MouseHandler
 	void handleMouseMotion(signed short X, signed short Y) final
 	{
-		if (!checkThisContains(X, Y)) mParent.releaseMouse(X, Y);
+		if (!checkThisContains(X, Y)) mParent->releaseMouse(X, Y);
 	}
 };
 

@@ -83,10 +83,10 @@ set (attribute_sources
 source_group(Attribute FILES ${attribute_sources})
 
 set (data_sources
-	Data/FreeDeleter.cpp
-	Data/FreeDeleter.hpp
 	Data/Memory.cpp
 	Data/Memory.hpp
+	Data/Tuple.cpp
+	Data/Tuple.hpp
 )
 source_group(Data FILES ${data_sources})
 
@@ -200,8 +200,6 @@ set (ui_sources
 	Ui/PartitionBox.hpp
 	Ui/SplitBox.cpp
 	Ui/SplitBox.hpp
-	Ui/Tuple.cpp
-	Ui/Tuple.hpp
 	Ui/WindowBase.cpp
 	Ui/WindowBase.hpp
 	Ui/Widget.cpp

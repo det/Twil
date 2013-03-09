@@ -11,7 +11,7 @@ class ApplicationT;
 class WindowT
 {
 	private:
-	ApplicationT & mApplication;
+	ApplicationT * mApplication;
 	xcb_window_t mId;
 
 	// We Use void * here and cast later because including the X11 headers polutes our namespace
