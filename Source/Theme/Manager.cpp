@@ -130,8 +130,8 @@ GlyphEntryT const & ManagerT::loadGlyphEntry(Ft::FaceT & Face, char32_t Codepoin
 	unsigned short Height = (Box.yMax - Box.yMin) / 64;
 	FT_Vector Bearings{Box.xMin, Box.yMin};
 
+	// Move the glyph to the origin and draw
 	Face.translate(-Box.xMin, -Box.yMin);
-
 	mBitmap.resize(Width, Height);
 	mBitmap.render(Face);
 	unsigned int Offset = mRedTexture.append(mBitmap.begin(), mBitmap.end());

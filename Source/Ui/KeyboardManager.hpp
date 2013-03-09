@@ -9,7 +9,7 @@ class KeyboardHandlerT;
 
 class KeyboardManagerT
 {
-	protected:
+	private:
 	KeyboardHandlerT * mHandler = nullptr;
 
 	public:

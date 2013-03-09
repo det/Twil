@@ -112,7 +112,6 @@ class ManagerT
 	/// \brief Draw the GUI if needed
 	///
 	/// \returns true if the GUI was drawn.
-	/// All Theme objects must queue their vertex data each time before this is called.
 	bool update(unsigned short Width, unsigned short Height);
 };
 

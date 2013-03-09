@@ -34,7 +34,10 @@ void throwPngError(png_structp PngPointer, png_const_charp ErrorMessage)
 void readPngData(png_structp PngPointer, png_bytep Data, png_size_t Length)
 {
 	auto & File = *static_cast<std::ifstream *>(png_get_io_ptr(PngPointer));
-	File.read(reinterpret_cast<char *>(Data), Length); // XXX: error handling
+	auto Size = static_cast<std::streamsize>(Length);
+	File.read(reinterpret_cast<char *>(Data), Size);
+	if (File.fail()) throw std::runtime_error{"Png read error"};
+	if (File.gcount() != Size) throw std::runtime_error{"Png read error"};
 }
 
 }
@@ -50,7 +53,9 @@ PngT::PngT(char const * Path) :
 	if (!File.is_open()) throw std::runtime_error{"Unable to open png"};
 
 	png_byte Magic[8];
-	File.read(reinterpret_cast<char *>(Magic), sizeof(Magic)); // XXX: error handling
+	File.read(reinterpret_cast<char *>(Magic), sizeof(Magic));
+	if (File.fail()) throw std::runtime_error{"Png read error"};
+	if (File.gcount() != sizeof(Magic)) throw std::runtime_error{"Png read error"};
 	if (!png_check_sig(Magic, sizeof(Magic))) throw std::runtime_error{"PNG load error"};
 
 	PngPointersT Pointers;
@@ -113,8 +118,8 @@ PngT::PngT(char const * Path) :
 	mHeight = Height;
 
 	// Setup a pointer array.  Each one points at the begening of a row
-	mBytes = Data::makeArray<GLubyte>(Width * Height * 4);
-	auto Rows = Data::makeArray<png_bytep>(Height);
+	mBytes = Data::makeArray<unsigned char>(Width * Height * 4);
+	auto Rows = Data::makeArray<unsigned char *>(Height);
 	for (std::size_t I = 0; I < Height; ++I) {
 		Rows[I] = mBytes.get() + (Height - I - 1) * Width * 4;
 	}
@@ -134,12 +139,12 @@ unsigned short PngT::getHeight() const
 	return mHeight;
 }
 
-GLubyte const * PngT::begin() const
+unsigned char const * PngT::begin() const
 {
 	return mBytes.get();
 }
 
-GLubyte const * PngT::end() const
+unsigned char const * PngT::end() const
 {
 	return mBytes.get() + mWidth * mHeight * 4;
 }

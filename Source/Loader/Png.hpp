@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Data/Memory.hpp"
-#include "Gl/Context.hpp"
 
 #include <string>
 
@@ -11,7 +10,7 @@ namespace Loader {
 class PngT
 {
 	private:
-	std::unique_ptr<GLubyte[]> mBytes;
+	std::unique_ptr<unsigned char[]> mBytes;
 	unsigned short mWidth;
 	unsigned short mHeight;
 
@@ -20,8 +19,8 @@ class PngT
 
 	unsigned short getWidth() const;
 	unsigned short getHeight() const;
-	GLubyte const * begin() const;
-	GLubyte const * end() const;
+	unsigned char const * begin() const;
+	unsigned char const * end() const;
 };
 
 }
