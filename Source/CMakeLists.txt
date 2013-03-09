@@ -62,20 +62,14 @@ else ()
 endif ()
 
 set (attribute_sources
-	Attribute/Color1f.cpp
-	Attribute/Color1f.hpp
 	Attribute/Color4b.cpp
 	Attribute/Color4b.hpp
 	Attribute/Offset1i.cpp
 	Attribute/Offset1i.hpp
-	Attribute/Position2f.cpp
-	Attribute/Position2f.hpp
 	Attribute/Position2h.cpp
 	Attribute/Position2h.hpp
 	Attribute/Size2h.cpp
 	Attribute/Size2h.hpp
-	Attribute/Texcoord1f.cpp
-	Attribute/Texcoord1f.hpp
 	Attribute/Texcoord2h.cpp
 	Attribute/Texcoord2h.hpp
 )
