@@ -9,7 +9,7 @@ TextureArrayT::TextureArrayT(GLenum Format) :
 	mFormat{Format}
 {}
 
-TextureArrayT::operator GLuint()
+Gl::TextureT & TextureArrayT::getTexture()
 {
 	return mTexture;
 }

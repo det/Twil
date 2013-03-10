@@ -14,8 +14,10 @@ class DrawableT
 	friend class StreamArrayT<T>;
 
 	private:
-	std::size_t mSize;
-	std::size_t mIsDeleted;
+	std::size_t mSize = 0;
+	std::size_t mIndex = 0;
+	std::size_t mDrawCycles = 0;
+	bool mNeedsResize = false;
 
 	public:
 	virtual ~DrawableT() {}

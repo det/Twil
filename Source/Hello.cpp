@@ -47,32 +47,34 @@ class HelloT
 	ImageButtonT & getButton22() { return getColumn2().getChild<2>().getChild(); }
 	LabelButtonT & getTopButton() { return getVerticalBox0().getSecond().getChild(); }
 	LabelT & getBottomLabel() { return getVerticalBox1().getFirst(); }
-	ImageT & getLabel00() { return getButton00().getChild(); }
-	ImageT & getLabel10() { return getButton10().getChild(); }
-	ImageT & getLabel20() { return getButton20().getChild(); }
-	ImageT & getLabel01() { return getButton01().getChild(); }
-	ImageT & getLabel11() { return getButton11().getChild(); }
-	ImageT & getLabel21() { return getButton21().getChild(); }
-	ImageT & getLabel02() { return getButton02().getChild(); }
-	ImageT & getLabel12() { return getButton12().getChild(); }
-	ImageT & getLabel22() { return getButton22().getChild(); }
+	ImageT & getImage00() { return getButton00().getChild(); }
+	ImageT & getImage10() { return getButton10().getChild(); }
+	ImageT & getImage20() { return getButton20().getChild(); }
+	ImageT & getImage01() { return getButton01().getChild(); }
+	ImageT & getImage11() { return getButton11().getChild(); }
+	ImageT & getImage21() { return getButton21().getChild(); }
+	ImageT & getImage02() { return getButton02().getChild(); }
+	ImageT & getImage12() { return getButton12().getChild(); }
+	ImageT & getImage22() { return getButton22().getChild(); }
 	LabelT & getTopLabel() { return getTopButton().getChild(); }
 
 	public:
 	HelloT()
-	{
+	{				
 		getBottomLabel().setText(U"Bottom");
-		getLabel00().setImage("/usr/share/pixmaps/gnome-debian.png");
-		getLabel10().setImage("/usr/share/pixmaps/gnome-irc.png");
-		getLabel20().setImage("/usr/share/pixmaps/gnome-talk.png");
-		getLabel01().setImage("/usr/share/pixmaps/gnome-windows.png");
-		getLabel11().setImage("/usr/share/pixmaps/gnome-about-logo.png");
-		getLabel21().setImage("/usr/share/pixmaps/gnome-diskfree.png");
-		getLabel02().setImage("/usr/share/pixmaps/gnome-calendar.png");
-		getLabel12().setImage("/usr/share/pixmaps/gnome-squeak.png");
-		getLabel22().setImage("/usr/share/pixmaps/gnome-gemvt.png");
+		getImage00().setImage("/usr/share/pixmaps/gnome-debian.png");
+		getImage10().setImage("/usr/share/pixmaps/gnome-irc.png");
+		getImage20().setImage("/usr/share/pixmaps/gnome-talk.png");
+		getImage01().setImage("/usr/share/pixmaps/gnome-windows.png");
+		getImage11().setImage("/usr/share/pixmaps/gnome-about-logo.png");
+		getImage21().setImage("/usr/share/pixmaps/gnome-diskfree.png");
+		getImage02().setImage("/usr/share/pixmaps/gnome-calendar.png");
+		getImage12().setImage("/usr/share/pixmaps/gnome-squeak.png");
+		getImage22().setImage("/usr/share/pixmaps/gnome-gemvt.png");
 		getTopLabel().setText(U"Top");
-		getButton00().Clicked += [&]() { getLabel00().setImage("/usr/share/pixmaps/gksu.png"); };
+
+		getButton00().Clicked += [&]() { getImage00().setImage("/usr/share/pixmaps/gksu.png"); };
+		getTopButton().Clicked += [&]() { getBottomLabel().setText(U"Clicked!"); };
 		getWindow().Deleted += [&]() { getApplication().stop(); };
 		getWindow().setTitle("Hello");
 	}

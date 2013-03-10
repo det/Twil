@@ -70,6 +70,10 @@ class ManagerT
 	StreamArrayT<Vertex::FillSolidT> mSolidArray;
 	StreamArrayT<Vertex::OutlineGradientT> mOutlineArray;
 
+	static std::size_t const mNumBuffers = Settings::Manager::NumBuffers;
+	GLsync mFences[mNumBuffers];
+	std::size_t mFenceIndex = 0;
+
 	Program::BitmapT mBitmapProgram;
 	Program::FillSolidT mFillSolidProgram;
 	Program::OutlineGradientT mOutlineGradientProgram;

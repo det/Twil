@@ -2,6 +2,8 @@
 
 #include "Loader/Png.hpp"
 
+#include <iostream>
+
 namespace Twil {
 namespace Theme {
 
@@ -14,6 +16,11 @@ ManagerT::ManagerT() :
 	mRgbaTexture{GL_RGBA8},
 	mNeedsRedraw{false}
 {
+	// We arent actually waiting for anything, but we need valid fences in the arrays
+	for (std::size_t I = 0; I != mNumBuffers; ++I) {
+		mFences[I] = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
+	}
+
 	// Default GL state
 	glEnable(GL_BLEND);
 	glEnable(GL_FRAMEBUFFER_SRGB);
@@ -149,13 +156,21 @@ void ManagerT::markNeedsRedraw()
 
 bool ManagerT::update(unsigned short Width, unsigned short Height)
 {
-	mRedTexture.update();
-	mRgbaTexture.update();
-	mNeedsRedraw |= mSolidArray.update();
-	mNeedsRedraw |= mOutlineArray.update();
-	mNeedsRedraw |= mBitmapArray.update();
+	mNeedsRedraw |= mSolidArray.checkNeedsRedraw();
+	mNeedsRedraw |= mOutlineArray.checkNeedsRedraw();
+	mNeedsRedraw |= mBitmapArray.checkNeedsRedraw();
 
 	if (!mNeedsRedraw || Width == 0 || Height == 0) return false;
+
+	GLenum Result = glClientWaitSync(mFences[mFenceIndex], 0, 10000000); // wait 10ms
+	if (Result == GL_WAIT_FAILED || Result == GL_TIMEOUT_EXPIRED) return false;
+	glDeleteSync(mFences[mFenceIndex]);
+
+	mRedTexture.update();
+	mRgbaTexture.update();
+	mSolidArray.update(mFenceIndex);
+	mOutlineArray.update(mFenceIndex);
+	mBitmapArray.update(mFenceIndex);
 
 	float ScalingX = 2.0 / Width;
 	float ScalingY = 2.0 / Height;
@@ -167,35 +182,39 @@ bool ManagerT::update(unsigned short Width, unsigned short Height)
 	glClearColor(Red, Green, Blue, Alpha);
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	glBindTexture(GL_TEXTURE_BUFFER, mRedTexture);
+	glBindTexture(GL_TEXTURE_BUFFER, mRedTexture.getTexture());
 
 	glUseProgram(mOutlineGradientProgram);
 	mOutlineGradientProgram.setScaling(ScalingX, ScalingY);
-	glBindVertexArray(mOutlineArray);
+	glBindVertexArray(mOutlineArray.getVertexArray(mFenceIndex));
 	glDrawArrays(GL_POINTS, 0, mOutlineArray.getSize());
 	glBindVertexArray(0);
 	glUseProgram(0);
 
 	glUseProgram(mFillSolidProgram);
 	mFillSolidProgram.setScaling(ScalingX, ScalingY);
-	glBindVertexArray(mSolidArray);
+	glBindVertexArray(mSolidArray.getVertexArray(mFenceIndex));
 	glDrawArrays(GL_POINTS, 0, mSolidArray.getSize());
 	glBindVertexArray(0);
 	glUseProgram(0);
 
 	glBindTexture(GL_TEXTURE_BUFFER, 0);
 
-	glBindTexture(GL_TEXTURE_BUFFER, mRgbaTexture);
+	glBindTexture(GL_TEXTURE_BUFFER, mRgbaTexture.getTexture());
 
 	glUseProgram(mBitmapProgram);
 	mBitmapProgram.setScaling(ScalingX, ScalingY);
-	glBindVertexArray(mBitmapArray);
+	glBindVertexArray(mBitmapArray.getVertexArray(mFenceIndex));
 	glDrawArrays(GL_POINTS, 0, mBitmapArray.getSize());
 	glBindVertexArray(0);
 	glUseProgram(0);
 
 	glBindTexture(GL_TEXTURE_BUFFER, 0);
 
+	mFences[mFenceIndex] = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
+
+	++mFenceIndex;
+	mFenceIndex %= mNumBuffers;
 	mNeedsRedraw = false;
 	return true;
 }

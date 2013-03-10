@@ -63,6 +63,7 @@ class ApplicationT
 				Window.update();
 				GenericEvent = xcb_wait_for_event(mConnection);
 			}
+
 			// Ensure the pointer gets free'd
 			using EventDeleterT = Data::FreeDeleterT<xcb_generic_event_t>;
 			std::unique_ptr<xcb_generic_event_t, EventDeleterT> EventPointer{GenericEvent};
@@ -115,7 +116,7 @@ class ApplicationT
 			} break;
 
 			case XCB_EXPOSE: {
-				Window.handleExposed();
+				Window.handleExposed();				
 			} break;
 
 			case XCB_CLIENT_MESSAGE: {
@@ -123,6 +124,7 @@ class ApplicationT
 				auto Atom = Event->data.data32[0];
 				if (Atom == mWmDeleteWindowAtom) Window.handleDeleted();
 			} break;
+
 
 			}
 		}

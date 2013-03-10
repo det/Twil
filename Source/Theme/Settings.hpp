@@ -2,9 +2,17 @@
 
 #include "Attribute/Color4b.hpp"
 
+#include <cstdlib>
+
 namespace Twil {
 namespace Theme {
 namespace Settings {
+
+namespace Manager {
+
+std::size_t const NumBuffers = 3;
+
+}
 
 namespace Button {
 

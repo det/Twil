@@ -27,8 +27,8 @@ class TextureArrayT
 	public:
 	TextureArrayT(GLenum);
 
-	/// \brief Implicit conversion operator so it can be used in gl* functions.
-	operator GLuint();
+	/// \returns The Texture.
+	Gl::TextureT & getTexture();
 
 	/// \brief Copies bytes from a pair of iterators into the local buffer.
 	/// \returns The begin index for the range.

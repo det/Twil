@@ -177,15 +177,15 @@ class SplitBoxHorizontalT :
 
 	void delegateMouse(MouseManagerT & MouseManager, signed short X, signed short Y)
 	{
-		if (X < mSecond.getLeft()) mFirst.delegateMouse(X, Y);
-		else mSecond.delegateMouse(X, Y);
+		if (X < mSecond.getLeft()) mFirst.delegateMouse(MouseManager, X, Y);
+		else mSecond.delegateMouse(MouseManager, X, Y);
 	}
 
 	// Container
-	void releaseMouse(signed short X, signed short Y) final
+	void releaseMouse(MouseManagerT & MouseManager, signed short X, signed short Y) final
 	{
-		if (checkThisContains(X, Y)) delegateMouse(X, Y);
-		else mParent->releaseMouse(X, Y);
+		if (checkThisContains(X, Y)) delegateMouse(MouseManager, X, Y);
+		else mParent->releaseMouse(MouseManager, X, Y);
 	}
 
 	void handleChildBaseHeightChanged(void *) final
@@ -283,9 +283,9 @@ class SplitBoxT<true, true, FirstT, SecondT> :
 
 	public:
 	// SplitBox
-	void init(ContainerT & Parent, MouseManagerT & MouseManager, Theme::ManagerT & ThemeManager)
+	void init(ContainerT & Parent, Theme::ManagerT & ThemeManager)
 	{
-		SplitBoxHorizontalT<FirstT, SecondT>::init(Parent, MouseManager, ThemeManager);
+		SplitBoxHorizontalT<FirstT, SecondT>::init(Parent, ThemeManager);
 		layout();
 	}
 
@@ -343,9 +343,9 @@ class SplitBoxT<true, false, FirstT, SecondT> :
 
 	public:
 	// SplitBox
-	void init(ContainerT & Parent, MouseManagerT & MouseManager, Theme::ManagerT & ThemeManager)
+	void init(ContainerT & Parent, Theme::ManagerT & ThemeManager)
 	{
-		SplitBoxHorizontalT<FirstT, SecondT>::init(Parent, MouseManager, ThemeManager);
+		SplitBoxHorizontalT<FirstT, SecondT>::init(Parent, ThemeManager);
 		layout();
 	}
 
