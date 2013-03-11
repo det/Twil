@@ -13,27 +13,27 @@ void MouseManagerT::setHandler(MouseHandlerT & MouseHandler)
 
 void MouseManagerT::handleMouseEnterWindow(signed short X, signed short Y)
 {
-	mMouseHandler->handleMouseEnterWindow(*this, X, Y);
+	mMouseHandler->handleMouseEnterWindow(X, Y);
 }
 
 void MouseManagerT::handleMouseLeaveWindow(signed short X, signed short Y)
 {
-	mMouseHandler->handleMouseLeaveWindow(*this, X, Y);
+	mMouseHandler->handleMouseLeaveWindow(X, Y);
 }
 
 void MouseManagerT::handleMouseMotion(signed short X, signed short Y)
 {
-	mMouseHandler->handleMouseMotion(*this, X, Y);
+	mMouseHandler->handleMouseMotion(X, Y);
 }
 
 void MouseManagerT::handleButtonPress(signed short X, signed short Y , unsigned char Button)
 {
-	mMouseHandler->handleButtonPress(*this, X, Y, Button);
+	mMouseHandler->handleButtonPress(X, Y, Button);
 }
 
 void MouseManagerT::handleButtonRelease(signed short X, signed short Y, unsigned char Button)
 {
-	mMouseHandler->handleButtonRelease(*this, X, Y, Button);
+	mMouseHandler->handleButtonRelease(X, Y, Button);
 }
 
 }

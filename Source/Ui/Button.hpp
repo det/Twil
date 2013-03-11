@@ -11,8 +11,6 @@
 namespace Twil {
 namespace Ui {
 
-class MouseManagerT;
-
 /// \brief A Widget that can be clicked to activate an event.
 /// \param T Type of the child widget.
 template<typename T>
@@ -22,6 +20,7 @@ class ButtonT :
 {
 	private:
 	ContainerT * mParent;
+	WindowBaseT * mWindow;
 	Theme::ButtonT mThemeButton;
 	T mChild;
 	bool mIsPressed;
@@ -41,14 +40,15 @@ class ButtonT :
 	//Button
 	EventT<> Clicked;
 
-	void init(ContainerT & Parent, Theme::ManagerT & ThemeManager)
+	void init(ContainerT & Parent, WindowBaseT & Window)
 	{
 		mParent = &Parent;
+		mWindow = &Window;
 		mIsPressed = false;
 		mHasMouse = false;
 
-		mThemeButton.init(ThemeManager);
-		mChild.init(*this, ThemeManager);
+		mThemeButton.init(Window.getThemeManager());
+		mChild.init(*this, Window);
 		auto LeftMargin = mThemeButton.getLeftMargin();
 		auto RightMargin = mThemeButton.getRightMargin();
 		auto BottomMargin = mThemeButton.getBottomMargin();
@@ -170,9 +170,9 @@ class ButtonT :
 		return mThemeButton.getBaseHeight(mChild.getBaseHeight());
 	}
 
-	void delegateMouse(MouseManagerT & MouseManager, signed short, signed short)
+	void delegateMouse(signed short, signed short)
 	{
-		MouseManager.setHandler(*this);
+		mWindow->getMouseManager().setHandler(*this);
 		mHasMouse = true;
 	}
 
@@ -187,13 +187,13 @@ class ButtonT :
 		mParent->handleChildBaseHeightChanged(this);
 	}
 
-	void releaseMouse(MouseManagerT & MouseManager, signed short X, signed short Y) final
+	void releaseMouse(signed short X, signed short Y) final
 	{
-		mParent->releaseMouse(MouseManager, X, Y);
+		mParent->releaseMouse(X, Y);
 	}
 
 	// MouseHandler
-	void handleButtonPress(MouseManagerT &, signed short, signed short, unsigned char Index) final
+	void handleButtonPress(signed short, signed short, unsigned char Index) final
 	{
 		if (Index == 1) {
 			mIsPressed = true;
@@ -201,7 +201,7 @@ class ButtonT :
 		}
 	}
 
-	void handleButtonRelease(MouseManagerT & MouseManager, signed short X, signed short Y, unsigned char Index) final
+	void handleButtonRelease(signed short X, signed short Y, unsigned char Index) final
 	{
 		if (Index == 1) {
 			if (!mIsPressed) return;
@@ -212,12 +212,12 @@ class ButtonT :
 			}
 			else {
 				mIsPressed = false;
-				mParent->releaseMouse(MouseManager, X, Y);
+				mParent->releaseMouse(X, Y);
 			}
 		}
 	}
 
-	void handleMouseMotion(MouseManagerT & MouseManager, signed short X, signed short Y) final
+	void handleMouseMotion(signed short X, signed short Y) final
 	{
 		auto HasMouse = checkThisContains(X, Y);
 
@@ -226,7 +226,7 @@ class ButtonT :
 			if (mIsPressed) {
 				mThemeButton.setIsDown(false);
 			}
-			else mParent->releaseMouse(MouseManager, X, Y);
+			else mParent->releaseMouse(X, Y);
 		}
 		else if (!mHasMouse && HasMouse) {
 			mHasMouse = true;

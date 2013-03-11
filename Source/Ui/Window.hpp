@@ -4,11 +4,10 @@
 #include "Container.hpp"
 #include "Event.hpp"
 #include "KeyboardHandler.hpp"
-#include "KeyboardManager.hpp"
 #include "MouseHandler.hpp"
-#include "MouseManager.hpp"
+#include "WindowBase.hpp"
 #include "Gl/Context.hpp"
-#include "Theme/Manager.hpp"
+
 
 namespace Twil {
 namespace Ui {
@@ -23,9 +22,7 @@ class WindowT :
 {
 	private:
 	Platform::WindowT mPlatformWindow;
-	Theme::ManagerT mThemeManager;
-	KeyboardManagerT mKeyboardManager;
-	MouseManagerT mMouseManager;
+	WindowBaseT mBase;
 	T mChild;
 	bool mIsFullscreen = false;
 
@@ -48,19 +45,27 @@ class WindowT :
 
 	void init()
 	{
-		mMouseManager.setHandler(*this);
-		mKeyboardManager.setHandler(*this);
-		mChild.init(*this, mThemeManager);
+		getMouseManager().setHandler(*this);
+		getKeyboardManager().setHandler(*this);
+		mChild.init(*this, mBase);
 	}
 
+	/// \returns The mouse manager
 	MouseManagerT & getMouseManager()
 	{
-		return mMouseManager;
+		return mBase.getMouseManager();
 	}
 
+	/// \returns The keyboard manager
 	KeyboardManagerT & getKeyboardManager()
 	{
-		return mKeyboardManager;
+		return mBase.getKeyboardManager();
+	}
+
+	/// \returns The theme manager
+	Theme::ManagerT & getThemeManager()
+	{
+		return mBase.getThemeManager();
 	}
 
 	/// \brief Show the window.
@@ -126,7 +131,7 @@ class WindowT :
 
 	void handleExposed()
 	{
-		mThemeManager.markNeedsRedraw();
+		getThemeManager().markNeedsRedraw();
 	}
 
 	void handleDeleted()
@@ -142,13 +147,13 @@ class WindowT :
 
 	void update()
 	{
-		if (mThemeManager.update(getWidth(), getHeight())) mPlatformWindow.swapBuffers();
+		if (getThemeManager().update(getWidth(), getHeight())) mPlatformWindow.swapBuffers();
 	}
 
 	// Container
-	void releaseMouse(MouseManagerT & Manager, signed short, signed short) final
+	void releaseMouse(signed short, signed short) final
 	{
-		Manager.setHandler(*this);
+		getMouseManager().setHandler(*this);
 	}
 
 	void handleChildBaseWidthChanged(void *) final
@@ -158,9 +163,9 @@ class WindowT :
 	{}
 
 	// MouseHandler
-	void handleMouseMotion(MouseManagerT & Manager, signed short X, signed short Y) final
+	void handleMouseMotion(signed short X, signed short Y) final
 	{
-		if (checkChildContains(X, Y)) mChild.delegateMouse(Manager, X, Y);
+		if (checkChildContains(X, Y)) mChild.delegateMouse(X, Y);
 	}
 };
 

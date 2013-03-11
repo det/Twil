@@ -2,8 +2,7 @@
 
 #include "Container.hpp"
 #include "MouseHandler.hpp"
-#include "MouseManager.hpp"
-#include "Theme/Manager.hpp"
+#include "WindowBase.hpp"
 
 namespace Twil {
 namespace Ui {
@@ -19,6 +18,7 @@ class MarginT :
 	public MouseHandlerT
 {
 	ContainerT * mParent;
+	WindowBaseT * mWindow;
 	T mChild;
 
 	bool checkThisContains(signed short X, signed short Y)
@@ -41,11 +41,12 @@ class MarginT :
 
 	public:
 	// Margin
-	void init(ContainerT & Parent, Theme::ManagerT & ThemeManager)
+	void init(ContainerT & Parent, WindowBaseT & Window)
 	{
 		mParent = &Parent;
+		mWindow = &Window;
 
-		mChild.init(*this, ThemeManager);
+		mChild.init(*this, Window);
 		mChild.moveX(SpaceX);
 		mChild.moveY(SpaceY);
 		mChild.resizeWidth(-SpaceX * 2);
@@ -155,10 +156,10 @@ class MarginT :
 		return mChild.getBaseHeight() + SpaceY + SpaceY;
 	}
 
-	void delegateMouse(MouseManagerT & MouseManager, signed short X, signed short Y)
+	void delegateMouse(signed short X, signed short Y)
 	{
-		if (checkChildContains(X, Y)) mChild.delegateMouse(MouseManager, X, Y);
-		else MouseManager.setHandler(*this);
+		if (checkChildContains(X, Y)) mChild.delegateMouse(X, Y);
+		else mWindow->getMouseManager().setHandler(*this);
 	}
 
 	// Container
@@ -172,17 +173,17 @@ class MarginT :
 		mParent->handleChildBaseHeightChanged(this);
 	}
 
-	void releaseMouse(MouseManagerT & MouseManager, signed short X, signed short Y) final
+	void releaseMouse(signed short X, signed short Y) final
 	{
-		if (checkThisContains(X, Y)) MouseManager.setHandler(*this);
-		else mParent->releaseMouse(MouseManager, X, Y);
+		if (checkThisContains(X, Y)) mWindow->getMouseManager().setHandler(*this);
+		else mParent->releaseMouse(X, Y);
 	}
 
 	// MouseHandler
-	void handleMouseMotion(MouseManagerT & MouseManager, signed short X, signed short Y) final
+	void handleMouseMotion(signed short X, signed short Y) final
 	{
-		if (checkChildContains(X, Y)) mChild.delegateMouse(MouseManager, X, Y);
-		if (!checkThisContains(X, Y)) mParent->releaseMouse(MouseManager, X, Y);
+		if (checkChildContains(X, Y)) mChild.delegateMouse(X, Y);
+		if (!checkThisContains(X, Y)) mParent->releaseMouse(X, Y);
 	}
 };
 

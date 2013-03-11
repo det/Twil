@@ -39,7 +39,7 @@ void ProgramT::link()
 		glGetProgramiv(mId, GL_INFO_LOG_LENGTH , &LogLength);
 		auto Log = Data::makeArray<GLchar>(LogLength);
 		glGetProgramInfoLog(mId, LogLength, &LogLength, Log.get());
-		std::cout << Log.get();
+		std::cerr << Log.get();
 		throw std::runtime_error{"Program link error"};
 	}
 }

@@ -2,7 +2,7 @@
 
 #include "Container.hpp"
 #include "MouseHandler.hpp"
-#include "MouseManager.hpp"
+#include "WindowBase.hpp"
 #include "Theme/Label.hpp"
 
 #include <string>
@@ -23,6 +23,7 @@ class LabelT :
 {
 	private:
 	ContainerT * mParent;
+	WindowBaseT * mWindow;
 	LayoutT mLayout;
 	Theme::LabelT mThemeLabel;
 	std::u32string mText;
@@ -56,10 +57,11 @@ class LabelT :
 
 	public:
 	// Label
-	void init(ContainerT & Parent, Theme::ManagerT & ThemeManager)
+	void init(ContainerT & Parent, WindowBaseT & Window)
 	{
 		mParent = &Parent;
-		mThemeLabel.init(ThemeManager);
+		mWindow = &Window;
+		mThemeLabel.init(Window.getThemeManager());
 	}
 
 	/// \brief Set the text that the label displays.
@@ -170,15 +172,15 @@ class LabelT :
 		return mThemeLabel.getBaseHeight();
 	}
 
-	void delegateMouse(MouseManagerT & MouseManager, signed short, signed short)
+	void delegateMouse(signed short, signed short)
 	{
-		MouseManager.setHandler(*this);
+		mWindow->getMouseManager().setHandler(*this);
 	}
 
 	// MouseHandler
-	void handleMouseMotion(MouseManagerT & MouseManager, signed short X, signed short Y) final
+	void handleMouseMotion(signed short X, signed short Y) final
 	{
-		if (!checkThisContains(X, Y)) mParent->releaseMouse(MouseManager, X, Y);
+		if (!checkThisContains(X, Y)) mParent->releaseMouse(X, Y);
 	}
 };
 

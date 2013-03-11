@@ -11,14 +11,37 @@ namespace {
 
 // Make sure we release our resources on an exception
 
-struct PngPointersT
+struct PngStructsT
 {
-	png_structp Png = nullptr;
-	png_infop Info = nullptr;
+	private:
+	png_structp mPng;
+	png_infop mInfo;
 
-	~PngPointersT()
+	public:
+	PngStructsT()
 	{
-		png_destroy_read_struct(&Png, &Info, nullptr);
+		mPng = png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
+		if (mPng == nullptr) throw std::runtime_error{"PNG load error"};
+		mInfo = png_create_info_struct(mPng);
+		if (mInfo == nullptr) {
+			png_destroy_read_struct(&mPng, nullptr, nullptr);
+			throw std::runtime_error{"PNG load error"};
+		}
+	}
+
+	~PngStructsT()
+	{
+		png_destroy_read_struct(&mPng, &mInfo, nullptr);
+	}
+
+	png_structp getPng()
+	{
+		return mPng;
+	}
+
+	png_infop getInfo()
+	{
+		return mInfo;
 	}
 };
 
@@ -58,59 +81,57 @@ PngT::PngT(char const * Path) :
 	if (File.gcount() != sizeof(Magic)) throw std::runtime_error{"Png read error"};
 	if (!png_check_sig(Magic, sizeof(Magic))) throw std::runtime_error{"PNG load error"};
 
-	PngPointersT Pointers;
-	Pointers.Png = png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
-	if (Pointers.Png == nullptr) throw std::runtime_error{"PNG load error"};
-	Pointers.Info = png_create_info_struct(Pointers.Png);
-	if (Pointers.Info == nullptr) throw std::runtime_error{"PNG load error"};
+	PngStructsT Structs;
+	auto Png = Structs.getPng();
+	auto Info = Structs.getInfo();
 
-	png_set_read_fn(Pointers.Png, &File, readPngData);
-	png_set_error_fn(Pointers.Png, nullptr, throwPngError, nullptr);
+	png_set_read_fn(Png, &File, readPngData);
+	png_set_error_fn(Png, nullptr, throwPngError, nullptr);
 
 	// Tell libpng that we have already read the magic number
-	png_set_sig_bytes(Pointers.Png, sizeof(Magic));
+	png_set_sig_bytes(Png, sizeof(Magic));
 
 	// Ensure format is RGBA8
-	png_read_info(Pointers.Png, Pointers.Info);
-	int BitDepth = png_get_bit_depth(Pointers.Png, Pointers.Info);
-	int ColorType = png_get_color_type(Pointers.Png, Pointers.Info);
+	png_read_info(Png, Info);
+	int BitDepth = png_get_bit_depth(Png, Info);
+	int ColorType = png_get_color_type(Png, Info);
 
 	switch (ColorType) {
 	case PNG_COLOR_TYPE_PALETTE: {
-		png_set_palette_to_rgb(Pointers.Png);
-		png_set_add_alpha(Pointers.Png, 255, PNG_FILLER_AFTER);
+		png_set_palette_to_rgb(Png);
+		png_set_add_alpha(Png, 255, PNG_FILLER_AFTER);
 	} break;
 	case PNG_COLOR_TYPE_GRAY: {
-		if (BitDepth < 8) png_set_gray_1_2_4_to_8(Pointers.Png);
-		png_set_gray_to_rgb(Pointers.Png);
-		png_set_add_alpha(Pointers.Png, 255, PNG_FILLER_AFTER);
+		if (BitDepth < 8) png_set_gray_1_2_4_to_8(Png);
+		png_set_gray_to_rgb(Png);
+		png_set_add_alpha(Png, 255, PNG_FILLER_AFTER);
 	} break;
 	case PNG_COLOR_TYPE_GRAY_ALPHA: {
-		png_set_gray_to_rgb(Pointers.Png);
+		png_set_gray_to_rgb(Png);
 	} break;
 	case PNG_COLOR_TYPE_RGB: {
-		png_set_add_alpha(Pointers.Png, 255, PNG_FILLER_AFTER);
+		png_set_add_alpha(Png, 255, PNG_FILLER_AFTER);
 	} break;
 	}
 
-	if (png_get_valid(Pointers.Png, Pointers.Info, PNG_INFO_tRNS)) {
-		png_set_tRNS_to_alpha(Pointers.Png);
+	if (png_get_valid(Png, Info, PNG_INFO_tRNS)) {
+		png_set_tRNS_to_alpha(Png);
 	}
 
-	if (BitDepth == 16) png_set_strip_16(Pointers.Png);
-	else if (BitDepth < 8) png_set_packing(Pointers.Png);
+	if (BitDepth == 16) png_set_strip_16(Png);
+	else if (BitDepth < 8) png_set_packing(Png);
 
 	// XXX: Assume sRGB approximated input, output linear colorspace, need a more robust method
-	png_set_gamma(Pointers.Png, 1, .45455);
+	png_set_gamma(Png, 1, .45455);
 
 	// Update info structure to apply transformations
-	png_read_update_info(Pointers.Png, Pointers.Info);
+	png_read_update_info(Png, Info);
 
 	// Retrieve updated information
 	png_uint_32 Width;
 	png_uint_32 Height;
 	png_get_IHDR(
-		Pointers.Png, Pointers.Info,
+		Png, Info,
 		&Width, &Height, &BitDepth, &ColorType,
 		nullptr, nullptr, nullptr
 	);
@@ -125,8 +146,8 @@ PngT::PngT(char const * Path) :
 	}
 
 	// Read pixel data using row pointers
-	png_read_image(Pointers.Png, Rows.get());
-	png_read_end(Pointers.Png, nullptr);
+	png_read_image(Png, Rows.get());
+	png_read_end(Png, nullptr);
 }
 
 unsigned short PngT::getWidth() const

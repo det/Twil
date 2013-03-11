@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Container.hpp"
+#include "WindowBase.hpp"
 #include "Data/Tuple.hpp"
 
 #include <algorithm>
@@ -12,8 +13,6 @@ class ManagerT;
 }
 
 namespace Ui {
-
-class MouseManagerT;
 
 /// \brief Functionality shared by both horizontal and vertical partition boxes.
 template<typename ... ArgsT>
@@ -41,19 +40,19 @@ class PartitionBoxBaseT :
 	struct InitFunctorT
 	{
 		ContainerT & Parent;
-		Theme::ManagerT & Manager;
+		WindowBaseT & Window;
 
 		template<typename T>
 		void operator()(T & Child)
 		{
-			Child.init(Parent, Manager);
+			Child.init(Parent, Window);
 		}
 	};
 
-	void init(ContainerT & Parent, Theme::ManagerT & ThemeManager)
+	void init(ContainerT & Parent, WindowBaseT & Window)
 	{
 		mParent = &Parent;
-		Data::iterate(mChildren, InitFunctorT{*this, ThemeManager});
+		Data::iterate(mChildren, InitFunctorT{*this, Window});
 	}
 
 	/// \returns A reference to a child widget.
@@ -352,7 +351,6 @@ class PartitionBoxT<true, ArgsT ...> :
 
 	struct DelegateMouseFunctorT
 	{
-		MouseManagerT & MouseManager;
 		signed short X;
 		signed short Y;
 
@@ -360,23 +358,23 @@ class PartitionBoxT<true, ArgsT ...> :
 		bool operator()(T & Child)
 		{
 			if (X < Child.getRight()) {
-				Child.delegateMouse(MouseManager, X, Y);
+				Child.delegateMouse(X, Y);
 				return false;
 			}
 			return true;
 		}
 	};
 
-	void delegateMouse(MouseManagerT & MouseManager, signed short X, signed short Y)
+	void delegateMouse(signed short X, signed short Y)
 	{
-		Data::iterateUntil(mChildren, DelegateMouseFunctorT{MouseManager, X, Y});
+		Data::iterateUntil(mChildren, DelegateMouseFunctorT{X, Y});
 	}
 
 	// Container
-	void releaseMouse(MouseManagerT & MouseManager, signed short X, signed short Y) final
+	void releaseMouse(signed short X, signed short Y) final
 	{
-		if (checkThisContains(X, Y)) delegateMouse(MouseManager, X, Y);
-		else mParent->releaseMouse(MouseManager, X, Y);
+		if (checkThisContains(X, Y)) delegateMouse(X, Y);
+		else mParent->releaseMouse(X, Y);
 	}
 
 };
@@ -476,7 +474,6 @@ class PartitionBoxT<false, ArgsT ...> :
 
 	struct DelegateMouseFunctorT
 	{
-		MouseManagerT & MouseManager;
 		signed short X;
 		signed short Y;
 
@@ -484,23 +481,23 @@ class PartitionBoxT<false, ArgsT ...> :
 		bool operator()(T & Child)
 		{
 			if (Y < Child.getTop()) {
-				Child.delegateMouse(MouseManager, X, Y);
+				Child.delegateMouse(X, Y);
 				return false;
 			}
 			return true;
 		}
 	};
 
-	void delegateMouse(MouseManagerT & Manager, signed short X, signed short Y)
+	void delegateMouse(signed short X, signed short Y)
 	{
-		Data::iterateUntil(mChildren, DelegateMouseFunctorT{Manager, X, Y});
+		Data::iterateUntil(mChildren, DelegateMouseFunctorT{X, Y});
 	}
 
 	// Container
-	void releaseMouse(MouseManagerT & Manager, signed short X, signed short Y) final
+	void releaseMouse(signed short X, signed short Y) final
 	{
-		if (checkThisContains(X, Y)) delegateMouse(Manager, X, Y);
-		else mParent->releaseMouse(Manager, X, Y);
+		if (checkThisContains(X, Y)) delegateMouse(X, Y);
+		else mParent->releaseMouse(X, Y);
 	}
 };
 

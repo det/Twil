@@ -1,13 +1,7 @@
 #pragma once
 
-//#include <X11/keysym.h>
-//#include <X11/Xlib.h>
-
-#undef Button1
-#undef Button2
-#undef Button3
-#undef Button4
-#undef Button5
+#include <xcb/xcb.h>
+#include <xcb/xcb_keysyms.h>
 
 namespace Twil {
 namespace Platform {

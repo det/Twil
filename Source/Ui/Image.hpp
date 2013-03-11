@@ -2,7 +2,7 @@
 
 #include "Container.hpp"
 #include "MouseHandler.hpp"
-#include "MouseManager.hpp"
+#include "WindowBase.hpp"
 #include "Theme/Image.hpp"
 
 #include <string>
@@ -23,6 +23,7 @@ class ImageT :
 {
 	private:
 	ContainerT * mParent;
+	WindowBaseT * mWindow;
 	LayoutT mLayout;
 	Theme::ImageT mThemeImage;
 	std::u32string mText;
@@ -56,10 +57,11 @@ class ImageT :
 
 	public:
 	// Image
-	void init(ContainerT & Parent, Theme::ManagerT & ThemeManager)
+	void init(ContainerT & Parent, WindowBaseT & Window)
 	{
 		mParent = &Parent;
-		mThemeImage.init(ThemeManager);
+		mWindow = &Window;
+		mThemeImage.init(Window.getThemeManager());
 	}
 
 	/// \brief Set the bitmap that the Image displays.
@@ -171,15 +173,15 @@ class ImageT :
 		return mThemeImage.getBaseHeight();
 	}
 
-	void delegateMouse(MouseManagerT & MouseManager, signed short, signed short)
+	void delegateMouse(signed short, signed short)
 	{
-		MouseManager.setHandler(*this);
+		mWindow->getMouseManager().setHandler(*this);
 	}
 
 	// MouseHandler
-	void handleMouseMotion(MouseManagerT & MouseManager, signed short X, signed short Y) final
+	void handleMouseMotion(signed short X, signed short Y) final
 	{
-		if (!checkThisContains(X, Y)) mParent->releaseMouse(MouseManager, X, Y);
+		if (!checkThisContains(X, Y)) mParent->releaseMouse(X, Y);
 	}
 };
 

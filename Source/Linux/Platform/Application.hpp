@@ -9,9 +9,31 @@
 #include <stdexcept>
 
 #include <xcb/xcb.h>
+#include <xcb/xcb_keysyms.h>
 
 namespace Twil {
 namespace Platform {
+
+class KeySymbolsT
+{
+	private:
+	xcb_key_symbols_t * mPointer;
+
+	public:
+	KeySymbolsT(xcb_connection_t * Connection) :
+		mPointer{xcb_key_symbols_alloc(Connection)}
+	{}
+
+	~KeySymbolsT()
+	{
+		xcb_key_symbols_free(mPointer);
+	}
+
+	operator xcb_key_symbols_t *()
+	{
+		return mPointer;
+	}
+};
 
 /// \brief A Linux application.
 class ApplicationT
@@ -52,6 +74,7 @@ class ApplicationT
 	{
 		assert(mRunning == false);
 
+//		KeySymbolsT KeySymbols{mConnection};
 		auto & MouseManager = Window.getMouseManager();
 //		auto & KeyboardManager = Window.getKeyboardManager();
 
@@ -101,13 +124,13 @@ class ApplicationT
 			} break;
 
 			case XCB_KEY_PRESS: {
-//				auto Keysym = XLookupKeysym(&Event.xkey, 0);
-//				KeyboardManager.handleKeyPress(static_cast<KeyT>(Keysym));
+//				auto Event = reinterpret_cast<xcb_key_press_event_t *>(GenericEvent);
+//				auto Keysym = xcb_key_press_lookup_keysym(KeySymbols, Event, 0);
 			} break;
 
 			case XCB_KEY_RELEASE: {
-//				auto Keysym = XLookupKeysym(&Event.xkey, 0);
-//				KeyboardManager.handleKeyRelease(static_cast<KeyT>(Keysym));
+//				auto Event = reinterpret_cast<xcb_key_release_event_t *>(GenericEvent);
+//				auto Keysym = xcb_key_release_lookup_keysym(KeySymbols, Event, 0);
 			} break;
 
 			case XCB_CONFIGURE_NOTIFY: {

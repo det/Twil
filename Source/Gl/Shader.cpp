@@ -55,7 +55,7 @@ void ShaderT::compile()
 		if (LogLength < 1) throw std::runtime_error{"Shader compile error, unable to retrieve log"};
 		auto Log = Data::makeArray<GLchar>(LogLength);
 		glGetShaderInfoLog(mId, LogLength, &LogLength, Log.get());
-		std::cout << Log.get();
+		std::cerr << Log.get();
 		throw std::runtime_error{"Shader compile error"};
 	}
 }

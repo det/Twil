@@ -12,12 +12,12 @@ void KeyboardManagerT::setHandler(KeyboardHandlerT & Handler)
 
 void KeyboardManagerT::handleKeyPress(Platform::KeyT Key)
 {
-	mHandler->handleKeyPress(*this, Key);
+	mHandler->handleKeyPress(Key);
 }
 
 void KeyboardManagerT::handleKeyRelease(Platform::KeyT Key)
 {
-	mHandler->handleKeyRelease(*this, Key);
+	mHandler->handleKeyRelease(Key);
 }
 
 }

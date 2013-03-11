@@ -54,6 +54,7 @@ if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
 	set (platform_libs
 		dl
 		xcb
+		xcb-keysyms
 		X11-xcb
 		${X11_LIBRARIES}
 	)
@@ -204,6 +205,8 @@ set (ui_sources
 	Ui/Widget.hpp
 	Ui/Window.cpp
 	Ui/Window.hpp
+	Ui/WindowBase.cpp
+	Ui/WindowBase.hpp
 )
 
 source_group(Ui FILES ${ui_sources})
