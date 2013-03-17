@@ -34,12 +34,12 @@ struct PngStructsT
 		png_destroy_read_struct(&mPng, &mInfo, nullptr);
 	}
 
-	png_structp getPng()
+	png_structp & getPng()
 	{
 		return mPng;
 	}
 
-	png_infop getInfo()
+	png_infop & getInfo()
 	{
 		return mInfo;
 	}
@@ -82,8 +82,8 @@ PngT::PngT(char const * Path) :
 	if (!png_check_sig(Magic, sizeof(Magic))) throw std::runtime_error{"PNG load error"};
 
 	PngStructsT Structs;
-	auto Png = Structs.getPng();
-	auto Info = Structs.getInfo();
+	auto & Png = Structs.getPng();
+	auto & Info = Structs.getInfo();
 
 	png_set_read_fn(Png, &File, readPngData);
 	png_set_error_fn(Png, nullptr, throwPngError, nullptr);

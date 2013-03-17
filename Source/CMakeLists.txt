@@ -80,6 +80,8 @@ source_group(Attribute FILES ${attribute_sources})
 set (data_sources
 	Data/Memory.cpp
 	Data/Memory.hpp
+	Data/Rope.cpp
+	Data/Rope.hpp
 	Data/Tuple.cpp
 	Data/Tuple.hpp
 )
