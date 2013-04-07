@@ -18,9 +18,13 @@ namespace Ui {
 /// \brief A Widget that draws an image on the screen.
 /// \param LayoutT A layout class used for positioning and clipping.
 template<typename LayoutT>
-class ImageT :
+class ImageT
+:
 	public MouseHandlerT
 {
+	ImageT(ImageT const &) = delete;
+	ImageT & operator =(ImageT const &) = delete;
+
 	private:
 	ContainerT * mParent;
 	WindowBaseT * mWindow;
@@ -28,7 +32,6 @@ class ImageT :
 	Theme::ImageT mThemeImage;
 	std::u32string mText;
 
-	private:
 	void layoutX()
 	{
 		signed short Delta = mLayout.getLayoutLeft(getBaseWidth()) - mThemeImage.getLeft();
@@ -51,12 +54,13 @@ class ImageT :
 			X >= getLeft() && X >= getClipLeft() &&
 			X <= getRight() && X <= getClipRight() &&
 			Y >= getBottom() && Y >= getClipBottom() &&
-			Y <= getTop() && Y <= getClipTop()
-		);
+			Y <= getTop() && Y <= getClipTop());
 	}
 
 	public:
 	// Image
+	ImageT() = default;
+
 	void init(ContainerT & Parent, WindowBaseT & Window)
 	{
 		mParent = &Parent;

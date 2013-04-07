@@ -22,15 +22,14 @@ class OutlineT
 	friend class BitmapT;
 	friend class StrokerT;
 
+	OutlineT(OutlineT const &) = delete;
+	OutlineT & operator =(OutlineT const &) = delete;
+
 	private:
 	FT_Outline mId;
 	FT_Vector mA;
 	short mPointCapacity;
 	short mContourCapacity;
-
-	// Non copyable
-	OutlineT(OutlineT &) = delete;
-	OutlineT & operator=(OutlineT &) = delete;
 
 	public:
 	OutlineT();

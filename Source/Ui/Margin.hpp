@@ -13,10 +13,15 @@ namespace Ui {
 /// \param SpaceY Size of the bottom and top margins.
 /// \param T Type of the child widget.
 template<unsigned short SpaceX, unsigned short SpaceY, typename T>
-class MarginT :
+class MarginT
+:
 	public ContainerT,
 	public MouseHandlerT
 {
+	MarginT(MarginT const &) = delete;
+	MarginT & operator =(MarginT const &) = delete;
+
+	private:
 	ContainerT * mParent;
 	WindowBaseT * mWindow;
 	T mChild;
@@ -27,20 +32,20 @@ class MarginT :
 			X >= getLeft() && X >= getClipLeft() &&
 			X <= getRight() && X <= getClipRight() &&
 			Y >= getBottom() && Y >= getClipBottom() &&
-			Y <= getTop() && Y <= getClipTop()
-		);
+			Y <= getTop() && Y <= getClipTop());
 	}
 
 	bool checkChildContains(signed short X, signed short Y)
 	{
 		return (
 			X >= mChild.getLeft() && X <= mChild.getRight() &&
-			Y >= mChild.getBottom() && Y <= mChild.getTop()
-		);
+			Y >= mChild.getBottom() && Y <= mChild.getTop());
 	}
 
 	public:
 	// Margin
+	MarginT() = default;
+
 	void init(ContainerT & Parent, WindowBaseT & Window)
 	{
 		mParent = &Parent;

@@ -14,12 +14,11 @@ class SizeT
 {
 	friend class FaceT;
 
+	SizeT(SizeT const &) = delete;
+	SizeT & operator =(SizeT const &) = delete;
+
 	private:
 	FT_Size mId;
-
-	// Non copyable
-	SizeT(SizeT &) = delete;
-	SizeT & operator=(SizeT &) = delete;
 
 	public:
 	/// \brief Load a size for a font face

@@ -39,8 +39,7 @@ if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
 		Linux/Platform/SymbolLoader.cpp
 		Linux/Platform/SymbolLoader.hpp
 		Linux/Platform/Window.cpp
-		Linux/Platform/Window.hpp
-	)
+		Linux/Platform/Window.hpp)
 
 	source_group(Platform FILES ${platform_sources})
 
@@ -48,16 +47,14 @@ if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
 
 	set (platform_search_path
 		Linux
-		${X11_INCLUDE_DIRS}
-	)
+		${X11_INCLUDE_DIRS})
 
 	set (platform_libs
 		dl
 		xcb
 		xcb-keysyms
 		X11-xcb
-		${X11_LIBRARIES}
-	)
+		${X11_LIBRARIES})
 else ()
 	message(FATAL_ERROR "Unsupported platform: ${CMAKE_SYSTEM_NAME}")
 endif ()
@@ -72,19 +69,19 @@ set (attribute_sources
 	Attribute/Size2h.cpp
 	Attribute/Size2h.hpp
 	Attribute/Texcoord2h.cpp
-	Attribute/Texcoord2h.hpp
-)
+	Attribute/Texcoord2h.hpp)
 
 source_group(Attribute FILES ${attribute_sources})
 
 set (data_sources
+	Data/Event.cpp
+	Data/Event.hpp
 	Data/Memory.cpp
 	Data/Memory.hpp
 	Data/Rope.cpp
 	Data/Rope.hpp
 	Data/Tuple.cpp
-	Data/Tuple.hpp
-)
+	Data/Tuple.hpp)
 source_group(Data FILES ${data_sources})
 
 set (ft_sources
@@ -99,8 +96,7 @@ set (ft_sources
 	Ft/Size.cpp
 	Ft/Size.hpp
 	Ft/Stroker.cpp
-	Ft/Stroker.hpp
-)
+	Ft/Stroker.hpp)
 
 source_group(Ft FILES ${ft_sources})
 
@@ -116,15 +112,13 @@ set (gl_sources
 	Gl/Texture.cpp
 	Gl/Texture.hpp
 	Gl/VertexArray.cpp
-	Gl/VertexArray.hpp
-)
+	Gl/VertexArray.hpp)
 
 source_group(Gl FILES ${gl_sources})
 
 set (loader_sources
 	Loader/Png.cpp
-	Loader/Png.hpp
-)
+	Loader/Png.hpp)
 
 source_group(Loader FILES ${loader_sources})
 
@@ -134,8 +128,7 @@ set (program_sources
 	Program/FillSolid.cpp
 	Program/FillSolid.hpp
 	Program/OutlineGradient.cpp
-	Program/OutlineGradient.hpp
-)
+	Program/OutlineGradient.hpp)
 
 source_group(Program FILES ${program_sources})
 
@@ -148,8 +141,7 @@ set (shader_sources
 	Shader/FillSolid.vert
 	Shader/OutlineGradient.frag
 	Shader/OutlineGradient.geom
-	Shader/OutlineGradient.vert
-)
+	Shader/OutlineGradient.vert)
 
 source_group(Shader FILES ${shader_sources})
 
@@ -169,8 +161,7 @@ set (theme_sources
 	Theme/StreamArray.cpp
 	Theme/StreamArray.hpp
 	Theme/TextureArray.cpp
-	Theme/TextureArray.hpp
-)
+	Theme/TextureArray.hpp)
 
 source_group(Theme FILES ${theme_sources})
 
@@ -181,8 +172,6 @@ set (ui_sources
 	Ui/Margin.hpp
 	Ui/Button.cpp
 	Ui/Button.hpp
-	Ui/Event.cpp
-	Ui/Event.hpp
 	Ui/Container.cpp
 	Ui/Container.hpp
 	Ui/Centered.cpp
@@ -208,8 +197,7 @@ set (ui_sources
 	Ui/Window.cpp
 	Ui/Window.hpp
 	Ui/WindowBase.cpp
-	Ui/WindowBase.hpp
-)
+	Ui/WindowBase.hpp)
 
 source_group(Ui FILES ${ui_sources})
 
@@ -219,8 +207,7 @@ set (vertex_sources
 	Vertex/FillSolid.cpp
 	Vertex/FillSolid.hpp
 	Vertex/OutlineGradient.cpp
-	Vertex/OutlineGradient.hpp
-)
+	Vertex/OutlineGradient.hpp)
 
 source_group(Vertex FILES ${vertex_sources})
 
@@ -236,8 +223,7 @@ add_executable (hello
 	${shader_sources}
 	${theme_sources}
 	${ui_sources}
-	${vertex_sources}
-)
+	${vertex_sources})
 
 find_package (Freetype REQUIRED)
 find_package (OpenGL REQUIRED)
@@ -249,21 +235,18 @@ include_directories (
 	${platform_search_path}
 	${FREETYPE_INCLUDE_DIRS}
 	${OPENGL_INCLUDE_DIRS}
-	${PNG_INCLUDE_DIRS}
-)
+	${PNG_INCLUDE_DIRS})
 
 target_link_libraries (hello
 	${platform_libs}
 	${FREETYPE_LIBRARIES}
 	${OPENGL_LIBRARIES}
-	${PNG_LIBRARIES}
-)
+	${PNG_LIBRARIES})
 
 set (fonts
 	Font/DejaVuSans.ttf
 	Font/DejaVuSans-Bold.ttf
-	Font/DejaVuSansMono.ttf
-)
+	Font/DejaVuSansMono.ttf)
 
 install (FILES ${fonts} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Font)
 install (FILES ${shader_sources} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Shader)

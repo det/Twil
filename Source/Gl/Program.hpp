@@ -12,12 +12,11 @@ class ShaderT;
 /// \brief Container for an OpenGL Program.
 class ProgramT
 {
+	ProgramT(ProgramT const &) = delete;
+	ProgramT & operator =(ProgramT const &) = delete;
+
 	private:
 	GLuint mId;
-
-	// Non copyable
-	ProgramT(ProgramT &) = delete;
-	ProgramT & operator=(ProgramT &) = delete;
 
 	public:
 	ProgramT();

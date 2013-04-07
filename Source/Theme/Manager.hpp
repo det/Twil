@@ -56,6 +56,9 @@ class ManagerT
 	friend class ImageT;
 	friend class LabelT;
 
+	ManagerT(ManagerT const &) = delete;
+	ManagerT & operator =(ManagerT const &) = delete;
+
 	private:
 	Ft::LibraryT mLibrary;
 	Ft::BitmapT mBitmap;
@@ -109,6 +112,7 @@ class ManagerT
 
 	public:	
 	ManagerT();
+	~ManagerT();
 
 	/// \brief Make sure the GUI is drawn on the next update call
 	void markNeedsRedraw();

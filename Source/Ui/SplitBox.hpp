@@ -8,9 +8,13 @@ namespace Ui {
 
 /// \brief Functionality shared by all split boxes.
 template<typename FirstT, typename SecondT>
-class SplitBoxBaseT :
+class SplitBoxBaseT
+:
 	public ContainerT
 {
+	SplitBoxBaseT(SplitBoxBaseT const &) = delete;
+	SplitBoxBaseT & operator =(SplitBoxBaseT const &) = delete;
+
 	protected:
 	ContainerT * mParent;
 	FirstT mFirst;
@@ -42,12 +46,13 @@ class SplitBoxBaseT :
 			X >= getMouseLeft() && X >= getClipLeft() &&
 			X <= getMouseRight() && X <= getClipRight() &&
 			Y >= getMouseBottom() && Y >= getClipBottom() &&
-			Y <= getMouseTop() && Y <= getClipTop()
-		);
+			Y <= getMouseTop() && Y <= getClipTop());
 	}
 
 	public:
 	// SplitBox
+	SplitBoxBaseT() = default;
+
 	void init(ContainerT & Parent, WindowBaseT & Window)
 	{
 		mParent = &Parent;
@@ -135,7 +140,8 @@ class SplitBoxBaseT :
 
 /// \brief Functionality shared by all horizontal split boxes.
 template<typename FirstT, typename SecondT>
-class SplitBoxHorizontalT :
+class SplitBoxHorizontalT
+:
 	public SplitBoxBaseT<FirstT, SecondT>
 {
 	protected:
@@ -195,7 +201,8 @@ class SplitBoxHorizontalT :
 
 /// \brief Functionality shared by all vertical split boxes.
 template<typename FirstT, typename SecondT>
-class SplitBoxVerticalT :
+class SplitBoxVerticalT
+:
 	public SplitBoxBaseT<FirstT, SecondT>
 {
 	protected:
@@ -262,7 +269,8 @@ class SplitBoxT;
 /// The first child is kept at its base width and clipped if neccesary.
 /// The second child has its width set to any remaining space.
 template<typename FirstT, typename SecondT>
-class SplitBoxT<true, true, FirstT, SecondT> :
+class SplitBoxT<true, true, FirstT, SecondT>
+:
 	public SplitBoxHorizontalT<FirstT, SecondT>
 {
 	protected:
@@ -322,7 +330,8 @@ class SplitBoxT<true, true, FirstT, SecondT> :
 /// The first child has its width set to any remaining space.
 
 template<typename FirstT, typename SecondT>
-class SplitBoxT<true, false, FirstT, SecondT> :
+class SplitBoxT<true, false, FirstT, SecondT>
+:
 	public SplitBoxHorizontalT<FirstT, SecondT>
 {
 	protected:
@@ -383,7 +392,8 @@ class SplitBoxT<true, false, FirstT, SecondT> :
 /// The second child has its height set to any remaining space.
 
 template<typename FirstT, typename SecondT>
-class SplitBoxT<false, true, FirstT, SecondT> :
+class SplitBoxT<false, true, FirstT, SecondT>
+:
 	public SplitBoxVerticalT<FirstT, SecondT>
 {
 	protected:
@@ -443,7 +453,8 @@ class SplitBoxT<false, true, FirstT, SecondT> :
 /// The first child has its height set to any remaining space.
 
 template<typename FirstT, typename SecondT>
-class SplitBoxT<false, false, FirstT, SecondT> :
+class SplitBoxT<false, false, FirstT, SecondT>
+:
 	public SplitBoxVerticalT<FirstT, SecondT>
 {
 	protected:

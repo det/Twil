@@ -20,7 +20,8 @@ class KeySymbolsT
 	xcb_key_symbols_t * mPointer;
 
 	public:
-	KeySymbolsT(xcb_connection_t * Connection) :
+	KeySymbolsT(xcb_connection_t * Connection)
+	:
 		mPointer{xcb_key_symbols_alloc(Connection)}
 	{}
 
@@ -40,6 +41,9 @@ class ApplicationT
 {
 	friend class WindowT;
 
+	ApplicationT(ApplicationT const &) = delete;
+	ApplicationT & operator =(ApplicationT const &) = delete;
+
 	private:
 	xcb_connection_t * mConnection;
 
@@ -56,10 +60,6 @@ class ApplicationT
 	xcb_atom_t mWmProtocolsAtom;
 
 	bool mRunning;
-
-	// Non-copyable
-	ApplicationT(ApplicationT &) = delete;
-	ApplicationT & operator=(ApplicationT &) = delete;
 
 	public:
 	/// \throws std::runtime_error on error.
@@ -79,17 +79,18 @@ class ApplicationT
 //		auto & KeyboardManager = Window.getKeyboardManager();
 
 		mRunning = true;
-		while (mRunning)  {
+		while (mRunning)
+		{
 			// We call update on the Window when all queued events have been proccessed
 			auto GenericEvent = xcb_poll_for_queued_event(mConnection);
-			if (GenericEvent == nullptr) {
+			if (GenericEvent == nullptr) 
+			{
 				Window.update();
 				GenericEvent = xcb_wait_for_event(mConnection);
 			}
 
 			// Ensure the pointer gets free'd
-			using EventDeleterT = Data::FreeDeleterT<xcb_generic_event_t>;
-			std::unique_ptr<xcb_generic_event_t, EventDeleterT> EventPointer{GenericEvent};
+			std::unique_ptr<xcb_generic_event_t, Data::FreeDeleterT> EventPointer{GenericEvent};
 
 			switch(EventPointer->response_type & ~0x80) {
 

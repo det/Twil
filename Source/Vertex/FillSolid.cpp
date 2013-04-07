@@ -10,16 +10,16 @@ namespace Vertex {
 void FillSolidT::setup()
 {
 	using VertexT = FillSolidT;
-	using PointerT = GLvoid const *;
+	using OffsetT = GLvoid const *;
 
 	auto Stride = sizeof(VertexT);
-	auto ColorOffset = reinterpret_cast<PointerT>(offsetof(VertexT, Color));
-	auto ClipMinOffset = reinterpret_cast<PointerT>(offsetof(VertexT, ClipMin));
-	auto ClipMaxOffset = reinterpret_cast<PointerT>(offsetof(VertexT, ClipMax));
-	auto PositionMinOffset = reinterpret_cast<PointerT>(offsetof(VertexT, PositionMin));
-	auto PositionMaxOffset = reinterpret_cast<PointerT>(offsetof(VertexT, PositionMax));
-	auto TextureSizeOffset = reinterpret_cast<PointerT>(offsetof(VertexT, TextureSize));
-	auto OffsetOffset = reinterpret_cast<PointerT>(offsetof(VertexT, Offset));
+	auto ColorOffset = reinterpret_cast<OffsetT>(offsetof(VertexT, Color));
+	auto ClipMinOffset = reinterpret_cast<OffsetT>(offsetof(VertexT, ClipMin));
+	auto ClipMaxOffset = reinterpret_cast<OffsetT>(offsetof(VertexT, ClipMax));
+	auto PositionMinOffset = reinterpret_cast<OffsetT>(offsetof(VertexT, PositionMin));
+	auto PositionMaxOffset = reinterpret_cast<OffsetT>(offsetof(VertexT, PositionMax));
+	auto TextureSizeOffset = reinterpret_cast<OffsetT>(offsetof(VertexT, TextureSize));
+	auto OffsetOffset = reinterpret_cast<OffsetT>(offsetof(VertexT, Offset));
 
 	decltype(Color)::setup(0, Stride, ColorOffset);
 	decltype(ClipMin)::setup(1, Stride, ClipMinOffset);

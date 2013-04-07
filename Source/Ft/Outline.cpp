@@ -8,7 +8,8 @@
 namespace Twil {
 namespace Ft {
 
-OutlineT::OutlineT() :
+OutlineT::OutlineT()
+:
 	mId{},
 	mPointCapacity{0},
 	mContourCapacity{0}

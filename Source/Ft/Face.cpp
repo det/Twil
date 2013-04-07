@@ -11,7 +11,8 @@
 namespace Twil {
 namespace Ft {
 
-FaceT::FaceT(LibraryT & Library, char const * Path, FT_Long Index) :
+FaceT::FaceT(LibraryT & Library, char const * Path, FT_Long Index)
+:
 	mLibrary{&Library},
 	mId{nullptr}
 {

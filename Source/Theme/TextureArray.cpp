@@ -18,7 +18,8 @@ void TextureArrayT::update()
 {
 	if (mBytes.size() == mSize) return;
 
-	if (mCapacity != mBytes.capacity()) {
+	if (mCapacity != mBytes.capacity()) 
+	{
 		// Resize and upload all data
 		glBindTexture(GL_TEXTURE_BUFFER, mTexture);
 		glBindBuffer(GL_TEXTURE_BUFFER, mBuffer);
@@ -32,7 +33,8 @@ void TextureArrayT::update()
 		glBindBuffer(GL_TEXTURE_BUFFER, 0);
 		glBindTexture(GL_TEXTURE_BUFFER, 0);
 	}
-	else {
+	else
+	{
 		// Upload only new data
 		glBindBuffer(GL_TEXTURE_BUFFER, mBuffer);
 		auto Flags = GL_MAP_WRITE_BIT | GL_MAP_UNSYNCHRONIZED_BIT;

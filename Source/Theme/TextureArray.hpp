@@ -11,13 +11,12 @@ namespace Theme {
 /// \brief Container for a dynamicly growing OpenGL buffer texture.
 class TextureArrayT
 {
+	TextureArrayT(TextureArrayT const &) = delete;
+	TextureArrayT & operator =(TextureArrayT const &) = delete;
+
 	private:
 	Gl::BufferT mBuffer;
 	Gl::TextureT mTexture;
-
-	// Non copyable
-	TextureArrayT(TextureArrayT &) = delete;
-	TextureArrayT & operator=(TextureArrayT &) = delete;
 
 	std::vector<GLubyte> mBytes;
 	std::size_t mSize = 0;

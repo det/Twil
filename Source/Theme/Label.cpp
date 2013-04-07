@@ -21,7 +21,8 @@ void LabelT::setText(std::u32string const & Text)
 	FT_Vector Pen{0, -mManager->mLabelSize.getDescender()};
 	GlyphEntryT PreviousEntry{};
 
-	for (auto Codepoint : Text) {
+	for (auto Codepoint : Text)
+	{
 		auto Entry = mManager->loadGlyphEntry(Face, Codepoint);
 
 		// We can hit a divide by 0 in clipping without this check
@@ -83,7 +84,8 @@ void LabelT::setClipTop(signed short Y)
 
 void LabelT::draw(Vertex::FillSolidT * Vertices) const
 {
-	for (std::size_t I = 0, E = mGlyphs.size(); I != E; ++I) {
+	for (std::size_t I = 0, E = mGlyphs.size(); I != E; ++I)
+	{
 		signed short PositionLeft = mLeft + mGlyphs[I].PositionMin.X;
 		signed short PositionRight = mLeft + mGlyphs[I].PositionMax.X;
 		signed short PositionBottom = mBottom + mGlyphs[I].PositionMin.Y;

@@ -8,12 +8,11 @@ namespace Gl {
 /// \brief Container for an OpenGL buffer.
 class BufferT
 {
+	BufferT(BufferT const &) = delete;
+	BufferT & operator =(BufferT const &) = delete;
+
 	private:
 	GLuint mId;
-
-	// Non copyable
-	BufferT(BufferT &) = delete;
-	BufferT & operator=(BufferT &) = delete;
 
 	public:
 	BufferT();

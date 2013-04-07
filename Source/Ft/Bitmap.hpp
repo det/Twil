@@ -15,7 +15,9 @@ class OutlineT;
 class FaceT;
 
 /// \brief An iterator that operates on a sub rectangle of a Twil::Ft::BitmapT.
-class SubBitmapIteratorT : public std::iterator<std::input_iterator_tag, unsigned char>
+class SubBitmapIteratorT
+:
+	public std::iterator<std::input_iterator_tag, unsigned char>
 {
 	friend class BitmapT;
 
@@ -26,9 +28,10 @@ class SubBitmapIteratorT : public std::iterator<std::input_iterator_tag, unsigne
 	std::size_t mRowCount;
 
 	SubBitmapIteratorT(
-		unsigned char const * Pointer, std::size_t Pitch,
-		std::size_t Width, std::size_t RowCount
-	);
+		unsigned char const * Pointer,
+		std::size_t Pitch,
+		std::size_t Width,
+		std::size_t RowCount);
 
 	public:
 	SubBitmapIteratorT & operator++();
@@ -40,16 +43,17 @@ class SubBitmapIteratorT : public std::iterator<std::input_iterator_tag, unsigne
 /// \brief An 8 bit FreeType bitmap used as a target for rendering operations.
 class BitmapT
 {
+	BitmapT(BitmapT const &) = delete;
+	BitmapT & operator =(BitmapT const &) = delete;
+
 	private:
 	LibraryT * mLibrary;
 	FT_Bitmap mId;
 	std::size_t mCapacity;
 
-	// Non copyable
-	BitmapT(BitmapT &) = delete;
-	BitmapT & operator=(BitmapT &) = delete;
-
 	public:
+	using RangeT = std::pair<SubBitmapIteratorT, SubBitmapIteratorT>;
+
 	/// \brief Construct a 0 size bitmap.
 	BitmapT(LibraryT & Library);
 
@@ -87,10 +91,7 @@ class BitmapT
 	unsigned char const * end() const;
 
 	/// \returns A pair of begin and end iterators for the bytes of a sub-rectangle of the bitmap.
-	std::pair<SubBitmapIteratorT, SubBitmapIteratorT> getSubRange(
-		std::size_t X, std::size_t Y,
-		std::size_t Width, std::size_t Height
-	);
+	RangeT getSubRange(std::size_t X, std::size_t Y, std::size_t Width, std::size_t Height);
 };
 
 }

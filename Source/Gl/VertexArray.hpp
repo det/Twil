@@ -8,12 +8,11 @@ namespace Gl {
 /// \brief Container for an OpenGL vertex array.
 class VertexArrayT
 {
+	VertexArrayT(VertexArrayT const &) = delete;
+	VertexArrayT & operator =(VertexArrayT const &) = delete;
+
 	private:
 	GLuint mId;
-
-	// Non copyable
-	VertexArrayT(VertexArrayT &) = delete;
-	VertexArrayT & operator=(VertexArrayT &) = delete;
 
 	public:
 	VertexArrayT();

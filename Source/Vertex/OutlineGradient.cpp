@@ -10,19 +10,19 @@ namespace Vertex {
 void OutlineGradientT::setup()
 {
 	using VertexT = OutlineGradientT;
-	using PointerT = GLvoid const *;
+	using OffsetT = GLvoid const *;
 
 	auto Stride = sizeof(VertexT);
-	auto BorderColorOffset = reinterpret_cast<PointerT>(offsetof(VertexT, BorderColor));
-	auto BottomColorOffset = reinterpret_cast<PointerT>(offsetof(VertexT, BottomColor));
-	auto TopColorOffset = reinterpret_cast<PointerT>(offsetof(VertexT, TopColor));
-	auto ClipMinOffset = reinterpret_cast<PointerT>(offsetof(VertexT, ClipMin));
-	auto ClipMaxOffset = reinterpret_cast<PointerT>(offsetof(VertexT, ClipMax));
-	auto PositionMinOffset = reinterpret_cast<PointerT>(offsetof(VertexT, PositionMin));
-	auto PositionMaxOffset = reinterpret_cast<PointerT>(offsetof(VertexT, PositionMax));
-	auto TextureSizeOffset = reinterpret_cast<PointerT>(offsetof(VertexT, TextureSize));
-	auto InsideIndexOffset = reinterpret_cast<PointerT>(offsetof(VertexT, InsideIndex));
-	auto OutsideIndexOffset = reinterpret_cast<PointerT>(offsetof(VertexT, OutsideIndex));
+	auto BorderColorOffset = reinterpret_cast<OffsetT>(offsetof(VertexT, BorderColor));
+	auto BottomColorOffset = reinterpret_cast<OffsetT>(offsetof(VertexT, BottomColor));
+	auto TopColorOffset = reinterpret_cast<OffsetT>(offsetof(VertexT, TopColor));
+	auto ClipMinOffset = reinterpret_cast<OffsetT>(offsetof(VertexT, ClipMin));
+	auto ClipMaxOffset = reinterpret_cast<OffsetT>(offsetof(VertexT, ClipMax));
+	auto PositionMinOffset = reinterpret_cast<OffsetT>(offsetof(VertexT, PositionMin));
+	auto PositionMaxOffset = reinterpret_cast<OffsetT>(offsetof(VertexT, PositionMax));
+	auto TextureSizeOffset = reinterpret_cast<OffsetT>(offsetof(VertexT, TextureSize));
+	auto InsideIndexOffset = reinterpret_cast<OffsetT>(offsetof(VertexT, InsideIndex));
+	auto OutsideIndexOffset = reinterpret_cast<OffsetT>(offsetof(VertexT, OutsideIndex));
 
 	decltype(BorderColor)::setup(0, Stride, BorderColorOffset);
 	decltype(BottomColor)::setup(1, Stride, BottomColorOffset);

@@ -34,7 +34,8 @@ void ProgramT::link()
 	glLinkProgram(mId);
 	GLint IsLinked = 0;
 	glGetProgramiv(mId, GL_LINK_STATUS, &IsLinked);
-	if (!IsLinked) {
+	if (!IsLinked) 
+	{
 		GLint LogLength = 0;
 		glGetProgramiv(mId, GL_INFO_LOG_LENGTH , &LogLength);
 		auto Log = Data::makeArray<GLchar>(LogLength);

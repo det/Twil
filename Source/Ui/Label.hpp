@@ -18,9 +18,13 @@ namespace Ui {
 /// \brief A Widget that draws text on the screen.
 /// \param LayoutT A layout class used for positioning and clipping.
 template<typename LayoutT>
-class LabelT :
+class LabelT
+:
 	public MouseHandlerT
 {
+	LabelT(LabelT const &) = delete;
+	LabelT & operator =(LabelT const &) = delete;
+
 	private:
 	ContainerT * mParent;
 	WindowBaseT * mWindow;
@@ -51,12 +55,13 @@ class LabelT :
 			X >= getLeft() && X >= getClipLeft() &&
 			X <= getRight() && X <= getClipRight() &&
 			Y >= getBottom() && Y >= getClipBottom() &&
-			Y <= getTop() && Y <= getClipTop()
-		);
+			Y <= getTop() && Y <= getClipTop());
 	}
 
 	public:
 	// Label
+	LabelT() = default;
+
 	void init(ContainerT & Parent, WindowBaseT & Window)
 	{
 		mParent = &Parent;

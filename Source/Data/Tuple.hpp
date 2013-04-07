@@ -8,21 +8,21 @@ namespace Data {
 // iterate
 
 template<std::size_t, typename ...>
-struct IterateFunctor;
+struct IterateFunctorT;
 
 template<std::size_t N, typename T, typename ... ArgsT>
-struct IterateFunctor<N, T, ArgsT ...>
+struct IterateFunctorT<N, T, ArgsT ...>
 {
 	template<typename TupleT, typename FunctorT>
 	void operator()(TupleT & Tuple, FunctorT Functor)
 	{
 		Functor(std::get<N>(Tuple));
-		IterateFunctor<N + 1, ArgsT ...>{}(Tuple, Functor);
+		IterateFunctorT<N + 1, ArgsT ...>{}(Tuple, Functor);
 	}
 };
 
 template<std::size_t N>
-struct IterateFunctor<N>
+struct IterateFunctorT<N>
 {
 	template<typename TupleT, typename FunctorT>
 	void operator()(TupleT &, FunctorT)
@@ -32,32 +32,32 @@ struct IterateFunctor<N>
 template<typename FunctorT, typename ... ArgsT>
 void iterate(std::tuple<ArgsT ...> & Tuple, FunctorT Functor)
 {
-	IterateFunctor<0, ArgsT ...>{}(Tuple, Functor);
+	IterateFunctorT<0, ArgsT ...>{}(Tuple, Functor);
 }
 
 template<typename FunctorT, typename ... ArgsT>
 void iterate(std::tuple<ArgsT ...> const & Tuple, FunctorT Functor)
 {
-	IterateFunctor<0, ArgsT ...>{}(Tuple, Functor);
+	IterateFunctorT<0, ArgsT ...>{}(Tuple, Functor);
 }
 
 // iterateUntil
 
 template<std::size_t, typename ...>
-struct IterateUntilFunctor;
+struct IterateUntilFunctorT;
 
 template<std::size_t N, typename T, typename ... ArgsT>
-struct IterateUntilFunctor<N, T, ArgsT ...>
+struct IterateUntilFunctorT<N, T, ArgsT ...>
 {
 	template<typename TupleT, typename FunctorT>
 	void operator()(TupleT & Tuple, FunctorT Functor)
 	{
-		if (Functor(std::get<N>(Tuple))) IterateUntilFunctor<N + 1, ArgsT ...>{}(Tuple, Functor);
+		if (Functor(std::get<N>(Tuple))) IterateUntilFunctorT<N + 1, ArgsT ...>{}(Tuple, Functor);
 	}
 };
 
 template<std::size_t N>
-struct IterateUntilFunctor<N>
+struct IterateUntilFunctorT<N>
 {
 	template<typename TupleT, typename FunctorT>
 	void operator()(TupleT &, FunctorT)
@@ -67,13 +67,13 @@ struct IterateUntilFunctor<N>
 template<typename FunctorT, typename ... ArgsT>
 void iterateUntil(std::tuple<ArgsT ...> & Tuple, FunctorT Functor)
 {
-	IterateUntilFunctor<0, ArgsT ...>{}(Tuple, Functor);
+	IterateUntilFunctorT<0, ArgsT ...>{}(Tuple, Functor);
 }
 
 template<typename FunctorT, typename ... ArgsT>
 void iterateUntil(std::tuple<ArgsT ...> const & Tuple, FunctorT Functor)
 {
-	IterateUntilFunctor<0, ArgsT ...>{}(Tuple, Functor);
+	IterateUntilFunctorT<0, ArgsT ...>{}(Tuple, Functor);
 }
 
 }

@@ -19,12 +19,11 @@ class LibraryT
 	friend class OutlineT;
 	friend class StrokerT;
 
+	LibraryT(LibraryT const &) = delete;
+	LibraryT & operator =(LibraryT const &) = delete;
+
 	private:
 	FT_Library mId;
-	
-	// Non copyable
-	LibraryT(LibraryT &) = delete;
-	LibraryT & operator=(LibraryT &) = delete;
 
 	public:
 	/// \throws std::runtime_error If the freetype library cant be initialized.

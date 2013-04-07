@@ -12,12 +12,11 @@ class ProgramT;
 /// \brief Container for an OpenGL Shader.
 class ShaderT
 {
+	ShaderT(ShaderT const &) = delete;
+	ShaderT & operator =(ShaderT const &) = delete;
+
 	private:
 	GLuint mId;
-
-	// Non copyable
-	ShaderT(ShaderT &) = delete;
-	ShaderT & operator=(ShaderT &) = delete;
 
 	public:
 	/// \param Type The Shader type, as defined by glCreateShader().

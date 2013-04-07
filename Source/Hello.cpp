@@ -1,3 +1,4 @@
+#include "Data/Rope.hpp"
 #include "Ui/Application.hpp"
 #include "Ui/Button.hpp"
 #include "Ui/Centered.hpp"
@@ -20,7 +21,8 @@ class HelloT
 	using LabelButtonT = Twil::Ui::ButtonT<LabelT>;
 	using SpacedImageButtonT = Twil::Ui::MarginT<4, 4, ImageButtonT>;
 	using SpacedLabelButtonT = Twil::Ui::MarginT<4, 4, LabelButtonT>;
-	using ColumnT = Twil::Ui::PartitionBoxT<false, SpacedImageButtonT, SpacedImageButtonT, SpacedImageButtonT>;
+	using ColumnT =
+		Twil::Ui::PartitionBoxT<false, SpacedImageButtonT, SpacedImageButtonT, SpacedImageButtonT>;
 	using GridT = Twil::Ui::PartitionBoxT<true, ColumnT, ColumnT, ColumnT>;
 	using VerticalBox0T = Twil::Ui::SplitBoxT<false, false, GridT, SpacedLabelButtonT>;
 	using VerticalBox1T = Twil::Ui::SplitBoxT<false, true, LabelT, VerticalBox0T>;

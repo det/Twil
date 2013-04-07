@@ -19,12 +19,11 @@ class StrokerT
 {
 	friend class OutlineT;
 
+	StrokerT(StrokerT const &) = delete;
+	StrokerT & operator =(StrokerT const &) = delete;
+
 	private:
 	FT_Stroker mId;
-
-	// Non copyable
-	StrokerT(StrokerT &) = delete;
-	StrokerT & operator=(StrokerT &) = delete;
 
 	public:
 	StrokerT(LibraryT &);
@@ -39,10 +38,8 @@ class StrokerT
 	/// \param LineCap The style to use when capping open paths.
 	/// \param LineJoin The style the use when joining lines.
 	/// \param MiterLimit TODO: document this
-	void setOptions(
-		FT_Fixed Radius, FT_Stroker_LineCap LineCap,
-		FT_Stroker_LineJoin LineJoin, FT_Fixed MiterLimit
-	);
+	void setOptions(FT_Fixed Radius, FT_Stroker_LineCap LineCap, FT_Stroker_LineJoin LineJoin,
+		FT_Fixed MiterLimit);
 
 	/// \brief Begin a new contour.
 	///

@@ -11,10 +11,15 @@ class MouseHandlerT;
 /// \brief A base class for widgets to communicate with the Window class
 class MouseManagerT
 {
+	MouseManagerT(MouseManagerT const &) = delete;
+	MouseManagerT & operator =(MouseManagerT const &) = delete;
+
 	private:
 	MouseHandlerT * mMouseHandler = nullptr;
 
 	public:
+	MouseManagerT() = default;
+
 	/// \brief Set the mouse handler.
 	void setHandler(MouseHandlerT &);
 

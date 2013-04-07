@@ -113,7 +113,7 @@ void ButtonT::draw(Vertex::OutlineGradientT * Vertices) const
 	signed short ClipMiddleTop = MiddleTop;
 	signed short ClipTop = Top;
 
-	signed short Height = mTop - mBottom;
+	signed short Height = Top - Bottom;
 	signed short CenterX = (Left + Right) / 2;
 	signed short CenterY = (Bottom + Top) / 2;
 
@@ -148,17 +148,21 @@ void ButtonT::draw(Vertex::OutlineGradientT * Vertices) const
 	Attribute::Color4bT BottomColor;
 
 	// Avoid divide by 0, the colors dont matter for 0 size rectangles
-	if (Height != 0) {
-		if (mIsDown) {
+	if (Height != 0)
+	{
+		if (mIsDown)
+		{
 			TopColor = Settings::Button::TopDownColor;
 			BottomColor = Settings::Button::BottomDownColor;
 		}
-		else {
+		else
+		{
 			TopColor = Settings::Button::TopUpColor;
 			BottomColor = Settings::Button::BottomUpColor;
 		}
 
-		MiddleBottomColor = mix(TopColor, BottomColor, (ClipMiddleBottom - Bottom) * 65535 / Height);
+		MiddleBottomColor =
+			mix(TopColor, BottomColor, (ClipMiddleBottom - Bottom) * 65535 / Height);
 		MiddleTopColor = mix(TopColor, BottomColor, (ClipMiddleTop - Bottom) * 65535 / Height);
 	}
 

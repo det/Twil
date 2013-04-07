@@ -28,7 +28,8 @@ struct XDeleterT
 namespace Twil {
 namespace Platform {
 
-WindowT::WindowT(ApplicationT & Application) :
+WindowT::WindowT(ApplicationT & Application)
+:
 	mApplication{&Application}
 {
 	auto Display = static_cast< ::Display *>(mApplication->mDisplay);
@@ -46,20 +47,20 @@ WindowT::WindowT(ApplicationT & Application) :
 		GLX_ALPHA_SIZE,						8,
 		GLX_DOUBLEBUFFER,					True,
 		GLX_FRAMEBUFFER_SRGB_CAPABLE_ARB,	True,
-		None
-	};
+		None};
 
 	int FramebufferCount;
 	auto XScreen = DefaultScreen(Display);
 
-	std::unique_ptr<GLXFBConfig[], XDeleterT<GLXFBConfig>> Configs{glXChooseFBConfig(
-		Display,
-		XScreen,
-		VisualAttributes,
-		&FramebufferCount
-	)};
+	std::unique_ptr<GLXFBConfig[], XDeleterT<GLXFBConfig>> Configs{
+		glXChooseFBConfig(
+			Display,
+			XScreen,
+			VisualAttributes,
+			&FramebufferCount)};
 
-	if (Configs == nullptr) {
+	if (Configs == nullptr)
+	{
 		throw std::runtime_error{"Unable to find matching video mode"};
 	}
 
@@ -74,7 +75,8 @@ WindowT::WindowT(ApplicationT & Application) :
 	auto Setup = xcb_get_setup(mApplication->mConnection);
 	auto ScreenIter = xcb_setup_roots_iterator(Setup);
 	int ScreenNum = XScreen;
-	while (ScreenIter.rem > 0 && ScreenNum > 0) {
+	if (ScreenIter.rem > 0 && ScreenNum > 0)
+	{
 		--ScreenNum;
 		xcb_screen_next(&ScreenIter);
 	}
@@ -85,8 +87,7 @@ WindowT::WindowT(ApplicationT & Application) :
 		XCB_COLORMAP_ALLOC_NONE,
 		Colormap,
 		Screen->root,
-		VisualId
-	);
+		VisualId);
 
 	uint32_t EventMask =
 		XCB_EVENT_MASK_ENTER_WINDOW |
@@ -113,16 +114,14 @@ WindowT::WindowT(ApplicationT & Application) :
 		XCB_WINDOW_CLASS_INPUT_OUTPUT,
 		VisualId,
 		ValueMask,
-		ValueList
-	);
+		ValueList);
 
 	if (mId == 0) throw std::runtime_error{"Unable to create window"};
 
 	int ContextAttribs[] = {
 		GLX_CONTEXT_MAJOR_VERSION_ARB, 3,
 		GLX_CONTEXT_MINOR_VERSION_ARB, 3,
-		None
-	};
+		None};
 
 	mContext = glXCreateContextAttribsARB(Display, Config, 0, True, ContextAttribs);
 	if (mContext == 0) throw std::runtime_error{"Unable to create OpenGL context"};
@@ -130,10 +129,10 @@ WindowT::WindowT(ApplicationT & Application) :
 	Gl::Context::initialize(Loader);
 
 	xcb_atom_t AtomList[] = {mApplication->mWmDeleteWindowAtom};
+
 	xcb_change_property(
 		mApplication->mConnection, XCB_PROP_MODE_REPLACE, mId,
-		mApplication->mWmProtocolsAtom, mApplication->mAtomAtom, 32, 1, AtomList
-	);
+		mApplication->mWmProtocolsAtom, mApplication->mAtomAtom, 32, 1, AtomList);
 
 	xcb_map_window(mApplication->mConnection, mId);
 	makeCurrent();
@@ -197,8 +196,8 @@ void WindowT::setTitle(char const * String)
 {
 	xcb_change_property(
 		mApplication->mConnection, XCB_PROP_MODE_REPLACE, mId, mApplication->mWmNameAtom,
-		mApplication->mStringAtom, 8, strlen(String), String
-	);
+		mApplication->mStringAtom, 8, strlen(String), String);
+
 	xcb_flush(mApplication->mConnection);
 }
 

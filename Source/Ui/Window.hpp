@@ -2,10 +2,10 @@
 
 #include "Application.hpp"
 #include "Container.hpp"
-#include "Event.hpp"
 #include "KeyboardHandler.hpp"
 #include "MouseHandler.hpp"
 #include "WindowBase.hpp"
+#include "Data/Event.hpp"
 #include "Gl/Context.hpp"
 
 
@@ -15,20 +15,21 @@ namespace Ui {
 /// \brief A resizable window that holds a single child widget.
 /// \param T The type of the child widget.
 template <typename T>
-class WindowT :
+class WindowT
+:
 	public ContainerT,
 	public KeyboardHandlerT,
 	public MouseHandlerT
 {
+	WindowT(WindowT const &) = delete;
+	WindowT & operator =(WindowT const &) = delete;
+
 	private:
 	Platform::WindowT mPlatformWindow;
 	WindowBaseT mBase;
+
 	T mChild;
 	bool mIsFullscreen = false;
-
-	// Non-copyable
-	WindowT(WindowT const &) = delete;
-	WindowT & operator=(WindowT const &) = delete;
 
 	bool checkChildContains(signed short X, signed short Y)
 	{
@@ -37,7 +38,7 @@ class WindowT :
 
 	public:
 	// Window
-	EventT<> Deleted;
+	Data::EventT<> Deleted;
 
 	WindowT(Platform::ApplicationT & Application) :
 		mPlatformWindow{Application}

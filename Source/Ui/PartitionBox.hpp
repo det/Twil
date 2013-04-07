@@ -16,9 +16,13 @@ namespace Ui {
 
 /// \brief Functionality shared by both horizontal and vertical partition boxes.
 template<typename ... ArgsT>
-class PartitionBoxBaseT :
+class PartitionBoxBaseT
+:
 	public ContainerT
 {
+	PartitionBoxBaseT(PartitionBoxBaseT const &) = delete;
+	PartitionBoxBaseT & operator =(PartitionBoxBaseT const &) = delete;
+
 	protected:
 	ContainerT * mParent;
 	std::tuple<ArgsT ...> mChildren;
@@ -31,12 +35,13 @@ class PartitionBoxBaseT :
 			X >= getLeft() && X >= getClipLeft() &&
 			X <= getRight() && X <= getClipRight() &&
 			Y >= getBottom() && Y >= getClipBottom() &&
-			Y <= getTop() && Y <= getClipTop()
-		);
+			Y <= getTop() && Y <= getClipTop());
 	}
 
 	public:
 	// PartitionBoxBase
+	PartitionBoxBaseT() = default;
+
 	struct InitFunctorT
 	{
 		ContainerT & Parent;
@@ -263,7 +268,8 @@ class PartitionBoxT;
 /// \param ArgsT A template argument pack of children widget types.
 
 template<typename ... ArgsT>
-class PartitionBoxT<true, ArgsT ...> :
+class PartitionBoxT<true, ArgsT ...>
+:
 	public PartitionBoxBaseT<ArgsT ...>
 {
 	private:
@@ -292,7 +298,8 @@ class PartitionBoxT<true, ArgsT ...> :
 		void operator()(T & Child)
 		{
 			signed short Width = BoxWidth;
-			if (Mod > 0) {
+			if (Mod > 0)
+			{
 				Width += Direction;
 				--Mod;
 			}
@@ -308,11 +315,13 @@ class PartitionBoxT<true, ArgsT ...> :
 		signed short BoxWidth = Width / mSize;
 		signed short Mod;
 		signed short Direction;
-		if (Width >= 0) {
+		if (Width >= 0)
+		{
 			Mod = Width % mSize;
 			Direction = 1;
 		}
-		else {
+		else
+		{
 			Mod = -Width % mSize;
 			Direction = -1;
 		}
@@ -357,7 +366,8 @@ class PartitionBoxT<true, ArgsT ...> :
 		template<typename T>
 		bool operator()(T & Child)
 		{
-			if (X < Child.getRight()) {
+			if (X < Child.getRight())
+			{
 				Child.delegateMouse(X, Y);
 				return false;
 			}
@@ -386,7 +396,8 @@ class PartitionBoxT<true, ArgsT ...> :
 /// \param ArgsT A template argument pack of children widget types.
 
 template<typename ... ArgsT>
-class PartitionBoxT<false, ArgsT ...> :
+class PartitionBoxT<false, ArgsT ...>
+:
 	public PartitionBoxBaseT<ArgsT ...>
 {
 	private:
@@ -431,7 +442,8 @@ class PartitionBoxT<false, ArgsT ...> :
 		void operator()(T & Child)
 		{
 			signed short Height = BoxHeight;
-			if (Mod > 0) {
+			if (Mod > 0)
+			{
 				Height += Direction;
 				--Mod;
 			}
@@ -447,11 +459,13 @@ class PartitionBoxT<false, ArgsT ...> :
 		signed short BoxHeight = Height / mSize;
 		signed short Mod;
 		signed short Direction;
-		if (Height >= 0) {
+		if (Height >= 0)
+		{
 			Mod = Height % mSize;
 			Direction = 1;
 		}
-		else {
+		else
+		{
 			Mod = -Height % mSize;
 			Direction = -1;
 		}
@@ -480,7 +494,8 @@ class PartitionBoxT<false, ArgsT ...> :
 		template<typename T>
 		bool operator()(T & Child)
 		{
-			if (Y < Child.getTop()) {
+			if (Y < Child.getTop())
+			{
 				Child.delegateMouse(X, Y);
 				return false;
 			}

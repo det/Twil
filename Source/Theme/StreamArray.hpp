@@ -19,6 +19,9 @@ namespace Theme {
 template<typename T>
 class StreamArrayT
 {
+	StreamArrayT(StreamArrayT const &) = delete;
+	StreamArrayT & operator =(StreamArrayT const &) = delete;
+
 	private:
 	static std::size_t const mNumBuffers = Settings::Manager::NumBuffers;
 	Gl::BufferT mBuffers[mNumBuffers];
@@ -31,15 +34,12 @@ class StreamArrayT
 	std::size_t mDrawCycles = 0;
 	bool mNeedsResize = false;
 
-	// Non copyable
-	StreamArrayT(StreamArrayT &) = delete;
-	StreamArrayT & operator=(StreamArrayT &) = delete;
-
 	public:
 	StreamArrayT()
 	{
 		// Setup all VertexArray's in our ring buffer.
-		for (std::size_t Index = 0; Index != mNumBuffers; ++Index) {
+		for (std::size_t Index = 0; Index != mNumBuffers; ++Index)
+		{
 			glBindVertexArray(mArray[Index]);
 			glBindBuffer(GL_ARRAY_BUFFER, mBuffers[Index]);
 			T::setup();
@@ -99,8 +99,10 @@ class StreamArrayT
 		std::size_t Size = mDrawables.size();
 
 		// Move all resized allocations to the end and update the non-resized indices.
-		while (FalseIndex < Size) {
-			if (!mDrawables[FalseIndex]->mNeedsResize) {
+		while (FalseIndex < Size)
+		{
+			if (!mDrawables[FalseIndex]->mNeedsResize)
+			{
 				mDrawables[FalseIndex]->mIndex = VertexIndex;
 				mDrawables[FalseIndex]->mDrawCycles = mNumBuffers;
 				VertexIndex += mDrawables[FalseIndex]->mSize;
@@ -111,7 +113,8 @@ class StreamArrayT
 		}
 
 		// Update the resized indices.
-		while (TrueIndex < Size) {
+		while (TrueIndex < Size)
+		{
 			mDrawables[TrueIndex]->mIndex = VertexIndex;
 			mDrawables[TrueIndex]->mNeedsResize = false;
 			mDrawables[TrueIndex]->mDrawCycles = mNumBuffers;
@@ -138,7 +141,8 @@ class StreamArrayT
 		glBindBuffer(GL_ARRAY_BUFFER, Buffer);
 
 		// If the buffer is too small, resize it
-		if (mSize > Capacity) {
+		if (mSize > Capacity)
+		{
 			if (Capacity == 0) Capacity = 1;
 			while (mSize > Capacity) Capacity *= 2;
 			glBufferData(GL_ARRAY_BUFFER, Capacity * sizeof(T), nullptr, GL_DYNAMIC_DRAW);
@@ -146,12 +150,12 @@ class StreamArrayT
 
 		// Map the buffer and draw all allocations, then unmap. We use a ring buffer to avoid
 		// synchronization. The caller needs to use a fence just in case.
-		auto Flags = GL_MAP_WRITE_BIT | GL_MAP_UNSYNCHRONIZED_BIT;
-		auto BufferPointer = glMapBufferRange(GL_ARRAY_BUFFER, 0, mSize * sizeof(T), Flags);
-		auto VertexPointer = static_cast<T *>(BufferPointer);
+		auto VertexPointer = static_cast<T *>(glMapBufferRange(
+			GL_ARRAY_BUFFER, 0, mSize * sizeof(T), GL_MAP_WRITE_BIT | GL_MAP_UNSYNCHRONIZED_BIT));
 
 		// Draw all needed allocations
-		for (auto Drawable : mDrawables) {
+		for (auto Drawable : mDrawables)
+		{
 			if (Drawable->mDrawCycles == 0) continue;
 			Drawable->draw(VertexPointer + Drawable->mIndex);
 			--Drawable->mDrawCycles;

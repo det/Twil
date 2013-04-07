@@ -29,10 +29,12 @@ void ShaderT::loadFile(char const * Path)
 {
 	std::ifstream File;
 	File.open(Path, std::ios::in);
-	if (!File.is_open()) throw std::runtime_error{"Unable to open shader"};
+	if (!File.is_open()) throw std::runtime_error
+	{"Unable to open shader"};
 	File.seekg(0, std::ios_base::end);
 	auto Pos = File.tellg();
-	if (Pos < 0) throw std::runtime_error{"Unable to read shader"};
+	if (Pos < 0) throw std::runtime_error
+	{"Unable to read shader"};
 	File.seekg(0, std::ios_base::beg);
 	auto Buffer = Data::makeArray<GLchar>(static_cast<std::size_t>(Pos));
 	File.read(Buffer.get(), Pos);
@@ -49,10 +51,12 @@ void ShaderT::compile()
 	GLint IsCompiled = 0;
 	glGetShaderiv(mId, GL_COMPILE_STATUS, &IsCompiled);
 
-	if (!IsCompiled) {
+	if (!IsCompiled) 
+	{
 		GLint LogLength = 0;
 		glGetShaderiv(mId, GL_INFO_LOG_LENGTH , &LogLength);
-		if (LogLength < 1) throw std::runtime_error{"Shader compile error, unable to retrieve log"};
+		if (LogLength < 1) throw std::runtime_error
+		{"Shader compile error, unable to retrieve log"};
 		auto Log = Data::makeArray<GLchar>(LogLength);
 		glGetShaderInfoLog(mId, LogLength, &LogLength, Log.get());
 		std::cerr << Log.get();

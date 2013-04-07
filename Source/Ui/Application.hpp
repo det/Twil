@@ -12,12 +12,16 @@ namespace Ui {
 template<typename T>
 class ApplicationT
 {
+	ApplicationT(ApplicationT const &) = delete;
+	ApplicationT & operator =(ApplicationT const &) = delete;
+
 	private:
 	Platform::ApplicationT mApplication;
 	T mChild;
 
 	public:
-	ApplicationT() :
+	ApplicationT()
+	:
 		mChild{mApplication}
 	{
 		mChild.init();

@@ -47,7 +47,8 @@ void ImageT::setClipTop(signed short Y)
 void ImageT::draw(Vertex::BitmapT * Vertices) const
 {
 	// Avoid divide by 0
-	if (mWidth == 0 || mHeight == 0) {
+	if (mWidth == 0 || mHeight == 0) 
+	{
 		Vertices[0] = {};
 		return;
 	}

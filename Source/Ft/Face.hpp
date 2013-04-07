@@ -19,13 +19,12 @@ class FaceT
 	friend class SizeT;
 	friend class StrokerT;
 
+	FaceT(FaceT const &) = delete;
+	FaceT & operator =(FaceT const &) = delete;
+
 	private:
 	LibraryT * mLibrary;
 	FT_Face mId;
-
-	// Non copyable
-	FaceT(FaceT &) = delete;
-	FaceT & operator=(FaceT &) = delete;
 
 	public:
 	/// \brief Load a font face.

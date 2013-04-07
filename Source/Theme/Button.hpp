@@ -11,9 +11,13 @@ namespace Twil {
 namespace Theme {
 
 /// \brief Responsible for drawing a button.
-class ButtonT :
+class ButtonT
+:
 	public DrawableT<Vertex::OutlineGradientT>
 {
+	ButtonT(ButtonT const &) = delete;
+	ButtonT & operator =(ButtonT const &) = delete;
+
 	private:
 	ManagerT * mManager;
 	signed short mLeft = 0;
@@ -30,6 +34,7 @@ class ButtonT :
 	static signed short const mCornerSize = mBorderSize + Settings::Button::Roundness;
 
 	public:
+	ButtonT() = default;
 	void init(ManagerT &);
 
 	/// \brief Sets whether the button is up or down.

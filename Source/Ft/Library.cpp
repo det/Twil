@@ -5,7 +5,8 @@
 namespace Twil {
 namespace Ft {
 
-LibraryT::LibraryT() :
+LibraryT::LibraryT()
+:
 	mId{nullptr}
 {
 	auto Error = FT_Init_FreeType(&mId);

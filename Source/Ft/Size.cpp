@@ -10,7 +10,8 @@
 namespace Twil {
 namespace Ft {
 
-SizeT::SizeT(FaceT & Face, FT_F26Dot6 Points) :
+SizeT::SizeT(FaceT & Face, FT_F26Dot6 Points)
+:
 	mId{nullptr}
 {
 	auto Error = FT_New_Size(Face.mId, &mId);

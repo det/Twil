@@ -13,9 +13,13 @@ namespace Theme {
 class ManagerT;
 
 /// \brief Responsible for drawing a Image.
-class ImageT :
+class ImageT
+:
 	DrawableT<Vertex::BitmapT>
 {
+	ImageT(ImageT const &) = delete;
+	ImageT & operator =(ImageT const &) = delete;
+
 	private:	
 	ManagerT * mManager;
 	unsigned int mOffset = 0;
@@ -29,6 +33,7 @@ class ImageT :
 	short mClipTop = 0;
 
 	public:
+	ImageT() = default;
 	void init(ManagerT &);
 
 	/// \brief Sets the text to display.

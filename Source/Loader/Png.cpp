@@ -11,7 +11,7 @@ namespace {
 
 // Make sure we release our resources on an exception
 
-struct PngStructsT
+class PngStructsT
 {
 	private:
 	png_structp mPng;
@@ -22,8 +22,10 @@ struct PngStructsT
 	{
 		mPng = png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
 		if (mPng == nullptr) throw std::runtime_error{"PNG load error"};
+
 		mInfo = png_create_info_struct(mPng);
-		if (mInfo == nullptr) {
+		if (mInfo == nullptr)
+		{
 			png_destroy_read_struct(&mPng, nullptr, nullptr);
 			throw std::runtime_error{"PNG load error"};
 		}
@@ -68,7 +70,8 @@ void readPngData(png_structp PngPointer, png_bytep Data, png_size_t Length)
 namespace Twil {
 namespace Loader {
 
-PngT::PngT(char const * Path) :
+PngT::PngT(char const * Path)
+:
 	mBytes{nullptr}
 {
 	std::ifstream File;
@@ -114,7 +117,8 @@ PngT::PngT(char const * Path) :
 	} break;
 	}
 
-	if (png_get_valid(Png, Info, PNG_INFO_tRNS)) {
+	if (png_get_valid(Png, Info, PNG_INFO_tRNS))
+	{
 		png_set_tRNS_to_alpha(Png);
 	}
 
@@ -133,15 +137,15 @@ PngT::PngT(char const * Path) :
 	png_get_IHDR(
 		Png, Info,
 		&Width, &Height, &BitDepth, &ColorType,
-		nullptr, nullptr, nullptr
-	);
+		nullptr, nullptr, nullptr);
 	mWidth = Width;
 	mHeight = Height;
 
 	// Setup a pointer array.  Each one points at the begening of a row
 	mBytes = Data::makeArray<unsigned char>(Width * Height * 4);
 	auto Rows = Data::makeArray<unsigned char *>(Height);
-	for (std::size_t I = 0; I < Height; ++I) {
+	for (std::size_t I = 0; I < Height; ++I)
+	{
 		Rows[I] = mBytes.get() + (Height - I - 1) * Width * 4;
 	}
 

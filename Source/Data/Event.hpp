@@ -4,26 +4,30 @@
 #include <vector>
 
 namespace Twil {
-namespace Ui {
+namespace Data {
 
 /// \brief A multicast event class.
 template<typename ... ArgsT>
 class EventT
 {
-	typedef std::function<void(ArgsT ...)> FunctionT;
+	EventT(EventT const &) = delete;
+	EventT & operator =(EventT const &) = delete;
 
 	private:
-	std::vector<FunctionT> mCallbacks;
+	std::vector<std::function<void(ArgsT ...)>> mCallbacks;
 
 	public:
+	EventT() = default;
+
 	/// \brief Append a callback to the event.
-	void operator+=(FunctionT f)
+	template<typename FunctorT>
+	void operator +=(FunctorT Functor)
 	{
-		mCallbacks.push_back(f);
+		mCallbacks.push_back(Functor);
 	}
 
 	/// \brief Call all callbacks.
-	void operator()(ArgsT && ... Args) const
+	void operator ()(ArgsT && ... Args) const
 	{
 		for (auto Callback : mCallbacks) Callback(std::forward<ArgsT>(Args) ...);
 	}

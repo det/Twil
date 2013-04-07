@@ -10,6 +10,9 @@ class ApplicationT;
 /// \brief A Linux window.
 class WindowT
 {
+	WindowT(WindowT const &) = delete;
+	WindowT & operator =(WindowT const &) = delete;
+
 	private:
 	ApplicationT * mApplication;
 	xcb_window_t mId;
@@ -17,10 +20,6 @@ class WindowT
 	// We Use void * here and cast later because including the X11 headers polutes our namespace
 	// with all kinds of generically named macros such as "None"
 	void * mContext;
-
-	// Non-copyable
-	WindowT(WindowT &) = delete;
-	WindowT & operator=(WindowT &) = delete;
 
 	public:
 	/// \throws std::runtime_error on error.

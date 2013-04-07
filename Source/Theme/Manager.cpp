@@ -7,7 +7,8 @@
 namespace Twil {
 namespace Theme {
 
-ManagerT::ManagerT() :
+ManagerT::ManagerT()
+:
 	mBitmap{mLibrary},
 	mStroker{mLibrary},
 	mLabelFace{mLibrary, Settings::Label::Font, 0},
@@ -17,7 +18,8 @@ ManagerT::ManagerT() :
 	mNeedsRedraw{false}
 {
 	// We arent actually waiting for anything, but we need valid fences in the arrays
-	for (std::size_t I = 0; I != mNumBuffers; ++I) {
+	for (std::size_t I = 0; I != mNumBuffers; ++I)
+	{
 		mFences[I] = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
 	}
 
@@ -28,6 +30,11 @@ ManagerT::ManagerT() :
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	generateButtonBitmaps();
+}
+
+ManagerT::~ManagerT()
+{
+	for (std::size_t I = 0; I != mNumBuffers; ++I) glDeleteSync(mFences[I]);
 }
 
 void ManagerT::generateButtonBitmaps()
@@ -78,11 +85,14 @@ void ManagerT::generateButtonBitmaps()
 	mBitmap.resize(BitmapSize, BitmapSize);
 	mBitmap.render(mOutline);
 
-	mButtonCenterInside = mRedTexture.append(mBitmap.getSubRange(Pos3, Pos3, BorderSize, BorderSize));
-	mButtonBottomInside = mRedTexture.append(mBitmap.getSubRange(Pos3, Pos1, BorderSize, CornerSize));
+	mButtonCenterInside =
+		mRedTexture.append(mBitmap.getSubRange(Pos3, Pos3, BorderSize, BorderSize));
+	mButtonBottomInside =
+		mRedTexture.append(mBitmap.getSubRange(Pos3, Pos1, BorderSize, CornerSize));
 	mButtonTopInside = mRedTexture.append(mBitmap.getSubRange(Pos3, Pos4, BorderSize, CornerSize));
 	mButtonLeftInside = mRedTexture.append(mBitmap.getSubRange(Pos1, Pos3, CornerSize, BorderSize));
-	mButtonRightInside = mRedTexture.append(mBitmap.getSubRange(Pos4, Pos3, CornerSize, BorderSize));
+	mButtonRightInside =
+		mRedTexture.append(mBitmap.getSubRange(Pos4, Pos3, CornerSize, BorderSize));
 	mButtonSwInside = mRedTexture.append(mBitmap.getSubRange(Pos1, Pos1, CornerSize, CornerSize));
 	mButtonSeInside = mRedTexture.append(mBitmap.getSubRange(Pos4, Pos1, CornerSize, CornerSize));
 	mButtonNeInside = mRedTexture.append(mBitmap.getSubRange(Pos4, Pos4, CornerSize, CornerSize));
@@ -95,11 +105,15 @@ void ManagerT::generateButtonBitmaps()
 	mOutline.append(mStroker, FT_STROKER_BORDER_LEFT);
 	mBitmap.render(mOutline);
 
-	mButtonCenterOutside = mRedTexture.append(mBitmap.getSubRange(Pos3, Pos3, BorderSize, BorderSize));
-	mButtonBottomOutside = mRedTexture.append(mBitmap.getSubRange(Pos3, Pos1, BorderSize, CornerSize));
+	mButtonCenterOutside =
+		mRedTexture.append(mBitmap.getSubRange(Pos3, Pos3, BorderSize, BorderSize));
+	mButtonBottomOutside =
+		mRedTexture.append(mBitmap.getSubRange(Pos3, Pos1, BorderSize, CornerSize));
 	mButtonTopOutside = mRedTexture.append(mBitmap.getSubRange(Pos3, Pos4, BorderSize, CornerSize));
-	mButtonLeftOutside = mRedTexture.append(mBitmap.getSubRange(Pos1, Pos3, CornerSize, BorderSize));
-	mButtonRightOutside = mRedTexture.append(mBitmap.getSubRange(Pos4, Pos3, CornerSize, BorderSize));
+	mButtonLeftOutside =
+		mRedTexture.append(mBitmap.getSubRange(Pos1, Pos3, CornerSize, BorderSize));
+	mButtonRightOutside =
+		mRedTexture.append(mBitmap.getSubRange(Pos4, Pos3, CornerSize, BorderSize));
 	mButtonSwOutside = mRedTexture.append(mBitmap.getSubRange(Pos1, Pos1, CornerSize, CornerSize));
 	mButtonSeOutside = mRedTexture.append(mBitmap.getSubRange(Pos4, Pos1, CornerSize, CornerSize));
 	mButtonNeOutside = mRedTexture.append(mBitmap.getSubRange(Pos4, Pos4, CornerSize, CornerSize));

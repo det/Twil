@@ -1,8 +1,8 @@
 #pragma once
 
 #include "Container.hpp"
-#include "Event.hpp"
 #include "Window.hpp"
+#include "Data/Event.hpp"
 #include "Gl/Context.hpp"
 #include "Theme/Button.hpp"
 
@@ -14,10 +14,14 @@ namespace Ui {
 /// \brief A Widget that can be clicked to activate an event.
 /// \param T Type of the child widget.
 template<typename T>
-class ButtonT :
+class ButtonT
+:
 	public ContainerT,
 	public MouseHandlerT
 {
+	ButtonT(ButtonT const &) = delete;
+	ButtonT & operator =(ButtonT const &) = delete;
+
 	private:
 	ContainerT * mParent;
 	WindowBaseT * mWindow;
@@ -32,13 +36,14 @@ class ButtonT :
 			X >= getLeft() && X >= getClipLeft() &&
 			X <= getRight() && X <= getClipRight() &&
 			Y >= getBottom() && Y >= getClipBottom() &&
-			Y <= getTop() && Y <= getClipTop()
-		);
+			Y <= getTop() && Y <= getClipTop());
 	}
 
 	public:
 	//Button
-	EventT<> Clicked;
+	Data::EventT<> Clicked;
+
+	ButtonT() = default;
 
 	void init(ContainerT & Parent, WindowBaseT & Window)
 	{
@@ -195,7 +200,8 @@ class ButtonT :
 	// MouseHandler
 	void handleButtonPress(signed short, signed short, unsigned char Index) final
 	{
-		if (Index == 1) {
+		if (Index == 1)
+		{
 			mIsPressed = true;
 			mThemeButton.setIsDown(true);
 		}
@@ -203,14 +209,17 @@ class ButtonT :
 
 	void handleButtonRelease(signed short X, signed short Y, unsigned char Index) final
 	{
-		if (Index == 1) {
+		if (Index == 1)
+		{
 			if (!mIsPressed) return;
-			if (mHasMouse) {
+			if (mHasMouse)
+			{
 				mIsPressed = false;
 				mThemeButton.setIsDown(false);
 				Clicked();
 			}
-			else {
+			else
+			{
 				mIsPressed = false;
 				mParent->releaseMouse(X, Y);
 			}
@@ -221,18 +230,16 @@ class ButtonT :
 	{
 		auto HasMouse = checkThisContains(X, Y);
 
-		if (mHasMouse && !HasMouse) {
+		if (mHasMouse && !HasMouse)
+		{
 			mHasMouse = false;
-			if (mIsPressed) {
-				mThemeButton.setIsDown(false);
-			}
+			if (mIsPressed)	mThemeButton.setIsDown(false);
 			else mParent->releaseMouse(X, Y);
 		}
-		else if (!mHasMouse && HasMouse) {
+		else if (!mHasMouse && HasMouse)
+		{
 			mHasMouse = true;
-			if (mIsPressed) {
-				mThemeButton.setIsDown(true);
-			}
+			if (mIsPressed)	mThemeButton.setIsDown(true);
 		}
 	}
 };

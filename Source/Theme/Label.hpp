@@ -21,9 +21,13 @@ struct LabelGlyph
 };
 
 /// \brief Responsible for drawing a label.
-class LabelT :
+class LabelT
+:
 	DrawableT<Vertex::FillSolidT>
 {
+	LabelT(LabelT const &) = delete;
+	LabelT & operator =(LabelT const &) = delete;
+
 	private:	
 	ManagerT * mManager;
 	std::vector<LabelGlyph> mGlyphs;
@@ -37,6 +41,7 @@ class LabelT :
 	short mClipTop = 0;
 
 	public:
+	LabelT() = default;
 	void init(ManagerT &);
 
 	/// \brief Sets the text to display.

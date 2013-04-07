@@ -8,13 +8,11 @@ namespace Gl {
 /// \brief Container for an OpenGL texture.
 class TextureT
 {
-	private:
-	public:
-	GLuint mId;
+	TextureT(TextureT const &) = delete;
+	TextureT & operator =(TextureT const &) = delete;
 
-	// Non copyable
-	TextureT(TextureT &) = delete;
-	TextureT & operator=(TextureT &) = delete;
+	private:
+	GLuint mId;
 
 	public:
 	TextureT();
