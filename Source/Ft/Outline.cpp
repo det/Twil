@@ -2,6 +2,7 @@
 
 #include "Library.hpp"
 #include "Stroker.hpp"
+#include "Data/Memory.hpp"
 
 #include <algorithm>
 
@@ -40,30 +41,35 @@ void OutlineT::transform(FT_Matrix const & Matrix)
 void OutlineT::reservePoints(short Num)
 {
 	if (mPointCapacity >= Num) return;
-	if (mPointCapacity == 0) mPointCapacity = 1;
-	while (mPointCapacity < Num) mPointCapacity *= 2;
+	auto PointCapacity = mPointCapacity;
+	if (PointCapacity == 0) PointCapacity = 1;
+	while (PointCapacity < Num) PointCapacity *= 2;
 
-	auto Points = new FT_Vector[mPointCapacity];
-	std::copy(mId.points, mId.points + mId.n_points, Points);
+	auto Points = Data::makeArray<FT_Vector>(PointCapacity);
+	auto Tags = Data::makeArray<char>(PointCapacity);
+	std::copy(mId.points, mId.points + mId.n_points, Points.get());
+	std::copy(mId.tags, mId.tags + mId.n_points, Tags.get());
+
 	delete[] mId.points;
-	mId.points = Points;
-
-	auto Tags = new char[mPointCapacity];
-	std::copy(mId.tags, mId.tags + mId.n_points, Tags);
 	delete[] mId.tags;
-	mId.tags = Tags;
+	mId.points = Points.release();
+	mId.tags = Tags.release();
+	mPointCapacity = PointCapacity;
 }
 
 void OutlineT::reserveContours(short Num)
 {
 	if (mContourCapacity >= Num) return;
-	if (mContourCapacity == 0) mContourCapacity = 1;
-	while (mContourCapacity < Num) mContourCapacity *= 2;
+	auto ContourCapacity = mContourCapacity;
+	if (ContourCapacity == 0) ContourCapacity = 1;
+	while (ContourCapacity < Num) ContourCapacity *= 2;
 
-	auto Contours = new short[mContourCapacity];
-	std::copy(mId.contours, mId.contours + mId.n_contours, Contours);
+	auto Contours = Data::makeArray<short>(ContourCapacity);
+	std::copy(mId.contours, mId.contours + mId.n_contours, Contours.get());
+
 	delete[] mId.contours;
-	mId.contours = Contours;
+	mId.contours = Contours.release();
+	mContourCapacity = ContourCapacity;
 }
 
 void OutlineT::beginContour(FT_Vector A)

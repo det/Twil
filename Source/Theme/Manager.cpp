@@ -176,7 +176,7 @@ bool ManagerT::update(unsigned short Width, unsigned short Height)
 
 	if (!mNeedsRedraw || Width == 0 || Height == 0) return false;
 
-	GLenum Result = glClientWaitSync(mFences[mFenceIndex], 0, 10000000); // wait 10ms
+	GLenum Result = glClientWaitSync(mFences[mFenceIndex], 0, 10000000); // wait at most 10ms
 	if (Result == GL_WAIT_FAILED || Result == GL_TIMEOUT_EXPIRED) return false;
 	glDeleteSync(mFences[mFenceIndex]);
 

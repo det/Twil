@@ -52,6 +52,7 @@ struct BitmapEntryT
 /// \brief Manages all rendering for the theme.
 class ManagerT
 {
+	static_assert(Settings::Manager::NumBuffers != 0, "Settings::Manager::NumBuffers cannot be 0");
 	friend class ButtonT;
 	friend class ImageT;
 	friend class LabelT;

@@ -545,15 +545,15 @@ void checkError()
 	case GL_NO_ERROR:
 		return;
 	case GL_INVALID_ENUM:
-		throw std::runtime_error("OpenGL Error: GL_INVALID_ENUM");
+		throw std::runtime_error{"OpenGL Error: GL_INVALID_ENUM"};
 	case GL_INVALID_VALUE:
-		throw std::runtime_error("OpenGL Error: GL_INVALID_VALUE");
+		throw std::runtime_error{"OpenGL Error: GL_INVALID_VALUE"};
 	case GL_INVALID_OPERATION:
-		throw std::runtime_error("OpenGL Error: GL_INVALID_OPERATION");
+		throw std::runtime_error{"OpenGL Error: GL_INVALID_OPERATION"};
 	case GL_INVALID_FRAMEBUFFER_OPERATION:
-		throw std::runtime_error("OpenGL Error: GL_INVALID_FRAMEBUFFER_OPERATION");
+		throw std::runtime_error{"OpenGL Error: GL_INVALID_FRAMEBUFFER_OPERATION"};
 	case GL_OUT_OF_MEMORY:
-		throw std::runtime_error("OpenGL Error: GL_OUT_OF_MEMORY");
+		throw std::runtime_error{"OpenGL Error: GL_OUT_OF_MEMORY"};
 	}
 #endif
 }
