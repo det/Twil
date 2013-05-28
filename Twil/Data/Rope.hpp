@@ -18,7 +18,7 @@ static std::uint64_t const FibonacciTable[64] = {
 	225851433717UL, 365435296162UL, 591286729879UL, 956722026041UL, 1548008755920UL,
 	2504730781961UL, 4052739537881UL, 6557470319842UL, 10610209857723UL, 17167680177565UL};
 
-template<typename T, std::size_t BlockSize = 256>
+template<typename T, std::size_t BlockSize = 512>
 class RopeT
 {
 	private:

@@ -91,7 +91,7 @@ class StreamArrayT
 		// Over time the static allocations will end up at the start of the array and never need
 		// to be redrawn.
 
-		// Find the first allocation to be resized
+		// Find the first allocation to be resized.
 		std::size_t TrueIndex = 0;
 		while (!mDrawables[TrueIndex]->mNeedsResize) ++TrueIndex;
 		std::size_t FalseIndex = TrueIndex + 1;

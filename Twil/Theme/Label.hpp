@@ -12,35 +12,43 @@ namespace Theme {
 
 class ManagerT;
 
-/// \brief Responsible for drawing a Image.
-class ImageT
-:
-	DrawableT<Vertex::BitmapT>
+struct LabelGlyph
 {
-	ImageT(ImageT const &) = delete;
-	ImageT & operator =(ImageT const &) = delete;
+	Attribute::Position2hT PositionMin;
+	Attribute::Position2hT PositionMax;
+	Attribute::Size2hT TextureSize;
+	Attribute::Offset1iT Offset;
+};
+
+/// \brief Responsible for drawing a label.
+class LabelT
+:
+	DrawableT<Vertex::FillSolidT>
+{
+	LabelT(LabelT const &) = delete;
+	LabelT & operator =(LabelT const &) = delete;
 
 	private:	
 	ManagerT * mManager;
-	unsigned int mOffset = 0;
+	std::vector<LabelGlyph> mGlyphs;
 	signed short mLeft = 0;
 	signed short mBottom = 0;
 	signed short mWidth = 0;
 	signed short mHeight = 0;
-	short mClipLeft = 0;
-	short mClipBottom = 0;
-	short mClipRight = 0;
-	short mClipTop = 0;
+	signed short mClipLeft = 0;
+	signed short mClipBottom = 0;
+	signed short mClipRight = 0;
+	signed short mClipTop = 0;
 
 	public:
-	ImageT() = default;
+	LabelT() = default;
 	void init(ManagerT &);
 
 	/// \brief Sets the text to display.
-	void setImage(char const *);
+	void setText(std::u32string const & Text);
 
 	// Drawable
-	void draw(Vertex::BitmapT *) const final;
+	void draw(Vertex::FillSolidT *) const final;
 
 	// Widget
 	void moveX(signed short);

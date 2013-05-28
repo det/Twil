@@ -1,33 +1,6 @@
 cmake_minimum_required (VERSION 2.8)
 project (Twil)
 
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
-	set (standard "-stdlib=libc++ -std=c++11")
-	set (math "-msse2") # -ffast-math
-	set (warning "-pedantic -Wall -Wextra -Wglobal-constructors -Wnon-virtual-dtor -Wshadow -Wnewline-eof -Wno-unused-parameter") # -Wsign-conversion
-	set (debug "-ggdb")
-	set (release "-DNDEBUG -O3 -flto")
-	set (symbol "-fno-rtti -fdata-sections -ffunction-sections -fvisibility=hidden -fvisibility-inlines-hidden")
-	set (linker_symbol "-Wl,--gc-sections")
-elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")
-	set (standard "-std=c++11")
-	set (math "-mfpmath=sse -msse2 -ffast-math")
-	set (warning "-pedantic -Wall -Wextra -Wnon-virtual-dtor -Wno-missing-field-initializers -Wno-unused-parameter")
-	set (debug "-ggdb")
-	set (release "-DNDEBUG -O3 -flto")
-	set (symbol "-fno-rtti -fdata-sections -ffunction-sections -fvisibility=hidden -fvisibility-inlines-hidden")
-	set (linker_symbol "-Wl,--gc-sections")
-else ()
-	message(FATAL_ERROR "Unsupported compiler: ${CMAKE_CXX_COMPILER_ID}")
-endif ()
-
-set (CMAKE_CXX_FLAGS "${standard} ${math} ${warning}")
-set (CMAKE_CXX_FLAGS_DEBUG "${debug}")
-set (CMAKE_CXX_FLAGS_RELEASE "${release} ${symbol}")
-set (CMAKE_EXE_LINKER_FLAGS_RELEASE "${linker_symbol}")
-set (CMAKE_CXX_FLAGS_RELWITHDEBINFO "${release} ${symbol} ${debug}")
-set (CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO "${linker_symbol}")
-
 if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
 	set (platform_sources
 		Linux/Platform/Key.cpp
@@ -42,19 +15,6 @@ if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
 		Linux/Platform/Window.hpp)
 
 	source_group(Platform FILES ${platform_sources})
-
-	find_package (X11 REQUIRED)
-
-	set (platform_search_path
-		Linux
-		${X11_INCLUDE_DIRS})
-
-	set (platform_libs
-		dl
-		xcb
-		xcb-keysyms
-		X11-xcb
-		${X11_LIBRARIES})
 else ()
 	message(FATAL_ERROR "Unsupported platform: ${CMAKE_SYSTEM_NAME}")
 endif ()
@@ -82,6 +42,7 @@ set (data_sources
 	Data/Rope.hpp
 	Data/Tuple.cpp
 	Data/Tuple.hpp)
+
 source_group(Data FILES ${data_sources})
 
 set (ft_sources
@@ -211,8 +172,7 @@ set (vertex_sources
 
 source_group(Vertex FILES ${vertex_sources})
 
-add_executable (hello
-	Hello.cpp
+add_library (Twil
 	${attribute_sources}
 	${data_sources}
 	${ft_sources}
@@ -225,19 +185,7 @@ add_executable (hello
 	${ui_sources}
 	${vertex_sources})
 
-find_package (Freetype REQUIRED)
-find_package (OpenGL REQUIRED)
-find_package (PNG REQUIRED)
-
-include_directories (
-	.
-	Header
-	${platform_search_path}
-	${FREETYPE_INCLUDE_DIRS}
-	${OPENGL_INCLUDE_DIRS}
-	${PNG_INCLUDE_DIRS})
-
-target_link_libraries (hello
+target_link_libraries (Twil
 	${platform_libs}
 	${FREETYPE_LIBRARIES}
 	${OPENGL_LIBRARIES}
