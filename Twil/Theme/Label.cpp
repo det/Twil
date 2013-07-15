@@ -58,25 +58,25 @@ void LabelT::setText(std::u32string const & Text)
 	mManager->mSolidArray.markNeedsRedraw(*this);
 }
 
-void LabelT::setClipLeft(signed short X)
+void LabelT::setClipLeft(std::int16_t X)
 {
 	mClipLeft = X;
 	mManager->mSolidArray.markNeedsRedraw(*this);
 }
 
-void LabelT::setClipRight(signed short X)
+void LabelT::setClipRight(std::int16_t X)
 {
 	mClipRight = X;
 	mManager->mSolidArray.markNeedsRedraw(*this);
 }
 
-void LabelT::setClipBottom(signed short Y)
+void LabelT::setClipBottom(std::int16_t Y)
 {
 	mClipBottom = Y;
 	mManager->mSolidArray.markNeedsRedraw(*this);
 }
 
-void LabelT::setClipTop(signed short Y)
+void LabelT::setClipTop(std::int16_t Y)
 {
 	mClipTop = Y;
 	mManager->mSolidArray.markNeedsRedraw(*this);
@@ -86,27 +86,27 @@ void LabelT::draw(Vertex::FillSolidT * Vertices) const
 {
 	for (std::size_t I = 0, E = mGlyphs.size(); I != E; ++I)
 	{
-		signed short PositionLeft = mLeft + mGlyphs[I].PositionMin.X;
-		signed short PositionRight = mLeft + mGlyphs[I].PositionMax.X;
-		signed short PositionBottom = mBottom + mGlyphs[I].PositionMin.Y;
-		signed short PositionTop = mBottom + mGlyphs[I].PositionMax.Y;
+		std::int16_t PositionLeft = mLeft + mGlyphs[I].PositionMin.X;
+		std::int16_t PositionRight = mLeft + mGlyphs[I].PositionMax.X;
+		std::int16_t PositionBottom = mBottom + mGlyphs[I].PositionMin.Y;
+		std::int16_t PositionTop = mBottom + mGlyphs[I].PositionMax.Y;
 
-		signed short Width = PositionRight - PositionLeft;
-		signed short Height = PositionTop - PositionBottom;
+		std::int16_t Width = PositionRight - PositionLeft;
+		std::int16_t Height = PositionTop - PositionBottom;
 
-		signed short ClipLeft = PositionLeft;
-		signed short ClipRight = PositionRight;
-		signed short ClipBottom = PositionBottom;
-		signed short ClipTop = PositionTop;
+		std::int16_t ClipLeft = PositionLeft;
+		std::int16_t ClipRight = PositionRight;
+		std::int16_t ClipBottom = PositionBottom;
+		std::int16_t ClipTop = PositionTop;
 
-		ClipLeft = std::max<signed short>(ClipLeft, mClipLeft);
-		ClipRight = std::max<signed short>(ClipRight, mClipLeft);
-		ClipLeft = std::min<signed short>(ClipLeft, mClipRight);
-		ClipRight = std::min<signed short>(ClipRight, mClipRight);
-		ClipBottom = std::max<signed short>(ClipBottom, mClipBottom);
-		ClipTop = std::max<signed short>(ClipTop, mClipBottom);
-		ClipBottom = std::min<signed short>(ClipBottom, mClipTop);
-		ClipTop = std::min<signed short>(ClipTop, mClipTop);
+		ClipLeft = std::max<std::int16_t>(ClipLeft, mClipLeft);
+		ClipRight = std::max<std::int16_t>(ClipRight, mClipLeft);
+		ClipLeft = std::min<std::int16_t>(ClipLeft, mClipRight);
+		ClipRight = std::min<std::int16_t>(ClipRight, mClipRight);
+		ClipBottom = std::max<std::int16_t>(ClipBottom, mClipBottom);
+		ClipTop = std::max<std::int16_t>(ClipTop, mClipBottom);
+		ClipBottom = std::min<std::int16_t>(ClipBottom, mClipTop);
+		ClipTop = std::min<std::int16_t>(ClipTop, mClipTop);
 
 		Vertices[I].Color = {0, 0, 0, 255};
 		Vertices[I].ClipMin.S = (ClipLeft - PositionLeft) * 65535 / Width;
@@ -120,7 +120,7 @@ void LabelT::draw(Vertex::FillSolidT * Vertices) const
 	}	
 }
 
-void LabelT::moveX(signed short X)
+void LabelT::moveX(std::int16_t X)
 {
 	mLeft += X;
 	mClipLeft += X;
@@ -128,7 +128,7 @@ void LabelT::moveX(signed short X)
 	mManager->mSolidArray.markNeedsRedraw(*this);
 }
 
-void LabelT::moveY(signed short Y)
+void LabelT::moveY(std::int16_t Y)
 {
 	mBottom += Y;
 	mClipBottom += Y;
@@ -136,52 +136,52 @@ void LabelT::moveY(signed short Y)
 	mManager->mSolidArray.markNeedsRedraw(*this);
 }
 
-signed short LabelT::getLeft() const
+std::int16_t LabelT::getLeft() const
 {
 	return mLeft;
 }
 
-signed short LabelT::getBottom() const
+std::int16_t LabelT::getBottom() const
 {
 	return mBottom;
 }
 
-signed short LabelT::getRight() const
+std::int16_t LabelT::getRight() const
 {
 	return mLeft + mWidth;
 }
 
-signed short LabelT::getTop() const
+std::int16_t LabelT::getTop() const
 {
 	return mBottom + mHeight;
 }
 
-signed short LabelT::getClipLeft() const
+std::int16_t LabelT::getClipLeft() const
 {
 	return mClipLeft;
 }
 
-signed short LabelT::getClipRight() const
+std::int16_t LabelT::getClipRight() const
 {
 	return mClipRight;
 }
 
-signed short LabelT::getClipBottom() const
+std::int16_t LabelT::getClipBottom() const
 {
 	return mClipBottom;
 }
 
-signed short LabelT::getClipTop() const
+std::int16_t LabelT::getClipTop() const
 {
 	return mClipTop;
 }
 
-signed short LabelT::getBaseWidth() const
+std::int16_t LabelT::getBaseWidth() const
 {
 	return mWidth;
 }
 
-signed short LabelT::getBaseHeight() const
+std::int16_t LabelT::getBaseHeight() const
 {
 	return mHeight;
 }

@@ -37,16 +37,16 @@ struct GlyphEntryT
 	FT_Pos LsbDelta;
 	FT_Pos RsbDelta;
 	unsigned int Offset;
-	unsigned short Width;
-	unsigned short Height;
+	std::uint16_t Width;
+	std::uint16_t Height;
 };
 
 /// \brief Represents a loaded bitmap.
 struct BitmapEntryT
 {
 	unsigned int Offset;
-	unsigned short Width;
-	unsigned short Height;
+	std::uint16_t Width;
+	std::uint16_t Height;
 };
 
 /// \brief Manages all rendering for the theme.
@@ -88,24 +88,24 @@ class ManagerT
 	bool mNeedsRedraw;
 
 	// Button offsets
-	GLuint mButtonCenterInside;
-	GLuint mButtonLeftInside;
-	GLuint mButtonRightInside;
-	GLuint mButtonBottomInside;
-	GLuint mButtonTopInside;
-	GLuint mButtonSwInside;
-	GLuint mButtonSeInside;
-	GLuint mButtonNeInside;
-	GLuint mButtonNwInside;
-	GLuint mButtonCenterOutside;
-	GLuint mButtonLeftOutside;
-	GLuint mButtonRightOutside;
-	GLuint mButtonBottomOutside;
-	GLuint mButtonTopOutside;
-	GLuint mButtonSwOutside;
-	GLuint mButtonSeOutside;
-	GLuint mButtonNeOutside;
-	GLuint mButtonNwOutside;
+	GLuint mButtonCenterIn;
+	GLuint mButtonLeftIn;
+	GLuint mButtonRightIn;
+	GLuint mButtonBottomIn;
+	GLuint mButtonTopIn;
+	GLuint mButtonSwIn;
+	GLuint mButtonSeIn;
+	GLuint mButtonNeIn;
+	GLuint mButtonNwIn;
+	GLuint mButtonCenterOut;
+	GLuint mButtonLeftOut;
+	GLuint mButtonRightOut;
+	GLuint mButtonBottomOut;
+	GLuint mButtonTopOut;
+	GLuint mButtonSwOut;
+	GLuint mButtonSeOut;
+	GLuint mButtonNeOut;
+	GLuint mButtonNwOut;
 
 	BitmapEntryT const & loadBitmapEntry(char const *);
 	GlyphEntryT const & loadGlyphEntry(Ft::FaceT &, char32_t);
@@ -121,7 +121,7 @@ class ManagerT
 	/// \brief Draw the GUI if needed
 	///
 	/// \returns true if the GUI was drawn.
-	bool update(unsigned short Width, unsigned short Height);
+	bool update(std::uint16_t Width, std::uint16_t Height);
 };
 
 }

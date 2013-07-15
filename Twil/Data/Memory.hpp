@@ -13,7 +13,7 @@ std::unique_ptr<T> makeUnique(ArgsT && ... Args)
 }
 
 template<typename T>
-std::unique_ptr<T[]> makeArray(std::size_t Size)
+std::unique_ptr<T[]> allocUnique(std::size_t Size)
 {
 	return std::unique_ptr<T[]>{new T[Size]};
 }

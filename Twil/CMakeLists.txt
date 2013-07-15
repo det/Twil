@@ -129,6 +129,8 @@ source_group(Theme FILES ${theme_sources})
 set (ui_sources
 	Ui/Application.cpp
 	Ui/Application.hpp
+	Ui/ApplicationAdaptor.cpp
+	Ui/ApplicationAdaptor.hpp
 	Ui/Margin.cpp
 	Ui/Margin.hpp
 	Ui/Button.cpp
@@ -137,6 +139,8 @@ set (ui_sources
 	Ui/Container.hpp
 	Ui/Centered.cpp
 	Ui/Centered.hpp
+	Ui/Grid.cpp
+	Ui/Grid.hpp
 	Ui/Image.cpp
 	Ui/Image.hpp
 	Ui/KeyboardHandler.cpp
@@ -155,6 +159,8 @@ set (ui_sources
 	Ui/SplitBox.hpp
 	Ui/Widget.cpp
 	Ui/Widget.hpp
+	Ui/WidgetAdaptor.cpp
+	Ui/WidgetAdaptor.hpp
 	Ui/Window.cpp
 	Ui/Window.hpp
 	Ui/WindowBase.cpp

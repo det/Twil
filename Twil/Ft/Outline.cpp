@@ -38,15 +38,15 @@ void OutlineT::transform(FT_Matrix const & Matrix)
 	FT_Outline_Transform(&mId, &Matrix);
 }
 
-void OutlineT::reservePoints(short Num)
+void OutlineT::reservePoints(std::uint16_t Num)
 {
 	if (mPointCapacity >= Num) return;
 	auto PointCapacity = mPointCapacity;
 	if (PointCapacity == 0) PointCapacity = 1;
 	while (PointCapacity < Num) PointCapacity *= 2;
 
-	auto Points = Data::makeArray<FT_Vector>(PointCapacity);
-	auto Tags = Data::makeArray<char>(PointCapacity);
+	auto Points = Data::allocUnique<FT_Vector>(PointCapacity);
+	auto Tags = Data::allocUnique<char>(PointCapacity);
 	std::copy(mId.points, mId.points + mId.n_points, Points.get());
 	std::copy(mId.tags, mId.tags + mId.n_points, Tags.get());
 
@@ -57,14 +57,14 @@ void OutlineT::reservePoints(short Num)
 	mPointCapacity = PointCapacity;
 }
 
-void OutlineT::reserveContours(short Num)
+void OutlineT::reserveContours(std::uint16_t Num)
 {
 	if (mContourCapacity >= Num) return;
 	auto ContourCapacity = mContourCapacity;
 	if (ContourCapacity == 0) ContourCapacity = 1;
 	while (ContourCapacity < Num) ContourCapacity *= 2;
 
-	auto Contours = Data::makeArray<short>(ContourCapacity);
+	auto Contours = Data::allocUnique<FT_Short>(ContourCapacity);
 	std::copy(mId.contours, mId.contours + mId.n_contours, Contours.get());
 
 	delete[] mId.contours;

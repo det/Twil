@@ -96,31 +96,31 @@ class ApplicationT
 
 			case XCB_ENTER_NOTIFY: {
 				auto Event = reinterpret_cast<xcb_enter_notify_event_t *>(GenericEvent);
-				signed short Y = Window.getHeight() - Event->event_y;
+				std::int16_t Y = Window.getHeight() - Event->event_y;
 				MouseManager.handleMouseEnterWindow(Event->event_x, Y);
 			} break;
 
 			case XCB_LEAVE_NOTIFY: {
 				auto Event = reinterpret_cast<xcb_leave_notify_event_t *>(GenericEvent);
-				signed short Y = Window.getHeight() - Event->event_y;
+				std::int16_t Y = Window.getHeight() - Event->event_y;
 				MouseManager.handleMouseLeaveWindow(Event->event_x, Y);
 			} break;
 
 			case XCB_MOTION_NOTIFY: {
 				auto Event = reinterpret_cast<xcb_motion_notify_event_t *>(GenericEvent);
-				signed short Y = Window.getHeight() - Event->event_y;
+				std::int16_t Y = Window.getHeight() - Event->event_y;
 				MouseManager.handleMouseMotion(Event->event_x, Y);
 			} break;
 
 			case XCB_BUTTON_PRESS: {
 				auto Event = reinterpret_cast<xcb_button_press_event_t *>(GenericEvent);
-				signed short Y = Window.getHeight() - Event->event_y;
+				std::int16_t Y = Window.getHeight() - Event->event_y;
 				MouseManager.handleButtonPress(Event->event_x, Y, Event->detail);
 			} break;
 
 			case XCB_BUTTON_RELEASE: {
 				auto Event = reinterpret_cast<xcb_button_press_event_t *>(GenericEvent);
-				signed short Y = Window.getHeight() - Event->event_y;
+				std::int16_t Y = Window.getHeight() - Event->event_y;
 				MouseManager.handleButtonRelease(Event->event_x, Y, Event->detail);
 			} break;
 

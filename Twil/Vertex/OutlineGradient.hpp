@@ -19,8 +19,8 @@ struct OutlineGradientT
 	Attribute::Position2hT PositionMin;
 	Attribute::Position2hT PositionMax;
 	Attribute::Size2hT TextureSize;
-	Attribute::Offset1iT InsideIndex;
-	Attribute::Offset1iT OutsideIndex;
+	Attribute::Offset1iT InIndex;
+	Attribute::Offset1iT OutIndex;
 
 	static void setup();
 };

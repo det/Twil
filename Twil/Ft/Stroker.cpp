@@ -22,8 +22,9 @@ void StrokerT::clear()
 	FT_Stroker_Rewind(mId);
 }
 
-void StrokerT::setOptions(FT_Fixed Radius, FT_Stroker_LineCap LineCap, FT_Stroker_LineJoin LineJoin,
-	FT_Fixed MiterLimit)
+void StrokerT::setOptions(
+	FT_Fixed Radius, FT_Stroker_LineCap LineCap,
+	FT_Stroker_LineJoin LineJoin, FT_Fixed MiterLimit)
 {
 	FT_Stroker_Set(mId, Radius, LineCap, LineJoin, MiterLimit);
 }

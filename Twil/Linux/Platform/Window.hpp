@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #include <xcb/xcb.h>
 
 namespace Twil {
@@ -36,7 +38,7 @@ class WindowT
 	void show();
 	void hide();
 	void setFullscreen(bool IsFullScreen);
-	void resize(unsigned short Width, unsigned short Height);
+	void resize(std::uint16_t Width, std::uint16_t Height);
 	void setTitle(char const * String);
 };
 

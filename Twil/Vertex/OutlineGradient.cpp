@@ -21,8 +21,8 @@ void OutlineGradientT::setup()
 	auto PositionMinOffset = reinterpret_cast<OffsetT>(offsetof(VertexT, PositionMin));
 	auto PositionMaxOffset = reinterpret_cast<OffsetT>(offsetof(VertexT, PositionMax));
 	auto TextureSizeOffset = reinterpret_cast<OffsetT>(offsetof(VertexT, TextureSize));
-	auto InsideIndexOffset = reinterpret_cast<OffsetT>(offsetof(VertexT, InsideIndex));
-	auto OutsideIndexOffset = reinterpret_cast<OffsetT>(offsetof(VertexT, OutsideIndex));
+	auto InIndexOffset = reinterpret_cast<OffsetT>(offsetof(VertexT, InIndex));
+	auto OutIndexOffset = reinterpret_cast<OffsetT>(offsetof(VertexT, OutIndex));
 
 	decltype(BorderColor)::setup(0, Stride, BorderColorOffset);
 	decltype(BottomColor)::setup(1, Stride, BottomColorOffset);
@@ -32,8 +32,8 @@ void OutlineGradientT::setup()
 	decltype(PositionMin)::setup(5, Stride, PositionMinOffset);
 	decltype(PositionMax)::setup(6, Stride, PositionMaxOffset);
 	decltype(TextureSize)::setup(7, Stride, TextureSizeOffset);
-	decltype(InsideIndex)::setup(8, Stride, InsideIndexOffset);
-	decltype(OutsideIndex)::setup(9, Stride, OutsideIndexOffset);
+	decltype(InIndex)::setup(8, Stride, InIndexOffset);
+	decltype(OutIndex)::setup(9, Stride, OutIndexOffset);
 }
 
 }

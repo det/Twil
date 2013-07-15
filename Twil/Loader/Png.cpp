@@ -142,8 +142,8 @@ PngT::PngT(char const * Path)
 	mHeight = Height;
 
 	// Setup a pointer array.  Each one points at the begening of a row
-	mBytes = Data::makeArray<unsigned char>(Width * Height * 4);
-	auto Rows = Data::makeArray<unsigned char *>(Height);
+	mBytes = Data::allocUnique<unsigned char>(Width * Height * 4);
+	auto Rows = Data::allocUnique<unsigned char *>(Height);
 	for (std::size_t I = 0; I < Height; ++I)
 	{
 		Rows[I] = mBytes.get() + (Height - I - 1) * Width * 4;
@@ -154,12 +154,12 @@ PngT::PngT(char const * Path)
 	png_read_end(Png, nullptr);
 }
 
-unsigned short PngT::getWidth() const
+std::uint16_t PngT::getWidth() const
 {
 	return mWidth;
 }
 
-unsigned short PngT::getHeight() const
+std::uint16_t PngT::getHeight() const
 {
 	return mHeight;
 }

@@ -20,25 +20,25 @@ void ImageT::setImage(char const * Path)
 	mManager->mBitmapArray.markNeedsRedraw(*this);
 }
 
-void ImageT::setClipLeft(signed short X)
+void ImageT::setClipLeft(std::int16_t X)
 {
 	mClipLeft = X;
 	mManager->mBitmapArray.markNeedsRedraw(*this);
 }
 
-void ImageT::setClipRight(signed short X)
+void ImageT::setClipRight(std::int16_t X)
 {
 	mClipRight = X;
 	mManager->mBitmapArray.markNeedsRedraw(*this);
 }
 
-void ImageT::setClipBottom(signed short Y)
+void ImageT::setClipBottom(std::int16_t Y)
 {
 	mClipBottom = Y;
 	mManager->mBitmapArray.markNeedsRedraw(*this);
 }
 
-void ImageT::setClipTop(signed short Y)
+void ImageT::setClipTop(std::int16_t Y)
 {
 	mClipTop = Y;
 	mManager->mBitmapArray.markNeedsRedraw(*this);
@@ -53,27 +53,27 @@ void ImageT::draw(Vertex::BitmapT * Vertices) const
 		return;
 	}
 
-	signed short PositionLeft = mLeft;
-	signed short PositionRight = mLeft + mWidth;
-	signed short PositionBottom = mBottom;
-	signed short PositionTop = mBottom + mHeight;
+	std::int16_t PositionLeft = mLeft;
+	std::int16_t PositionRight = mLeft + mWidth;
+	std::int16_t PositionBottom = mBottom;
+	std::int16_t PositionTop = mBottom + mHeight;
 
-	signed short Width = mWidth;
-	signed short Height = mHeight;
+	std::int16_t Width = mWidth;
+	std::int16_t Height = mHeight;
 
-	signed short ClipLeft = PositionLeft;
-	signed short ClipRight = PositionRight;
-	signed short ClipBottom = PositionBottom;
-	signed short ClipTop = PositionTop;
+	std::int16_t ClipLeft = PositionLeft;
+	std::int16_t ClipRight = PositionRight;
+	std::int16_t ClipBottom = PositionBottom;
+	std::int16_t ClipTop = PositionTop;
 
-	ClipLeft = std::max<signed short>(ClipLeft, mClipLeft);
-	ClipRight = std::max<signed short>(ClipRight, mClipLeft);
-	ClipLeft = std::min<signed short>(ClipLeft, mClipRight);
-	ClipRight = std::min<signed short>(ClipRight, mClipRight);
-	ClipBottom = std::max<signed short>(ClipBottom, mClipBottom);
-	ClipTop = std::max<signed short>(ClipTop, mClipBottom);
-	ClipBottom = std::min<signed short>(ClipBottom, mClipTop);
-	ClipTop = std::min<signed short>(ClipTop, mClipTop);
+	ClipLeft = std::max<std::int16_t>(ClipLeft, mClipLeft);
+	ClipRight = std::max<std::int16_t>(ClipRight, mClipLeft);
+	ClipLeft = std::min<std::int16_t>(ClipLeft, mClipRight);
+	ClipRight = std::min<std::int16_t>(ClipRight, mClipRight);
+	ClipBottom = std::max<std::int16_t>(ClipBottom, mClipBottom);
+	ClipTop = std::max<std::int16_t>(ClipTop, mClipBottom);
+	ClipBottom = std::min<std::int16_t>(ClipBottom, mClipTop);
+	ClipTop = std::min<std::int16_t>(ClipTop, mClipTop);
 
 	Vertices[0].ClipMin.S = (ClipLeft - PositionLeft) * 65535 / Width;
 	Vertices[0].ClipMin.T = (ClipBottom - PositionBottom) * 65535 / Height;
@@ -85,7 +85,7 @@ void ImageT::draw(Vertex::BitmapT * Vertices) const
 	Vertices[0].Offset = {mOffset};
 }
 
-void ImageT::moveX(signed short X)
+void ImageT::moveX(std::int16_t X)
 {
 	mLeft += X;
 	mClipLeft += X;
@@ -94,7 +94,7 @@ void ImageT::moveX(signed short X)
 	mManager->mBitmapArray.markNeedsRedraw(*this);
 }
 
-void ImageT::moveY(signed short Y)
+void ImageT::moveY(std::int16_t Y)
 {
 	mBottom += Y;
 	mClipBottom += Y;
@@ -103,52 +103,52 @@ void ImageT::moveY(signed short Y)
 	mManager->mBitmapArray.markNeedsRedraw(*this);
 }
 
-signed short ImageT::getLeft() const
+std::int16_t ImageT::getLeft() const
 {
 	return mLeft;
 }
 
-signed short ImageT::getBottom() const
+std::int16_t ImageT::getBottom() const
 {
 	return mBottom;
 }
 
-signed short ImageT::getRight() const
+std::int16_t ImageT::getRight() const
 {
 	return mLeft + mWidth;
 }
 
-signed short ImageT::getTop() const
+std::int16_t ImageT::getTop() const
 {
 	return mBottom + mHeight;
 }
 
-signed short ImageT::getClipLeft() const
+std::int16_t ImageT::getClipLeft() const
 {
 	return mClipLeft;
 }
 
-signed short ImageT::getClipRight() const
+std::int16_t ImageT::getClipRight() const
 {
 	return mClipRight;
 }
 
-signed short ImageT::getClipBottom() const
+std::int16_t ImageT::getClipBottom() const
 {
 	return mClipBottom;
 }
 
-signed short ImageT::getClipTop() const
+std::int16_t ImageT::getClipTop() const
 {
 	return mClipTop;
 }
 
-signed short ImageT::getBaseWidth() const
+std::int16_t ImageT::getBaseWidth() const
 {
 	return mWidth;
 }
 
-signed short ImageT::getBaseHeight() const
+std::int16_t ImageT::getBaseHeight() const
 {
 	return mHeight;
 }

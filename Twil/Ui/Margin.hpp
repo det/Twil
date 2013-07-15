@@ -12,7 +12,7 @@ namespace Ui {
 /// \param SpaceX Size of the left and right margins.
 /// \param SpaceY Size of the bottom and top margins.
 /// \param T Type of the child widget.
-template<unsigned short SpaceX, unsigned short SpaceY, typename T>
+template<std::uint16_t SpaceX, std::uint16_t SpaceY, typename T>
 class MarginT
 :
 	public ContainerT,
@@ -26,7 +26,7 @@ class MarginT
 	WindowBaseT * mWindow;
 	T mChild;
 
-	bool checkThisContains(signed short X, signed short Y)
+	bool checkThisContains(std::int16_t X, std::int16_t Y)
 	{
 		return (
 			X >= getLeft() && X >= getClipLeft() &&
@@ -35,7 +35,7 @@ class MarginT
 			Y <= getTop() && Y <= getClipTop());
 	}
 
-	bool checkChildContains(signed short X, signed short Y)
+	bool checkChildContains(std::int16_t X, std::int16_t Y)
 	{
 		return (
 			X >= mChild.getLeft() && X <= mChild.getRight() &&
@@ -71,97 +71,97 @@ class MarginT
 	}
 
 	// Widget
-	void moveX(signed short X)
+	void moveX(std::int16_t X)
 	{
 		mChild.moveX(X);
 	}
 
-	void moveY(signed short Y)
+	void moveY(std::int16_t Y)
 	{
 		mChild.moveY(Y);
 	}
 
-	void resizeWidth(signed short X)
+	void resizeWidth(std::int16_t X)
 	{
 		mChild.resizeWidth(X);
 	}
 
-	void resizeHeight(signed short Y)
+	void resizeHeight(std::int16_t Y)
 	{
 		mChild.resizeHeight(Y);
 	}
 
-	void setClipLeft(signed short X)
+	void setClipLeft(std::int16_t X)
 	{
 		mChild.setClipLeft(X);
 	}
 
-	void setClipRight(signed short X)
+	void setClipRight(std::int16_t X)
 	{
 		mChild.setClipRight(X);
 	}
 
-	void setClipBottom(signed short Y)
+	void setClipBottom(std::int16_t Y)
 	{
 		mChild.setClipBottom(Y);
 	}
 
-	void setClipTop(signed short Y)
+	void setClipTop(std::int16_t Y)
 	{
 		mChild.setClipTop(Y);
 	}
 
-	signed short getLeft() const
+	std::int16_t getLeft() const
 	{
 		return mChild.getLeft() - SpaceX;
 	}
 
-	signed short getBottom() const
+	std::int16_t getBottom() const
 	{
 		return mChild.getBottom() - SpaceY;
 	}
 
-	signed short getRight() const
+	std::int16_t getRight() const
 	{
 		return mChild.getRight() + SpaceY;
 	}
 
-	signed short getTop() const
+	std::int16_t getTop() const
 	{
 		return mChild.getTop() + SpaceY;
 	}
 
-	signed short getClipLeft() const
+	std::int16_t getClipLeft() const
 	{
 		return mChild.getClipLeft();
 	}
 
-	signed short getClipBottom() const
+	std::int16_t getClipBottom() const
 	{
 		return mChild.getClipBottom();
 	}
 
-	signed short getClipRight() const
+	std::int16_t getClipRight() const
 	{
 		return mChild.getClipRight();
 	}
 
-	signed short getClipTop() const
+	std::int16_t getClipTop() const
 	{
 		return mChild.getClipTop();
 	}
 
-	signed short getBaseWidth() const
+	std::int16_t getBaseWidth() const
 	{
 		return mChild.getBaseWidth() + SpaceX + SpaceX;
 	}
 
-	signed short getBaseHeight() const
+	std::int16_t getBaseHeight() const
 	{
 		return mChild.getBaseHeight() + SpaceY + SpaceY;
 	}
 
-	void delegateMouse(signed short X, signed short Y)
+	void delegateMouse(std::int16_t X, std::int16_t Y)
 	{
 		if (checkChildContains(X, Y)) mChild.delegateMouse(X, Y);
 		else mWindow->getMouseManager().setHandler(*this);
@@ -178,14 +178,14 @@ class MarginT
 		mParent->handleChildBaseHeightChanged(this);
 	}
 
-	void releaseMouse(signed short X, signed short Y) final
+	void releaseMouse(std::int16_t X, std::int16_t Y) final
 	{
 		if (checkThisContains(X, Y)) mWindow->getMouseManager().setHandler(*this);
 		else mParent->releaseMouse(X, Y);
 	}
 
 	// MouseHandler
-	void handleMouseMotion(signed short X, signed short Y) final
+	void handleMouseMotion(std::int16_t X, std::int16_t Y) final
 	{
 		if (checkChildContains(X, Y)) mChild.delegateMouse(X, Y);
 		if (!checkThisContains(X, Y)) mParent->releaseMouse(X, Y);

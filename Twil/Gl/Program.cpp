@@ -38,7 +38,7 @@ void ProgramT::link()
 	{
 		GLint LogLength = 0;
 		glGetProgramiv(mId, GL_INFO_LOG_LENGTH , &LogLength);
-		auto Log = Data::makeArray<GLchar>(LogLength);
+		auto Log = Data::allocUnique<GLchar>(LogLength);
 		glGetProgramInfoLog(mId, LogLength, &LogLength, Log.get());
 		std::cerr << Log.get();
 		throw std::runtime_error{"Program link error"};

@@ -30,7 +30,7 @@ class ButtonT
 	bool mIsPressed;
 	bool mHasMouse;
 
-	bool checkThisContains(signed short X, signed short Y)
+	bool checkThisContains(std::int16_t X, std::int16_t Y)
 	{
 		return (
 			X >= getLeft() && X >= getClipLeft() &&
@@ -77,105 +77,105 @@ class ButtonT
 	}
 
 	// Widget
-	void moveX(signed short X)
+	void moveX(std::int16_t X)
 	{
 		mThemeButton.moveX(X);
 		mChild.moveX(X);
 	}
 
-	void moveY(signed short Y)
+	void moveY(std::int16_t Y)
 	{
 		mThemeButton.moveY(Y);
 		mChild.moveY(Y);
 	}
 
-	void resizeWidth(signed short X)
+	void resizeWidth(std::int16_t X)
 	{
 		mThemeButton.resizeWidth(X);
 		mChild.resizeWidth(X);
 	}
 
-	void resizeHeight(signed short Y)
+	void resizeHeight(std::int16_t Y)
 	{
 		mThemeButton.resizeHeight(Y);
 		mChild.resizeHeight(Y);
 	}
 
-	void setClipLeft(signed short X)
+	void setClipLeft(std::int16_t X)
 	{
 		mThemeButton.setClipLeft(X);
 		mChild.setClipLeft(X);
 	}
 
-	void setClipBottom(signed short Y)
+	void setClipBottom(std::int16_t Y)
 	{
 		mThemeButton.setClipBottom(Y);
 		mChild.setClipBottom(Y);
 	}
 
-	void setClipRight(signed short X)
+	void setClipRight(std::int16_t X)
 	{
 		mThemeButton.setClipRight(X);
 		mChild.setClipRight(X);
 	}
 
-	void setClipTop(signed short Y)
+	void setClipTop(std::int16_t Y)
 	{
 		mThemeButton.setClipTop(Y);
 		mChild.setClipTop(Y);
 	}
 
-	signed short getLeft() const
+	std::int16_t getLeft() const
 	{
 		return mThemeButton.getLeft();
 	}
 
-	signed short getBottom() const
+	std::int16_t getBottom() const
 	{
 		return mThemeButton.getBottom();
 	}
 
-	signed short getRight() const
+	std::int16_t getRight() const
 	{
 		return mThemeButton.getRight();
 	}
 
-	signed short getTop() const
+	std::int16_t getTop() const
 	{
 		return mThemeButton.getTop();
 	}
 
-	signed short getClipLeft() const
+	std::int16_t getClipLeft() const
 	{
 		return mThemeButton.getClipLeft();
 	}
 
-	signed short getClipBottom() const
+	std::int16_t getClipBottom() const
 	{
 		return mThemeButton.getClipBottom();
 	}
 
-	signed short getClipRight() const
+	std::int16_t getClipRight() const
 	{
 		return mThemeButton.getClipRight();
 	}
 
-	signed short getClipTop() const
+	std::int16_t getClipTop() const
 	{
 		return mThemeButton.getClipTop();
 	}
 
-	signed short getBaseWidth() const
+	std::int16_t getBaseWidth() const
 	{
 		return mThemeButton.getBaseWidth(mChild.getBaseWidth());
 	}
 
-	signed short getBaseHeight() const
+	std::int16_t getBaseHeight() const
 	{
 		return mThemeButton.getBaseHeight(mChild.getBaseHeight());
 	}
 
-	void delegateMouse(signed short, signed short)
+	void delegateMouse(std::int16_t, std::int16_t)
 	{
 		mWindow->getMouseManager().setHandler(*this);
 		mHasMouse = true;
@@ -192,13 +192,13 @@ class ButtonT
 		mParent->handleChildBaseHeightChanged(this);
 	}
 
-	void releaseMouse(signed short X, signed short Y) final
+	void releaseMouse(std::int16_t X, std::int16_t Y) final
 	{
 		mParent->releaseMouse(X, Y);
 	}
 
 	// MouseHandler
-	void handleButtonPress(signed short, signed short, unsigned char Index) final
+	void handleButtonPress(std::int16_t, std::int16_t, unsigned char Index) final
 	{
 		if (Index == 1)
 		{
@@ -207,7 +207,7 @@ class ButtonT
 		}
 	}
 
-	void handleButtonRelease(signed short X, signed short Y, unsigned char Index) final
+	void handleButtonRelease(std::int16_t X, std::int16_t Y, unsigned char Index) final
 	{
 		if (Index == 1)
 		{
@@ -226,7 +226,7 @@ class ButtonT
 		}
 	}
 
-	void handleMouseMotion(signed short X, signed short Y) final
+	void handleMouseMotion(std::int16_t X, std::int16_t Y) final
 	{
 		auto HasMouse = checkThisContains(X, Y);
 

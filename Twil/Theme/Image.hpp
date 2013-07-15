@@ -23,14 +23,14 @@ class ImageT
 	private:	
 	ManagerT * mManager;
 	unsigned int mOffset = 0;
-	signed short mLeft = 0;
-	signed short mBottom = 0;
-	signed short mWidth = 0;
-	signed short mHeight = 0;
-	signed short mClipLeft = 0;
-	signed short mClipBottom = 0;
-	signed short mClipRight = 0;
-	signed short mClipTop = 0;
+	std::int16_t mLeft = 0;
+	std::int16_t mBottom = 0;
+	std::int16_t mWidth = 0;
+	std::int16_t mHeight = 0;
+	std::int16_t mClipLeft = 0;
+	std::int16_t mClipBottom = 0;
+	std::int16_t mClipRight = 0;
+	std::int16_t mClipTop = 0;
 
 	public:
 	ImageT() = default;
@@ -43,26 +43,26 @@ class ImageT
 	void draw(Vertex::BitmapT *) const final;
 
 	// Widget
-	void moveX(signed short);
-	void moveY(signed short);
+	void moveX(std::int16_t);
+	void moveY(std::int16_t);
 
-	void setClipLeft(signed short);
-	void setClipBottom(signed short);
-	void setClipRight(signed short);
-	void setClipTop(signed short);
+	void setClipLeft(std::int16_t);
+	void setClipBottom(std::int16_t);
+	void setClipRight(std::int16_t);
+	void setClipTop(std::int16_t);
 
-	signed short getLeft() const;
-	signed short getBottom() const;
-	signed short getRight() const;
-	signed short getTop() const;
+	std::int16_t getLeft() const;
+	std::int16_t getBottom() const;
+	std::int16_t getRight() const;
+	std::int16_t getTop() const;
 
-	signed short getClipLeft() const;
-	signed short getClipRight() const;
-	signed short getClipBottom() const;
-	signed short getClipTop() const;
+	std::int16_t getClipLeft() const;
+	std::int16_t getClipRight() const;
+	std::int16_t getClipBottom() const;
+	std::int16_t getClipTop() const;
 
-	signed short getBaseWidth() const;
-	signed short getBaseHeight() const;
+	std::int16_t getBaseWidth() const;
+	std::int16_t getBaseHeight() const;
 };
 
 }

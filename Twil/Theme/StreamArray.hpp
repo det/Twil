@@ -150,8 +150,12 @@ class StreamArrayT
 
 		// Map the buffer and draw all allocations, then unmap. We use a ring buffer to avoid
 		// synchronization. The caller needs to use a fence just in case.
-		auto VertexPointer = static_cast<T *>(glMapBufferRange(
-			GL_ARRAY_BUFFER, 0, mSize * sizeof(T), GL_MAP_WRITE_BIT | GL_MAP_UNSYNCHRONIZED_BIT));
+		auto VertexPointer = static_cast<T *>(
+			glMapBufferRange(
+				GL_ARRAY_BUFFER,
+				0,
+				mSize * sizeof(T),
+				GL_MAP_WRITE_BIT | GL_MAP_UNSYNCHRONIZED_BIT));
 
 		// Draw all needed allocations
 		for (auto Drawable : mDrawables)

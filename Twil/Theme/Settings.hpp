@@ -2,6 +2,7 @@
 
 #include "Attribute/Color4b.hpp"
 
+#include <cstdint>
 #include <cstdlib>
 
 namespace Twil {
@@ -22,13 +23,13 @@ Attribute::Color4bT const BottomDownColor{111, 111, 111, 255};
 Attribute::Color4bT const TopUpColor{255, 255, 255, 255};
 Attribute::Color4bT const BottomUpColor{159, 159, 159, 255};
 
-signed short const Roundness = 4;
-signed short const LeftMargin = 3;
-signed short const RightMargin = 3;
-signed short const TopMargin = 3;
-signed short const BottomMargin = 3;
-signed short const BaseWidthMargin = 12;
-signed short const BaseHeightMargin = 12;
+std::int16_t const Roundness = 4;
+std::int16_t const LeftMargin = 3;
+std::int16_t const RightMargin = 3;
+std::int16_t const TopMargin = 3;
+std::int16_t const BottomMargin = 3;
+std::int16_t const BaseWidthMargin = 12;
+std::int16_t const BaseHeightMargin = 12;
 
 }
 

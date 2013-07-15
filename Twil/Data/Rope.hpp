@@ -24,8 +24,8 @@ class RopeT
 	private:
 	struct NodeT
 	{
-		unsigned short Count;
-		unsigned short Height;
+		std::uint16_t Count;
+		std::uint16_t Height;
 	};
 
 	struct BranchT
@@ -472,7 +472,7 @@ class RopeT
 		return mSize;
 	}
 
-	unsigned short getHeight()
+	std::uint16_t getHeight()
 	{
 		return mRoot->Height;
 	}

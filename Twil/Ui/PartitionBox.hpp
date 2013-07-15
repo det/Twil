@@ -15,7 +15,7 @@ class ManagerT;
 namespace Ui {
 
 /// \brief Functionality shared by both horizontal and vertical partition boxes.
-template<typename ... ArgsT>
+template<typename ChildrenT>
 class PartitionBoxBaseT
 :
 	public ContainerT
@@ -25,11 +25,11 @@ class PartitionBoxBaseT
 
 	protected:
 	ContainerT * mParent;
-	std::tuple<ArgsT ...> mChildren;
+	ChildrenT mChildren;
 
-	static signed short const mSize = sizeof ... (ArgsT);
+	static std::int16_t const mSize = std::tuple_size<ChildrenT>::value;
 
-	bool checkThisContains(signed short X, signed short Y)
+	bool checkThisContains(std::int16_t X, std::int16_t Y)
 	{
 		return (
 			X >= getLeft() && X >= getClipLeft() &&
@@ -64,7 +64,7 @@ class PartitionBoxBaseT
 	///
 	/// \param I Index of the child
 	template<std::size_t I>
-	typename std::tuple_element<I, std::tuple<ArgsT ...>>::type & getChild()
+	typename std::tuple_element<I, ChildrenT>::type & getChild()
 	{
 		return std::get<I>(mChildren);
 	}
@@ -73,7 +73,7 @@ class PartitionBoxBaseT
 	///
 	/// \param I Index of the child
 	template<std::size_t I>
-	typename std::tuple_element<I, std::tuple<ArgsT ...>>::type const & getChild() const
+	typename std::tuple_element<I, ChildrenT>::type const & getChild() const
 	{
 		return std::get<I>(mChildren);
 	}
@@ -81,7 +81,7 @@ class PartitionBoxBaseT
 	// Widget
 	struct MoveXFunctorT
 	{
-		signed short X;
+		std::int16_t X;
 
 		template<typename T>
 		void operator()(T & Child)
@@ -90,14 +90,14 @@ class PartitionBoxBaseT
 		}
 	};
 
-	void moveX(signed short X)
+	void moveX(std::int16_t X)
 	{
 		Data::iterate(mChildren, MoveXFunctorT{X});
 	}
 
 	struct MoveYFunctorT
 	{
-		signed short Y;
+		std::int16_t Y;
 
 		template<typename T>
 		void operator()(T & Child)
@@ -106,14 +106,14 @@ class PartitionBoxBaseT
 		}
 	};
 
-	void moveY(signed short Y)
+	void moveY(std::int16_t Y)
 	{
 		Data::iterate(mChildren, MoveYFunctorT{Y});
 	}
 
 	struct SetClipLeftFunctorT
 	{
-		signed short X;
+		std::int16_t X;
 
 		template<typename T>
 		void operator()(T & Child)
@@ -122,14 +122,14 @@ class PartitionBoxBaseT
 		}
 	};
 
-	void setClipLeft(signed short X)
+	void setClipLeft(std::int16_t X)
 	{
 		Data::iterate(mChildren, SetClipLeftFunctorT{X});
 	}
 
 	struct SetClipBottomFunctorT
 	{
-		signed short Y;
+		std::int16_t Y;
 
 		template<typename T>
 		void operator()(T & Child)
@@ -138,14 +138,14 @@ class PartitionBoxBaseT
 		}
 	};
 
-	void setClipBottom(signed short Y)
+	void setClipBottom(std::int16_t Y)
 	{
 		Data::iterate(mChildren, SetClipBottomFunctorT{Y});
 	}
 
 	struct SetClipRightFunctorT
 	{
-		signed short X;
+		std::int16_t X;
 
 		template<typename T>
 		void operator()(T & Child)
@@ -154,14 +154,14 @@ class PartitionBoxBaseT
 		}
 	};
 
-	void setClipRight(signed short X)
+	void setClipRight(std::int16_t X)
 	{
 		Data::iterate(mChildren, SetClipRightFunctorT{X});
 	}
 
 	struct SetClipTopFunctorT
 	{
-		signed short Y;
+		std::int16_t Y;
 
 		template<typename T>
 		void operator()(T & Child)
@@ -170,7 +170,7 @@ class PartitionBoxBaseT
 		}
 	};
 
-	void setClipTop(signed short Y)
+	void setClipTop(std::int16_t Y)
 	{
 		Data::iterate(mChildren, SetClipTopFunctorT{Y});
 	}
@@ -184,49 +184,49 @@ class PartitionBoxBaseT
 		}
 	};
 
-	signed short getLeft() const
+	std::int16_t getLeft() const
 	{
 		return getChild<0>().getLeft();
 	}
 
-	signed short getBottom() const
+	std::int16_t getBottom() const
 	{
 		return getChild<0>().getBottom();
 	}
 
-	signed short getRight() const
+	std::int16_t getRight() const
 	{
 		return getChild<mSize - 1>().getRight();
 	}
 
-	signed short getTop() const
+	std::int16_t getTop() const
 	{
 		return getChild<mSize - 1>().getTop();
 	}
 
-	signed short getClipLeft() const
+	std::int16_t getClipLeft() const
 	{
 		return getChild<0>().getClipLeft();
 	}
 
-	signed short getClipBottom() const
+	std::int16_t getClipBottom() const
 	{
 		return getChild<0>().getClipBottom();
 	}
 
-	signed short getClipRight() const
+	std::int16_t getClipRight() const
 	{
 		return getChild<mSize - 1>().getClipRight();
 	}
 
-	signed short getClipTop() const
+	std::int16_t getClipTop() const
 	{
 		return getChild<mSize - 1>().getClipTop();
 	}
 
 	struct MaxWidthFunctorT
 	{
-		signed short & MaxWidth;
+		std::int16_t & MaxWidth;
 
 		template<typename T>
 		void operator()(T const & Child)
@@ -237,7 +237,7 @@ class PartitionBoxBaseT
 
 	struct MaxHeightFunctorT
 	{
-		signed short & MaxHeight;
+		std::int16_t & MaxHeight;
 
 		template<typename T>
 		void operator()(T const & Child)
@@ -258,46 +258,46 @@ class PartitionBoxBaseT
 	}
 };
 
-template<bool IsHorizontal, typename ... ArgsT>
+template<bool IsHorizontal, typename ChildrenT>
 class PartitionBoxT;
 
 /// \brief A horizontal partition box.
 ///
 /// All children Share the parent's height. The width is split evenly among the children.
 ///
-/// \param ArgsT A template argument pack of children widget types.
+/// \param ChildrenT A std::tuple or std::array of child widgets.
 
-template<typename ... ArgsT>
-class PartitionBoxT<true, ArgsT ...>
+template<typename ChildrenT>
+class PartitionBoxT<true, ChildrenT>
 :
-	public PartitionBoxBaseT<ArgsT ...>
+	public PartitionBoxBaseT<ChildrenT>
 {
 	private:
-	using PartitionBoxBaseT<ArgsT ...>::mParent;
-	using PartitionBoxBaseT<ArgsT ...>::mChildren;
-	using PartitionBoxBaseT<ArgsT ...>::mSize;
-	using PartitionBoxBaseT<ArgsT ...>::checkThisContains;
-	using typename PartitionBoxBaseT<ArgsT ...>::MaxWidthFunctorT;
-	using typename PartitionBoxBaseT<ArgsT ...>::MaxHeightFunctorT;
+	using PartitionBoxBaseT<ChildrenT>::mParent;
+	using PartitionBoxBaseT<ChildrenT>::mChildren;
+	using PartitionBoxBaseT<ChildrenT>::mSize;
+	using PartitionBoxBaseT<ChildrenT>::checkThisContains;
+	using typename PartitionBoxBaseT<ChildrenT>::MaxWidthFunctorT;
+	using typename PartitionBoxBaseT<ChildrenT>::MaxHeightFunctorT;
 
 	public:
-	using PartitionBoxBaseT<ArgsT ...>::getLeft;
-	using PartitionBoxBaseT<ArgsT ...>::getBottom;
-	using PartitionBoxBaseT<ArgsT ...>::getRight;
-	using PartitionBoxBaseT<ArgsT ...>::getTop;
+	using PartitionBoxBaseT<ChildrenT>::getLeft;
+	using PartitionBoxBaseT<ChildrenT>::getBottom;
+	using PartitionBoxBaseT<ChildrenT>::getRight;
+	using PartitionBoxBaseT<ChildrenT>::getTop;
 
 	// Widget
 	struct ResizeWidthFunctorT
 	{
-		signed short Left;
-		signed short BoxWidth;
-		signed short Mod;
-		signed short Direction;
+		std::int16_t Left;
+		std::int16_t BoxWidth;
+		std::int16_t Mod;
+		std::int16_t Direction;
 
 		template<typename T>
 		void operator()(T & Child)
 		{
-			signed short Width = BoxWidth;
+			std::int16_t Width = BoxWidth;
 			if (Mod > 0)
 			{
 				Width += Direction;
@@ -309,12 +309,12 @@ class PartitionBoxT<true, ArgsT ...>
 		}
 	};
 
-	void resizeWidth(signed short X)
+	void resizeWidth(std::int16_t X)
 	{
-		signed short Width = getRight() + X - getLeft();
-		signed short BoxWidth = Width / mSize;
-		signed short Mod;
-		signed short Direction;
+		std::int16_t Width = getRight() + X - getLeft();
+		std::int16_t BoxWidth = Width / mSize;
+		std::int16_t Mod;
+		std::int16_t Direction;
 		if (Width >= 0)
 		{
 			Mod = Width % mSize;
@@ -330,7 +330,7 @@ class PartitionBoxT<true, ArgsT ...>
 
 	struct ResizeHeightFunctorT
 	{
-		signed short Top;
+		std::int16_t Top;
 
 		template<typename T>
 		void operator()(T & Child)
@@ -339,29 +339,29 @@ class PartitionBoxT<true, ArgsT ...>
 		}
 	};
 
-	void resizeHeight(signed short Y)
+	void resizeHeight(std::int16_t Y)
 	{
 		Data::iterate(mChildren, ResizeHeightFunctorT{Y});
 	}
 
-	signed short getBaseWidth() const
+	std::int16_t getBaseWidth() const
 	{
-		signed short MaxWidth = 0;
+		std::int16_t MaxWidth = 0;
 		Data::iterate(mChildren, MaxWidthFunctorT{MaxWidth});
 		return MaxWidth * mSize;
 	}
 
-	signed short getBaseHeight() const
+	std::int16_t getBaseHeight() const
 	{
-		signed short MaxHeight = 0;
+		std::int16_t MaxHeight = 0;
 		Data::iterate(mChildren, MaxHeightFunctorT{MaxHeight});
 		return MaxHeight;
 	}
 
 	struct DelegateMouseFunctorT
 	{
-		signed short X;
-		signed short Y;
+		std::int16_t X;
+		std::int16_t Y;
 
 		template<typename T>
 		bool operator()(T & Child)
@@ -375,13 +375,13 @@ class PartitionBoxT<true, ArgsT ...>
 		}
 	};
 
-	void delegateMouse(signed short X, signed short Y)
+	void delegateMouse(std::int16_t X, std::int16_t Y)
 	{
 		Data::iterateUntil(mChildren, DelegateMouseFunctorT{X, Y});
 	}
 
 	// Container
-	void releaseMouse(signed short X, signed short Y) final
+	void releaseMouse(std::int16_t X, std::int16_t Y) final
 	{
 		if (checkThisContains(X, Y)) delegateMouse(X, Y);
 		else mParent->releaseMouse(X, Y);
@@ -393,31 +393,31 @@ class PartitionBoxT<true, ArgsT ...>
 ///
 /// All children Share the parent's width. The height is split evenly among the children.
 ///
-/// \param ArgsT A template argument pack of children widget types.
+/// \param ChildrenT A std::tuple or std::array of child widgets.
 
-template<typename ... ArgsT>
-class PartitionBoxT<false, ArgsT ...>
+template<typename ChildrenT>
+class PartitionBoxT<false, ChildrenT>
 :
-	public PartitionBoxBaseT<ArgsT ...>
+	public PartitionBoxBaseT<ChildrenT>
 {
 	private:
-	using PartitionBoxBaseT<ArgsT ...>::mParent;
-	using PartitionBoxBaseT<ArgsT ...>::mChildren;
-	using PartitionBoxBaseT<ArgsT ...>::mSize;
-	using PartitionBoxBaseT<ArgsT ...>::checkThisContains;
-	using typename PartitionBoxBaseT<ArgsT ...>::MaxWidthFunctorT;
-	using typename PartitionBoxBaseT<ArgsT ...>::MaxHeightFunctorT;
+	using PartitionBoxBaseT<ChildrenT>::mParent;
+	using PartitionBoxBaseT<ChildrenT>::mChildren;
+	using PartitionBoxBaseT<ChildrenT>::mSize;
+	using PartitionBoxBaseT<ChildrenT>::checkThisContains;
+	using typename PartitionBoxBaseT<ChildrenT>::MaxWidthFunctorT;
+	using typename PartitionBoxBaseT<ChildrenT>::MaxHeightFunctorT;
 
 	public:
-	using PartitionBoxBaseT<ArgsT ...>::getLeft;
-	using PartitionBoxBaseT<ArgsT ...>::getBottom;
-	using PartitionBoxBaseT<ArgsT ...>::getRight;
-	using PartitionBoxBaseT<ArgsT ...>::getTop;
+	using PartitionBoxBaseT<ChildrenT>::getLeft;
+	using PartitionBoxBaseT<ChildrenT>::getBottom;
+	using PartitionBoxBaseT<ChildrenT>::getRight;
+	using PartitionBoxBaseT<ChildrenT>::getTop;
 
 	// Widget
 	struct ResizeWidthFunctorT
 	{
-		signed short Right;
+		std::int16_t Right;
 
 		template<typename T>
 		void operator()(T & Child)
@@ -426,22 +426,22 @@ class PartitionBoxT<false, ArgsT ...>
 		}
 	};
 
-	void resizeWidth(signed short X)
+	void resizeWidth(std::int16_t X)
 	{
 		Data::iterate(mChildren, ResizeWidthFunctorT{X});
 	}
 
 	struct ResizeHeightFunctorT
 	{
-		signed short Bottom;
-		signed short BoxHeight;
-		signed short Mod;
-		signed short Direction;
+		std::int16_t Bottom;
+		std::int16_t BoxHeight;
+		std::int16_t Mod;
+		std::int16_t Direction;
 
 		template<typename T>
 		void operator()(T & Child)
 		{
-			signed short Height = BoxHeight;
+			std::int16_t Height = BoxHeight;
 			if (Mod > 0)
 			{
 				Height += Direction;
@@ -453,12 +453,12 @@ class PartitionBoxT<false, ArgsT ...>
 		}
 	};
 
-	void resizeHeight(signed short Y)
+	void resizeHeight(std::int16_t Y)
 	{
-		signed short Height = getTop() + Y - getBottom();
-		signed short BoxHeight = Height / mSize;
-		signed short Mod;
-		signed short Direction;
+		std::int16_t Height = getTop() + Y - getBottom();
+		std::int16_t BoxHeight = Height / mSize;
+		std::int16_t Mod;
+		std::int16_t Direction;
 		if (Height >= 0)
 		{
 			Mod = Height % mSize;
@@ -472,24 +472,24 @@ class PartitionBoxT<false, ArgsT ...>
 		Data::iterate(mChildren, ResizeHeightFunctorT{getBottom(), BoxHeight, Mod, Direction});
 	}
 
-	signed short getBaseWidth() const
+	std::int16_t getBaseWidth() const
 	{
-		signed short MaxWidth = 0;
+		std::int16_t MaxWidth = 0;
 		Data::iterate(mChildren, MaxWidthFunctorT{MaxWidth});
 		return MaxWidth;
 	}
 
-	signed short getBaseHeight() const
+	std::int16_t getBaseHeight() const
 	{
-		signed short MaxHeight = 0;
+		std::int16_t MaxHeight = 0;
 		Data::iterate(mChildren, MaxHeightFunctorT{MaxHeight});
 		return MaxHeight * mSize;
 	}
 
 	struct DelegateMouseFunctorT
 	{
-		signed short X;
-		signed short Y;
+		std::int16_t X;
+		std::int16_t Y;
 
 		template<typename T>
 		bool operator()(T & Child)
@@ -503,13 +503,13 @@ class PartitionBoxT<false, ArgsT ...>
 		}
 	};
 
-	void delegateMouse(signed short X, signed short Y)
+	void delegateMouse(std::int16_t X, std::int16_t Y)
 	{
 		Data::iterateUntil(mChildren, DelegateMouseFunctorT{X, Y});
 	}
 
 	// Container
-	void releaseMouse(signed short X, signed short Y) final
+	void releaseMouse(std::int16_t X, std::int16_t Y) final
 	{
 		if (checkThisContains(X, Y)) delegateMouse(X, Y);
 		else mParent->releaseMouse(X, Y);

@@ -14,9 +14,9 @@
 
 namespace {
 
-template<typename T>
 struct XDeleterT
 {
+	template<typename T>
 	void operator()(T * Object)
 	{
 		XFree(Object);
@@ -52,7 +52,7 @@ WindowT::WindowT(ApplicationT & Application)
 	int FramebufferCount;
 	auto XScreen = DefaultScreen(Display);
 
-	std::unique_ptr<GLXFBConfig[], XDeleterT<GLXFBConfig>> Configs{
+	std::unique_ptr<GLXFBConfig[], XDeleterT> Configs{
 		glXChooseFBConfig(
 			Display,
 			XScreen,
@@ -184,7 +184,7 @@ void WindowT::hide()
 	xcb_unmap_window(mApplication->mConnection, mId);
 }
 
-void WindowT::resize(unsigned short Width, unsigned short Height)
+void WindowT::resize(std::uint16_t Width, std::uint16_t Height)
 {
 	uint16_t Mask = XCB_CONFIG_WINDOW_WIDTH | XCB_CONFIG_WINDOW_HEIGHT;
 	uint32_t ValueList[] = {Width, Height, XCB_NONE};

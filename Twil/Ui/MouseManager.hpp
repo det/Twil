@@ -2,6 +2,8 @@
 
 #include "Platform/Key.hpp"
 
+#include <cstdint>
+
 namespace Twil {
 namespace Ui {
 
@@ -23,11 +25,11 @@ class MouseManagerT
 	/// \brief Set the mouse handler.
 	void setHandler(MouseHandlerT &);
 
-	void handleMouseEnterWindow(signed short, signed short);
-	void handleMouseLeaveWindow(signed short, signed short);
-	void handleMouseMotion(signed short, signed short);
-	void handleButtonPress(signed short, signed short, unsigned char);
-	void handleButtonRelease(signed short, signed short, unsigned char);
+	void handleMouseEnterWindow(std::int16_t, std::int16_t);
+	void handleMouseLeaveWindow(std::int16_t, std::int16_t);
+	void handleMouseMotion(std::int16_t, std::int16_t);
+	void handleButtonPress(std::int16_t, std::int16_t, unsigned char);
+	void handleButtonRelease(std::int16_t, std::int16_t, unsigned char);
 };
 
 }

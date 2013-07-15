@@ -20,18 +20,18 @@ class ButtonT
 
 	private:
 	ManagerT * mManager;
-	signed short mLeft = 0;
-	signed short mBottom = 0;
-	signed short mRight = 0;
-	signed short mTop = 0;
-	signed short mClipLeft = 0;
-	signed short mClipBottom = 0;
-	signed short mClipRight = 0;
-	signed short mClipTop = 0;
+	std::int16_t mLeft = 0;
+	std::int16_t mBottom = 0;
+	std::int16_t mRight = 0;
+	std::int16_t mTop = 0;
+	std::int16_t mClipLeft = 0;
+	std::int16_t mClipBottom = 0;
+	std::int16_t mClipRight = 0;
+	std::int16_t mClipTop = 0;
 	bool mIsDown = false;
 
-	static signed short const mBorderSize = 1;
-	static signed short const mCornerSize = mBorderSize + Settings::Button::Roundness;
+	static std::int16_t const mBorderSize = 1;
+	static std::int16_t const mCornerSize = mBorderSize + Settings::Button::Roundness;
 
 	public:
 	ButtonT() = default;
@@ -41,44 +41,44 @@ class ButtonT
 	void setIsDown(bool IsDown);
 
 	/// \returns The left margin for the theme.
-	signed short getLeftMargin() const;
+	std::int16_t getLeftMargin() const;
 
 	/// \returns The right margin for the theme.
-	signed short getRightMargin() const;
+	std::int16_t getRightMargin() const;
 
 	/// \returns The bottom margin for the theme.
-	signed short getBottomMargin() const;
+	std::int16_t getBottomMargin() const;
 
 	/// \returns The top margin for the theme.
-	signed short getTopMargin() const;
+	std::int16_t getTopMargin() const;
 
 	// Drawable
 	void draw(Vertex::OutlineGradientT *) const final;
 
 	// Widget
-	void moveX(signed short);
-	void moveY(signed short);
+	void moveX(std::int16_t);
+	void moveY(std::int16_t);
 
-	void resizeWidth(signed short);
-	void resizeHeight(signed short);
+	void resizeWidth(std::int16_t);
+	void resizeHeight(std::int16_t);
 
-	void setClipLeft(signed short);
-	void setClipBottom(signed short);
-	void setClipRight(signed short);
-	void setClipTop(signed short);
+	void setClipLeft(std::int16_t);
+	void setClipBottom(std::int16_t);
+	void setClipRight(std::int16_t);
+	void setClipTop(std::int16_t);
 
-	signed short getLeft() const;
-	signed short getBottom() const;
-	signed short getRight() const;
-	signed short getTop() const;
+	std::int16_t getLeft() const;
+	std::int16_t getBottom() const;
+	std::int16_t getRight() const;
+	std::int16_t getTop() const;
 
-	signed short getClipLeft() const;
-	signed short getClipRight() const;
-	signed short getClipBottom() const;
-	signed short getClipTop() const;
+	std::int16_t getClipLeft() const;
+	std::int16_t getClipRight() const;
+	std::int16_t getClipBottom() const;
+	std::int16_t getClipTop() const;
 
-	signed short getBaseWidth(signed short) const;
-	signed short getBaseHeight(signed short) const;
+	std::int16_t getBaseWidth(std::int16_t) const;
+	std::int16_t getBaseHeight(std::int16_t) const;
 };
 
 }

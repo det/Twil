@@ -31,7 +31,7 @@ class WindowT
 	T mChild;
 	bool mIsFullscreen = false;
 
-	bool checkChildContains(signed short X, signed short Y)
+	bool checkChildContains(std::int16_t X, std::int16_t Y)
 	{
 		return X >= 0 && X <= mChild.getRight() && Y >= 0 && Y <= mChild.getTop();
 	}
@@ -88,7 +88,7 @@ class WindowT
 	}
 
 	/// \brief Resize the window.
-	void resize(unsigned short Width, unsigned short Height)
+	void resize(std::uint16_t Width, std::uint16_t Height)
 	{
 		mPlatformWindow.resize(Width, Height);
 	}
@@ -107,13 +107,13 @@ class WindowT
 	}
 
 	/// \returns The width.
-	unsigned short getWidth() const
+	std::uint16_t getWidth() const
 	{
 		return mChild.getRight();
 	}
 
 	/// \returns The height.
-	unsigned short getHeight() const
+	std::uint16_t getHeight() const
 	{
 		return mChild.getTop();
 	}
@@ -140,7 +140,7 @@ class WindowT
 		Deleted();
 	}
 
-	void handleResize(unsigned short Width, unsigned short Height)
+	void handleResize(std::uint16_t Width, std::uint16_t Height)
 	{
 		if (Width != getWidth()) mChild.resizeWidth(Width - getWidth());
 		if (Height != getHeight()) mChild.resizeHeight(Height - getHeight());
@@ -152,7 +152,7 @@ class WindowT
 	}
 
 	// Container
-	void releaseMouse(signed short, signed short) final
+	void releaseMouse(std::int16_t, std::int16_t) final
 	{
 		getMouseManager().setHandler(*this);
 	}
@@ -164,7 +164,7 @@ class WindowT
 	{}
 
 	// MouseHandler
-	void handleMouseMotion(signed short X, signed short Y) final
+	void handleMouseMotion(std::int16_t X, std::int16_t Y) final
 	{
 		if (checkChildContains(X, Y)) mChild.delegateMouse(X, Y);
 	}

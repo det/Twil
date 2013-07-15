@@ -20,27 +20,27 @@ class SplitBoxBaseT
 	FirstT mFirst;
 	SecondT mSecond;
 
-	signed short getMouseLeft() const
+	std::int16_t getMouseLeft() const
 	{
-		return std::max<signed short>(getLeft(), getClipLeft());
+		return std::max<std::int16_t>(getLeft(), getClipLeft());
 	}
 
-	signed short getMouseRight() const
+	std::int16_t getMouseRight() const
 	{
-		return std::min<signed short>(getRight(), getClipRight());
+		return std::min<std::int16_t>(getRight(), getClipRight());
 	}
 
-	signed short getMouseBottom() const
+	std::int16_t getMouseBottom() const
 	{
-		return std::max<signed short>(getBottom(), getClipBottom());
+		return std::max<std::int16_t>(getBottom(), getClipBottom());
 	}
 
-	signed short getMouseTop() const
+	std::int16_t getMouseTop() const
 	{
-		return std::min<signed short>(getTop(), getClipTop());
+		return std::min<std::int16_t>(getTop(), getClipTop());
 	}
 
-	bool checkThisContains(signed short X, signed short Y) const
+	bool checkThisContains(std::int16_t X, std::int16_t Y) const
 	{
 		return (
 			X >= getMouseLeft() && X >= getClipLeft() &&
@@ -85,54 +85,54 @@ class SplitBoxBaseT
 	}
 
 	// Widget
-	void moveX(signed short X)
+	void moveX(std::int16_t X)
 	{
 		mFirst.moveX(X);
 		mSecond.moveX(X);
 	}
 
-	void moveY(signed short Y)
+	void moveY(std::int16_t Y)
 	{
 		mFirst.moveY(Y);
 		mSecond.moveY(Y);
 	}
 
-	signed short getLeft() const
+	std::int16_t getLeft() const
 	{
 		return mFirst.getLeft();
 	}
 
-	signed short getBottom() const
+	std::int16_t getBottom() const
 	{
 		return mFirst.getBottom();
 	}
 
-	signed short getRight() const
+	std::int16_t getRight() const
 	{
 		return mSecond.getRight();
 	}
 
-	signed short getTop() const
+	std::int16_t getTop() const
 	{
 		return mSecond.getTop();
 	}
 
-	signed short getClipLeft() const
+	std::int16_t getClipLeft() const
 	{
 		return mFirst.getClipLeft();
 	}
 
-	signed short getClipBottom() const
+	std::int16_t getClipBottom() const
 	{
 		return mFirst.getClipBottom();
 	}
 
-	signed short getClipRight() const
+	std::int16_t getClipRight() const
 	{
 		return mSecond.getClipRight();
 	}
 
-	signed short getClipTop() const
+	std::int16_t getClipTop() const
 	{
 		return mSecond.getClipTop();
 	}
@@ -152,42 +152,42 @@ class SplitBoxHorizontalT
 
 	public:
 	// Widget
-	void resizeHeight(signed short Y)
+	void resizeHeight(std::int16_t Y)
 	{
 		mFirst.resizeHeight(Y);
 		mSecond.resizeHeight(Y);
 	}
 
-	void setClipBottom(signed short Y)
+	void setClipBottom(std::int16_t Y)
 	{
 		mFirst.setClipBottom(Y);
 		mSecond.setClipBottom(Y);
 	}
 
-	void setClipTop(signed short Y)
+	void setClipTop(std::int16_t Y)
 	{
 		mFirst.setClipTop(Y);
 		mSecond.setClipTop(Y);
 	}
 
-	signed short getBaseWidth() const
+	std::int16_t getBaseWidth() const
 	{
 		return mFirst.getBaseWidth() + mSecond.getBaseWidth();
 	}
 
-	signed short getBaseHeight() const
+	std::int16_t getBaseHeight() const
 	{
 		return std::max(mFirst.getBaseHeight(), mSecond.getBaseHeight());
 	}
 
-	void delegateMouse(signed short X, signed short Y)
+	void delegateMouse(std::int16_t X, std::int16_t Y)
 	{
 		if (X < mSecond.getLeft()) mFirst.delegateMouse(X, Y);
 		else mSecond.delegateMouse(X, Y);
 	}
 
 	// Container
-	void releaseMouse(signed short X, signed short Y) final
+	void releaseMouse(std::int16_t X, std::int16_t Y) final
 	{
 		if (checkThisContains(X, Y)) delegateMouse(X, Y);
 		else mParent->releaseMouse(X, Y);
@@ -213,42 +213,42 @@ class SplitBoxVerticalT
 
 	public:
 	// Widget
-	void resizeWidth(signed short X)
+	void resizeWidth(std::int16_t X)
 	{
 		mFirst.resizeWidth(X);
 		mSecond.resizeWidth(X);
 	}
 
-	void setClipLeft(signed short X)
+	void setClipLeft(std::int16_t X)
 	{
 		mFirst.setClipLeft(X);
 		mSecond.setClipLeft(X);
 	}
 
-	void setClipRight(signed short X)
+	void setClipRight(std::int16_t X)
 	{
 		mFirst.setClipRight(X);
 		mSecond.setClipRight(X);
 	}
 
-	signed short getBaseWidth() const
+	std::int16_t getBaseWidth() const
 	{
 		return std::max(mFirst.getBaseWidth(), mSecond.getBaseWidth());
 	}
 
-	signed short getBaseHeight() const
+	std::int16_t getBaseHeight() const
 	{
 		return mFirst.getBaseHeight() + mSecond.getBaseHeight();
 	}
 
-	void delegateMouse(signed short X, signed short Y)
+	void delegateMouse(std::int16_t X, std::int16_t Y)
 	{
 		if (Y < mSecond.getBottom()) mFirst.delegateMouse(X, Y);
 		else mSecond.delegateMouse(X, Y);
 	}
 
 	// Container
-	void releaseMouse(signed short X, signed short Y) final
+	void releaseMouse(std::int16_t X, std::int16_t Y) final
 	{
 		if (checkThisContains(X, Y)) delegateMouse(X, Y);
 		else mParent->releaseMouse(X, Y);
@@ -281,7 +281,7 @@ class SplitBoxT<true, true, FirstT, SecondT>
 
 	void layout()
 	{
-		signed short Delta = mFirst.getLeft() + mFirst.getBaseWidth() - mFirst.getRight();
+		std::int16_t Delta = mFirst.getLeft() + mFirst.getBaseWidth() - mFirst.getRight();
 		mFirst.resizeWidth(Delta);
 		mSecond.moveX(Delta);
 		mSecond.resizeWidth(-Delta);
@@ -297,19 +297,19 @@ class SplitBoxT<true, true, FirstT, SecondT>
 	}
 
 	// Widget
-	void resizeWidth(signed short X)
+	void resizeWidth(std::int16_t X)
 	{
 		mSecond.resizeWidth(X);
 		mFirst.setClipRight(getMouseRight());
 	}
 
-	void setClipLeft(signed short X)
+	void setClipLeft(std::int16_t X)
 	{
 		mFirst.setClipLeft(X);
 		mSecond.setClipLeft(X);
 	}
 
-	void setClipRight(signed short X)
+	void setClipRight(std::int16_t X)
 	{
 		mFirst.setClipRight(getMouseRight());
 		mSecond.setClipRight(X);
@@ -342,7 +342,7 @@ class SplitBoxT<true, false, FirstT, SecondT>
 
 	void layout()
 	{
-		signed short Delta = mSecond.getLeft() + mSecond.getBaseWidth() - mSecond.getRight();
+		std::int16_t Delta = mSecond.getLeft() + mSecond.getBaseWidth() - mSecond.getRight();
 		mFirst.resizeWidth(-Delta);
 		mSecond.moveX(-Delta);
 		mSecond.resizeWidth(Delta);
@@ -358,20 +358,20 @@ class SplitBoxT<true, false, FirstT, SecondT>
 	}
 
 	// Widget
-	void resizeWidth(signed short X)
+	void resizeWidth(std::int16_t X)
 	{
 		mFirst.resizeWidth(X);
 		mSecond.moveX(X);
 		mSecond.setClipLeft(getMouseLeft());
 	}
 
-	void setClipLeft(signed short X)
+	void setClipLeft(std::int16_t X)
 	{
 		mFirst.setClipLeft(X);
 		mSecond.setClipLeft(getMouseLeft());
 	}
 
-	void setClipRight(signed short X)
+	void setClipRight(std::int16_t X)
 	{
 		mFirst.setClipRight(X);
 		mSecond.setClipRight(X);
@@ -404,7 +404,7 @@ class SplitBoxT<false, true, FirstT, SecondT>
 
 	void layout()
 	{
-		signed short Delta = mFirst.getBottom() + mFirst.getBaseHeight() - mFirst.getTop();
+		std::int16_t Delta = mFirst.getBottom() + mFirst.getBaseHeight() - mFirst.getTop();
 		mFirst.resizeHeight(Delta);
 		mSecond.moveY(Delta);
 		mSecond.resizeHeight(-Delta);
@@ -420,19 +420,19 @@ class SplitBoxT<false, true, FirstT, SecondT>
 	}
 
 	// Widget
-	void resizeHeight(signed short Y)
+	void resizeHeight(std::int16_t Y)
 	{
 		mSecond.resizeHeight(Y);
 		mFirst.setClipTop(getMouseTop());
 	}
 
-	void setClipBottom(signed short Y)
+	void setClipBottom(std::int16_t Y)
 	{
 		mFirst.setClipBottom(Y);
 		mSecond.setClipBottom(Y);
 	}
 
-	void setClipTop(signed short Y)
+	void setClipTop(std::int16_t Y)
 	{
 		mFirst.setClipTop(getMouseTop());
 		mSecond.setClipTop(Y);
@@ -465,7 +465,7 @@ class SplitBoxT<false, false, FirstT, SecondT>
 
 	void layout()
 	{
-		signed short Delta = mSecond.getBottom() + mSecond.getBaseHeight() - mSecond.getTop();
+		std::int16_t Delta = mSecond.getBottom() + mSecond.getBaseHeight() - mSecond.getTop();
 		mFirst.resizeHeight(-Delta);
 		mSecond.moveY(-Delta);
 		mSecond.resizeHeight(Delta);
@@ -481,20 +481,20 @@ class SplitBoxT<false, false, FirstT, SecondT>
 	}
 
 	// Widget
-	void resizeHeight(signed short Y)
+	void resizeHeight(std::int16_t Y)
 	{
 		mFirst.resizeHeight(Y);
 		mSecond.moveY(Y);
 		mSecond.setClipBottom(getMouseBottom());
 	}
 
-	void setClipBottom(signed short Y)
+	void setClipBottom(std::int16_t Y)
 	{
 		mFirst.setClipBottom(Y);
 		mSecond.setClipBottom(getMouseBottom());
 	}
 
-	void setClipTop(signed short Y)
+	void setClipTop(std::int16_t Y)
 	{
 		mFirst.setClipTop(Y);
 		mSecond.setClipTop(Y);

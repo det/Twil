@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 namespace Twil {
 namespace Ui {
 
@@ -9,44 +11,44 @@ namespace Ui {
 class CenteredT
 {
 	private:
-	signed short mLeft = 0;
-	signed short mRight = 0;
-	signed short mBottom = 0;
-	signed short mTop = 0;
-	signed short mClipLeft = 0;
-	signed short mClipRight = 0;
-	signed short mClipBottom = 0;
-	signed short mClipTop = 0;
+	std::int16_t mLeft = 0;
+	std::int16_t mRight = 0;
+	std::int16_t mBottom = 0;
+	std::int16_t mTop = 0;
+	std::int16_t mClipLeft = 0;
+	std::int16_t mClipRight = 0;
+	std::int16_t mClipBottom = 0;
+	std::int16_t mClipTop = 0;
 
 	public:
-	signed short getLayoutLeft(signed short Width) const;
-	signed short getLayoutBottom(signed short Height) const;
+	std::int16_t getLayoutLeft(std::int16_t Width) const;
+	std::int16_t getLayoutBottom(std::int16_t Height) const;
 
-	signed short getLayoutClipLeft() const;
-	signed short getLayoutClipRight() const;
-	signed short getLayoutClipBottom() const;
-	signed short getLayoutClipTop() const;
+	std::int16_t getLayoutClipLeft() const;
+	std::int16_t getLayoutClipRight() const;
+	std::int16_t getLayoutClipBottom() const;
+	std::int16_t getLayoutClipTop() const;
 
-	void moveX(signed short X);
-	void moveY(signed short Y);
+	void moveX(std::int16_t X);
+	void moveY(std::int16_t Y);
 
-	void resizeWidth(signed short X);
-	void resizeHeight(signed short Y);
+	void resizeWidth(std::int16_t X);
+	void resizeHeight(std::int16_t Y);
 
-	void setClipLeft(signed short X);
-	void setClipRight(signed short X);
-	void setClipBottom(signed short Y);
-	void setClipTop(signed short Y);
+	void setClipLeft(std::int16_t X);
+	void setClipRight(std::int16_t X);
+	void setClipBottom(std::int16_t Y);
+	void setClipTop(std::int16_t Y);
 
-	signed short getLeft() const;
-	signed short getRight() const;
-	signed short getBottom() const;
-	signed short getTop() const;
+	std::int16_t getLeft() const;
+	std::int16_t getRight() const;
+	std::int16_t getBottom() const;
+	std::int16_t getTop() const;
 
-	signed short getClipLeft() const;
-	signed short getClipRight() const;
-	signed short getClipBottom() const;
-	signed short getClipTop() const;
+	std::int16_t getClipLeft() const;
+	std::int16_t getClipRight() const;
+	std::int16_t getClipBottom() const;
+	std::int16_t getClipTop() const;
 };
 
 }

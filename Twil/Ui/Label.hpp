@@ -35,7 +35,7 @@ class LabelT
 	private:
 	void layoutX()
 	{
-		signed short Delta = mLayout.getLayoutLeft(getBaseWidth()) - mThemeLabel.getLeft();
+		std::int16_t Delta = mLayout.getLayoutLeft(getBaseWidth()) - mThemeLabel.getLeft();
 		mThemeLabel.moveX(Delta);
 		mThemeLabel.setClipLeft(mLayout.getLayoutClipLeft());
 		mThemeLabel.setClipRight(mLayout.getLayoutClipRight());
@@ -43,13 +43,13 @@ class LabelT
 
 	void layoutY()
 	{
-		signed short Delta = mLayout.getLayoutBottom(getBaseHeight()) - mThemeLabel.getBottom();
+		std::int16_t Delta = mLayout.getLayoutBottom(getBaseHeight()) - mThemeLabel.getBottom();
 		mThemeLabel.moveY(Delta);
 		mThemeLabel.setClipBottom(mLayout.getLayoutClipBottom());
 		mThemeLabel.setClipTop(mLayout.getLayoutClipTop());
 	}
 
-	bool checkThisContains(signed short X, signed short Y)
+	bool checkThisContains(std::int16_t X, std::int16_t Y)
 	{
 		return (
 			X >= getLeft() && X >= getClipLeft() &&
@@ -79,111 +79,111 @@ class LabelT
 	}
 
 	// Widget
-	void moveX(signed short X)
+	void moveX(std::int16_t X)
 	{
 		mLayout.moveX(X);
 		mThemeLabel.moveX(X);
 	}
 
-	void moveY(signed short Y)
+	void moveY(std::int16_t Y)
 	{
 		mLayout.moveY(Y);
 		mThemeLabel.moveY(Y);
 	}
 
-	void resizeWidth(signed short X)
+	void resizeWidth(std::int16_t X)
 	{
 		mLayout.resizeWidth(X);
 		layoutX();
 	}
 
-	void resizeHeight(signed short Y)
+	void resizeHeight(std::int16_t Y)
 	{
 		mLayout.resizeHeight(Y);
 		layoutY();
 	}
 
-	void setClipLeft(signed short X)
+	void setClipLeft(std::int16_t X)
 	{
 		mLayout.setClipLeft(X);
 		mThemeLabel.setClipLeft(mLayout.getLayoutClipLeft());
 	}
 
-	void setClipRight(signed short X)
+	void setClipRight(std::int16_t X)
 	{
 		mLayout.setClipRight(X);
 		mThemeLabel.setClipRight(mLayout.getLayoutClipRight());
 	}
 
-	void setClipBottom(signed short Y)
+	void setClipBottom(std::int16_t Y)
 	{
 		mLayout.setClipBottom(Y);
 		mThemeLabel.setClipBottom(mLayout.getLayoutClipBottom());
 	}
 
-	void setClipTop(signed short Y)
+	void setClipTop(std::int16_t Y)
 	{
 		mLayout.setClipTop(Y);
 		mThemeLabel.setClipTop(mLayout.getLayoutClipTop());
 	}
 
-	signed short getLeft() const
+	std::int16_t getLeft() const
 	{
 		return mLayout.getLeft();
 	}
 
-	signed short getBottom() const
+	std::int16_t getBottom() const
 	{
 		return mLayout.getBottom();
 	}
 
-	signed short getRight() const
+	std::int16_t getRight() const
 	{
 		return mLayout.getRight();
 	}
 
-	signed short getTop() const
+	std::int16_t getTop() const
 	{
 		return mLayout.getTop();
 	}
 
-	signed short getClipLeft() const
+	std::int16_t getClipLeft() const
 	{
 		return mLayout.getClipLeft();
 	}
 
-	signed short getClipBottom() const
+	std::int16_t getClipBottom() const
 	{
 		return mLayout.getClipBottom();
 	}
 
-	signed short getClipRight() const
+	std::int16_t getClipRight() const
 	{
 		return mLayout.getClipRight();
 	}
 
-	signed short getClipTop() const
+	std::int16_t getClipTop() const
 	{
 		return mLayout.getClipTop();
 	}
 
-	signed short getBaseWidth() const
+	std::int16_t getBaseWidth() const
 	{
 		return mThemeLabel.getBaseWidth();
 	}
 
-	signed short getBaseHeight() const
+	std::int16_t getBaseHeight() const
 	{
 		return mThemeLabel.getBaseHeight();
 	}
 
-	void delegateMouse(signed short, signed short)
+	void delegateMouse(std::int16_t, std::int16_t)
 	{
 		mWindow->getMouseManager().setHandler(*this);
 	}
 
 	// MouseHandler
-	void handleMouseMotion(signed short X, signed short Y) final
+	void handleMouseMotion(std::int16_t X, std::int16_t Y) final
 	{
 		if (!checkThisContains(X, Y)) mParent->releaseMouse(X, Y);
 	}

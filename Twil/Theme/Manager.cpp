@@ -39,17 +39,17 @@ ManagerT::~ManagerT()
 
 void ManagerT::generateButtonBitmaps()
 {
-	signed short Roundness = Settings::Button::Roundness;
+	std::int16_t Roundness = Settings::Button::Roundness;
 
-	signed short BorderSize = 1;
-	signed short CornerSize = BorderSize + Roundness;
-	signed short BitmapSize = BorderSize * 2 + 1 + CornerSize * 2;
+	std::int16_t BorderSize = 1;
+	std::int16_t CornerSize = BorderSize + Roundness;
+	std::int16_t BitmapSize = BorderSize * 2 + 1 + CornerSize * 2;
 
-	signed short Pos1 = 0;
-	signed short Pos2 = Pos1 + BorderSize;
-	signed short Pos3 = Pos2 + Roundness;
-	signed short Pos4 = Pos3 + 1;
-	signed short Pos5 = Pos4 + Roundness;
+	std::int16_t Pos1 = 0;
+	std::int16_t Pos2 = Pos1 + BorderSize;
+	std::int16_t Pos3 = Pos2 + Roundness;
+	std::int16_t Pos4 = Pos3 + 1;
+	std::int16_t Pos5 = Pos4 + Roundness;
 
 	FT_Pos Fix2 = Pos2 * 64;
 	FT_Pos Fix3 = Pos3 * 64;
@@ -81,22 +81,19 @@ void ManagerT::generateButtonBitmaps()
 	mOutline.moveLine(A);
 	mOutline.endContour();
 
-	// Inside
+	// In
 	mBitmap.resize(BitmapSize, BitmapSize);
 	mBitmap.render(mOutline);
 
-	mButtonCenterInside =
-		mRedTexture.append(mBitmap.getSubRange(Pos3, Pos3, BorderSize, BorderSize));
-	mButtonBottomInside =
-		mRedTexture.append(mBitmap.getSubRange(Pos3, Pos1, BorderSize, CornerSize));
-	mButtonTopInside = mRedTexture.append(mBitmap.getSubRange(Pos3, Pos4, BorderSize, CornerSize));
-	mButtonLeftInside = mRedTexture.append(mBitmap.getSubRange(Pos1, Pos3, CornerSize, BorderSize));
-	mButtonRightInside =
-		mRedTexture.append(mBitmap.getSubRange(Pos4, Pos3, CornerSize, BorderSize));
-	mButtonSwInside = mRedTexture.append(mBitmap.getSubRange(Pos1, Pos1, CornerSize, CornerSize));
-	mButtonSeInside = mRedTexture.append(mBitmap.getSubRange(Pos4, Pos1, CornerSize, CornerSize));
-	mButtonNeInside = mRedTexture.append(mBitmap.getSubRange(Pos4, Pos4, CornerSize, CornerSize));
-	mButtonNwInside = mRedTexture.append(mBitmap.getSubRange(Pos1, Pos4, CornerSize, CornerSize));
+	mButtonCenterIn = mRedTexture.append(mBitmap.getSubRange(Pos3, Pos3, BorderSize, BorderSize));
+	mButtonBottomIn = mRedTexture.append(mBitmap.getSubRange(Pos3, Pos1, BorderSize, CornerSize));
+	mButtonTopIn = mRedTexture.append(mBitmap.getSubRange(Pos3, Pos4, BorderSize, CornerSize));
+	mButtonLeftIn = mRedTexture.append(mBitmap.getSubRange(Pos1, Pos3, CornerSize, BorderSize));
+	mButtonRightIn = mRedTexture.append(mBitmap.getSubRange(Pos4, Pos3, CornerSize, BorderSize));
+	mButtonSwIn = mRedTexture.append(mBitmap.getSubRange(Pos1, Pos1, CornerSize, CornerSize));
+	mButtonSeIn = mRedTexture.append(mBitmap.getSubRange(Pos4, Pos1, CornerSize, CornerSize));
+	mButtonNeIn = mRedTexture.append(mBitmap.getSubRange(Pos4, Pos4, CornerSize, CornerSize));
+	mButtonNwIn = mRedTexture.append(mBitmap.getSubRange(Pos1, Pos4, CornerSize, CornerSize));
 
 	// Outline
 	mStroker.setOptions(BorderSize * 64, FT_STROKER_LINECAP_ROUND, FT_STROKER_LINEJOIN_ROUND, 0);
@@ -105,19 +102,15 @@ void ManagerT::generateButtonBitmaps()
 	mOutline.append(mStroker, FT_STROKER_BORDER_LEFT);
 	mBitmap.render(mOutline);
 
-	mButtonCenterOutside =
-		mRedTexture.append(mBitmap.getSubRange(Pos3, Pos3, BorderSize, BorderSize));
-	mButtonBottomOutside =
-		mRedTexture.append(mBitmap.getSubRange(Pos3, Pos1, BorderSize, CornerSize));
-	mButtonTopOutside = mRedTexture.append(mBitmap.getSubRange(Pos3, Pos4, BorderSize, CornerSize));
-	mButtonLeftOutside =
-		mRedTexture.append(mBitmap.getSubRange(Pos1, Pos3, CornerSize, BorderSize));
-	mButtonRightOutside =
-		mRedTexture.append(mBitmap.getSubRange(Pos4, Pos3, CornerSize, BorderSize));
-	mButtonSwOutside = mRedTexture.append(mBitmap.getSubRange(Pos1, Pos1, CornerSize, CornerSize));
-	mButtonSeOutside = mRedTexture.append(mBitmap.getSubRange(Pos4, Pos1, CornerSize, CornerSize));
-	mButtonNeOutside = mRedTexture.append(mBitmap.getSubRange(Pos4, Pos4, CornerSize, CornerSize));
-	mButtonNwOutside = mRedTexture.append(mBitmap.getSubRange(Pos1, Pos4, CornerSize, CornerSize));
+	mButtonCenterOut = mRedTexture.append(mBitmap.getSubRange(Pos3, Pos3, BorderSize, BorderSize));
+	mButtonBottomOut = mRedTexture.append(mBitmap.getSubRange(Pos3, Pos1, BorderSize, CornerSize));
+	mButtonTopOut = mRedTexture.append(mBitmap.getSubRange(Pos3, Pos4, BorderSize, CornerSize));
+	mButtonLeftOut = mRedTexture.append(mBitmap.getSubRange(Pos1, Pos3, CornerSize, BorderSize));
+	mButtonRightOut = mRedTexture.append(mBitmap.getSubRange(Pos4, Pos3, CornerSize, BorderSize));
+	mButtonSwOut = mRedTexture.append(mBitmap.getSubRange(Pos1, Pos1, CornerSize, CornerSize));
+	mButtonSeOut = mRedTexture.append(mBitmap.getSubRange(Pos4, Pos1, CornerSize, CornerSize));
+	mButtonNeOut = mRedTexture.append(mBitmap.getSubRange(Pos4, Pos4, CornerSize, CornerSize));
+	mButtonNwOut = mRedTexture.append(mBitmap.getSubRange(Pos1, Pos4, CornerSize, CornerSize));
 }
 
 BitmapEntryT const & ManagerT::loadBitmapEntry(char const * Path)
@@ -147,8 +140,8 @@ GlyphEntryT const & ManagerT::loadGlyphEntry(Ft::FaceT & Face, char32_t Codepoin
 	auto Advance = Face.getAdvance();
 	auto LsbDelta = Face.getLsbDelta();
 	auto RsbDelta = Face.getRsbDelta();
-	unsigned short Width = (Box.xMax - Box.xMin) / 64;
-	unsigned short Height = (Box.yMax - Box.yMin) / 64;
+	std::uint16_t Width = (Box.xMax - Box.xMin) / 64;
+	std::uint16_t Height = (Box.yMax - Box.yMin) / 64;
 	FT_Vector Bearings{Box.xMin, Box.yMin};
 
 	// Move the glyph to the origin and draw
@@ -168,7 +161,7 @@ void ManagerT::markNeedsRedraw()
 	mNeedsRedraw = true;
 }
 
-bool ManagerT::update(unsigned short Width, unsigned short Height)
+bool ManagerT::update(std::uint16_t Width, std::uint16_t Height)
 {
 	mNeedsRedraw |= mSolidArray.checkNeedsRedraw();
 	mNeedsRedraw |= mOutlineArray.checkNeedsRedraw();

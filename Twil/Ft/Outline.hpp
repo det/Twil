@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include FT_OUTLINE_H
@@ -28,18 +30,18 @@ class OutlineT
 	private:
 	FT_Outline mId;
 	FT_Vector mA;
-	short mPointCapacity;
-	short mContourCapacity;
+	std::uint16_t mPointCapacity;
+	std::uint16_t mContourCapacity;
 
 	public:
 	OutlineT();
 	~OutlineT();
 
 	/// \brief Reserve enough space to hold an amount of points
-	void reservePoints(short Size);
+	void reservePoints(std::uint16_t Size);
 
 	/// \brief Reserve enough space to hold an amount of contours
-	void reserveContours(short Size);
+	void reserveContours(std::uint16_t Size);
 
 	/// \brief Clear all points and contours
 	void clear();
