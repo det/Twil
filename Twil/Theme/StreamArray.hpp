@@ -60,10 +60,8 @@ class StreamArrayT
 	void allocate(DrawableT<T> & Drawable, std::size_t Size)
 	{
 		Drawable.mSize = Size;
-		Drawable.mIndex = mSize;
 		Drawable.mDrawCycles = mNumBuffers;
 		mDrawables.push_back(&Drawable);
-		mSize += Size;
 		mDrawCycles = true;
 	}
 
@@ -95,40 +93,36 @@ class StreamArrayT
 		auto First = mDrawables.begin();
 		auto Last = mDrawables.end();
 
-		auto PartitionFirst = std::find_if(First, Last, [](DrawableT<T> * Drawable)
+		First = std::find_if(First, Last, [](DrawableT<T> * Drawable)
 		{
 			return Drawable->mNeedsResize;
 		});
 
-		assert(PartitionFirst != Last);
-		std::size_t VertexIndex = (*PartitionFirst)->mIndex;
-
-		std::partition(PartitionFirst, Last, [](DrawableT<T> * Drawable)
+		std::partition(First, Last, [](DrawableT<T> * Drawable)
 		{
 			return !Drawable->mNeedsResize;
 		});
 
-		std::for_each(PartitionFirst, Last, [&](DrawableT<T> * Drawable)
+		std::for_each(First, Last, [&](DrawableT<T> * Drawable)
 		{
-			Drawable->mIndex = VertexIndex;
 			Drawable->mNeedsResize = false;
 			Drawable->mDrawCycles = mNumBuffers;
-			VertexIndex += Drawable->mSize;
 		});
-
-		mSize = VertexIndex;
 	}
 
 	/// \brief Grow the array if needed and draw all allocations, then upload.
 	void upload(std::size_t Index)
 	{
-		if (mDrawCycles == 0) return;
-		--mDrawCycles;
+		if (mDrawCycles == 0) return;		
+
+		glBindBuffer(GL_ARRAY_BUFFER, mBuffer);
+
+		// Calculate the size of the buffer.
+		mSize = 0;
+		for (auto Drawable : mDrawables) mSize += Drawable->mSize;
 
 		// Mapping a buffer of size 0 will signal an OpenGL error.
 		if (mSize == 0) return;
-
-		glBindBuffer(GL_ARRAY_BUFFER, mBuffer);
 
 		// If the buffer is too small, resize it
 		if (mSize > mCapacity)
@@ -158,14 +152,19 @@ class StreamArrayT
 		// Draw all needed allocations
 		for (auto Drawable : mDrawables)
 		{
-			if (Drawable->mDrawCycles == 0) continue;
-			Drawable->draw(VertexPointer + Drawable->mIndex);
-			--Drawable->mDrawCycles;
+			if (Drawable->mDrawCycles != 0)
+			{
+				Drawable->draw(VertexPointer);
+				--Drawable->mDrawCycles;
+			}
+			VertexPointer += Drawable->mSize;
 		}
 
 		glUnmapBuffer(GL_ARRAY_BUFFER);
 
-		glBindBuffer(GL_ARRAY_BUFFER, 0);	
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		--mDrawCycles;
 	}
 
 	bool checkNeedsRedraw()

@@ -15,7 +15,6 @@ class DrawableT
 
 	private:
 	std::size_t mSize = 0;
-	std::size_t mIndex = 0;
 	std::size_t mDrawCycles = 0;
 	bool mNeedsResize = false;
 
