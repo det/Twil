@@ -100,19 +100,23 @@ PngT::PngT(char const * Path)
 	int ColorType = png_get_color_type(Png, Info);
 
 	switch (ColorType) {
-	case PNG_COLOR_TYPE_PALETTE: {
+	case PNG_COLOR_TYPE_PALETTE:
+	{
 		png_set_palette_to_rgb(Png);
 		png_set_add_alpha(Png, 255, PNG_FILLER_AFTER);
 	} break;
-	case PNG_COLOR_TYPE_GRAY: {
+	case PNG_COLOR_TYPE_GRAY:
+	{
 		if (BitDepth < 8) png_set_gray_1_2_4_to_8(Png);
 		png_set_gray_to_rgb(Png);
 		png_set_add_alpha(Png, 255, PNG_FILLER_AFTER);
 	} break;
-	case PNG_COLOR_TYPE_GRAY_ALPHA: {
+	case PNG_COLOR_TYPE_GRAY_ALPHA:
+	{
 		png_set_gray_to_rgb(Png);
 	} break;
-	case PNG_COLOR_TYPE_RGB: {
+	case PNG_COLOR_TYPE_RGB:
+	{
 		png_set_add_alpha(Png, 255, PNG_FILLER_AFTER);
 	} break;
 	}
@@ -144,10 +148,7 @@ PngT::PngT(char const * Path)
 	// Setup a pointer array.  Each one points at the begening of a row
 	mBytes = Data::allocUnique<unsigned char>(Width * Height * 4);
 	auto Rows = Data::allocUnique<unsigned char *>(Height);
-	for (std::size_t I = 0; I < Height; ++I)
-	{
-		Rows[I] = mBytes.get() + (Height - I - 1) * Width * 4;
-	}
+	for (std::size_t I = 0; I < Height; ++I) Rows[I] = &mBytes[(Height - I - 1) * Width * 4];
 
 	// Read pixel data using row pointers
 	png_read_image(Png, Rows.get());

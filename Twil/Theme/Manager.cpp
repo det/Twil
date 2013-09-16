@@ -12,7 +12,11 @@ ManagerT::ManagerT()
 	mBitmap{mLibrary},
 	mStroker{mLibrary},
 	mLabelFace{mLibrary, Settings::Label::Font, 0},
-	mLabelSize{mLabelFace, Settings::Label::Size},
+	mLabelSize{
+		mLabelFace,
+		Settings::Label::Size,
+		Settings::Global::HorizontalDpi,
+		Settings::Global::VerticalDpi},
 	mRedTexture{GL_R8},
 	mRgbaTexture{GL_RGBA8},
 	mNeedsRedraw{false}
@@ -95,7 +99,7 @@ void ManagerT::generateButtonBitmaps()
 	mButtonNeIn = mRedTexture.append(mBitmap.getSubRange(Pos4, Pos4, CornerSize, CornerSize));
 	mButtonNwIn = mRedTexture.append(mBitmap.getSubRange(Pos1, Pos4, CornerSize, CornerSize));
 
-	// Outline
+	// Out
 	mStroker.setOptions(BorderSize * 64, FT_STROKER_LINECAP_ROUND, FT_STROKER_LINEJOIN_ROUND, 0);
 	mStroker.set(mOutline);
 	mOutline.clear();
@@ -193,15 +197,15 @@ bool ManagerT::update(std::uint16_t Width, std::uint16_t Height)
 
 	glUseProgram(mOutlineGradientProgram);
 	mOutlineGradientProgram.setScaling(ScalingX, ScalingY);
-	glBindVertexArray(mOutlineArray.getVertexArray(mFenceIndex));
-	glDrawArrays(GL_POINTS, 0, mOutlineArray.getSize());
+	glBindVertexArray(mOutlineArray.getVertexArray());
+	glDrawArrays(GL_POINTS, mOutlineArray.getVertexIndex(mFenceIndex), mOutlineArray.getSize());
 	glBindVertexArray(0);
 	glUseProgram(0);
 
 	glUseProgram(mFillSolidProgram);
 	mFillSolidProgram.setScaling(ScalingX, ScalingY);
-	glBindVertexArray(mSolidArray.getVertexArray(mFenceIndex));
-	glDrawArrays(GL_POINTS, 0, mSolidArray.getSize());
+	glBindVertexArray(mSolidArray.getVertexArray());
+	glDrawArrays(GL_POINTS, mSolidArray.getVertexIndex(mFenceIndex), mSolidArray.getSize());
 	glBindVertexArray(0);
 	glUseProgram(0);
 
@@ -211,8 +215,8 @@ bool ManagerT::update(std::uint16_t Width, std::uint16_t Height)
 
 	glUseProgram(mBitmapProgram);
 	mBitmapProgram.setScaling(ScalingX, ScalingY);
-	glBindVertexArray(mBitmapArray.getVertexArray(mFenceIndex));
-	glDrawArrays(GL_POINTS, 0, mBitmapArray.getSize());
+	glBindVertexArray(mBitmapArray.getVertexArray());
+	glDrawArrays(GL_POINTS, mBitmapArray.getVertexIndex(mFenceIndex), mBitmapArray.getSize());
 	glBindVertexArray(0);
 	glUseProgram(0);
 

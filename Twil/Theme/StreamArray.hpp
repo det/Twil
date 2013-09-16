@@ -6,6 +6,7 @@
 #include "Gl/Context.hpp"
 #include "Gl/VertexArray.hpp"
 
+#include <algorithm>
 #include <cassert>
 #include <iostream>
 #include <vector>
@@ -24,9 +25,9 @@ class StreamArrayT
 
 	private:
 	static std::size_t const mNumBuffers = Settings::Manager::NumBuffers;
-	Gl::BufferT mBuffers[mNumBuffers];
-	Gl::VertexArrayT mArray[mNumBuffers];
-	std::size_t mCapacity[mNumBuffers] = {};
+	Gl::BufferT mBuffer;
+	Gl::VertexArrayT mArray;
+	std::size_t mCapacity = 0;
 	std::size_t mSize = 0;
 	std::size_t mIndex = 0;
 	std::vector<DrawableT<T> *> mDrawables;
@@ -37,20 +38,22 @@ class StreamArrayT
 	public:
 	StreamArrayT()
 	{
-		// Setup all VertexArray's in our ring buffer.
-		for (std::size_t Index = 0; Index != mNumBuffers; ++Index)
-		{
-			glBindVertexArray(mArray[Index]);
-			glBindBuffer(GL_ARRAY_BUFFER, mBuffers[Index]);
-			T::setup();
-			glBindVertexArray(0);
-		}
+		glBindVertexArray(mArray);
+		glBindBuffer(GL_ARRAY_BUFFER, mBuffer);
+		T::setup();
+		glBindVertexArray(0);
 	}
 
 	/// \returns The VertexArray for the specified index.
-	Gl::VertexArrayT & getVertexArray(std::size_t Index)
+	Gl::VertexArrayT & getVertexArray()
 	{
-		return mArray[Index];
+		return mArray;
+	}
+
+	// \returns The VertexArray for the specified index.
+	GLuint getVertexIndex(std::size_t Index)
+	{
+		return mCapacity * Index;
 	}
 
 	/// \brief Allocate space for a Drawable.
@@ -85,42 +88,33 @@ class StreamArrayT
 		if (!mNeedsResize) return;
 		mNeedsResize = false;
 
-		// Perform an in place boolean sort. This moves all resized allocations to the end of the
-		// array. Anything after the first resized allocation must have its index updated and be
-		// redrawn. The sort is stable for the non-resized allocations but unstable for the resized.
-		// Over time the static allocations will end up at the start of the array and never need
-		// to be redrawn.
+		// Move all resized allocations to the end of the array. Anything after the first resized
+		// allocation must have its index updated and be redrawn. Over time the static allocations
+		// will end up at the start of the array and never need to be redrawn.
 
-		// Find the first allocation to be resized.
-		std::size_t TrueIndex = 0;
-		while (!mDrawables[TrueIndex]->mNeedsResize) ++TrueIndex;
-		std::size_t FalseIndex = TrueIndex + 1;
-		std::size_t VertexIndex = mDrawables[TrueIndex]->mIndex;
-		std::size_t Size = mDrawables.size();
+		auto First = mDrawables.begin();
+		auto Last = mDrawables.end();
 
-		// Move all resized allocations to the end and update the non-resized indices.
-		while (FalseIndex < Size)
+		auto PartitionFirst = std::find_if(First, Last, [](DrawableT<T> * Drawable)
 		{
-			if (!mDrawables[FalseIndex]->mNeedsResize)
-			{
-				mDrawables[FalseIndex]->mIndex = VertexIndex;
-				mDrawables[FalseIndex]->mDrawCycles = mNumBuffers;
-				VertexIndex += mDrawables[FalseIndex]->mSize;
-				std::swap(mDrawables[TrueIndex], mDrawables[FalseIndex]);
-				++TrueIndex;
-			}
-			++FalseIndex;
-		}
+			return Drawable->mNeedsResize;
+		});
 
-		// Update the resized indices.
-		while (TrueIndex < Size)
+		assert(PartitionFirst != Last);
+		std::size_t VertexIndex = (*PartitionFirst)->mIndex;
+
+		std::partition(PartitionFirst, Last, [](DrawableT<T> * Drawable)
 		{
-			mDrawables[TrueIndex]->mIndex = VertexIndex;
-			mDrawables[TrueIndex]->mNeedsResize = false;
-			mDrawables[TrueIndex]->mDrawCycles = mNumBuffers;
-			VertexIndex += mDrawables[TrueIndex]->mSize;
-			++TrueIndex;
-		}
+			return !Drawable->mNeedsResize;
+		});
+
+		std::for_each(PartitionFirst, Last, [&](DrawableT<T> * Drawable)
+		{
+			Drawable->mIndex = VertexIndex;
+			Drawable->mNeedsResize = false;
+			Drawable->mDrawCycles = mNumBuffers;
+			VertexIndex += Drawable->mSize;
+		});
 
 		mSize = VertexIndex;
 	}
@@ -134,18 +128,22 @@ class StreamArrayT
 		// Mapping a buffer of size 0 will signal an OpenGL error.
 		if (mSize == 0) return;
 
-		// Select the correct buffer for this frame
-		auto & Buffer = mBuffers[Index];
-		auto & Capacity = mCapacity[Index];
-
-		glBindBuffer(GL_ARRAY_BUFFER, Buffer);
+		glBindBuffer(GL_ARRAY_BUFFER, mBuffer);
 
 		// If the buffer is too small, resize it
-		if (mSize > Capacity)
+		if (mSize > mCapacity)
 		{
-			if (Capacity == 0) Capacity = 1;
-			while (mSize > Capacity) Capacity *= 2;
-			glBufferData(GL_ARRAY_BUFFER, Capacity * sizeof(T), nullptr, GL_DYNAMIC_DRAW);
+			if (mCapacity == 0) mCapacity = 1;
+			while (mSize > mCapacity) mCapacity *= 2;
+			glBufferData(
+				GL_ARRAY_BUFFER,
+				mCapacity * mNumBuffers * sizeof(T),
+				nullptr,
+				GL_DYNAMIC_DRAW);
+
+			// Everything needs to be redrawn on a resize
+			mDrawCycles = mNumBuffers;
+			for (auto Drawable : mDrawables) Drawable->mDrawCycles = mNumBuffers;
 		}
 
 		// Map the buffer and draw all allocations, then unmap. We use a ring buffer to avoid
@@ -153,7 +151,7 @@ class StreamArrayT
 		auto VertexPointer = static_cast<T *>(
 			glMapBufferRange(
 				GL_ARRAY_BUFFER,
-				0,
+				getVertexIndex(Index) * sizeof(T),
 				mSize * sizeof(T),
 				GL_MAP_WRITE_BIT | GL_MAP_UNSYNCHRONIZED_BIT));
 

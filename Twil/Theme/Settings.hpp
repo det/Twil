@@ -33,16 +33,23 @@ std::int16_t const BaseHeightMargin = 12;
 
 }
 
+namespace Global {
+
+unsigned const HorizontalDpi = 120;
+unsigned const VerticalDpi = 120;
+
+}
+
 namespace Label {
 
 char const * const Font{"Font/DejaVuSans-Bold.ttf"};
-unsigned const Size = 880;
+unsigned const Size = 11 * 64;
 
 }
 
 namespace Window {
 
-Attribute::Color4bT const BackgroundColor{230, 229, 228, 255};
+Attribute::Color4bT const BackgroundColor{223, 223, 223, 255};
 
 }
 

@@ -92,39 +92,46 @@ class ApplicationT
 			// Ensure the pointer gets free'd
 			std::unique_ptr<xcb_generic_event_t, Data::FreeDeleterT> EventPointer{GenericEvent};
 
-			switch(EventPointer->response_type & ~0x80) {
+			switch(EventPointer->response_type & ~0x80)
+			{
 
-			case XCB_ENTER_NOTIFY: {
+			case XCB_ENTER_NOTIFY:
+			{
 				auto Event = reinterpret_cast<xcb_enter_notify_event_t *>(GenericEvent);
 				std::int16_t Y = Window.getHeight() - Event->event_y;
 				MouseManager.handleMouseEnterWindow(Event->event_x, Y);
 			} break;
 
-			case XCB_LEAVE_NOTIFY: {
+			case XCB_LEAVE_NOTIFY:
+			{
 				auto Event = reinterpret_cast<xcb_leave_notify_event_t *>(GenericEvent);
 				std::int16_t Y = Window.getHeight() - Event->event_y;
 				MouseManager.handleMouseLeaveWindow(Event->event_x, Y);
 			} break;
 
-			case XCB_MOTION_NOTIFY: {
+			case XCB_MOTION_NOTIFY:
+			{
 				auto Event = reinterpret_cast<xcb_motion_notify_event_t *>(GenericEvent);
 				std::int16_t Y = Window.getHeight() - Event->event_y;
 				MouseManager.handleMouseMotion(Event->event_x, Y);
 			} break;
 
-			case XCB_BUTTON_PRESS: {
+			case XCB_BUTTON_PRESS:
+			{
 				auto Event = reinterpret_cast<xcb_button_press_event_t *>(GenericEvent);
 				std::int16_t Y = Window.getHeight() - Event->event_y;
 				MouseManager.handleButtonPress(Event->event_x, Y, Event->detail);
 			} break;
 
-			case XCB_BUTTON_RELEASE: {
+			case XCB_BUTTON_RELEASE:
+			{
 				auto Event = reinterpret_cast<xcb_button_press_event_t *>(GenericEvent);
 				std::int16_t Y = Window.getHeight() - Event->event_y;
 				MouseManager.handleButtonRelease(Event->event_x, Y, Event->detail);
 			} break;
 
-			case XCB_KEY_PRESS: {
+			case XCB_KEY_PRESS:
+			{
 //				auto Event = reinterpret_cast<xcb_key_press_event_t *>(GenericEvent);
 //				auto Keysym = xcb_key_press_lookup_keysym(KeySymbols, Event, 0);
 			} break;
@@ -134,16 +141,19 @@ class ApplicationT
 //				auto Keysym = xcb_key_release_lookup_keysym(KeySymbols, Event, 0);
 			} break;
 
-			case XCB_CONFIGURE_NOTIFY: {
+			case XCB_CONFIGURE_NOTIFY:
+			{
 				auto Event = reinterpret_cast<xcb_configure_notify_event_t *>(GenericEvent);
 				Window.handleResize(Event->width, Event->height);
 			} break;
 
-			case XCB_EXPOSE: {
+			case XCB_EXPOSE:
+			{
 				Window.handleExposed();				
 			} break;
 
-			case XCB_CLIENT_MESSAGE: {
+			case XCB_CLIENT_MESSAGE:
+			{
 				auto Event = reinterpret_cast<xcb_client_message_event_t *>(GenericEvent);
 				auto Atom = Event->data.data32[0];
 				if (Atom == mWmDeleteWindowAtom) Window.handleDeleted();

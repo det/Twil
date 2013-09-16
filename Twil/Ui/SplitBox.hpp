@@ -268,6 +268,7 @@ class SplitBoxT;
 /// Both children share the parent's height.
 /// The first child is kept at its base width and clipped if neccesary.
 /// The second child has its width set to any remaining space.
+
 template<typename FirstT, typename SecondT>
 class SplitBoxT<true, true, FirstT, SecondT>
 :

@@ -6,7 +6,7 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
 	set (standard "-stdlib=libc++ -std=c++11")
 	set (math "-msse2")
 	set (warning "-pedantic -Wall -Wextra -Wglobal-constructors -Wnon-virtual-dtor -Wshadow -Wnewline-eof -Wno-unused-parameter") # -Wsign-conversion
-	set (debug "-ggdb")
+	set (debug "-ggdb -fsanitize=address")
 	set (release "-DNDEBUG -O3 -flto")
 	set (symbol "-fno-rtti -fdata-sections -ffunction-sections -fvisibility=hidden -fvisibility-inlines-hidden")
 	set (linker_symbol "-Wl,--gc-sections")

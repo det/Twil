@@ -85,20 +85,20 @@ class HelloBaseT
 	HelloBaseT()
 	{
 		getTopLabel().setText(U"Top");
-		getImage<0, 0>().setImage("/usr/share/pixmaps/gnome-debian.png");
-		getImage<0, 1>().setImage("/usr/share/pixmaps/gnome-irc.png");
-		getImage<0, 2>().setImage("/usr/share/pixmaps/gnome-talk.png");
-		getImage<1, 0>().setImage("/usr/share/pixmaps/gnome-windows.png");
-		getImage<1, 1>().setImage("/usr/share/pixmaps/gnome-about-logo.png");
-		getImage<1, 2>().setImage("/usr/share/pixmaps/gnome-diskfree.png");
-		getImage<2, 0>().setImage("/usr/share/pixmaps/gnome-calendar.png");
-		getImage<2, 1>().setImage("/usr/share/pixmaps/gnome-squeak.png");
-		getImage<2, 2>().setImage("/usr/share/pixmaps/gnome-gemvt.png");
+		getImage<0, 0>().setImage("/usr/share/pixmaps/debian-logo.png");
+		getImage<0, 1>().setImage("/usr/share/pixmaps/firefox.png");
+		getImage<0, 2>().setImage("/usr/share/pixmaps/gdm-foot-logo.png");
+		getImage<1, 0>().setImage("/usr/share/pixmaps/gdm-setup.png");
+		getImage<1, 1>().setImage("/usr/share/pixmaps/gdm-xnest.png");
+		getImage<1, 2>().setImage("/usr/share/pixmaps/gdm.png");
+		getImage<2, 0>().setImage("/usr/share/pixmaps/hplj1020_icon.png");
+		getImage<2, 1>().setImage("/usr/share/pixmaps/language-selector.png");
+		getImage<2, 2>().setImage("/usr/share/pixmaps/nobody.png");
 		getBottomLabel().setText(U"Bottom");
 
 		getButton<1, 1>().Clicked += [&]()
 		{
-			getImage<1, 1>().setImage("/usr/share/pixmaps/gksu.png");
+			getImage<1, 1>().setImage("/usr/share/pixmaps/nohost.png");
 		};
 
 		getTopButton().Clicked += [&]()
