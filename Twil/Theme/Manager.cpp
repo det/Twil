@@ -197,16 +197,12 @@ bool ManagerT::update(std::uint16_t Width, std::uint16_t Height)
 
 	glUseProgram(mOutlineGradientProgram);
 	mOutlineGradientProgram.setScaling(ScalingX, ScalingY);
-	glBindVertexArray(mOutlineArray.getVertexArray());
-	glDrawArrays(GL_POINTS, mOutlineArray.getVertexIndex(mFenceIndex), mOutlineArray.getSize());
-	glBindVertexArray(0);
+	mOutlineArray.draw(mFenceIndex);
 	glUseProgram(0);
 
 	glUseProgram(mFillSolidProgram);
 	mFillSolidProgram.setScaling(ScalingX, ScalingY);
-	glBindVertexArray(mSolidArray.getVertexArray());
-	glDrawArrays(GL_POINTS, mSolidArray.getVertexIndex(mFenceIndex), mSolidArray.getSize());
-	glBindVertexArray(0);
+	mSolidArray.draw(mFenceIndex);
 	glUseProgram(0);
 
 	glBindTexture(GL_TEXTURE_BUFFER, 0);
@@ -215,9 +211,7 @@ bool ManagerT::update(std::uint16_t Width, std::uint16_t Height)
 
 	glUseProgram(mBitmapProgram);
 	mBitmapProgram.setScaling(ScalingX, ScalingY);
-	glBindVertexArray(mBitmapArray.getVertexArray());
-	glDrawArrays(GL_POINTS, mBitmapArray.getVertexIndex(mFenceIndex), mBitmapArray.getSize());
-	glBindVertexArray(0);
+	mBitmapArray.draw(mFenceIndex);
 	glUseProgram(0);
 
 	glBindTexture(GL_TEXTURE_BUFFER, 0);

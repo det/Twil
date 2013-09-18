@@ -61,6 +61,8 @@ class ManagerT
 	ManagerT & operator =(ManagerT const &) = delete;
 
 	private:
+	static std::size_t const mNumBuffers = Settings::Manager::NumBuffers;
+
 	Ft::LibraryT mLibrary;
 	Ft::BitmapT mBitmap;
 	Ft::OutlineT mOutline;
@@ -74,7 +76,6 @@ class ManagerT
 	StreamArrayT<Vertex::FillSolidT> mSolidArray;
 	StreamArrayT<Vertex::OutlineGradientT> mOutlineArray;
 
-	static std::size_t const mNumBuffers = Settings::Manager::NumBuffers;
 	GLsync mFences[mNumBuffers];
 	std::size_t mFenceIndex = 0;
 

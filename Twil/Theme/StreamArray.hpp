@@ -25,11 +25,11 @@ class StreamArrayT
 
 	private:
 	static std::size_t const mNumBuffers = Settings::Manager::NumBuffers;
+
 	Gl::BufferT mBuffer;
 	Gl::VertexArrayT mArray;
 	std::size_t mCapacity = 0;
-	std::size_t mSize = 0;
-	std::size_t mIndex = 0;
+	std::size_t mSizes[mNumBuffers] = {};
 	std::vector<DrawableT<T> *> mDrawables;
 
 	std::size_t mDrawCycles = 0;
@@ -42,18 +42,6 @@ class StreamArrayT
 		glBindBuffer(GL_ARRAY_BUFFER, mBuffer);
 		T::setup();
 		glBindVertexArray(0);
-	}
-
-	/// \returns The VertexArray for the specified index.
-	Gl::VertexArrayT & getVertexArray()
-	{
-		return mArray;
-	}
-
-	// \returns The VertexArray for the specified index.
-	GLuint getVertexIndex(std::size_t Index)
-	{
-		return mCapacity * Index;
 	}
 
 	/// \brief Allocate space for a Drawable.
@@ -93,17 +81,17 @@ class StreamArrayT
 		auto First = mDrawables.begin();
 		auto Last = mDrawables.end();
 
-		First = std::find_if(First, Last, [](DrawableT<T> * Drawable)
+		auto PartitionFirst = std::find_if(First, Last, [](DrawableT<T> * Drawable)
 		{
 			return Drawable->mNeedsResize;
 		});
 
-		std::partition(First, Last, [](DrawableT<T> * Drawable)
+		std::partition(PartitionFirst, Last, [](DrawableT<T> * Drawable)
 		{
 			return !Drawable->mNeedsResize;
 		});
 
-		std::for_each(First, Last, [&](DrawableT<T> * Drawable)
+		std::for_each(PartitionFirst, Last, [&](DrawableT<T> * Drawable)
 		{
 			Drawable->mNeedsResize = false;
 			Drawable->mDrawCycles = mNumBuffers;
@@ -118,17 +106,17 @@ class StreamArrayT
 		glBindBuffer(GL_ARRAY_BUFFER, mBuffer);
 
 		// Calculate the size of the buffer.
-		mSize = 0;
-		for (auto Drawable : mDrawables) mSize += Drawable->mSize;
+		mSizes[Index] = 0;
+		for (auto Drawable : mDrawables) mSizes[Index] += Drawable->mSize;
 
 		// Mapping a buffer of size 0 will signal an OpenGL error.
-		if (mSize == 0) return;
+		if (mSizes[Index] == 0) return;
 
 		// If the buffer is too small, resize it
-		if (mSize > mCapacity)
+		if (mSizes[Index] > mCapacity)
 		{
 			if (mCapacity == 0) mCapacity = 1;
-			while (mSize > mCapacity) mCapacity *= 2;
+			while (mSizes[Index] > mCapacity) mCapacity *= 2;
 			glBufferData(
 				GL_ARRAY_BUFFER,
 				mCapacity * mNumBuffers * sizeof(T),
@@ -146,7 +134,7 @@ class StreamArrayT
 			glMapBufferRange(
 				GL_ARRAY_BUFFER,
 				getVertexIndex(Index) * sizeof(T),
-				mSize * sizeof(T),
+				mSizes[Index] * sizeof(T),
 				GL_MAP_WRITE_BIT | GL_MAP_UNSYNCHRONIZED_BIT));
 
 		// Draw all needed allocations
@@ -180,9 +168,29 @@ class StreamArrayT
 	}
 
 	/// \returns The number of vertices in the queue.
-	std::size_t getSize() const
+	std::size_t getSize(std::size_t Index) const
 	{
-		return mSize;
+		return mSizes[Index];
+	}
+
+	/// \returns The VertexArray for the specified index.
+	Gl::VertexArrayT & getVertexArray(std::size_t Index)
+	{
+		return mArray;
+	}
+
+	/// \returns The Vertex Index for the specified index.
+	// \returns The VertexArray for the specified index.
+	GLuint getVertexIndex(std::size_t Index)
+	{
+		return mCapacity * Index;
+	}
+
+	void draw(std::size_t Index)
+	{
+		glBindVertexArray(getVertexArray(Index));
+		glDrawArrays(GL_POINTS,	getVertexIndex(Index), getSize(Index));
+		glBindVertexArray(0);
 	}
 };
 
