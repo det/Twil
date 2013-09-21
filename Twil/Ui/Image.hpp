@@ -25,7 +25,7 @@ class ImageT
 	ImageT(ImageT const &) = delete;
 	ImageT & operator =(ImageT const &) = delete;
 
-	private:
+private:
 	ContainerT * mParent;
 	WindowBaseT * mWindow;
 	LayoutT mLayout;
@@ -57,7 +57,7 @@ class ImageT
 			Y <= getTop() && Y <= getClipTop());
 	}
 
-	public:
+public:
 	// Image
 	ImageT() = default;
 

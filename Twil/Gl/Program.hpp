@@ -15,10 +15,10 @@ class ProgramT
 	ProgramT(ProgramT const &) = delete;
 	ProgramT & operator =(ProgramT const &) = delete;
 
-	private:
+private:
 	GLuint mId;
 
-	public:
+public:
 	ProgramT();
 	~ProgramT();
 

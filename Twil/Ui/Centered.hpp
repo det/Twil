@@ -10,7 +10,7 @@ namespace Ui {
 /// To be used as a template parameter to fixed size widgets.
 class CenteredT
 {
-	private:
+private:
 	std::int16_t mLeft = 0;
 	std::int16_t mRight = 0;
 	std::int16_t mBottom = 0;
@@ -20,7 +20,7 @@ class CenteredT
 	std::int16_t mClipBottom = 0;
 	std::int16_t mClipTop = 0;
 
-	public:
+public:
 	std::int16_t getLayoutLeft(std::int16_t Width) const;
 	std::int16_t getLayoutBottom(std::int16_t Height) const;
 

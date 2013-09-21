@@ -9,12 +9,12 @@ namespace Ui {
 
 class WindowBaseT
 {
-	private:
+private:
 	KeyboardManagerT mKeyboardManager;
 	MouseManagerT mMouseManager;
 	Theme::ManagerT mThemeManager;
 
-	public:
+public:
 	KeyboardManagerT & getKeyboardManager();
 	MouseManagerT & getMouseManager();
 	Theme::ManagerT & getThemeManager();

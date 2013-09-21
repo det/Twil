@@ -11,10 +11,10 @@ class BufferT
 	BufferT(BufferT const &) = delete;
 	BufferT & operator =(BufferT const &) = delete;
 
-	private:
+private:
 	GLuint mId;
 
-	public:
+public:
 	BufferT();
 	~BufferT();
 

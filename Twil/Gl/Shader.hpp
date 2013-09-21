@@ -15,10 +15,10 @@ class ShaderT
 	ShaderT(ShaderT const &) = delete;
 	ShaderT & operator =(ShaderT const &) = delete;
 
-	private:
+private:
 	GLuint mId;
 
-	public:
+public:
 	/// \param Type The Shader type, as defined by glCreateShader().
 	ShaderT(GLenum Type);
 	~ShaderT();

@@ -16,10 +16,10 @@ class MouseManagerT
 	MouseManagerT(MouseManagerT const &) = delete;
 	MouseManagerT & operator =(MouseManagerT const &) = delete;
 
-	private:
+private:
 	MouseHandlerT * mMouseHandler = nullptr;
 
-	public:
+public:
 	MouseManagerT() = default;
 
 	/// \brief Set the mouse handler.

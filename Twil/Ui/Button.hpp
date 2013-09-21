@@ -22,7 +22,7 @@ class ButtonT
 	ButtonT(ButtonT const &) = delete;
 	ButtonT & operator =(ButtonT const &) = delete;
 
-	private:
+private:
 	ContainerT * mParent;
 	WindowBaseT * mWindow;
 	Theme::ButtonT mThemeButton;
@@ -39,7 +39,7 @@ class ButtonT
 			Y <= getTop() && Y <= getClipTop());
 	}
 
-	public:
+public:
 	//Button
 	Data::EventT<> Clicked;
 

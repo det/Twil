@@ -13,10 +13,10 @@ class WidgetAdaptorT
 :
 	public T
 {
-	protected:
+protected:
 	using T::getWidget;
 
-	public:
+public:
 	// Widget
 	void init(ContainerT & Parent, WindowBaseT & Window)
 	{

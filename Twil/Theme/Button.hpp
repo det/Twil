@@ -18,7 +18,7 @@ class ButtonT
 	ButtonT(ButtonT const &) = delete;
 	ButtonT & operator =(ButtonT const &) = delete;
 
-	private:
+private:
 	ManagerT * mManager;
 	std::int16_t mLeft = 0;
 	std::int16_t mBottom = 0;
@@ -33,7 +33,7 @@ class ButtonT
 	static std::int16_t const mBorderSize = 1;
 	static std::int16_t const mCornerSize = mBorderSize + Settings::Button::Roundness;
 
-	public:
+public:
 	ButtonT() = default;
 	void init(ManagerT &);
 

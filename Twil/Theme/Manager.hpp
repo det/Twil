@@ -60,7 +60,7 @@ class ManagerT
 	ManagerT(ManagerT const &) = delete;
 	ManagerT & operator =(ManagerT const &) = delete;
 
-	private:
+private:
 	static std::size_t const mNumBuffers = Settings::Manager::NumBuffers;
 
 	Ft::LibraryT mLibrary;
@@ -112,7 +112,7 @@ class ManagerT
 	GlyphEntryT const & loadGlyphEntry(Ft::FaceT &, char32_t);
 	void generateButtonBitmaps();
 
-	public:	
+public:	
 	ManagerT();
 	~ManagerT();
 

@@ -7,7 +7,7 @@ namespace Ui {
 
 class KeyboardHandlerT
 {
-	public:
+public:
 	virtual ~KeyboardHandlerT() {}
 
 	/// \brief Called on the current handler when a key is pressed.

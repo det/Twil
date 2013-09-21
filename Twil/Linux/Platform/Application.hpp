@@ -16,10 +16,10 @@ namespace Platform {
 
 class KeySymbolsT
 {
-	private:
+private:
 	xcb_key_symbols_t * mPointer;
 
-	public:
+public:
 	KeySymbolsT(xcb_connection_t * Connection)
 	:
 		mPointer{xcb_key_symbols_alloc(Connection)}
@@ -44,7 +44,7 @@ class ApplicationT
 	ApplicationT(ApplicationT const &) = delete;
 	ApplicationT & operator =(ApplicationT const &) = delete;
 
-	private:
+private:
 	xcb_connection_t * mConnection;
 
 	// We Use void * here and cast later because including the X11 headers polutes our namespace
@@ -61,7 +61,7 @@ class ApplicationT
 
 	bool mRunning;
 
-	public:
+public:
 	/// \throws std::runtime_error on error.
 	ApplicationT();
 	~ApplicationT();

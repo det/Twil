@@ -10,10 +10,10 @@ class ApplicationAdaptorT
 :
 	public T
 {
-	protected:
+protected:
 	using T::getApplication;
 
-	public:
+public:
 	// Application
 	void run()
 	{

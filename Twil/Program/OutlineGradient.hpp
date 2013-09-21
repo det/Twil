@@ -8,11 +8,11 @@ namespace Program {
 
 class OutlineGradientT
 {
-	private:
+private:
 	Gl::ProgramT mProgram;
 	GLint mScalingLoc;
 
-	public:	
+public:	
 	OutlineGradientT();
 
 	operator GLuint() const;

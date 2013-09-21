@@ -9,12 +9,12 @@ namespace Loader {
 
 class PngT
 {
-	private:
+private:
 	std::unique_ptr<unsigned char[]> mBytes;
 	std::uint16_t mWidth;
 	std::uint16_t mHeight;
 
-	public:
+public:
 	PngT(char const *);
 
 	std::uint16_t getWidth() const;

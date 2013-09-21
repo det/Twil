@@ -15,7 +15,7 @@ class SplitBoxBaseT
 	SplitBoxBaseT(SplitBoxBaseT const &) = delete;
 	SplitBoxBaseT & operator =(SplitBoxBaseT const &) = delete;
 
-	protected:
+protected:
 	ContainerT * mParent;
 	FirstT mFirst;
 	SecondT mSecond;
@@ -49,7 +49,7 @@ class SplitBoxBaseT
 			Y <= getMouseTop() && Y <= getClipTop());
 	}
 
-	public:
+public:
 	// SplitBox
 	SplitBoxBaseT() = default;
 
@@ -144,13 +144,13 @@ class SplitBoxHorizontalT
 :
 	public SplitBoxBaseT<FirstT, SecondT>
 {
-	protected:
+protected:
 	using SplitBoxBaseT<FirstT, SecondT>::mParent;
 	using SplitBoxBaseT<FirstT, SecondT>::mFirst;
 	using SplitBoxBaseT<FirstT, SecondT>::mSecond;
 	using SplitBoxBaseT<FirstT, SecondT>::checkThisContains;
 
-	public:
+public:
 	// Widget
 	void resizeHeight(std::int16_t Y)
 	{
@@ -205,13 +205,13 @@ class SplitBoxVerticalT
 :
 	public SplitBoxBaseT<FirstT, SecondT>
 {
-	protected:
+protected:
 	using SplitBoxBaseT<FirstT, SecondT>::mParent;
 	using SplitBoxBaseT<FirstT, SecondT>::mFirst;
 	using SplitBoxBaseT<FirstT, SecondT>::mSecond;
 	using SplitBoxBaseT<FirstT, SecondT>::checkThisContains;
 
-	public:
+public:
 	// Widget
 	void resizeWidth(std::int16_t X)
 	{
@@ -274,7 +274,7 @@ class SplitBoxT<true, true, FirstT, SecondT>
 :
 	public SplitBoxHorizontalT<FirstT, SecondT>
 {
-	protected:
+protected:
 	using SplitBoxHorizontalT<FirstT, SecondT>::mParent;
 	using SplitBoxHorizontalT<FirstT, SecondT>::mFirst;
 	using SplitBoxHorizontalT<FirstT, SecondT>::mSecond;
@@ -289,7 +289,7 @@ class SplitBoxT<true, true, FirstT, SecondT>
 		mFirst.setClipRight(getMouseRight());
 	}
 
-	public:
+public:
 	// SplitBox
 	void init(ContainerT & Parent, WindowBaseT & Window)
 	{
@@ -335,7 +335,7 @@ class SplitBoxT<true, false, FirstT, SecondT>
 :
 	public SplitBoxHorizontalT<FirstT, SecondT>
 {
-	protected:
+protected:
 	using SplitBoxHorizontalT<FirstT, SecondT>::mParent;
 	using SplitBoxHorizontalT<FirstT, SecondT>::mFirst;
 	using SplitBoxHorizontalT<FirstT, SecondT>::mSecond;
@@ -350,7 +350,7 @@ class SplitBoxT<true, false, FirstT, SecondT>
 		mSecond.setClipLeft(getMouseLeft());
 	}
 
-	public:
+public:
 	// SplitBox
 	void init(ContainerT & Parent, WindowBaseT & Window)
 	{
@@ -397,7 +397,7 @@ class SplitBoxT<false, true, FirstT, SecondT>
 :
 	public SplitBoxVerticalT<FirstT, SecondT>
 {
-	protected:
+protected:
 	using SplitBoxVerticalT<FirstT, SecondT>::mParent;
 	using SplitBoxVerticalT<FirstT, SecondT>::mFirst;
 	using SplitBoxVerticalT<FirstT, SecondT>::mSecond;
@@ -412,7 +412,7 @@ class SplitBoxT<false, true, FirstT, SecondT>
 		mFirst.setClipTop(getMouseTop());
 	}
 
-	public:
+public:
 	// SplitBox
 	void init(ContainerT & Parent, WindowBaseT & Window)
 	{
@@ -458,7 +458,7 @@ class SplitBoxT<false, false, FirstT, SecondT>
 :
 	public SplitBoxVerticalT<FirstT, SecondT>
 {
-	protected:
+protected:
 	using SplitBoxVerticalT<FirstT, SecondT>::mParent;
 	using SplitBoxVerticalT<FirstT, SecondT>::mFirst;
 	using SplitBoxVerticalT<FirstT, SecondT>::mSecond;
@@ -473,7 +473,7 @@ class SplitBoxT<false, false, FirstT, SecondT>
 		mSecond.setClipBottom(getMouseBottom());
 	}
 
-	public:
+public:
 	// SplitBox
 	void init(ContainerT & Parent, WindowBaseT & Window)
 	{

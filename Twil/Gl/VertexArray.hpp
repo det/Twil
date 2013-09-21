@@ -11,10 +11,10 @@ class VertexArrayT
 	VertexArrayT(VertexArrayT const &) = delete;
 	VertexArrayT & operator =(VertexArrayT const &) = delete;
 
-	private:
+private:
 	GLuint mId;
 
-	public:
+public:
 	VertexArrayT();
 	~VertexArrayT();
 

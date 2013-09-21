@@ -21,7 +21,7 @@ class MarginT
 	MarginT(MarginT const &) = delete;
 	MarginT & operator =(MarginT const &) = delete;
 
-	private:
+private:
 	ContainerT * mParent;
 	WindowBaseT * mWindow;
 	T mChild;
@@ -42,7 +42,7 @@ class MarginT
 			Y >= mChild.getBottom() && Y <= mChild.getTop());
 	}
 
-	public:
+public:
 	// Margin
 	MarginT() = default;
 

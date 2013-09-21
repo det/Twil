@@ -22,10 +22,10 @@ class LibraryT
 	LibraryT(LibraryT const &) = delete;
 	LibraryT & operator =(LibraryT const &) = delete;
 
-	private:
+private:
 	FT_Library mId;
 
-	public:
+public:
 	/// \throws std::runtime_error If the freetype library cant be initialized.
 	LibraryT();
 	~LibraryT();

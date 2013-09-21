@@ -28,7 +28,7 @@ class LabelT
 	LabelT(LabelT const &) = delete;
 	LabelT & operator =(LabelT const &) = delete;
 
-	private:	
+private:	
 	ManagerT * mManager;
 	std::vector<LabelGlyph> mGlyphs;
 	std::int16_t mLeft = 0;
@@ -40,7 +40,7 @@ class LabelT
 	std::int16_t mClipRight = 0;
 	std::int16_t mClipTop = 0;
 
-	public:
+public:
 	LabelT() = default;
 	void init(ManagerT &);
 

@@ -25,14 +25,14 @@ class LabelT
 	LabelT(LabelT const &) = delete;
 	LabelT & operator =(LabelT const &) = delete;
 
-	private:
+private:
 	ContainerT * mParent;
 	WindowBaseT * mWindow;
 	LayoutT mLayout;
 	Theme::LabelT mThemeLabel;
 	std::u32string mText;
 
-	private:
+private:
 	void layoutX()
 	{
 		std::int16_t Delta = mLayout.getLayoutLeft(getBaseWidth()) - mThemeLabel.getLeft();
@@ -58,7 +58,7 @@ class LabelT
 			Y <= getTop() && Y <= getClipTop());
 	}
 
-	public:
+public:
 	// Label
 	LabelT() = default;
 

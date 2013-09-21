@@ -13,10 +13,10 @@ class EventT
 	EventT(EventT const &) = delete;
 	EventT & operator =(EventT const &) = delete;
 
-	private:
+private:
 	std::vector<std::function<void(ArgsT ...)>> mCallbacks;
 
-	public:
+public:
 	EventT() = default;
 
 	/// \brief Append a callback to the event.

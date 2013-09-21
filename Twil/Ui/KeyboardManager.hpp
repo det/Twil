@@ -12,10 +12,10 @@ class KeyboardManagerT
 	KeyboardManagerT(KeyboardManagerT const &) = delete;
 	KeyboardManagerT & operator =(KeyboardManagerT const &) = delete;
 
-	private:
+private:
 	KeyboardHandlerT * mHandler = nullptr;
 
-	public:
+public:
 	KeyboardManagerT() = default;
 
 	/// \brief Set the keyboard handler.

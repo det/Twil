@@ -14,7 +14,7 @@ class TextureArrayT
 	TextureArrayT(TextureArrayT const &) = delete;
 	TextureArrayT & operator =(TextureArrayT const &) = delete;
 
-	private:
+private:
 	Gl::BufferT mBuffer;
 	Gl::TextureT mTexture;
 
@@ -23,7 +23,7 @@ class TextureArrayT
 	std::size_t mCapacity = 0;
 	GLenum mFormat;
 
-	public:
+public:
 	TextureArrayT(GLenum);
 
 	/// \returns The Texture.

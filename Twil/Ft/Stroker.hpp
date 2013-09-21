@@ -22,10 +22,10 @@ class StrokerT
 	StrokerT(StrokerT const &) = delete;
 	StrokerT & operator =(StrokerT const &) = delete;
 
-	private:
+private:
 	FT_Stroker mId;
 
-	public:
+public:
 	StrokerT(LibraryT &);
 	~StrokerT();
 

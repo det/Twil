@@ -23,7 +23,7 @@ class StreamArrayT
 	StreamArrayT(StreamArrayT const &) = delete;
 	StreamArrayT & operator =(StreamArrayT const &) = delete;
 
-	private:
+private:
 	static std::size_t const mNumBuffers = Settings::Manager::NumBuffers;
 
 	Gl::BufferT mBuffer;
@@ -35,7 +35,7 @@ class StreamArrayT
 	std::size_t mDrawCycles = 0;
 	bool mNeedsResize = false;
 
-	public:
+public:
 	StreamArrayT()
 	{
 		glBindVertexArray(mArray);

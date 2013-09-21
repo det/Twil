@@ -13,11 +13,11 @@ namespace {
 
 class PngStructsT
 {
-	private:
+private:
 	png_structp mPng;
 	png_infop mInfo;
 
-	public:
+public:
 	PngStructsT()
 	{
 		mPng = png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);

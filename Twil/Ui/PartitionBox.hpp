@@ -23,7 +23,7 @@ class PartitionBoxBaseT
 	PartitionBoxBaseT(PartitionBoxBaseT const &) = delete;
 	PartitionBoxBaseT & operator =(PartitionBoxBaseT const &) = delete;
 
-	protected:
+protected:
 	ContainerT * mParent;
 	ChildrenT mChildren;
 
@@ -38,7 +38,7 @@ class PartitionBoxBaseT
 			Y <= getTop() && Y <= getClipTop());
 	}
 
-	public:
+public:
 	// PartitionBoxBase
 	PartitionBoxBaseT() = default;
 
@@ -272,7 +272,7 @@ class PartitionBoxT<true, ChildrenT>
 :
 	public PartitionBoxBaseT<ChildrenT>
 {
-	private:
+private:
 	using PartitionBoxBaseT<ChildrenT>::mParent;
 	using PartitionBoxBaseT<ChildrenT>::mChildren;
 	using PartitionBoxBaseT<ChildrenT>::mSize;
@@ -280,7 +280,7 @@ class PartitionBoxT<true, ChildrenT>
 	using typename PartitionBoxBaseT<ChildrenT>::MaxWidthFunctorT;
 	using typename PartitionBoxBaseT<ChildrenT>::MaxHeightFunctorT;
 
-	public:
+public:
 	using PartitionBoxBaseT<ChildrenT>::getLeft;
 	using PartitionBoxBaseT<ChildrenT>::getBottom;
 	using PartitionBoxBaseT<ChildrenT>::getRight;
@@ -400,7 +400,7 @@ class PartitionBoxT<false, ChildrenT>
 :
 	public PartitionBoxBaseT<ChildrenT>
 {
-	private:
+private:
 	using PartitionBoxBaseT<ChildrenT>::mParent;
 	using PartitionBoxBaseT<ChildrenT>::mChildren;
 	using PartitionBoxBaseT<ChildrenT>::mSize;
@@ -408,7 +408,7 @@ class PartitionBoxT<false, ChildrenT>
 	using typename PartitionBoxBaseT<ChildrenT>::MaxWidthFunctorT;
 	using typename PartitionBoxBaseT<ChildrenT>::MaxHeightFunctorT;
 
-	public:
+public:
 	using PartitionBoxBaseT<ChildrenT>::getLeft;
 	using PartitionBoxBaseT<ChildrenT>::getBottom;
 	using PartitionBoxBaseT<ChildrenT>::getRight;

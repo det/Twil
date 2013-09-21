@@ -27,13 +27,13 @@ class OutlineT
 	OutlineT(OutlineT const &) = delete;
 	OutlineT & operator =(OutlineT const &) = delete;
 
-	private:
+private:
 	FT_Outline mId;
 	FT_Vector mA;
 	std::uint16_t mPointCapacity;
 	std::uint16_t mContourCapacity;
 
-	public:
+public:
 	OutlineT();
 	~OutlineT();
 

@@ -8,11 +8,11 @@ namespace Program {
 
 class BitmapT
 {
-	private:
+private:
 	Gl::ProgramT mProgram;
 	GLint mScalingLoc;
 
-	public:
+public:
 	BitmapT();
 
 	operator GLuint() const;

@@ -21,7 +21,7 @@ class SubBitmapIteratorT
 {
 	friend class BitmapT;
 
-	private:
+private:
 	unsigned char const * mPointer;
 	std::size_t mPitch;
 	std::size_t mWidth;
@@ -33,7 +33,7 @@ class SubBitmapIteratorT
 		std::size_t Width,
 		std::size_t RowCount);
 
-	public:
+public:
 	SubBitmapIteratorT & operator++();
 	bool operator==(SubBitmapIteratorT const &);
 	bool operator!=(SubBitmapIteratorT const &);
@@ -46,12 +46,12 @@ class BitmapT
 	BitmapT(BitmapT const &) = delete;
 	BitmapT & operator =(BitmapT const &) = delete;
 
-	private:
+private:
 	LibraryT * mLibrary;
 	FT_Bitmap mId;
 	std::size_t mCapacity;
 
-	public:
+public:
 	using RangeT = std::pair<SubBitmapIteratorT, SubBitmapIteratorT>;
 
 	/// \brief Construct a 0 size bitmap.

@@ -21,7 +21,7 @@ static std::uint64_t const FibonacciTable[64] = {
 template<typename T, std::size_t BlockSize = 512>
 class RopeT
 {
-	private:
+private:
 	struct NodeT
 	{
 		std::uint16_t Count;
@@ -315,7 +315,7 @@ class RopeT
 		if (mRoot->Height > 64) balance();
 	}
 
-	public:
+public:
 	RopeT()
 	:
 		mRoot{makeEmpty()},

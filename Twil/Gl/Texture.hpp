@@ -11,10 +11,10 @@ class TextureT
 	TextureT(TextureT const &) = delete;
 	TextureT & operator =(TextureT const &) = delete;
 
-	private:
+private:
 	GLuint mId;
 
-	public:
+public:
 	TextureT();
 	~TextureT();
 

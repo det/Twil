@@ -17,10 +17,10 @@ class SizeT
 	SizeT(SizeT const &) = delete;
 	SizeT & operator =(SizeT const &) = delete;
 
-	private:
+private:
 	FT_Size mId;
 
-	public:
+public:
 	/// \brief Load a size for a font face
 	/// \param Face The font face to load the size from.
 	/// \param Size The size to load in 26.6 fixpoint.

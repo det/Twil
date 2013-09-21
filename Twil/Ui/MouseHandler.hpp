@@ -7,7 +7,7 @@ namespace Ui {
 
 class MouseHandlerT
 {
-	public:
+public:
 	virtual ~MouseHandlerT() {}
 	/// \brief Called on the current handler when the pointer is moved.
 	virtual void handleMouseMotion(std::int16_t X, std::int16_t Y) {}

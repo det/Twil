@@ -8,11 +8,11 @@ namespace Program {
 
 class FillSolidT
 {
-	private:
+private:
 	Gl::ProgramT mProgram;
 	GLint mScalingLoc;
 
-	public:
+public:
 	FillSolidT();
 
 	operator GLuint() const;

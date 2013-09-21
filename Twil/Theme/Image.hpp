@@ -20,7 +20,7 @@ class ImageT
 	ImageT(ImageT const &) = delete;
 	ImageT & operator =(ImageT const &) = delete;
 
-	private:	
+private:	
 	ManagerT * mManager;
 	unsigned int mOffset = 0;
 	std::int16_t mLeft = 0;
@@ -32,7 +32,7 @@ class ImageT
 	std::int16_t mClipRight = 0;
 	std::int16_t mClipTop = 0;
 
-	public:
+public:
 	ImageT() = default;
 	void init(ManagerT &);
 

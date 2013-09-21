@@ -13,7 +13,7 @@ template<
 	std::size_t MaximumSize = std::numeric_limits<std::size_t>::max()>
 class BasicRopeT
 {
-	private:
+private:
 	struct NodeT
 	{
 		std::size_t Size;
@@ -325,7 +325,7 @@ class BasicRopeT
 		mHeight++;
 	}
 
-	public:
+public:
 	BasicRopeT()
 	:
 		mRoot{0, new LeafT},

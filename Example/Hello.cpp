@@ -14,7 +14,7 @@
 
 class HelloBaseT
 {
-	private:
+private:
 	using CenteredT = Twil::Ui::CenteredT;
 	using ImageT = Twil::Ui::ImageT<CenteredT>;
 	using LabelT = Twil::Ui::LabelT<CenteredT>;
@@ -29,7 +29,7 @@ class HelloBaseT
 	using ApplicationT = Twil::Ui::ApplicationT<WindowT>;
 	ApplicationT mApplication;
 
-	protected:
+protected:
 	ApplicationT & getApplication()
 	{
 		return mApplication;

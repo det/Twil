@@ -9,11 +9,11 @@ namespace Platform {
 /// \brief Loads OpenGL function pointers.
 class SymbolLoaderT
 {
-	private:
+private:
 	using FunctionPointerT = void (*) ();
 	static FunctionPointerT loadArb(char const *);
 
-	public:
+public:
 	// These are the same on Linux
 
 	/// \brief Load an OpenGL 1.1 function pointer.

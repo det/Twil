@@ -15,7 +15,7 @@ class WindowT
 	WindowT(WindowT const &) = delete;
 	WindowT & operator =(WindowT const &) = delete;
 
-	private:
+private:
 	ApplicationT * mApplication;
 	xcb_window_t mId;
 
@@ -23,7 +23,7 @@ class WindowT
 	// with all kinds of generically named macros such as "None"
 	void * mContext;
 
-	public:
+public:
 	/// \throws std::runtime_error on error.
 	WindowT(ApplicationT &);
 	~WindowT();

@@ -15,11 +15,11 @@ class ApplicationT
 	ApplicationT(ApplicationT const &) = delete;
 	ApplicationT & operator =(ApplicationT const &) = delete;
 
-	private:
+private:
 	Platform::ApplicationT mApplication;
 	T mChild;
 
-	public:
+public:
 	ApplicationT()
 	:
 		mChild{mApplication}

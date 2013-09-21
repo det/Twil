@@ -22,11 +22,11 @@ class FaceT
 	FaceT(FaceT const &) = delete;
 	FaceT & operator =(FaceT const &) = delete;
 
-	private:
+private:
 	LibraryT * mLibrary;
 	FT_Face mId;
 
-	public:
+public:
 	/// \brief Load a font face.
 	///
 	/// \param Path Filename of the font to open.

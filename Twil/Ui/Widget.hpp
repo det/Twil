@@ -10,7 +10,7 @@ class WindowBaseT;
 
 class WidgetT
 {
-	public:
+public:
 	virtual ~WidgetT() {}
 
 	/// \brief Initialize the widget

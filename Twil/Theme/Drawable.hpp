@@ -13,12 +13,12 @@ class DrawableT
 {
 	friend class StreamArrayT<T>;
 
-	private:
+private:
 	std::size_t mSize = 0;
 	std::size_t mDrawCycles = 0;
 	bool mNeedsResize = false;
 
-	public:
+public:
 	virtual ~DrawableT() {}
 	virtual void draw(T *) const = 0;
 };

@@ -9,13 +9,13 @@ namespace Ui {
 template<std::size_t Width, std::size_t Height, typename T>
 class GridBaseT
 {
-	private:
+private:
 	using RowsT = PartitionBoxT<true, std::array<T, Width>>;
 	using ColumnsT = PartitionBoxT<false, std::array<RowsT, Height>>;
 
 	ColumnsT mColumns;
 
-	protected:
+protected:
 	ColumnsT & getWidget()
 	{
 		return mColumns;
@@ -31,7 +31,7 @@ class GridBaseT
 		mColumns.init(Parent, Window);
 	}
 
-	public:
+public:
 	template<std::size_t X, std::size_t Y>
 	T & getChild()
 	{

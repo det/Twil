@@ -24,7 +24,7 @@ class WindowT
 	WindowT(WindowT const &) = delete;
 	WindowT & operator =(WindowT const &) = delete;
 
-	private:
+private:
 	Platform::WindowT mPlatformWindow;
 	WindowBaseT mBase;
 
@@ -36,7 +36,7 @@ class WindowT
 		return X >= 0 && X <= mChild.getRight() && Y >= 0 && Y <= mChild.getTop();
 	}
 
-	public:
+public:
 	// Window
 	Data::EventT<> Deleted;
 

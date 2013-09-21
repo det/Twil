@@ -7,7 +7,7 @@ namespace Ui {
 
 class ContainerT
 {
-	public:
+public:
 	virtual ~ContainerT() {}
 
 	/// \brief Called from a child when it releases control of a mouse not within its bounds.
