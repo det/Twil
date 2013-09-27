@@ -23,13 +23,13 @@ public:
 	template<typename FunctorT>
 	void operator +=(FunctorT Functor)
 	{
-		mCallbacks.push_back(Functor);
+		mCallbacks.push_back(std::move(Functor));
 	}
 
 	/// \brief Call all callbacks.
 	void operator ()(ArgsT && ... Args) const
 	{
-		for (auto Callback : mCallbacks) Callback(std::forward<ArgsT>(Args) ...);
+		for (auto & Callback : mCallbacks) Callback(std::forward<ArgsT>(Args) ...);
 	}
 };
 
