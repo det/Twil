@@ -10,7 +10,7 @@ VertexArrayT::VertexArrayT()
 	glGenVertexArrays(1, &mId);
 }
 
-VertexArrayT::~VertexArrayT()
+VertexArrayT::~VertexArrayT() noexcept
 {
 	glDeleteVertexArrays(1, &mId);
 }

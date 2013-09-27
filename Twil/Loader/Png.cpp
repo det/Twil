@@ -31,7 +31,7 @@ public:
 		}
 	}
 
-	~PngStructsT()
+	~PngStructsT() noexcept
 	{
 		png_destroy_read_struct(&mPng, &mInfo, nullptr);
 	}

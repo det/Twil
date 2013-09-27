@@ -341,7 +341,7 @@ public:
 		increment(mRoot);
 	}
 
-	~RopeT()
+	~RopeT() noexcept
 	{
 		decrement(mRoot);
 	}

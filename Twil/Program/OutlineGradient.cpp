@@ -9,15 +9,15 @@ namespace Program {
 OutlineGradientT::OutlineGradientT()
 {
 	Gl::ShaderT Vertex(GL_VERTEX_SHADER);
-	Vertex.loadFile("Shader/OutlineGradient.vert");
+	Vertex.loadFile("../Twil/Shader/OutlineGradient.vert");
 	Vertex.compile();
 
 	Gl::ShaderT Geometry(GL_GEOMETRY_SHADER);
-	Geometry.loadFile("Shader/OutlineGradient.geom");
+	Geometry.loadFile("../Twil/Shader/OutlineGradient.geom");
 	Geometry.compile();
 
 	Gl::ShaderT Frag(GL_FRAGMENT_SHADER);
-	Frag.loadFile("Shader/OutlineGradient.frag");
+	Frag.loadFile("../Twil/Shader/OutlineGradient.frag");
 	Frag.compile();
 
 	glAttachShader(mProgram, Vertex);

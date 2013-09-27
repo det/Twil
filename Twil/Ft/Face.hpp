@@ -33,7 +33,7 @@ public:
 	/// \param Index Index of the face to use.
 	/// \throws std::runtime_error If the font face cant be loaded.
 	FaceT(LibraryT & Library, char const * Path, FT_Long Index);
-	~FaceT();
+	~FaceT() noexcept;
 
 	/// \brief Set the active size.
 	void setActiveSize(SizeT const &);

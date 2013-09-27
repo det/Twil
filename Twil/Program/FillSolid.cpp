@@ -9,15 +9,15 @@ namespace Program {
 FillSolidT::FillSolidT()
 {
 	Gl::ShaderT Vertex(GL_VERTEX_SHADER);
-	Vertex.loadFile("Shader/FillSolid.vert");
+	Vertex.loadFile("../Twil/Shader/FillSolid.vert");
 	Vertex.compile();
 
 	Gl::ShaderT Geometry(GL_GEOMETRY_SHADER);
-	Geometry.loadFile("Shader/FillSolid.geom");
+	Geometry.loadFile("../Twil/Shader/FillSolid.geom");
 	Geometry.compile();
 
 	Gl::ShaderT Frag(GL_FRAGMENT_SHADER);
-	Frag.loadFile("Shader/FillSolid.frag");
+	Frag.loadFile("../Twil/Shader/FillSolid.frag");
 	Frag.compile();
 
 	glAttachShader(mProgram, Vertex);

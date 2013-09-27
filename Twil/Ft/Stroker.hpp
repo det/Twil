@@ -27,7 +27,7 @@ private:
 
 public:
 	StrokerT(LibraryT &);
-	~StrokerT();
+	~StrokerT() noexcept;
 
 	/// \returns Clear all contours.
 	void clear();

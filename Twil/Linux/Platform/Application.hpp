@@ -25,7 +25,7 @@ public:
 		mPointer{xcb_key_symbols_alloc(Connection)}
 	{}
 
-	~KeySymbolsT()
+	~KeySymbolsT() noexcept
 	{
 		xcb_key_symbols_free(mPointer);
 	}
@@ -64,7 +64,7 @@ private:
 public:
 	/// \throws std::runtime_error on error.
 	ApplicationT();
-	~ApplicationT();
+	~ApplicationT() noexcept;
 
 	/// \brief Run the event loop.
 	///

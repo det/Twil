@@ -1,6 +1,7 @@
 #pragma once
 
 #include <functional>
+#include <utility>
 #include <vector>
 
 namespace Twil {
@@ -21,9 +22,9 @@ public:
 
 	/// \brief Append a callback to the event.
 	template<typename FunctorT>
-	void operator +=(FunctorT Functor)
+	void operator +=(FunctorT && Functor)
 	{
-		mCallbacks.push_back(std::move(Functor));
+		mCallbacks.push_back(std::forward<FunctorT>(Functor));
 	}
 
 	/// \brief Call all callbacks.

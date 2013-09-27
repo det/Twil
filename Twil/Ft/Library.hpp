@@ -28,7 +28,7 @@ private:
 public:
 	/// \throws std::runtime_error If the freetype library cant be initialized.
 	LibraryT();
-	~LibraryT();
+	~LibraryT() noexcept;
 };
 
 }

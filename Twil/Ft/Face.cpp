@@ -20,7 +20,7 @@ FaceT::FaceT(LibraryT & Library, char const * Path, FT_Long Index)
 	if (Error) throw std::runtime_error{"Unable to load font face"};
 }
 
-FaceT::~FaceT()
+FaceT::~FaceT() noexcept
 {
 	FT_Done_Face(mId);
 }

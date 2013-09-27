@@ -1,6 +1,3 @@
-cmake_minimum_required (VERSION 2.8)
-project (Twil)
-
 if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
 	set (platform_sources
 		Linux/Platform/Key.cpp

@@ -138,7 +138,7 @@ WindowT::WindowT(ApplicationT & Application)
 	makeCurrent();
 }
 
-WindowT::~WindowT()
+WindowT::~WindowT() noexcept
 {
 	auto Display = static_cast< ::Display *>(mApplication->mDisplay);
 	auto Context = static_cast<GLXContext>(mContext);

@@ -8,7 +8,7 @@ namespace Ui {
 class KeyboardHandlerT
 {
 public:
-	virtual ~KeyboardHandlerT() {}
+	virtual ~KeyboardHandlerT() = default;
 
 	/// \brief Called on the current handler when a key is pressed.
 	virtual void handleKeyPress(Platform::KeyT) {}

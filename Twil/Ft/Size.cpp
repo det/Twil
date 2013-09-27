@@ -21,7 +21,7 @@ SizeT::SizeT(FaceT & Face, FT_F26Dot6 Points, FT_UInt HorizontalDpi, FT_UInt Ver
 	FT_Set_Char_Size(Face.mId, Points, Points, HorizontalDpi, VerticalDpi);
 }
 
-SizeT::~SizeT()
+SizeT::~SizeT() noexcept
 {
 	FT_Done_Size(mId);
 }

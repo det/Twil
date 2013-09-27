@@ -57,7 +57,7 @@ public:
 	/// \brief Construct a 0 size bitmap.
 	BitmapT(LibraryT & Library);
 
-	~BitmapT();
+	~BitmapT() noexcept;
 
 	/// \returns The width in bytes;
 	int getWidth() const;

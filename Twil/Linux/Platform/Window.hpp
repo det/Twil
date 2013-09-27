@@ -26,7 +26,7 @@ private:
 public:
 	/// \throws std::runtime_error on error.
 	WindowT(ApplicationT &);
-	~WindowT();
+	~WindowT() noexcept;
 
 	/// \brief Make this window the current rendering context.
 	void makeCurrent();

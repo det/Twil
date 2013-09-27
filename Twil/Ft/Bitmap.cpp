@@ -102,6 +102,7 @@ void BitmapT::resize(std::size_t Width, std::size_t Height)
 	{
 		delete[] mId.buffer;
 		mId.buffer = nullptr;
+		mCapacity = 0;
 		return;
 	}
 
@@ -126,7 +127,7 @@ void BitmapT::render(FaceT & Face)
 	renderOutline(mLibrary->mId, Face.mId->glyph->outline, mId);
 }
 
-BitmapT::~BitmapT()
+BitmapT::~BitmapT() noexcept
 {
 	delete[] mId.buffer;
 }

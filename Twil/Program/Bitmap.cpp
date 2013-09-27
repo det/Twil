@@ -9,15 +9,15 @@ namespace Program {
 BitmapT::BitmapT()
 {
 	Gl::ShaderT Vertex(GL_VERTEX_SHADER);
-	Vertex.loadFile("Shader/Bitmap.vert");
+	Vertex.loadFile("../Twil/Shader/Bitmap.vert");
 	Vertex.compile();
 
 	Gl::ShaderT Geometry(GL_GEOMETRY_SHADER);
-	Geometry.loadFile("Shader/Bitmap.geom");
+	Geometry.loadFile("../Twil/Shader/Bitmap.geom");
 	Geometry.compile();
 
 	Gl::ShaderT Frag(GL_FRAGMENT_SHADER);
-	Frag.loadFile("Shader/Bitmap.frag");
+	Frag.loadFile("../Twil/Shader/Bitmap.frag");
 	Frag.compile();
 
 	glAttachShader(mProgram, Vertex);

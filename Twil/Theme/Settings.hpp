@@ -42,7 +42,7 @@ unsigned const VerticalDpi = 120;
 
 namespace Label {
 
-char const * const Font{"Font/DejaVuSans-Bold.ttf"};
+char const * const Font{"../Twil/Font/DejaVuSans-Bold.ttf"};
 unsigned const Size = 11 * 64;
 
 }

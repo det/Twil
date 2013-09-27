@@ -52,7 +52,7 @@ ApplicationT::ApplicationT() :
 	mWmProtocolsAtom = WmProtocolsReply->atom;
 }
 
-ApplicationT::~ApplicationT()
+ApplicationT::~ApplicationT() noexcept
 {
 	auto Display = static_cast< ::Display *>(mDisplay);
 	XCloseDisplay(Display);

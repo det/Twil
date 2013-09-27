@@ -12,7 +12,7 @@ StrokerT::StrokerT(LibraryT & Library)
 	FT_Stroker_New(Library.mId, &mId);
 }
 
-StrokerT::~StrokerT()
+StrokerT::~StrokerT() noexcept
 {
 	FT_Stroker_Done(mId);
 }

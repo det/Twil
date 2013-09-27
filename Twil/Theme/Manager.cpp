@@ -36,7 +36,7 @@ ManagerT::ManagerT()
 	generateButtonBitmaps();
 }
 
-ManagerT::~ManagerT()
+ManagerT::~ManagerT() noexcept
 {
 	for (std::size_t I = 0; I != mNumBuffers; ++I) glDeleteSync(mFences[I]);
 }

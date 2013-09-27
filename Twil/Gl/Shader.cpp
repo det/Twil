@@ -15,7 +15,7 @@ ShaderT::ShaderT(GLenum Type)
 	mId = glCreateShader(Type);
 }
 
-ShaderT::~ShaderT()
+ShaderT::~ShaderT() noexcept
 {
 	glDeleteShader(mId);
 }

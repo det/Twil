@@ -20,7 +20,7 @@ private:
 
 public:
 	ProgramT();
-	~ProgramT();
+	~ProgramT() noexcept;
 
 	/// \brief Implicit conversion operator so it can be used in gl* functions.
 	operator GLuint() const;

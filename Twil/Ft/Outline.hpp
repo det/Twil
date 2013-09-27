@@ -35,7 +35,7 @@ private:
 
 public:
 	OutlineT();
-	~OutlineT();
+	~OutlineT() noexcept;
 
 	/// \brief Reserve enough space to hold an amount of points
 	void reservePoints(std::uint16_t Size);

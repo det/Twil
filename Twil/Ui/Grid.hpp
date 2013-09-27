@@ -1,7 +1,7 @@
 #pragma once
 
 #include "PartitionBox.hpp"
-#include "WidgetAdaptor.hpp"
+#include "Widget.hpp"
 
 namespace Twil {
 namespace Ui {

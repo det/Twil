@@ -13,7 +13,7 @@ LibraryT::LibraryT()
 	if (Error) throw std::runtime_error{"Unable to initialize FreeType"};
 }
 
-LibraryT::~LibraryT()
+LibraryT::~LibraryT() noexcept
 {
 	FT_Done_FreeType(mId);
 }

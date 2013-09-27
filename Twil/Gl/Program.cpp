@@ -14,7 +14,7 @@ ProgramT::ProgramT()
 	mId = glCreateProgram();
 }
 
-ProgramT::~ProgramT()
+ProgramT::~ProgramT() noexcept
 {
 	glDeleteProgram(mId);
 }

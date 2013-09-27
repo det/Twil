@@ -10,7 +10,7 @@ TextureT::TextureT()
 	glGenTextures(1, &mId);
 }
 
-TextureT::~TextureT()
+TextureT::~TextureT() noexcept
 {
 	glDeleteTextures(1, &mId);
 }

@@ -10,7 +10,7 @@ BufferT::BufferT()
 	glGenBuffers(1, &mId);
 }
 
-BufferT::~BufferT()
+BufferT::~BufferT() noexcept
 {
 	glDeleteBuffers(1, &mId);
 }

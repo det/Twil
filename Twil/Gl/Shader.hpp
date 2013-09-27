@@ -21,7 +21,7 @@ private:
 public:
 	/// \param Type The Shader type, as defined by glCreateShader().
 	ShaderT(GLenum Type);
-	~ShaderT();
+	~ShaderT() noexcept;
 
 	/// \brief Implicit conversion operator so it can be used in gl* functions.
 	operator GLuint() const;

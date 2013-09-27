@@ -19,7 +19,7 @@ private:
 	bool mNeedsResize = false;
 
 public:
-	virtual ~DrawableT() {}
+	virtual ~DrawableT() = default;
 	virtual void draw(T *) const = 0;
 };
 

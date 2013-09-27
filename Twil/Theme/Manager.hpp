@@ -114,7 +114,7 @@ private:
 
 public:	
 	ManagerT();
-	~ManagerT();
+	~ManagerT() noexcept;
 
 	/// \brief Make sure the GUI is drawn on the next update call
 	void markNeedsRedraw();

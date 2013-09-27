@@ -137,7 +137,7 @@ void OutlineT::append(StrokerT const & Stroker)
 	FT_Stroker_Export(Stroker.mId, &mId);
 }
 
-OutlineT::~OutlineT()
+OutlineT::~OutlineT() noexcept
 {
 	delete[] mId.points;
 	delete[] mId.tags;
