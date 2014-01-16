@@ -29,7 +29,7 @@ protected:
 
 	static std::int16_t const mSize = std::tuple_size<ChildrenT>::value;
 
-	bool checkThisContains(std::int16_t X, std::int16_t Y)
+	bool checkThisContains(float X, float Y)
 	{
 		return (
 			X >= getLeft() && X >= getClipLeft() &&
@@ -81,7 +81,7 @@ public:
 	// Widget
 	struct MoveXFunctorT
 	{
-		std::int16_t X;
+		float X;
 
 		template<typename T>
 		void operator()(T & Child)
@@ -90,14 +90,14 @@ public:
 		}
 	};
 
-	void moveX(std::int16_t X)
+	void moveX(float X)
 	{
 		Data::iterate(mChildren, MoveXFunctorT{X});
 	}
 
 	struct MoveYFunctorT
 	{
-		std::int16_t Y;
+		float Y;
 
 		template<typename T>
 		void operator()(T & Child)
@@ -106,14 +106,14 @@ public:
 		}
 	};
 
-	void moveY(std::int16_t Y)
+	void moveY(float Y)
 	{
 		Data::iterate(mChildren, MoveYFunctorT{Y});
 	}
 
 	struct SetClipLeftFunctorT
 	{
-		std::int16_t X;
+		float X;
 
 		template<typename T>
 		void operator()(T & Child)
@@ -122,14 +122,14 @@ public:
 		}
 	};
 
-	void setClipLeft(std::int16_t X)
+	void setClipLeft(float X)
 	{
 		Data::iterate(mChildren, SetClipLeftFunctorT{X});
 	}
 
 	struct SetClipBottomFunctorT
 	{
-		std::int16_t Y;
+		float Y;
 
 		template<typename T>
 		void operator()(T & Child)
@@ -138,14 +138,14 @@ public:
 		}
 	};
 
-	void setClipBottom(std::int16_t Y)
+	void setClipBottom(float Y)
 	{
 		Data::iterate(mChildren, SetClipBottomFunctorT{Y});
 	}
 
 	struct SetClipRightFunctorT
 	{
-		std::int16_t X;
+		float X;
 
 		template<typename T>
 		void operator()(T & Child)
@@ -154,14 +154,14 @@ public:
 		}
 	};
 
-	void setClipRight(std::int16_t X)
+	void setClipRight(float X)
 	{
 		Data::iterate(mChildren, SetClipRightFunctorT{X});
 	}
 
 	struct SetClipTopFunctorT
 	{
-		std::int16_t Y;
+		float Y;
 
 		template<typename T>
 		void operator()(T & Child)
@@ -170,7 +170,7 @@ public:
 		}
 	};
 
-	void setClipTop(std::int16_t Y)
+	void setClipTop(float Y)
 	{
 		Data::iterate(mChildren, SetClipTopFunctorT{Y});
 	}
@@ -184,49 +184,49 @@ public:
 		}
 	};
 
-	std::int16_t getLeft() const
+	float getLeft() const
 	{
 		return getChild<0>().getLeft();
 	}
 
-	std::int16_t getBottom() const
+	float getBottom() const
 	{
 		return getChild<0>().getBottom();
 	}
 
-	std::int16_t getRight() const
+	float getRight() const
 	{
 		return getChild<mSize - 1>().getRight();
 	}
 
-	std::int16_t getTop() const
+	float getTop() const
 	{
 		return getChild<mSize - 1>().getTop();
 	}
 
-	std::int16_t getClipLeft() const
+	float getClipLeft() const
 	{
 		return getChild<0>().getClipLeft();
 	}
 
-	std::int16_t getClipBottom() const
+	float getClipBottom() const
 	{
 		return getChild<0>().getClipBottom();
 	}
 
-	std::int16_t getClipRight() const
+	float getClipRight() const
 	{
 		return getChild<mSize - 1>().getClipRight();
 	}
 
-	std::int16_t getClipTop() const
+	float getClipTop() const
 	{
 		return getChild<mSize - 1>().getClipTop();
 	}
 
 	struct MaxWidthFunctorT
 	{
-		std::int16_t & MaxWidth;
+		float & MaxWidth;
 
 		template<typename T>
 		void operator()(T const & Child)
@@ -237,7 +237,7 @@ public:
 
 	struct MaxHeightFunctorT
 	{
-		std::int16_t & MaxHeight;
+		float & MaxHeight;
 
 		template<typename T>
 		void operator()(T const & Child)
@@ -289,48 +289,29 @@ public:
 	// Widget
 	struct ResizeWidthFunctorT
 	{
-		std::int16_t Left;
-		std::int16_t BoxWidth;
-		std::int16_t Mod;
-		std::int16_t Direction;
+		float Left;
+		float BoxWidth;
 
 		template<typename T>
 		void operator()(T & Child)
 		{
-			std::int16_t Width = BoxWidth;
-			if (Mod > 0)
-			{
-				Width += Direction;
-				--Mod;
-			}
 			Child.moveX(Left - Child.getLeft());
-			Child.resizeWidth(Left + Width - Child.getRight());
-			Left += Width;
+			Child.resizeWidth(Left + BoxWidth - Child.getRight());
+			Left += BoxWidth;
 		}
 	};
 
-	void resizeWidth(std::int16_t X)
+	void resizeWidth(float X)
 	{
-		std::int16_t Width = getRight() + X - getLeft();
-		std::int16_t BoxWidth = Width / mSize;
-		std::int16_t Mod;
-		std::int16_t Direction;
-		if (Width >= 0)
-		{
-			Mod = Width % mSize;
-			Direction = 1;
-		}
-		else
-		{
-			Mod = -Width % mSize;
-			Direction = -1;
-		}
-		Data::iterate(mChildren, ResizeWidthFunctorT{getLeft(), BoxWidth, Mod, Direction});
+		float Width = getRight() + X - getLeft();
+		float BoxWidth = Width / mSize;
+
+		Data::iterate(mChildren, ResizeWidthFunctorT{getLeft(), BoxWidth});
 	}
 
 	struct ResizeHeightFunctorT
 	{
-		std::int16_t Top;
+		float Top;
 
 		template<typename T>
 		void operator()(T & Child)
@@ -339,29 +320,29 @@ public:
 		}
 	};
 
-	void resizeHeight(std::int16_t Y)
+	void resizeHeight(float Y)
 	{
 		Data::iterate(mChildren, ResizeHeightFunctorT{Y});
 	}
 
-	std::int16_t getBaseWidth() const
+	float getBaseWidth() const
 	{
-		std::int16_t MaxWidth = 0;
+		float MaxWidth = 0;
 		Data::iterate(mChildren, MaxWidthFunctorT{MaxWidth});
 		return MaxWidth * mSize;
 	}
 
-	std::int16_t getBaseHeight() const
+	float getBaseHeight() const
 	{
-		std::int16_t MaxHeight = 0;
+		float MaxHeight = 0;
 		Data::iterate(mChildren, MaxHeightFunctorT{MaxHeight});
 		return MaxHeight;
 	}
 
 	struct DelegateMouseFunctorT
 	{
-		std::int16_t X;
-		std::int16_t Y;
+		float X;
+		float Y;
 
 		template<typename T>
 		bool operator()(T & Child)
@@ -375,13 +356,13 @@ public:
 		}
 	};
 
-	void delegateMouse(std::int16_t X, std::int16_t Y)
+	void delegateMouse(float X, float Y)
 	{
 		Data::iterateUntil(mChildren, DelegateMouseFunctorT{X, Y});
 	}
 
 	// Container
-	void releaseMouse(std::int16_t X, std::int16_t Y) final
+	void releaseMouse(float X, float Y) final
 	{
 		if (checkThisContains(X, Y)) delegateMouse(X, Y);
 		else mParent->releaseMouse(X, Y);
@@ -417,7 +398,7 @@ public:
 	// Widget
 	struct ResizeWidthFunctorT
 	{
-		std::int16_t Right;
+		float Right;
 
 		template<typename T>
 		void operator()(T & Child)
@@ -426,70 +407,51 @@ public:
 		}
 	};
 
-	void resizeWidth(std::int16_t X)
+	void resizeWidth(float X)
 	{
 		Data::iterate(mChildren, ResizeWidthFunctorT{X});
 	}
 
 	struct ResizeHeightFunctorT
 	{
-		std::int16_t Bottom;
-		std::int16_t BoxHeight;
-		std::int16_t Mod;
-		std::int16_t Direction;
+		float Bottom;
+		float BoxHeight;
 
 		template<typename T>
 		void operator()(T & Child)
 		{
-			std::int16_t Height = BoxHeight;
-			if (Mod > 0)
-			{
-				Height += Direction;
-				--Mod;
-			}
 			Child.moveY(Bottom - Child.getBottom());
-			Child.resizeHeight(Bottom + Height - Child.getTop());
-			Bottom += Height;
+			Child.resizeHeight(Bottom + BoxHeight - Child.getTop());
+			Bottom += BoxHeight;
 		}
 	};
 
-	void resizeHeight(std::int16_t Y)
+	void resizeHeight(float Y)
 	{
-		std::int16_t Height = getTop() + Y - getBottom();
-		std::int16_t BoxHeight = Height / mSize;
-		std::int16_t Mod;
-		std::int16_t Direction;
-		if (Height >= 0)
-		{
-			Mod = Height % mSize;
-			Direction = 1;
-		}
-		else
-		{
-			Mod = -Height % mSize;
-			Direction = -1;
-		}
-		Data::iterate(mChildren, ResizeHeightFunctorT{getBottom(), BoxHeight, Mod, Direction});
+		float Height = getTop() + Y - getBottom();
+		float BoxHeight = Height / mSize;
+
+		Data::iterate(mChildren, ResizeHeightFunctorT{getBottom(), BoxHeight});
 	}
 
-	std::int16_t getBaseWidth() const
+	float getBaseWidth() const
 	{
-		std::int16_t MaxWidth = 0;
+		float MaxWidth = 0;
 		Data::iterate(mChildren, MaxWidthFunctorT{MaxWidth});
 		return MaxWidth;
 	}
 
-	std::int16_t getBaseHeight() const
+	float getBaseHeight() const
 	{
-		std::int16_t MaxHeight = 0;
+		float MaxHeight = 0;
 		Data::iterate(mChildren, MaxHeightFunctorT{MaxHeight});
 		return MaxHeight * mSize;
 	}
 
 	struct DelegateMouseFunctorT
 	{
-		std::int16_t X;
-		std::int16_t Y;
+		float X;
+		float Y;
 
 		template<typename T>
 		bool operator()(T & Child)
@@ -503,13 +465,13 @@ public:
 		}
 	};
 
-	void delegateMouse(std::int16_t X, std::int16_t Y)
+	void delegateMouse(float X, float Y)
 	{
 		Data::iterateUntil(mChildren, DelegateMouseFunctorT{X, Y});
 	}
 
 	// Container
-	void releaseMouse(std::int16_t X, std::int16_t Y) final
+	void releaseMouse(float X, float Y) final
 	{
 		if (checkThisContains(X, Y)) delegateMouse(X, Y);
 		else mParent->releaseMouse(X, Y);

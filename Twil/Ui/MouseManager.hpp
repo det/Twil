@@ -25,11 +25,11 @@ public:
 	/// \brief Set the mouse handler.
 	void setHandler(MouseHandlerT &);
 
-	void handleMouseEnterWindow(std::int16_t, std::int16_t);
-	void handleMouseLeaveWindow(std::int16_t, std::int16_t);
-	void handleMouseMotion(std::int16_t, std::int16_t);
-	void handleButtonPress(std::int16_t, std::int16_t, unsigned char);
-	void handleButtonRelease(std::int16_t, std::int16_t, unsigned char);
+	void handleMouseEnterWindow(float, float);
+	void handleMouseLeaveWindow(float, float);
+	void handleMouseMotion(float, float);
+	void handleButtonPress(float, float, std::uint8_t);
+	void handleButtonRelease(float, float, std::uint8_t);
 };
 
 }

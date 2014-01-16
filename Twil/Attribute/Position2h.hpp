@@ -7,10 +7,10 @@ namespace Attribute {
 
 struct Position2hT
 {
-	GLshort X;
-	GLshort Y;
+	std::int16_t X;
+	std::int16_t Y;
 
-	static void setup(GLuint, GLsizei, GLvoid const *);
+	static void setup(std::uint32_t, std::int32_t, void const *);
 };
 
 }

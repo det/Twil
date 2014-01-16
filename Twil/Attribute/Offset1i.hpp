@@ -7,9 +7,9 @@ namespace Attribute {
 
 struct Offset1iT
 {
-	GLuint Value;
+	std::uint32_t Value;
 
-	static void setup(GLuint, GLsizei, GLvoid const *);
+	static void setup(std::uint32_t, std::int32_t, void const *);
 };
 
 }

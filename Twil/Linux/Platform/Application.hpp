@@ -75,7 +75,7 @@ public:
 		assert(mRunning == false);
 
 //		KeySymbolsT KeySymbols{mConnection};
-		auto & MouseManager = Window.getMouseManager();
+//		auto & MouseManager = Window.getMouseManager();
 //		auto & KeyboardManager = Window.getKeyboardManager();
 
 		mRunning = true;
@@ -83,7 +83,7 @@ public:
 		{
 			// We call update on the Window when all queued events have been proccessed
 			auto GenericEvent = xcb_poll_for_queued_event(mConnection);
-			if (GenericEvent == nullptr) 
+			if (GenericEvent == nullptr)
 			{
 				Window.update();
 				GenericEvent = xcb_wait_for_event(mConnection);
@@ -98,36 +98,36 @@ public:
 			case XCB_ENTER_NOTIFY:
 			{
 				auto Event = reinterpret_cast<xcb_enter_notify_event_t *>(GenericEvent);
-				std::int16_t Y = Window.getHeight() - Event->event_y;
-				MouseManager.handleMouseEnterWindow(Event->event_x, Y);
+				std::int16_t Y = Window.getPixelHeight() - Event->event_y;
+				Window.onMouseEnterWindow(Event->event_x, Y);
 			} break;
 
 			case XCB_LEAVE_NOTIFY:
 			{
 				auto Event = reinterpret_cast<xcb_leave_notify_event_t *>(GenericEvent);
-				std::int16_t Y = Window.getHeight() - Event->event_y;
-				MouseManager.handleMouseLeaveWindow(Event->event_x, Y);
+				std::int16_t Y = Window.getPixelHeight() - Event->event_y;
+				Window.onMouseLeaveWindow(Event->event_x, Y);
 			} break;
 
 			case XCB_MOTION_NOTIFY:
 			{
 				auto Event = reinterpret_cast<xcb_motion_notify_event_t *>(GenericEvent);
-				std::int16_t Y = Window.getHeight() - Event->event_y;
-				MouseManager.handleMouseMotion(Event->event_x, Y);
+				std::int16_t Y = Window.getPixelHeight() - Event->event_y;
+				Window.onMouseMotion(Event->event_x, Y);
 			} break;
 
 			case XCB_BUTTON_PRESS:
 			{
 				auto Event = reinterpret_cast<xcb_button_press_event_t *>(GenericEvent);
-				std::int16_t Y = Window.getHeight() - Event->event_y;
-				MouseManager.handleButtonPress(Event->event_x, Y, Event->detail);
+				std::int16_t Y = Window.getPixelHeight() - Event->event_y;
+				Window.onButtonPress(Event->event_x, Y, Event->detail);
 			} break;
 
 			case XCB_BUTTON_RELEASE:
 			{
 				auto Event = reinterpret_cast<xcb_button_press_event_t *>(GenericEvent);
-				std::int16_t Y = Window.getHeight() - Event->event_y;
-				MouseManager.handleButtonRelease(Event->event_x, Y, Event->detail);
+				std::int16_t Y = Window.getPixelHeight() - Event->event_y;
+				Window.onButtonRelease(Event->event_x, Y, Event->detail);
 			} break;
 
 			case XCB_KEY_PRESS:
@@ -144,19 +144,19 @@ public:
 			case XCB_CONFIGURE_NOTIFY:
 			{
 				auto Event = reinterpret_cast<xcb_configure_notify_event_t *>(GenericEvent);
-				Window.handleResize(Event->width, Event->height);
+				Window.onResize(Event->width, Event->height);
 			} break;
 
 			case XCB_EXPOSE:
 			{
-				Window.handleExposed();				
+				Window.onExposed();
 			} break;
 
 			case XCB_CLIENT_MESSAGE:
 			{
 				auto Event = reinterpret_cast<xcb_client_message_event_t *>(GenericEvent);
 				auto Atom = Event->data.data32[0];
-				if (Atom == mWmDeleteWindowAtom) Window.handleDeleted();
+				if (Atom == mWmDeleteWindowAtom) Window.onDeleted();
 			} break;
 
 

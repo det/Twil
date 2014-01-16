@@ -28,7 +28,7 @@ struct XDeleterT
 namespace Twil {
 namespace Platform {
 
-WindowT::WindowT(ApplicationT & Application)
+WindowT::WindowT(ApplicationT & Application, std::int16_t Width, std::int16_t Height)
 :
 	mApplication{&Application}
 {
@@ -109,7 +109,7 @@ WindowT::WindowT(ApplicationT & Application)
 		mId,
 		Screen->root,
 		0, 0,
-		320, 240,
+		Width, Height,
 		0,
 		XCB_WINDOW_CLASS_INPUT_OUTPUT,
 		VisualId,

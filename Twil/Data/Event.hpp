@@ -2,7 +2,7 @@
 
 #include <functional>
 #include <utility>
-#include <vector>
+#include <list>
 
 namespace Twil {
 namespace Data {
@@ -15,16 +15,32 @@ class EventT
 	EventT & operator =(EventT const &) = delete;
 
 private:
-	std::vector<std::function<void(ArgsT ...)>> mCallbacks;
+	using ListT = std::list<std::function<void(ArgsT ...)>>;
+	ListT mCallbacks;
 
 public:
+	class HandleT
+	{
+		friend class EventT;
+	private:
+		typename ListT::iterator mIterator;
+	public:
+		HandleT(typename ListT::iterator Iterator) : mIterator{Iterator} {}
+	};
+
 	EventT() = default;
 
 	/// \brief Append a callback to the event.
 	template<typename FunctorT>
-	void operator +=(FunctorT && Functor)
+	HandleT operator +=(FunctorT && Functor)
 	{
-		mCallbacks.push_back(std::forward<FunctorT>(Functor));
+		return {mCallbacks.emplace(mCallbacks.end(), std::forward<FunctorT>(Functor))};
+	}
+
+	/// \brief Remove a callback from the event.
+	void operator -=(HandleT Handle)
+	{
+		mCallbacks.erase(Handle.mIterator);
 	}
 
 	/// \brief Call all callbacks.

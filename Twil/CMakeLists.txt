@@ -126,8 +126,6 @@ source_group(Theme FILES ${theme_sources})
 set (ui_sources
 	Ui/Application.cpp
 	Ui/Application.hpp
-	Ui/ApplicationAdaptor.cpp
-	Ui/ApplicationAdaptor.hpp
 	Ui/Margin.cpp
 	Ui/Margin.hpp
 	Ui/Button.cpp

@@ -2,6 +2,8 @@
 
 #include "Manager.hpp"
 
+#include <iostream>
+
 namespace Twil {
 namespace Theme {
 
@@ -35,10 +37,10 @@ void LabelT::setText(std::u32string const & Text)
 		Pen.x += Delta.x;
 		Pen.y += Delta.y;
 
-		GLshort Left = (Pen.x + Entry.Bearings.x) / 64;
-		GLshort Bottom = (Pen.y + Entry.Bearings.y) / 64;
-		GLshort Right = Left + Entry.Width;
-		GLshort Top = Bottom + Entry.Height;
+		std::int16_t Left = (Pen.x + Entry.Bearings.x) / 64;
+		std::int16_t Bottom = (Pen.y + Entry.Bearings.y) / 64;
+		std::int16_t Right = Left + Entry.Width;
+		std::int16_t Top = Bottom + Entry.Height;
 
 		LabelGlyph Glyph;
 		Glyph.PositionMin = {Left, Bottom};
@@ -58,25 +60,25 @@ void LabelT::setText(std::u32string const & Text)
 	mManager->mSolidArray.markNeedsRedraw(*this);
 }
 
-void LabelT::setClipLeft(std::int16_t X)
+void LabelT::setClipLeft(float X)
 {
 	mClipLeft = X;
 	mManager->mSolidArray.markNeedsRedraw(*this);
 }
 
-void LabelT::setClipRight(std::int16_t X)
+void LabelT::setClipRight(float X)
 {
 	mClipRight = X;
 	mManager->mSolidArray.markNeedsRedraw(*this);
 }
 
-void LabelT::setClipBottom(std::int16_t Y)
+void LabelT::setClipBottom(float Y)
 {
 	mClipBottom = Y;
 	mManager->mSolidArray.markNeedsRedraw(*this);
 }
 
-void LabelT::setClipTop(std::int16_t Y)
+void LabelT::setClipTop(float Y)
 {
 	mClipTop = Y;
 	mManager->mSolidArray.markNeedsRedraw(*this);
@@ -84,43 +86,51 @@ void LabelT::setClipTop(std::int16_t Y)
 
 void LabelT::draw(Vertex::FillSolidT * Vertices) const
 {
+	std::int16_t Left = mManager->fitHorizontalGrid(mLeft);
+	std::int16_t Bottom = mManager->fitVerticalGrid(mBottom);
+
 	for (std::size_t I = 0, E = mGlyphs.size(); I != E; ++I)
 	{
-		std::int16_t PositionLeft = mLeft + mGlyphs[I].PositionMin.X;
-		std::int16_t PositionRight = mLeft + mGlyphs[I].PositionMax.X;
-		std::int16_t PositionBottom = mBottom + mGlyphs[I].PositionMin.Y;
-		std::int16_t PositionTop = mBottom + mGlyphs[I].PositionMax.Y;
+		std::int16_t GlyphLeft = Left + mGlyphs[I].PositionMin.X;
+		std::int16_t GlyphRight = Left + mGlyphs[I].PositionMax.X;
+		std::int16_t GlyphBottom = Bottom + mGlyphs[I].PositionMin.Y;
+		std::int16_t GlyphTop = Bottom + mGlyphs[I].PositionMax.Y;
 
-		std::int16_t Width = PositionRight - PositionLeft;
-		std::int16_t Height = PositionTop - PositionBottom;
+		std::int16_t ClipLeft = mManager->fitHorizontalGrid(mClipLeft);
+		std::int16_t ClipRight = mManager->fitHorizontalGrid(mClipRight);
+		std::int16_t ClipBottom = mManager->fitVerticalGrid(mClipBottom);
+		std::int16_t ClipTop = mManager->fitVerticalGrid(mClipTop);
 
-		std::int16_t ClipLeft = PositionLeft;
-		std::int16_t ClipRight = PositionRight;
-		std::int16_t ClipBottom = PositionBottom;
-		std::int16_t ClipTop = PositionTop;
+		std::int16_t Width = GlyphRight - GlyphLeft;
+		std::int16_t Height = GlyphTop - GlyphBottom;
 
-		ClipLeft = std::max<std::int16_t>(ClipLeft, mClipLeft);
-		ClipRight = std::max<std::int16_t>(ClipRight, mClipLeft);
-		ClipLeft = std::min<std::int16_t>(ClipLeft, mClipRight);
-		ClipRight = std::min<std::int16_t>(ClipRight, mClipRight);
-		ClipBottom = std::max<std::int16_t>(ClipBottom, mClipBottom);
-		ClipTop = std::max<std::int16_t>(ClipTop, mClipBottom);
-		ClipBottom = std::min<std::int16_t>(ClipBottom, mClipTop);
-		ClipTop = std::min<std::int16_t>(ClipTop, mClipTop);
+		std::int16_t LeftClipped = GlyphLeft;
+		std::int16_t RightClipped = GlyphRight;
+		std::int16_t BottomClipped = GlyphBottom;
+		std::int16_t TopClipped = GlyphTop;
+
+		LeftClipped = std::max(LeftClipped, ClipLeft);
+		RightClipped = std::max(RightClipped, ClipLeft);
+		LeftClipped = std::min(LeftClipped, ClipRight);
+		RightClipped = std::min(RightClipped, ClipRight);
+		BottomClipped = std::max(BottomClipped, ClipBottom);
+		TopClipped = std::max(TopClipped, ClipBottom);
+		BottomClipped = std::min(BottomClipped, ClipTop);
+		TopClipped = std::min(TopClipped, ClipTop);
 
 		Vertices[I].Color = {0, 0, 0, 255};
-		Vertices[I].ClipMin.S = (ClipLeft - PositionLeft) * 65535 / Width;
-		Vertices[I].ClipMin.T = (ClipBottom - PositionBottom) * 65535 / Height;
-		Vertices[I].ClipMax.S = (ClipRight - PositionLeft) * 65535 / Width;
-		Vertices[I].ClipMax.T = (ClipTop - PositionBottom) * 65535 / Height;
-		Vertices[I].PositionMin = {ClipLeft, ClipBottom};
-		Vertices[I].PositionMax = {ClipRight, ClipTop};
+		Vertices[I].ClipMin.S = (LeftClipped - GlyphLeft) * 65535 / Width;
+		Vertices[I].ClipMin.T = (BottomClipped - GlyphBottom) * 65535 / Height;
+		Vertices[I].ClipMax.S = (RightClipped - GlyphLeft) * 65535 / Width;
+		Vertices[I].ClipMax.T = (TopClipped - GlyphBottom) * 65535 / Height;
+		Vertices[I].PositionMin = {LeftClipped, BottomClipped};
+		Vertices[I].PositionMax = {RightClipped, TopClipped};
 		Vertices[I].TextureSize = mGlyphs[I].TextureSize;
 		Vertices[I].Offset = mGlyphs[I].Offset;
-	}	
+	}
 }
 
-void LabelT::moveX(std::int16_t X)
+void LabelT::moveX(float X)
 {
 	mLeft += X;
 	mClipLeft += X;
@@ -128,7 +138,7 @@ void LabelT::moveX(std::int16_t X)
 	mManager->mSolidArray.markNeedsRedraw(*this);
 }
 
-void LabelT::moveY(std::int16_t Y)
+void LabelT::moveY(float Y)
 {
 	mBottom += Y;
 	mClipBottom += Y;
@@ -136,54 +146,54 @@ void LabelT::moveY(std::int16_t Y)
 	mManager->mSolidArray.markNeedsRedraw(*this);
 }
 
-std::int16_t LabelT::getLeft() const
+float LabelT::getLeft() const
 {
 	return mLeft;
 }
 
-std::int16_t LabelT::getBottom() const
+float LabelT::getBottom() const
 {
 	return mBottom;
 }
 
-std::int16_t LabelT::getRight() const
+float LabelT::getRight() const
 {
-	return mLeft + mWidth;
+	return mLeft + getBaseWidth();
 }
 
-std::int16_t LabelT::getTop() const
+float LabelT::getTop() const
 {
-	return mBottom + mHeight;
+	return mBottom + getBaseHeight();
 }
 
-std::int16_t LabelT::getClipLeft() const
+float LabelT::getClipLeft() const
 {
 	return mClipLeft;
 }
 
-std::int16_t LabelT::getClipRight() const
+float LabelT::getClipRight() const
 {
 	return mClipRight;
 }
 
-std::int16_t LabelT::getClipBottom() const
+float LabelT::getClipBottom() const
 {
 	return mClipBottom;
 }
 
-std::int16_t LabelT::getClipTop() const
+float LabelT::getClipTop() const
 {
 	return mClipTop;
 }
 
-std::int16_t LabelT::getBaseWidth() const
+float LabelT::getBaseWidth() const
 {
-	return mWidth;
+	return mWidth / Settings::Global::HorizontalScale;
 }
 
-std::int16_t LabelT::getBaseHeight() const
+float LabelT::getBaseHeight() const
 {
-	return mHeight;
+	return mHeight / Settings::Global::VerticalScale;
 }
 
 }

@@ -12,14 +12,14 @@ class TextureT
 	TextureT & operator =(TextureT const &) = delete;
 
 private:
-	GLuint mId;
+	std::uint32_t mId;
 
 public:
 	TextureT();
 	~TextureT() noexcept;
 
 	/// \brief Implicit conversion operator so it can be used in gl* functions.
-	operator GLuint() const;
+	operator std::uint32_t() const;
 };
 
 }

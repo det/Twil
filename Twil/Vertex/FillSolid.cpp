@@ -10,7 +10,7 @@ namespace Vertex {
 void FillSolidT::setup()
 {
 	using VertexT = FillSolidT;
-	using OffsetT = GLvoid const *;
+	using OffsetT = void const *;
 
 	auto Stride = sizeof(VertexT);
 	auto ColorOffset = reinterpret_cast<OffsetT>(offsetof(VertexT, Color));

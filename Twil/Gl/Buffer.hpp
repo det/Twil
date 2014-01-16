@@ -12,14 +12,14 @@ class BufferT
 	BufferT & operator =(BufferT const &) = delete;
 
 private:
-	GLuint mId;
+	std::uint32_t mId;
 
 public:
 	BufferT();
 	~BufferT() noexcept;
 
 	/// \brief Implicit conversion operator so it can be used in gl* functions.
-	operator GLuint() const;
+	operator std::uint32_t() const;
 };
 
 }

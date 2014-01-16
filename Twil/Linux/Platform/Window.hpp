@@ -25,7 +25,7 @@ private:
 
 public:
 	/// \throws std::runtime_error on error.
-	WindowT(ApplicationT &);
+	WindowT(ApplicationT &, std::int16_t Width, std::int16_t Height);
 	~WindowT() noexcept;
 
 	/// \brief Make this window the current rendering context.

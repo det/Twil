@@ -101,7 +101,7 @@ public:
 	/// \brief Grow the array if needed and draw all allocations, then upload.
 	void upload(std::size_t Index)
 	{
-		if (mDrawCycles == 0) return;		
+		if (mDrawCycles == 0) return;
 
 		glBindBuffer(GL_ARRAY_BUFFER, mBuffer);
 
@@ -116,7 +116,7 @@ public:
 		if (mSizes[Index] > mCapacity)
 		{
 			if (mCapacity == 0) mCapacity = 1;
-			while (mSizes[Index] > mCapacity) mCapacity *= 2;
+			while (mSizes[Index] > mCapacity) mCapacity = mCapacity * 3 / 2 + 1;
 			glBufferData(
 				GL_ARRAY_BUFFER,
 				mCapacity * mNumBuffers * sizeof(T),
@@ -181,7 +181,7 @@ public:
 
 	/// \returns The Vertex Index for the specified index.
 	// \returns The VertexArray for the specified index.
-	GLuint getVertexIndex(std::size_t Index)
+	std::uint32_t getVertexIndex(std::size_t Index)
 	{
 		return mCapacity * Index;
 	}

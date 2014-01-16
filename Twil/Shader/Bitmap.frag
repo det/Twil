@@ -11,7 +11,7 @@ in FragmentT
 
 layout(location = 0, index = 0) out vec4 Color;
 
-void main (void)  
+void main (void)
 {
 	int S = int(Fragment.Texcoord.s);
 	int T = int(Fragment.Texcoord.t);

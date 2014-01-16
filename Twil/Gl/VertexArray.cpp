@@ -15,7 +15,7 @@ VertexArrayT::~VertexArrayT() noexcept
 	glDeleteVertexArrays(1, &mId);
 }
 
-VertexArrayT::operator GLuint() const
+VertexArrayT::operator std::uint32_t() const
 {
 	return mId;
 }

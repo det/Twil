@@ -11,27 +11,27 @@ void MouseManagerT::setHandler(MouseHandlerT & MouseHandler)
 	mMouseHandler = &MouseHandler;
 }
 
-void MouseManagerT::handleMouseEnterWindow(std::int16_t X, std::int16_t Y)
+void MouseManagerT::handleMouseEnterWindow(float X, float Y)
 {
 	mMouseHandler->handleMouseEnterWindow(X, Y);
 }
 
-void MouseManagerT::handleMouseLeaveWindow(std::int16_t X, std::int16_t Y)
+void MouseManagerT::handleMouseLeaveWindow(float X, float Y)
 {
 	mMouseHandler->handleMouseLeaveWindow(X, Y);
 }
 
-void MouseManagerT::handleMouseMotion(std::int16_t X, std::int16_t Y)
+void MouseManagerT::handleMouseMotion(float X, float Y)
 {
 	mMouseHandler->handleMouseMotion(X, Y);
 }
 
-void MouseManagerT::handleButtonPress(std::int16_t X, std::int16_t Y , unsigned char Button)
+void MouseManagerT::handleButtonPress(float X, float Y , std::uint8_t Button)
 {
 	mMouseHandler->handleButtonPress(X, Y, Button);
 }
 
-void MouseManagerT::handleButtonRelease(std::int16_t X, std::int16_t Y, unsigned char Button)
+void MouseManagerT::handleButtonRelease(float X, float Y, std::uint8_t Button)
 {
 	mMouseHandler->handleButtonRelease(X, Y, Button);
 }

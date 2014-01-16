@@ -146,8 +146,8 @@ PngT::PngT(char const * Path)
 	mHeight = Height;
 
 	// Setup a pointer array.  Each one points at the begening of a row
-	mBytes = Data::allocUnique<unsigned char>(Width * Height * 4);
-	auto Rows = Data::allocUnique<unsigned char *>(Height);
+	mBytes = Data::allocUnique<std::uint8_t>(Width * Height * 4);
+	auto Rows = Data::allocUnique<std::uint8_t *>(Height);
 	for (std::size_t I = 0; I < Height; ++I) Rows[I] = &mBytes[(Height - I - 1) * Width * 4];
 
 	// Read pixel data using row pointers
@@ -165,12 +165,12 @@ std::uint16_t PngT::getHeight() const
 	return mHeight;
 }
 
-unsigned char const * PngT::begin() const
+std::uint8_t const * PngT::begin() const
 {
 	return mBytes.get();
 }
 
-unsigned char const * PngT::end() const
+std::uint8_t const * PngT::end() const
 {
 	return mBytes.get() + mWidth * mHeight * 4;
 }

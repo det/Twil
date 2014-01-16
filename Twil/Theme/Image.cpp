@@ -20,25 +20,25 @@ void ImageT::setImage(char const * Path)
 	mManager->mBitmapArray.markNeedsRedraw(*this);
 }
 
-void ImageT::setClipLeft(std::int16_t X)
+void ImageT::setClipLeft(float X)
 {
 	mClipLeft = X;
 	mManager->mBitmapArray.markNeedsRedraw(*this);
 }
 
-void ImageT::setClipRight(std::int16_t X)
+void ImageT::setClipRight(float X)
 {
 	mClipRight = X;
 	mManager->mBitmapArray.markNeedsRedraw(*this);
 }
 
-void ImageT::setClipBottom(std::int16_t Y)
+void ImageT::setClipBottom(float Y)
 {
 	mClipBottom = Y;
 	mManager->mBitmapArray.markNeedsRedraw(*this);
 }
 
-void ImageT::setClipTop(std::int16_t Y)
+void ImageT::setClipTop(float Y)
 {
 	mClipTop = Y;
 	mManager->mBitmapArray.markNeedsRedraw(*this);
@@ -47,45 +47,47 @@ void ImageT::setClipTop(std::int16_t Y)
 void ImageT::draw(Vertex::BitmapT * Vertices) const
 {
 	// Avoid divide by 0
-	if (mWidth == 0 || mHeight == 0) 
+	if (mWidth == 0 || mHeight == 0)
 	{
 		Vertices[0] = {};
 		return;
 	}
 
-	std::int16_t PositionLeft = mLeft;
-	std::int16_t PositionRight = mLeft + mWidth;
-	std::int16_t PositionBottom = mBottom;
-	std::int16_t PositionTop = mBottom + mHeight;
+	std::int16_t Left = mManager->fitHorizontalGrid(mLeft);
+	std::int16_t Right = Left + mWidth;
+	std::int16_t Bottom = mManager->fitVerticalGrid(mBottom);
+	std::int16_t Top = Bottom + mHeight;
 
-	std::int16_t Width = mWidth;
-	std::int16_t Height = mHeight;
+	std::int16_t ClipLeft = mManager->fitHorizontalGrid(mClipLeft);
+	std::int16_t ClipRight = mManager->fitHorizontalGrid(mClipRight);
+	std::int16_t ClipBottom = mManager->fitVerticalGrid(mClipBottom);
+	std::int16_t ClipTop = mManager->fitVerticalGrid(mClipTop);
 
-	std::int16_t ClipLeft = PositionLeft;
-	std::int16_t ClipRight = PositionRight;
-	std::int16_t ClipBottom = PositionBottom;
-	std::int16_t ClipTop = PositionTop;
+	std::int16_t LeftClipped = Left;
+	std::int16_t RightClipped = Right;
+	std::int16_t BottomClipped = Bottom;
+	std::int16_t TopClipped = Top;
 
-	ClipLeft = std::max<std::int16_t>(ClipLeft, mClipLeft);
-	ClipRight = std::max<std::int16_t>(ClipRight, mClipLeft);
-	ClipLeft = std::min<std::int16_t>(ClipLeft, mClipRight);
-	ClipRight = std::min<std::int16_t>(ClipRight, mClipRight);
-	ClipBottom = std::max<std::int16_t>(ClipBottom, mClipBottom);
-	ClipTop = std::max<std::int16_t>(ClipTop, mClipBottom);
-	ClipBottom = std::min<std::int16_t>(ClipBottom, mClipTop);
-	ClipTop = std::min<std::int16_t>(ClipTop, mClipTop);
+	LeftClipped = std::max(LeftClipped, ClipLeft);
+	RightClipped = std::max(RightClipped, ClipLeft);
+	LeftClipped = std::min(LeftClipped, ClipRight);
+	RightClipped = std::min(RightClipped, ClipRight);
+	BottomClipped = std::max(BottomClipped, ClipBottom);
+	TopClipped = std::max(TopClipped, ClipBottom);
+	BottomClipped = std::min(BottomClipped, ClipTop);
+	TopClipped = std::min(TopClipped, ClipTop);
 
-	Vertices[0].ClipMin.S = (ClipLeft - PositionLeft) * 65535 / Width;
-	Vertices[0].ClipMin.T = (ClipBottom - PositionBottom) * 65535 / Height;
-	Vertices[0].ClipMax.S = (ClipRight - PositionLeft) * 65535 / Width;
-	Vertices[0].ClipMax.T = (ClipTop - PositionBottom) * 65535 / Height;
-	Vertices[0].PositionMin = {ClipLeft, ClipBottom};
-	Vertices[0].PositionMax = {ClipRight, ClipTop};
-	Vertices[0].TextureSize = {GLushort(mWidth), GLushort(mHeight)};
+	Vertices[0].ClipMin.S = (LeftClipped - Left) * 65535 / mWidth;
+	Vertices[0].ClipMin.T = (BottomClipped - Bottom) * 65535 / mHeight;
+	Vertices[0].ClipMax.S = (RightClipped - Left) * 65535 / mWidth;
+	Vertices[0].ClipMax.T = (TopClipped - Bottom) * 65535 / mHeight;
+	Vertices[0].PositionMin = {LeftClipped, BottomClipped};
+	Vertices[0].PositionMax = {RightClipped, TopClipped};
+	Vertices[0].TextureSize = {mWidth, mHeight};
 	Vertices[0].Offset = {mOffset};
 }
 
-void ImageT::moveX(std::int16_t X)
+void ImageT::moveX(float X)
 {
 	mLeft += X;
 	mClipLeft += X;
@@ -94,7 +96,7 @@ void ImageT::moveX(std::int16_t X)
 	mManager->mBitmapArray.markNeedsRedraw(*this);
 }
 
-void ImageT::moveY(std::int16_t Y)
+void ImageT::moveY(float Y)
 {
 	mBottom += Y;
 	mClipBottom += Y;
@@ -103,54 +105,54 @@ void ImageT::moveY(std::int16_t Y)
 	mManager->mBitmapArray.markNeedsRedraw(*this);
 }
 
-std::int16_t ImageT::getLeft() const
+float ImageT::getLeft() const
 {
 	return mLeft;
 }
 
-std::int16_t ImageT::getBottom() const
+float ImageT::getBottom() const
 {
 	return mBottom;
 }
 
-std::int16_t ImageT::getRight() const
+float ImageT::getRight() const
 {
-	return mLeft + mWidth;
+	return mLeft + getBaseWidth();
 }
 
-std::int16_t ImageT::getTop() const
+float ImageT::getTop() const
 {
-	return mBottom + mHeight;
+	return mBottom + getBaseHeight();
 }
 
-std::int16_t ImageT::getClipLeft() const
+float ImageT::getClipLeft() const
 {
 	return mClipLeft;
 }
 
-std::int16_t ImageT::getClipRight() const
+float ImageT::getClipRight() const
 {
 	return mClipRight;
 }
 
-std::int16_t ImageT::getClipBottom() const
+float ImageT::getClipBottom() const
 {
 	return mClipBottom;
 }
 
-std::int16_t ImageT::getClipTop() const
+float ImageT::getClipTop() const
 {
 	return mClipTop;
 }
 
-std::int16_t ImageT::getBaseWidth() const
+float ImageT::getBaseWidth() const
 {
-	return mWidth;
+	return mWidth / Settings::Global::HorizontalScale;
 }
 
-std::int16_t ImageT::getBaseHeight() const
+float ImageT::getBaseHeight() const
 {
-	return mHeight;
+	return mHeight / Settings::Global::VerticalScale;
 }
 
 }

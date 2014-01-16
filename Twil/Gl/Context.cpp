@@ -1106,139 +1106,139 @@ namespace Twil {
 namespace Gl {
 namespace Procs {
 
-void glCullFace(GLenum mode)
+void glCullFace(std::uint32_t mode)
 {
 	gCullFace(mode);
 	checkError();
 }
 
-void glFrontFace(GLenum mode)
+void glFrontFace(std::uint32_t mode)
 {
 	gFrontFace(mode);
 	checkError();
 }
 
-void glHint(GLenum target, GLenum mode)
+void glHint(std::uint32_t target, std::uint32_t mode)
 {
 	gHint(target, mode);
 	checkError();
 }
 
-void glLineWidth(GLfloat width)
+void glLineWidth(float width)
 {
 	gLineWidth(width);
 	checkError();
 }
 
-void glPointSize(GLfloat size)
+void glPointSize(float size)
 {
 	gPointSize(size);
 	checkError();
 }
 
-void glPolygonMode(GLenum face, GLenum mode)
+void glPolygonMode(std::uint32_t face, std::uint32_t mode)
 {
 	gPolygonMode(face, mode);
 	checkError();
 }
 
-void glScissor(GLint x, GLint y, GLsizei width, GLsizei height)
+void glScissor(std::int32_t x, std::int32_t y, std::int32_t width, std::int32_t height)
 {
 	gScissor(x, y, width, height);
 	checkError();
 }
 
-void glTexParameterf(GLenum target, GLenum pname, GLfloat param)
+void glTexParameterf(std::uint32_t target, std::uint32_t pname, float param)
 {
 	gTexParameterf(target, pname, param);
 	checkError();
 }
 
-void glTexParameterfv(GLenum target, GLenum pname, GLfloat const * params)
+void glTexParameterfv(std::uint32_t target, std::uint32_t pname, float const * params)
 {
 	gTexParameterfv(target, pname, params);
 	checkError();
 }
 
-void glTexParameteri(GLenum target, GLenum pname, GLint param)
+void glTexParameteri(std::uint32_t target, std::uint32_t pname, std::int32_t param)
 {
 	gTexParameteri(target, pname, param);
 	checkError();
 }
 
-void glTexParameteriv(GLenum target, GLenum pname, GLint const * params)
+void glTexParameteriv(std::uint32_t target, std::uint32_t pname, std::int32_t const * params)
 {
 	gTexParameteriv(target, pname, params);
 	checkError();
 }
 
-void glTexImage1D(GLenum target, GLint level, GLint internalformat, GLsizei width, GLint border, GLenum format, GLenum type, GLvoid const * pixels)
+void glTexImage1D(std::uint32_t target, std::int32_t level, std::int32_t internalformat, std::int32_t width, std::int32_t border, std::uint32_t format, std::uint32_t type, void const * pixels)
 {
 	gTexImage1D(target, level, internalformat, width, border, format, type, pixels);
 	checkError();
 }
 
-void glTexImage2D(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, GLvoid const * pixels)
+void glTexImage2D(std::uint32_t target, std::int32_t level, std::int32_t internalformat, std::int32_t width, std::int32_t height, std::int32_t border, std::uint32_t format, std::uint32_t type, void const * pixels)
 {
 	gTexImage2D(target, level, internalformat, width, height, border, format, type, pixels);
 	checkError();
 }
 
-void glDrawBuffer(GLenum mode)
+void glDrawBuffer(std::uint32_t mode)
 {
 	gDrawBuffer(mode);
 	checkError();
 }
 
-void glClear(GLbitfield mask)
+void glClear(std::uint32_t mask)
 {
 	gClear(mask);
 	checkError();
 }
 
-void glClearColor(GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha)
+void glClearColor(float red, float green, float blue, float alpha)
 {
 	gClearColor(red, green, blue, alpha);
 	checkError();
 }
 
-void glClearStencil(GLint s)
+void glClearStencil(std::int32_t s)
 {
 	gClearStencil(s);
 	checkError();
 }
 
-void glClearDepth(GLclampd depth)
+void glClearDepth(double depth)
 {
 	gClearDepth(depth);
 	checkError();
 }
 
-void glStencilMask(GLuint mask)
+void glStencilMask(std::uint32_t mask)
 {
 	gStencilMask(mask);
 	checkError();
 }
 
-void glColorMask(GLboolean red, GLboolean green, GLboolean blue, GLboolean alpha)
+void glColorMask(std::uint8_t red, std::uint8_t green, std::uint8_t blue, std::uint8_t alpha)
 {
 	gColorMask(red, green, blue, alpha);
 	checkError();
 }
 
-void glDepthMask(GLboolean flag)
+void glDepthMask(std::uint8_t flag)
 {
 	gDepthMask(flag);
 	checkError();
 }
 
-void glDisable(GLenum cap)
+void glDisable(std::uint32_t cap)
 {
 	gDisable(cap);
 	checkError();
 }
 
-void glEnable(GLenum cap)
+void glEnable(std::uint32_t cap)
 {
 	gEnable(cap);
 	checkError();
@@ -1256,1120 +1256,1120 @@ void glFlush()
 	checkError();
 }
 
-void glBlendFunc(GLenum sfactor, GLenum dfactor)
+void glBlendFunc(std::uint32_t sfactor, std::uint32_t dfactor)
 {
 	gBlendFunc(sfactor, dfactor);
 	checkError();
 }
 
-void glLogicOp(GLenum opcode)
+void glLogicOp(std::uint32_t opcode)
 {
 	gLogicOp(opcode);
 	checkError();
 }
 
-void glStencilFunc(GLenum func, GLint ref, GLuint mask)
+void glStencilFunc(std::uint32_t func, std::int32_t ref, std::uint32_t mask)
 {
 	gStencilFunc(func, ref, mask);
 	checkError();
 }
 
-void glStencilOp(GLenum fail, GLenum zfail, GLenum zpass)
+void glStencilOp(std::uint32_t fail, std::uint32_t zfail, std::uint32_t zpass)
 {
 	gStencilOp(fail, zfail, zpass);
 	checkError();
 }
 
-void glDepthFunc(GLenum func)
+void glDepthFunc(std::uint32_t func)
 {
 	gDepthFunc(func);
 	checkError();
 }
 
-void glPixelStoref(GLenum pname, GLfloat param)
+void glPixelStoref(std::uint32_t pname, float param)
 {
 	gPixelStoref(pname, param);
 	checkError();
 }
 
-void glPixelStorei(GLenum pname, GLint param)
+void glPixelStorei(std::uint32_t pname, std::int32_t param)
 {
 	gPixelStorei(pname, param);
 	checkError();
 }
 
-void glReadBuffer(GLenum mode)
+void glReadBuffer(std::uint32_t mode)
 {
 	gReadBuffer(mode);
 	checkError();
 }
 
-void glReadPixels(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid * pixels)
+void glReadPixels(std::int32_t x, std::int32_t y, std::int32_t width, std::int32_t height, std::uint32_t format, std::uint32_t type, void * pixels)
 {
 	gReadPixels(x, y, width, height, format, type, pixels);
 	checkError();
 }
 
-void glGetBooleanv(GLenum pname, GLboolean * params)
+void glGetBooleanv(std::uint32_t pname, std::uint8_t * params)
 {
 	gGetBooleanv(pname, params);
 	checkError();
 }
 
-void glGetDoublev(GLenum pname, GLdouble * params)
+void glGetDoublev(std::uint32_t pname, double * params)
 {
 	gGetDoublev(pname, params);
 	checkError();
 }
 
-GLenum glGetError()
+std::uint32_t glGetError()
 {
 	auto result = gGetError();
 	checkError();
 	return result;
 }
 
-void glGetFloatv(GLenum pname, GLfloat * params)
+void glGetFloatv(std::uint32_t pname, float * params)
 {
 	gGetFloatv(pname, params);
 	checkError();
 }
 
-void glGetIntegerv(GLenum pname, GLint * params)
+void glGetIntegerv(std::uint32_t pname, std::int32_t * params)
 {
 	gGetIntegerv(pname, params);
 	checkError();
 }
 
-GLubyte const * glGetString(GLenum name)
+std::uint8_t const * glGetString(std::uint32_t name)
 {
 	auto result = gGetString(name);
 	checkError();
 	return result;
 }
 
-void glGetTexImage(GLenum target, GLint level, GLenum format, GLenum type, GLvoid * pixels)
+void glGetTexImage(std::uint32_t target, std::int32_t level, std::uint32_t format, std::uint32_t type, void * pixels)
 {
 	gGetTexImage(target, level, format, type, pixels);
 	checkError();
 }
 
-void glGetTexParameterfv(GLenum target, GLenum pname, GLfloat * params)
+void glGetTexParameterfv(std::uint32_t target, std::uint32_t pname, float * params)
 {
 	gGetTexParameterfv(target, pname, params);
 	checkError();
 }
 
-void glGetTexParameteriv(GLenum target, GLenum pname, GLint * params)
+void glGetTexParameteriv(std::uint32_t target, std::uint32_t pname, std::int32_t * params)
 {
 	gGetTexParameteriv(target, pname, params);
 	checkError();
 }
 
-void glGetTexLevelParameterfv(GLenum target, GLint level, GLenum pname, GLfloat * params)
+void glGetTexLevelParameterfv(std::uint32_t target, std::int32_t level, std::uint32_t pname, float * params)
 {
 	gGetTexLevelParameterfv(target, level, pname, params);
 	checkError();
 }
 
-void glGetTexLevelParameteriv(GLenum target, GLint level, GLenum pname, GLint * params)
+void glGetTexLevelParameteriv(std::uint32_t target, std::int32_t level, std::uint32_t pname, std::int32_t * params)
 {
 	gGetTexLevelParameteriv(target, level, pname, params);
 	checkError();
 }
 
-GLboolean glIsEnabled(GLenum cap)
+std::uint8_t glIsEnabled(std::uint32_t cap)
 {
 	auto result = gIsEnabled(cap);
 	checkError();
 	return result;
 }
 
-void glDepthRange(GLclampd near, GLclampd far)
+void glDepthRange(double near, double far)
 {
 	gDepthRange(near, far);
 	checkError();
 }
 
-void glViewport(GLint x, GLint y, GLsizei width, GLsizei height)
+void glViewport(std::int32_t x, std::int32_t y, std::int32_t width, std::int32_t height)
 {
 	gViewport(x, y, width, height);
 	checkError();
 }
 
-void glDrawArrays(GLenum mode, GLint first, GLsizei count)
+void glDrawArrays(std::uint32_t mode, std::int32_t first, std::int32_t count)
 {
 	gDrawArrays(mode, first, count);
 	checkError();
 }
 
-void glDrawElements(GLenum mode, GLsizei count, GLenum type, GLvoid const * indices)
+void glDrawElements(std::uint32_t mode, std::int32_t count, std::uint32_t type, void const * indices)
 {
 	gDrawElements(mode, count, type, indices);
 	checkError();
 }
 
-void glGetPointerv(GLenum pname, GLvoid * * params)
+void glGetPointerv(std::uint32_t pname, void * * params)
 {
 	gGetPointerv(pname, params);
 	checkError();
 }
 
-void glPolygonOffset(GLfloat factor, GLfloat units)
+void glPolygonOffset(float factor, float units)
 {
 	gPolygonOffset(factor, units);
 	checkError();
 }
 
-void glCopyTexImage1D(GLenum target, GLint level, GLenum internalformat, GLint x, GLint y, GLsizei width, GLint border)
+void glCopyTexImage1D(std::uint32_t target, std::int32_t level, std::uint32_t internalformat, std::int32_t x, std::int32_t y, std::int32_t width, std::int32_t border)
 {
 	gCopyTexImage1D(target, level, internalformat, x, y, width, border);
 	checkError();
 }
 
-void glCopyTexImage2D(GLenum target, GLint level, GLenum internalformat, GLint x, GLint y, GLsizei width, GLsizei height, GLint border)
+void glCopyTexImage2D(std::uint32_t target, std::int32_t level, std::uint32_t internalformat, std::int32_t x, std::int32_t y, std::int32_t width, std::int32_t height, std::int32_t border)
 {
 	gCopyTexImage2D(target, level, internalformat, x, y, width, height, border);
 	checkError();
 }
 
-void glCopyTexSubImage1D(GLenum target, GLint level, GLint xoffset, GLint x, GLint y, GLsizei width)
+void glCopyTexSubImage1D(std::uint32_t target, std::int32_t level, std::int32_t xoffset, std::int32_t x, std::int32_t y, std::int32_t width)
 {
 	gCopyTexSubImage1D(target, level, xoffset, x, y, width);
 	checkError();
 }
 
-void glCopyTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint x, GLint y, GLsizei width, GLsizei height)
+void glCopyTexSubImage2D(std::uint32_t target, std::int32_t level, std::int32_t xoffset, std::int32_t yoffset, std::int32_t x, std::int32_t y, std::int32_t width, std::int32_t height)
 {
 	gCopyTexSubImage2D(target, level, xoffset, yoffset, x, y, width, height);
 	checkError();
 }
 
-void glTexSubImage1D(GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLenum type, GLvoid const * pixels)
+void glTexSubImage1D(std::uint32_t target, std::int32_t level, std::int32_t xoffset, std::int32_t width, std::uint32_t format, std::uint32_t type, void const * pixels)
 {
 	gTexSubImage1D(target, level, xoffset, width, format, type, pixels);
 	checkError();
 }
 
-void glTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLenum type, GLvoid const * pixels)
+void glTexSubImage2D(std::uint32_t target, std::int32_t level, std::int32_t xoffset, std::int32_t yoffset, std::int32_t width, std::int32_t height, std::uint32_t format, std::uint32_t type, void const * pixels)
 {
 	gTexSubImage2D(target, level, xoffset, yoffset, width, height, format, type, pixels);
 	checkError();
 }
 
-void glBindTexture(GLenum target, GLuint texture)
+void glBindTexture(std::uint32_t target, std::uint32_t texture)
 {
 	gBindTexture(target, texture);
 	checkError();
 }
 
-void glDeleteTextures(GLsizei n, GLuint const * textures)
+void glDeleteTextures(std::int32_t n, std::uint32_t const * textures)
 {
 	gDeleteTextures(n, textures);
 	checkError();
 }
 
-void glGenTextures(GLsizei n, GLuint * textures)
+void glGenTextures(std::int32_t n, std::uint32_t * textures)
 {
 	gGenTextures(n, textures);
 	checkError();
 }
 
-GLboolean glIsTexture(GLuint texture)
+std::uint8_t glIsTexture(std::uint32_t texture)
 {
 	auto result = gIsTexture(texture);
 	checkError();
 	return result;
 }
 
-void glBlendColor(GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha)
+void glBlendColor(float red, float green, float blue, float alpha)
 {
 	gBlendColor(red, green, blue, alpha);
 	checkError();
 }
 
-void glBlendEquation(GLenum mode)
+void glBlendEquation(std::uint32_t mode)
 {
 	gBlendEquation(mode);
 	checkError();
 }
 
-void glDrawRangeElements(GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, GLvoid const * indices)
+void glDrawRangeElements(std::uint32_t mode, std::uint32_t start, std::uint32_t end, std::int32_t count, std::uint32_t type, void const * indices)
 {
 	gDrawRangeElements(mode, start, end, count, type, indices);
 	checkError();
 }
 
-void glTexImage3D(GLenum target, GLint level, GLint internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLenum format, GLenum type, GLvoid const * pixels)
+void glTexImage3D(std::uint32_t target, std::int32_t level, std::int32_t internalformat, std::int32_t width, std::int32_t height, std::int32_t depth, std::int32_t border, std::uint32_t format, std::uint32_t type, void const * pixels)
 {
 	gTexImage3D(target, level, internalformat, width, height, depth, border, format, type, pixels);
 	checkError();
 }
 
-void glTexSubImage3D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLenum type, GLvoid const * pixels)
+void glTexSubImage3D(std::uint32_t target, std::int32_t level, std::int32_t xoffset, std::int32_t yoffset, std::int32_t zoffset, std::int32_t width, std::int32_t height, std::int32_t depth, std::uint32_t format, std::uint32_t type, void const * pixels)
 {
 	gTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, type, pixels);
 	checkError();
 }
 
-void glCopyTexSubImage3D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLint x, GLint y, GLsizei width, GLsizei height)
+void glCopyTexSubImage3D(std::uint32_t target, std::int32_t level, std::int32_t xoffset, std::int32_t yoffset, std::int32_t zoffset, std::int32_t x, std::int32_t y, std::int32_t width, std::int32_t height)
 {
 	gCopyTexSubImage3D(target, level, xoffset, yoffset, zoffset, x, y, width, height);
 	checkError();
 }
 
-void glActiveTexture(GLenum texture)
+void glActiveTexture(std::uint32_t texture)
 {
 	gActiveTexture(texture);
 	checkError();
 }
 
-void glSampleCoverage(GLclampf value, GLboolean invert)
+void glSampleCoverage(float value, std::uint8_t invert)
 {
 	gSampleCoverage(value, invert);
 	checkError();
 }
 
-void glCompressedTexImage3D(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth, GLint border, GLsizei imageSize, GLvoid const * data)
+void glCompressedTexImage3D(std::uint32_t target, std::int32_t level, std::uint32_t internalformat, std::int32_t width, std::int32_t height, std::int32_t depth, std::int32_t border, std::int32_t imageSize, void const * data)
 {
 	gCompressedTexImage3D(target, level, internalformat, width, height, depth, border, imageSize, data);
 	checkError();
 }
 
-void glCompressedTexImage2D(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLsizei height, GLint border, GLsizei imageSize, GLvoid const * data)
+void glCompressedTexImage2D(std::uint32_t target, std::int32_t level, std::uint32_t internalformat, std::int32_t width, std::int32_t height, std::int32_t border, std::int32_t imageSize, void const * data)
 {
 	gCompressedTexImage2D(target, level, internalformat, width, height, border, imageSize, data);
 	checkError();
 }
 
-void glCompressedTexImage1D(GLenum target, GLint level, GLenum internalformat, GLsizei width, GLint border, GLsizei imageSize, GLvoid const * data)
+void glCompressedTexImage1D(std::uint32_t target, std::int32_t level, std::uint32_t internalformat, std::int32_t width, std::int32_t border, std::int32_t imageSize, void const * data)
 {
 	gCompressedTexImage1D(target, level, internalformat, width, border, imageSize, data);
 	checkError();
 }
 
-void glCompressedTexSubImage3D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLint zoffset, GLsizei width, GLsizei height, GLsizei depth, GLenum format, GLsizei imageSize, GLvoid const * data)
+void glCompressedTexSubImage3D(std::uint32_t target, std::int32_t level, std::int32_t xoffset, std::int32_t yoffset, std::int32_t zoffset, std::int32_t width, std::int32_t height, std::int32_t depth, std::uint32_t format, std::int32_t imageSize, void const * data)
 {
 	gCompressedTexSubImage3D(target, level, xoffset, yoffset, zoffset, width, height, depth, format, imageSize, data);
 	checkError();
 }
 
-void glCompressedTexSubImage2D(GLenum target, GLint level, GLint xoffset, GLint yoffset, GLsizei width, GLsizei height, GLenum format, GLsizei imageSize, GLvoid const * data)
+void glCompressedTexSubImage2D(std::uint32_t target, std::int32_t level, std::int32_t xoffset, std::int32_t yoffset, std::int32_t width, std::int32_t height, std::uint32_t format, std::int32_t imageSize, void const * data)
 {
 	gCompressedTexSubImage2D(target, level, xoffset, yoffset, width, height, format, imageSize, data);
 	checkError();
 }
 
-void glCompressedTexSubImage1D(GLenum target, GLint level, GLint xoffset, GLsizei width, GLenum format, GLsizei imageSize, GLvoid const * data)
+void glCompressedTexSubImage1D(std::uint32_t target, std::int32_t level, std::int32_t xoffset, std::int32_t width, std::uint32_t format, std::int32_t imageSize, void const * data)
 {
 	gCompressedTexSubImage1D(target, level, xoffset, width, format, imageSize, data);
 	checkError();
 }
 
-void glGetCompressedTexImage(GLenum target, GLint level, GLvoid * img)
+void glGetCompressedTexImage(std::uint32_t target, std::int32_t level, void * img)
 {
 	gGetCompressedTexImage(target, level, img);
 	checkError();
 }
 
-void glBlendFuncSeparate(GLenum sfactorRGB, GLenum dfactorRGB, GLenum sfactorAlpha, GLenum dfactorAlpha)
+void glBlendFuncSeparate(std::uint32_t sfactorRGB, std::uint32_t dfactorRGB, std::uint32_t sfactorAlpha, std::uint32_t dfactorAlpha)
 {
 	gBlendFuncSeparate(sfactorRGB, dfactorRGB, sfactorAlpha, dfactorAlpha);
 	checkError();
 }
 
-void glMultiDrawArrays(GLenum mode, GLint const * first, GLsizei const * count, GLsizei primcount)
+void glMultiDrawArrays(std::uint32_t mode, std::int32_t const * first, std::int32_t const * count, std::int32_t primcount)
 {
 	gMultiDrawArrays(mode, first, count, primcount);
 	checkError();
 }
 
-void glMultiDrawElements(GLenum mode, GLsizei const * count, GLenum type, GLvoid const * * indices, GLsizei primcount)
+void glMultiDrawElements(std::uint32_t mode, std::int32_t const * count, std::uint32_t type, void const * * indices, std::int32_t primcount)
 {
 	gMultiDrawElements(mode, count, type, indices, primcount);
 	checkError();
 }
 
-void glPointParameterf(GLenum pname, GLfloat param)
+void glPointParameterf(std::uint32_t pname, float param)
 {
 	gPointParameterf(pname, param);
 	checkError();
 }
 
-void glPointParameterfv(GLenum pname, GLfloat const * params)
+void glPointParameterfv(std::uint32_t pname, float const * params)
 {
 	gPointParameterfv(pname, params);
 	checkError();
 }
 
-void glPointParameteri(GLenum pname, GLint param)
+void glPointParameteri(std::uint32_t pname, std::int32_t param)
 {
 	gPointParameteri(pname, param);
 	checkError();
 }
 
-void glPointParameteriv(GLenum pname, GLint const * params)
+void glPointParameteriv(std::uint32_t pname, std::int32_t const * params)
 {
 	gPointParameteriv(pname, params);
 	checkError();
 }
 
-void glGenQueries(GLsizei n, GLuint * ids)
+void glGenQueries(std::int32_t n, std::uint32_t * ids)
 {
 	gGenQueries(n, ids);
 	checkError();
 }
 
-void glDeleteQueries(GLsizei n, GLuint const * ids)
+void glDeleteQueries(std::int32_t n, std::uint32_t const * ids)
 {
 	gDeleteQueries(n, ids);
 	checkError();
 }
 
-GLboolean glIsQuery(GLuint id)
+std::uint8_t glIsQuery(std::uint32_t id)
 {
 	auto result = gIsQuery(id);
 	checkError();
 	return result;
 }
 
-void glBeginQuery(GLenum target, GLuint id)
+void glBeginQuery(std::uint32_t target, std::uint32_t id)
 {
 	gBeginQuery(target, id);
 	checkError();
 }
 
-void glEndQuery(GLenum target)
+void glEndQuery(std::uint32_t target)
 {
 	gEndQuery(target);
 	checkError();
 }
 
-void glGetQueryiv(GLenum target, GLenum pname, GLint * params)
+void glGetQueryiv(std::uint32_t target, std::uint32_t pname, std::int32_t * params)
 {
 	gGetQueryiv(target, pname, params);
 	checkError();
 }
 
-void glGetQueryObjectiv(GLuint id, GLenum pname, GLint * params)
+void glGetQueryObjectiv(std::uint32_t id, std::uint32_t pname, std::int32_t * params)
 {
 	gGetQueryObjectiv(id, pname, params);
 	checkError();
 }
 
-void glGetQueryObjectuiv(GLuint id, GLenum pname, GLuint * params)
+void glGetQueryObjectuiv(std::uint32_t id, std::uint32_t pname, std::uint32_t * params)
 {
 	gGetQueryObjectuiv(id, pname, params);
 	checkError();
 }
 
-void glBindBuffer(GLenum target, GLuint buffer)
+void glBindBuffer(std::uint32_t target, std::uint32_t buffer)
 {
 	gBindBuffer(target, buffer);
 	checkError();
 }
 
-void glDeleteBuffers(GLsizei n, GLuint const * buffers)
+void glDeleteBuffers(std::int32_t n, std::uint32_t const * buffers)
 {
 	gDeleteBuffers(n, buffers);
 	checkError();
 }
 
-void glGenBuffers(GLsizei n, GLuint * buffers)
+void glGenBuffers(std::int32_t n, std::uint32_t * buffers)
 {
 	gGenBuffers(n, buffers);
 	checkError();
 }
 
-GLboolean glIsBuffer(GLuint buffer)
+std::uint8_t glIsBuffer(std::uint32_t buffer)
 {
 	auto result = gIsBuffer(buffer);
 	checkError();
 	return result;
 }
 
-void glBufferData(GLenum target, GLsizeiptr size, GLvoid const * data, GLenum usage)
+void glBufferData(std::uint32_t target, std::ptrdiff_t size, void const * data, std::uint32_t usage)
 {
 	gBufferData(target, size, data, usage);
 	checkError();
 }
 
-void glBufferSubData(GLenum target, GLintptr offset, GLsizeiptr size, GLvoid const * data)
+void glBufferSubData(std::uint32_t target, std::ptrdiff_t offset, std::ptrdiff_t size, void const * data)
 {
 	gBufferSubData(target, offset, size, data);
 	checkError();
 }
 
-void glGetBufferSubData(GLenum target, GLintptr offset, GLsizeiptr size, GLvoid * data)
+void glGetBufferSubData(std::uint32_t target, std::ptrdiff_t offset, std::ptrdiff_t size, void * data)
 {
 	gGetBufferSubData(target, offset, size, data);
 	checkError();
 }
 
-GLvoid * glMapBuffer(GLenum target, GLenum access)
+void * glMapBuffer(std::uint32_t target, std::uint32_t access)
 {
 	auto result = gMapBuffer(target, access);
 	checkError();
 	return result;
 }
 
-GLboolean glUnmapBuffer(GLenum target)
+std::uint8_t glUnmapBuffer(std::uint32_t target)
 {
 	auto result = gUnmapBuffer(target);
 	checkError();
 	return result;
 }
 
-void glGetBufferParameteriv(GLenum target, GLenum pname, GLint * params)
+void glGetBufferParameteriv(std::uint32_t target, std::uint32_t pname, std::int32_t * params)
 {
 	gGetBufferParameteriv(target, pname, params);
 	checkError();
 }
 
-void glGetBufferPointerv(GLenum target, GLenum pname, GLvoid * * params)
+void glGetBufferPointerv(std::uint32_t target, std::uint32_t pname, void * * params)
 {
 	gGetBufferPointerv(target, pname, params);
 	checkError();
 }
 
-void glBlendEquationSeparate(GLenum modeRGB, GLenum modeAlpha)
+void glBlendEquationSeparate(std::uint32_t modeRGB, std::uint32_t modeAlpha)
 {
 	gBlendEquationSeparate(modeRGB, modeAlpha);
 	checkError();
 }
 
-void glDrawBuffers(GLsizei n, GLenum const * bufs)
+void glDrawBuffers(std::int32_t n, std::uint32_t const * bufs)
 {
 	gDrawBuffers(n, bufs);
 	checkError();
 }
 
-void glStencilOpSeparate(GLenum face, GLenum sfail, GLenum dpfail, GLenum dppass)
+void glStencilOpSeparate(std::uint32_t face, std::uint32_t sfail, std::uint32_t dpfail, std::uint32_t dppass)
 {
 	gStencilOpSeparate(face, sfail, dpfail, dppass);
 	checkError();
 }
 
-void glStencilFuncSeparate(GLenum face, GLenum func, GLint ref, GLuint mask)
+void glStencilFuncSeparate(std::uint32_t face, std::uint32_t func, std::int32_t ref, std::uint32_t mask)
 {
 	gStencilFuncSeparate(face, func, ref, mask);
 	checkError();
 }
 
-void glStencilMaskSeparate(GLenum face, GLuint mask)
+void glStencilMaskSeparate(std::uint32_t face, std::uint32_t mask)
 {
 	gStencilMaskSeparate(face, mask);
 	checkError();
 }
 
-void glAttachShader(GLuint program, GLuint shader)
+void glAttachShader(std::uint32_t program, std::uint32_t shader)
 {
 	gAttachShader(program, shader);
 	checkError();
 }
 
-void glBindAttribLocation(GLuint program, GLuint index, GLchar const * name)
+void glBindAttribLocation(std::uint32_t program, std::uint32_t index, char const * name)
 {
 	gBindAttribLocation(program, index, name);
 	checkError();
 }
 
-void glCompileShader(GLuint shader)
+void glCompileShader(std::uint32_t shader)
 {
 	gCompileShader(shader);
 	checkError();
 }
 
-GLuint glCreateProgram()
+std::uint32_t glCreateProgram()
 {
 	auto result = gCreateProgram();
 	checkError();
 	return result;
 }
 
-GLuint glCreateShader(GLenum type)
+std::uint32_t glCreateShader(std::uint32_t type)
 {
 	auto result = gCreateShader(type);
 	checkError();
 	return result;
 }
 
-void glDeleteProgram(GLuint program)
+void glDeleteProgram(std::uint32_t program)
 {
 	gDeleteProgram(program);
 	checkError();
 }
 
-void glDeleteShader(GLuint shader)
+void glDeleteShader(std::uint32_t shader)
 {
 	gDeleteShader(shader);
 	checkError();
 }
 
-void glDetachShader(GLuint program, GLuint shader)
+void glDetachShader(std::uint32_t program, std::uint32_t shader)
 {
 	gDetachShader(program, shader);
 	checkError();
 }
 
-void glDisableVertexAttribArray(GLuint index)
+void glDisableVertexAttribArray(std::uint32_t index)
 {
 	gDisableVertexAttribArray(index);
 	checkError();
 }
 
-void glEnableVertexAttribArray(GLuint index)
+void glEnableVertexAttribArray(std::uint32_t index)
 {
 	gEnableVertexAttribArray(index);
 	checkError();
 }
 
-void glGetActiveAttrib(GLuint program, GLuint index, GLsizei bufSize, GLsizei * length, GLint * size, GLenum * type, GLchar * name)
+void glGetActiveAttrib(std::uint32_t program, std::uint32_t index, std::int32_t bufSize, std::int32_t * length, std::int32_t * size, std::uint32_t * type, char * name)
 {
 	gGetActiveAttrib(program, index, bufSize, length, size, type, name);
 	checkError();
 }
 
-void glGetActiveUniform(GLuint program, GLuint index, GLsizei bufSize, GLsizei * length, GLint * size, GLenum * type, GLchar * name)
+void glGetActiveUniform(std::uint32_t program, std::uint32_t index, std::int32_t bufSize, std::int32_t * length, std::int32_t * size, std::uint32_t * type, char * name)
 {
 	gGetActiveUniform(program, index, bufSize, length, size, type, name);
 	checkError();
 }
 
-void glGetAttachedShaders(GLuint program, GLsizei maxCount, GLsizei * count, GLuint * obj)
+void glGetAttachedShaders(std::uint32_t program, std::int32_t maxCount, std::int32_t * count, std::uint32_t * obj)
 {
 	gGetAttachedShaders(program, maxCount, count, obj);
 	checkError();
 }
 
-GLint glGetAttribLocation(GLuint program, GLchar const * name)
+std::int32_t glGetAttribLocation(std::uint32_t program, char const * name)
 {
 	auto result = gGetAttribLocation(program, name);
 	checkError();
 	return result;
 }
 
-void glGetProgramiv(GLuint program, GLenum pname, GLint * params)
+void glGetProgramiv(std::uint32_t program, std::uint32_t pname, std::int32_t * params)
 {
 	gGetProgramiv(program, pname, params);
 	checkError();
 }
 
-void glGetProgramInfoLog(GLuint program, GLsizei bufSize, GLsizei * length, GLchar * infoLog)
+void glGetProgramInfoLog(std::uint32_t program, std::int32_t bufSize, std::int32_t * length, char * infoLog)
 {
 	gGetProgramInfoLog(program, bufSize, length, infoLog);
 	checkError();
 }
 
-void glGetShaderiv(GLuint shader, GLenum pname, GLint * params)
+void glGetShaderiv(std::uint32_t shader, std::uint32_t pname, std::int32_t * params)
 {
 	gGetShaderiv(shader, pname, params);
 	checkError();
 }
 
-void glGetShaderInfoLog(GLuint shader, GLsizei bufSize, GLsizei * length, GLchar * infoLog)
+void glGetShaderInfoLog(std::uint32_t shader, std::int32_t bufSize, std::int32_t * length, char * infoLog)
 {
 	gGetShaderInfoLog(shader, bufSize, length, infoLog);
 	checkError();
 }
 
-void glGetShaderSource(GLuint shader, GLsizei bufSize, GLsizei * length, GLchar * source)
+void glGetShaderSource(std::uint32_t shader, std::int32_t bufSize, std::int32_t * length, char * source)
 {
 	gGetShaderSource(shader, bufSize, length, source);
 	checkError();
 }
 
-GLint glGetUniformLocation(GLuint program, GLchar const * name)
+std::int32_t glGetUniformLocation(std::uint32_t program, char const * name)
 {
 	auto result = gGetUniformLocation(program, name);
 	checkError();
 	return result;
 }
 
-void glGetUniformfv(GLuint program, GLint location, GLfloat * params)
+void glGetUniformfv(std::uint32_t program, std::int32_t location, float * params)
 {
 	gGetUniformfv(program, location, params);
 	checkError();
 }
 
-void glGetUniformiv(GLuint program, GLint location, GLint * params)
+void glGetUniformiv(std::uint32_t program, std::int32_t location, std::int32_t * params)
 {
 	gGetUniformiv(program, location, params);
 	checkError();
 }
 
-void glGetVertexAttribdv(GLuint index, GLenum pname, GLdouble * params)
+void glGetVertexAttribdv(std::uint32_t index, std::uint32_t pname, double * params)
 {
 	gGetVertexAttribdv(index, pname, params);
 	checkError();
 }
 
-void glGetVertexAttribfv(GLuint index, GLenum pname, GLfloat * params)
+void glGetVertexAttribfv(std::uint32_t index, std::uint32_t pname, float * params)
 {
 	gGetVertexAttribfv(index, pname, params);
 	checkError();
 }
 
-void glGetVertexAttribiv(GLuint index, GLenum pname, GLint * params)
+void glGetVertexAttribiv(std::uint32_t index, std::uint32_t pname, std::int32_t * params)
 {
 	gGetVertexAttribiv(index, pname, params);
 	checkError();
 }
 
-void glGetVertexAttribPointerv(GLuint index, GLenum pname, GLvoid * * pointer)
+void glGetVertexAttribPointerv(std::uint32_t index, std::uint32_t pname, void * * pointer)
 {
 	gGetVertexAttribPointerv(index, pname, pointer);
 	checkError();
 }
 
-GLboolean glIsProgram(GLuint program)
+std::uint8_t glIsProgram(std::uint32_t program)
 {
 	auto result = gIsProgram(program);
 	checkError();
 	return result;
 }
 
-GLboolean glIsShader(GLuint shader)
+std::uint8_t glIsShader(std::uint32_t shader)
 {
 	auto result = gIsShader(shader);
 	checkError();
 	return result;
 }
 
-void glLinkProgram(GLuint program)
+void glLinkProgram(std::uint32_t program)
 {
 	gLinkProgram(program);
 	checkError();
 }
 
-void glShaderSource(GLuint shader, GLsizei count, GLchar const * * string, GLint const * length)
+void glShaderSource(std::uint32_t shader, std::int32_t count, char const * * string, std::int32_t const * length)
 {
 	gShaderSource(shader, count, string, length);
 	checkError();
 }
 
-void glUseProgram(GLuint program)
+void glUseProgram(std::uint32_t program)
 {
 	gUseProgram(program);
 	checkError();
 }
 
-void glUniform1f(GLint location, GLfloat v0)
+void glUniform1f(std::int32_t location, float v0)
 {
 	gUniform1f(location, v0);
 	checkError();
 }
 
-void glUniform2f(GLint location, GLfloat v0, GLfloat v1)
+void glUniform2f(std::int32_t location, float v0, float v1)
 {
 	gUniform2f(location, v0, v1);
 	checkError();
 }
 
-void glUniform3f(GLint location, GLfloat v0, GLfloat v1, GLfloat v2)
+void glUniform3f(std::int32_t location, float v0, float v1, float v2)
 {
 	gUniform3f(location, v0, v1, v2);
 	checkError();
 }
 
-void glUniform4f(GLint location, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3)
+void glUniform4f(std::int32_t location, float v0, float v1, float v2, float v3)
 {
 	gUniform4f(location, v0, v1, v2, v3);
 	checkError();
 }
 
-void glUniform1i(GLint location, GLint v0)
+void glUniform1i(std::int32_t location, std::int32_t v0)
 {
 	gUniform1i(location, v0);
 	checkError();
 }
 
-void glUniform2i(GLint location, GLint v0, GLint v1)
+void glUniform2i(std::int32_t location, std::int32_t v0, std::int32_t v1)
 {
 	gUniform2i(location, v0, v1);
 	checkError();
 }
 
-void glUniform3i(GLint location, GLint v0, GLint v1, GLint v2)
+void glUniform3i(std::int32_t location, std::int32_t v0, std::int32_t v1, std::int32_t v2)
 {
 	gUniform3i(location, v0, v1, v2);
 	checkError();
 }
 
-void glUniform4i(GLint location, GLint v0, GLint v1, GLint v2, GLint v3)
+void glUniform4i(std::int32_t location, std::int32_t v0, std::int32_t v1, std::int32_t v2, std::int32_t v3)
 {
 	gUniform4i(location, v0, v1, v2, v3);
 	checkError();
 }
 
-void glUniform1fv(GLint location, GLsizei count, GLfloat const * value)
+void glUniform1fv(std::int32_t location, std::int32_t count, float const * value)
 {
 	gUniform1fv(location, count, value);
 	checkError();
 }
 
-void glUniform2fv(GLint location, GLsizei count, GLfloat const * value)
+void glUniform2fv(std::int32_t location, std::int32_t count, float const * value)
 {
 	gUniform2fv(location, count, value);
 	checkError();
 }
 
-void glUniform3fv(GLint location, GLsizei count, GLfloat const * value)
+void glUniform3fv(std::int32_t location, std::int32_t count, float const * value)
 {
 	gUniform3fv(location, count, value);
 	checkError();
 }
 
-void glUniform4fv(GLint location, GLsizei count, GLfloat const * value)
+void glUniform4fv(std::int32_t location, std::int32_t count, float const * value)
 {
 	gUniform4fv(location, count, value);
 	checkError();
 }
 
-void glUniform1iv(GLint location, GLsizei count, GLint const * value)
+void glUniform1iv(std::int32_t location, std::int32_t count, std::int32_t const * value)
 {
 	gUniform1iv(location, count, value);
 	checkError();
 }
 
-void glUniform2iv(GLint location, GLsizei count, GLint const * value)
+void glUniform2iv(std::int32_t location, std::int32_t count, std::int32_t const * value)
 {
 	gUniform2iv(location, count, value);
 	checkError();
 }
 
-void glUniform3iv(GLint location, GLsizei count, GLint const * value)
+void glUniform3iv(std::int32_t location, std::int32_t count, std::int32_t const * value)
 {
 	gUniform3iv(location, count, value);
 	checkError();
 }
 
-void glUniform4iv(GLint location, GLsizei count, GLint const * value)
+void glUniform4iv(std::int32_t location, std::int32_t count, std::int32_t const * value)
 {
 	gUniform4iv(location, count, value);
 	checkError();
 }
 
-void glUniformMatrix2fv(GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
+void glUniformMatrix2fv(std::int32_t location, std::int32_t count, std::uint8_t transpose, float const * value)
 {
 	gUniformMatrix2fv(location, count, transpose, value);
 	checkError();
 }
 
-void glUniformMatrix3fv(GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
+void glUniformMatrix3fv(std::int32_t location, std::int32_t count, std::uint8_t transpose, float const * value)
 {
 	gUniformMatrix3fv(location, count, transpose, value);
 	checkError();
 }
 
-void glUniformMatrix4fv(GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
+void glUniformMatrix4fv(std::int32_t location, std::int32_t count, std::uint8_t transpose, float const * value)
 {
 	gUniformMatrix4fv(location, count, transpose, value);
 	checkError();
 }
 
-void glValidateProgram(GLuint program)
+void glValidateProgram(std::uint32_t program)
 {
 	gValidateProgram(program);
 	checkError();
 }
 
-void glVertexAttrib1d(GLuint index, GLdouble x)
+void glVertexAttrib1d(std::uint32_t index, double x)
 {
 	gVertexAttrib1d(index, x);
 	checkError();
 }
 
-void glVertexAttrib1dv(GLuint index, GLdouble const * v)
+void glVertexAttrib1dv(std::uint32_t index, double const * v)
 {
 	gVertexAttrib1dv(index, v);
 	checkError();
 }
 
-void glVertexAttrib1f(GLuint index, GLfloat x)
+void glVertexAttrib1f(std::uint32_t index, float x)
 {
 	gVertexAttrib1f(index, x);
 	checkError();
 }
 
-void glVertexAttrib1fv(GLuint index, GLfloat const * v)
+void glVertexAttrib1fv(std::uint32_t index, float const * v)
 {
 	gVertexAttrib1fv(index, v);
 	checkError();
 }
 
-void glVertexAttrib1s(GLuint index, GLshort x)
+void glVertexAttrib1s(std::uint32_t index, std::int16_t x)
 {
 	gVertexAttrib1s(index, x);
 	checkError();
 }
 
-void glVertexAttrib1sv(GLuint index, GLshort const * v)
+void glVertexAttrib1sv(std::uint32_t index, std::int16_t const * v)
 {
 	gVertexAttrib1sv(index, v);
 	checkError();
 }
 
-void glVertexAttrib2d(GLuint index, GLdouble x, GLdouble y)
+void glVertexAttrib2d(std::uint32_t index, double x, double y)
 {
 	gVertexAttrib2d(index, x, y);
 	checkError();
 }
 
-void glVertexAttrib2dv(GLuint index, GLdouble const * v)
+void glVertexAttrib2dv(std::uint32_t index, double const * v)
 {
 	gVertexAttrib2dv(index, v);
 	checkError();
 }
 
-void glVertexAttrib2f(GLuint index, GLfloat x, GLfloat y)
+void glVertexAttrib2f(std::uint32_t index, float x, float y)
 {
 	gVertexAttrib2f(index, x, y);
 	checkError();
 }
 
-void glVertexAttrib2fv(GLuint index, GLfloat const * v)
+void glVertexAttrib2fv(std::uint32_t index, float const * v)
 {
 	gVertexAttrib2fv(index, v);
 	checkError();
 }
 
-void glVertexAttrib2s(GLuint index, GLshort x, GLshort y)
+void glVertexAttrib2s(std::uint32_t index, std::int16_t x, std::int16_t y)
 {
 	gVertexAttrib2s(index, x, y);
 	checkError();
 }
 
-void glVertexAttrib2sv(GLuint index, GLshort const * v)
+void glVertexAttrib2sv(std::uint32_t index, std::int16_t const * v)
 {
 	gVertexAttrib2sv(index, v);
 	checkError();
 }
 
-void glVertexAttrib3d(GLuint index, GLdouble x, GLdouble y, GLdouble z)
+void glVertexAttrib3d(std::uint32_t index, double x, double y, double z)
 {
 	gVertexAttrib3d(index, x, y, z);
 	checkError();
 }
 
-void glVertexAttrib3dv(GLuint index, GLdouble const * v)
+void glVertexAttrib3dv(std::uint32_t index, double const * v)
 {
 	gVertexAttrib3dv(index, v);
 	checkError();
 }
 
-void glVertexAttrib3f(GLuint index, GLfloat x, GLfloat y, GLfloat z)
+void glVertexAttrib3f(std::uint32_t index, float x, float y, float z)
 {
 	gVertexAttrib3f(index, x, y, z);
 	checkError();
 }
 
-void glVertexAttrib3fv(GLuint index, GLfloat const * v)
+void glVertexAttrib3fv(std::uint32_t index, float const * v)
 {
 	gVertexAttrib3fv(index, v);
 	checkError();
 }
 
-void glVertexAttrib3s(GLuint index, GLshort x, GLshort y, GLshort z)
+void glVertexAttrib3s(std::uint32_t index, std::int16_t x, std::int16_t y, std::int16_t z)
 {
 	gVertexAttrib3s(index, x, y, z);
 	checkError();
 }
 
-void glVertexAttrib3sv(GLuint index, GLshort const * v)
+void glVertexAttrib3sv(std::uint32_t index, std::int16_t const * v)
 {
 	gVertexAttrib3sv(index, v);
 	checkError();
 }
 
-void glVertexAttrib4Nbv(GLuint index, GLbyte const * v)
+void glVertexAttrib4Nbv(std::uint32_t index, std::int8_t const * v)
 {
 	gVertexAttrib4Nbv(index, v);
 	checkError();
 }
 
-void glVertexAttrib4Niv(GLuint index, GLint const * v)
+void glVertexAttrib4Niv(std::uint32_t index, std::int32_t const * v)
 {
 	gVertexAttrib4Niv(index, v);
 	checkError();
 }
 
-void glVertexAttrib4Nsv(GLuint index, GLshort const * v)
+void glVertexAttrib4Nsv(std::uint32_t index, std::int16_t const * v)
 {
 	gVertexAttrib4Nsv(index, v);
 	checkError();
 }
 
-void glVertexAttrib4Nub(GLuint index, GLubyte x, GLubyte y, GLubyte z, GLubyte w)
+void glVertexAttrib4Nub(std::uint32_t index, std::uint8_t x, std::uint8_t y, std::uint8_t z, std::uint8_t w)
 {
 	gVertexAttrib4Nub(index, x, y, z, w);
 	checkError();
 }
 
-void glVertexAttrib4Nubv(GLuint index, GLubyte const * v)
+void glVertexAttrib4Nubv(std::uint32_t index, std::uint8_t const * v)
 {
 	gVertexAttrib4Nubv(index, v);
 	checkError();
 }
 
-void glVertexAttrib4Nuiv(GLuint index, GLuint const * v)
+void glVertexAttrib4Nuiv(std::uint32_t index, std::uint32_t const * v)
 {
 	gVertexAttrib4Nuiv(index, v);
 	checkError();
 }
 
-void glVertexAttrib4Nusv(GLuint index, GLushort const * v)
+void glVertexAttrib4Nusv(std::uint32_t index, std::uint16_t const * v)
 {
 	gVertexAttrib4Nusv(index, v);
 	checkError();
 }
 
-void glVertexAttrib4bv(GLuint index, GLbyte const * v)
+void glVertexAttrib4bv(std::uint32_t index, std::int8_t const * v)
 {
 	gVertexAttrib4bv(index, v);
 	checkError();
 }
 
-void glVertexAttrib4d(GLuint index, GLdouble x, GLdouble y, GLdouble z, GLdouble w)
+void glVertexAttrib4d(std::uint32_t index, double x, double y, double z, double w)
 {
 	gVertexAttrib4d(index, x, y, z, w);
 	checkError();
 }
 
-void glVertexAttrib4dv(GLuint index, GLdouble const * v)
+void glVertexAttrib4dv(std::uint32_t index, double const * v)
 {
 	gVertexAttrib4dv(index, v);
 	checkError();
 }
 
-void glVertexAttrib4f(GLuint index, GLfloat x, GLfloat y, GLfloat z, GLfloat w)
+void glVertexAttrib4f(std::uint32_t index, float x, float y, float z, float w)
 {
 	gVertexAttrib4f(index, x, y, z, w);
 	checkError();
 }
 
-void glVertexAttrib4fv(GLuint index, GLfloat const * v)
+void glVertexAttrib4fv(std::uint32_t index, float const * v)
 {
 	gVertexAttrib4fv(index, v);
 	checkError();
 }
 
-void glVertexAttrib4iv(GLuint index, GLint const * v)
+void glVertexAttrib4iv(std::uint32_t index, std::int32_t const * v)
 {
 	gVertexAttrib4iv(index, v);
 	checkError();
 }
 
-void glVertexAttrib4s(GLuint index, GLshort x, GLshort y, GLshort z, GLshort w)
+void glVertexAttrib4s(std::uint32_t index, std::int16_t x, std::int16_t y, std::int16_t z, std::int16_t w)
 {
 	gVertexAttrib4s(index, x, y, z, w);
 	checkError();
 }
 
-void glVertexAttrib4sv(GLuint index, GLshort const * v)
+void glVertexAttrib4sv(std::uint32_t index, std::int16_t const * v)
 {
 	gVertexAttrib4sv(index, v);
 	checkError();
 }
 
-void glVertexAttrib4ubv(GLuint index, GLubyte const * v)
+void glVertexAttrib4ubv(std::uint32_t index, std::uint8_t const * v)
 {
 	gVertexAttrib4ubv(index, v);
 	checkError();
 }
 
-void glVertexAttrib4uiv(GLuint index, GLuint const * v)
+void glVertexAttrib4uiv(std::uint32_t index, std::uint32_t const * v)
 {
 	gVertexAttrib4uiv(index, v);
 	checkError();
 }
 
-void glVertexAttrib4usv(GLuint index, GLushort const * v)
+void glVertexAttrib4usv(std::uint32_t index, std::uint16_t const * v)
 {
 	gVertexAttrib4usv(index, v);
 	checkError();
 }
 
-void glVertexAttribPointer(GLuint index, GLint size, GLenum type, GLboolean normalized, GLsizei stride, GLvoid const * pointer)
+void glVertexAttribPointer(std::uint32_t index, std::int32_t size, std::uint32_t type, std::uint8_t normalized, std::int32_t stride, void const * pointer)
 {
 	gVertexAttribPointer(index, size, type, normalized, stride, pointer);
 	checkError();
 }
 
-void glUniformMatrix2x3fv(GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
+void glUniformMatrix2x3fv(std::int32_t location, std::int32_t count, std::uint8_t transpose, float const * value)
 {
 	gUniformMatrix2x3fv(location, count, transpose, value);
 	checkError();
 }
 
-void glUniformMatrix3x2fv(GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
+void glUniformMatrix3x2fv(std::int32_t location, std::int32_t count, std::uint8_t transpose, float const * value)
 {
 	gUniformMatrix3x2fv(location, count, transpose, value);
 	checkError();
 }
 
-void glUniformMatrix2x4fv(GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
+void glUniformMatrix2x4fv(std::int32_t location, std::int32_t count, std::uint8_t transpose, float const * value)
 {
 	gUniformMatrix2x4fv(location, count, transpose, value);
 	checkError();
 }
 
-void glUniformMatrix4x2fv(GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
+void glUniformMatrix4x2fv(std::int32_t location, std::int32_t count, std::uint8_t transpose, float const * value)
 {
 	gUniformMatrix4x2fv(location, count, transpose, value);
 	checkError();
 }
 
-void glUniformMatrix3x4fv(GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
+void glUniformMatrix3x4fv(std::int32_t location, std::int32_t count, std::uint8_t transpose, float const * value)
 {
 	gUniformMatrix3x4fv(location, count, transpose, value);
 	checkError();
 }
 
-void glUniformMatrix4x3fv(GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
+void glUniformMatrix4x3fv(std::int32_t location, std::int32_t count, std::uint8_t transpose, float const * value)
 {
 	gUniformMatrix4x3fv(location, count, transpose, value);
 	checkError();
 }
 
-void glColorMaski(GLuint index, GLboolean r, GLboolean g, GLboolean b, GLboolean a)
+void glColorMaski(std::uint32_t index, std::uint8_t r, std::uint8_t g, std::uint8_t b, std::uint8_t a)
 {
 	gColorMaski(index, r, g, b, a);
 	checkError();
 }
 
-void glGetBooleani_v(GLenum target, GLuint index, GLboolean * data)
+void glGetBooleani_v(std::uint32_t target, std::uint32_t index, std::uint8_t * data)
 {
 	gGetBooleani_v(target, index, data);
 	checkError();
 }
 
-void glGetIntegeri_v(GLenum target, GLuint index, GLint * data)
+void glGetIntegeri_v(std::uint32_t target, std::uint32_t index, std::int32_t * data)
 {
 	gGetIntegeri_v(target, index, data);
 	checkError();
 }
 
-void glEnablei(GLenum target, GLuint index)
+void glEnablei(std::uint32_t target, std::uint32_t index)
 {
 	gEnablei(target, index);
 	checkError();
 }
 
-void glDisablei(GLenum target, GLuint index)
+void glDisablei(std::uint32_t target, std::uint32_t index)
 {
 	gDisablei(target, index);
 	checkError();
 }
 
-GLboolean glIsEnabledi(GLenum target, GLuint index)
+std::uint8_t glIsEnabledi(std::uint32_t target, std::uint32_t index)
 {
 	auto result = gIsEnabledi(target, index);
 	checkError();
 	return result;
 }
 
-void glBeginTransformFeedback(GLenum primitiveMode)
+void glBeginTransformFeedback(std::uint32_t primitiveMode)
 {
 	gBeginTransformFeedback(primitiveMode);
 	checkError();
@@ -2381,37 +2381,37 @@ void glEndTransformFeedback(void)
 	checkError();
 }
 
-void glBindBufferRange(GLenum target, GLuint index, GLuint buffer, GLintptr offset, GLsizeiptr size)
+void glBindBufferRange(std::uint32_t target, std::uint32_t index, std::uint32_t buffer, std::ptrdiff_t offset, std::ptrdiff_t size)
 {
 	gBindBufferRange(target, index, buffer, offset, size);
 	checkError();
 }
 
-void glBindBufferBase(GLenum target, GLuint index, GLuint buffer)
+void glBindBufferBase(std::uint32_t target, std::uint32_t index, std::uint32_t buffer)
 {
 	gBindBufferBase(target, index, buffer);
 	checkError();
 }
 
-void glTransformFeedbackVaryings(GLuint program, GLsizei count, GLchar const * * varyings, GLenum bufferMode)
+void glTransformFeedbackVaryings(std::uint32_t program, std::int32_t count, char const * * varyings, std::uint32_t bufferMode)
 {
 	gTransformFeedbackVaryings(program, count, varyings, bufferMode);
 	checkError();
 }
 
-void glGetTransformFeedbackVarying(GLuint program, GLuint index, GLsizei bufSize, GLsizei * length, GLsizei * size, GLenum * type, GLchar * name)
+void glGetTransformFeedbackVarying(std::uint32_t program, std::uint32_t index, std::int32_t bufSize, std::int32_t * length, std::int32_t * size, std::uint32_t * type, char * name)
 {
 	gGetTransformFeedbackVarying(program, index, bufSize, length, size, type, name);
 	checkError();
 }
 
-void glClampColor(GLenum target, GLenum clamp)
+void glClampColor(std::uint32_t target, std::uint32_t clamp)
 {
 	gClampColor(target, clamp);
 	checkError();
 }
 
-void glBeginConditionalRender(GLuint id, GLenum mode)
+void glBeginConditionalRender(std::uint32_t id, std::uint32_t mode)
 {
 	gBeginConditionalRender(id, mode);
 	checkError();
@@ -2423,592 +2423,592 @@ void glEndConditionalRender(void)
 	checkError();
 }
 
-void glVertexAttribIPointer(GLuint index, GLint size, GLenum type, GLsizei stride, GLvoid const * pointer)
+void glVertexAttribIPointer(std::uint32_t index, std::int32_t size, std::uint32_t type, std::int32_t stride, void const * pointer)
 {
 	gVertexAttribIPointer(index, size, type, stride, pointer);
 	checkError();
 }
 
-void glGetVertexAttribIiv(GLuint index, GLenum pname, GLint * params)
+void glGetVertexAttribIiv(std::uint32_t index, std::uint32_t pname, std::int32_t * params)
 {
 	gGetVertexAttribIiv(index, pname, params);
 	checkError();
 }
 
-void glGetVertexAttribIuiv(GLuint index, GLenum pname, GLuint * params)
+void glGetVertexAttribIuiv(std::uint32_t index, std::uint32_t pname, std::uint32_t * params)
 {
 	gGetVertexAttribIuiv(index, pname, params);
 	checkError();
 }
 
-void glVertexAttribI1i(GLuint index, GLint x)
+void glVertexAttribI1i(std::uint32_t index, std::int32_t x)
 {
 	gVertexAttribI1i(index, x);
 	checkError();
 }
 
-void glVertexAttribI2i(GLuint index, GLint x, GLint y)
+void glVertexAttribI2i(std::uint32_t index, std::int32_t x, std::int32_t y)
 {
 	gVertexAttribI2i(index, x, y);
 	checkError();
 }
 
-void glVertexAttribI3i(GLuint index, GLint x, GLint y, GLint z)
+void glVertexAttribI3i(std::uint32_t index, std::int32_t x, std::int32_t y, std::int32_t z)
 {
 	gVertexAttribI3i(index, x, y, z);
 	checkError();
 }
 
-void glVertexAttribI4i(GLuint index, GLint x, GLint y, GLint z, GLint w)
+void glVertexAttribI4i(std::uint32_t index, std::int32_t x, std::int32_t y, std::int32_t z, std::int32_t w)
 {
 	gVertexAttribI4i(index, x, y, z, w);
 	checkError();
 }
 
-void glVertexAttribI1ui(GLuint index, GLuint x)
+void glVertexAttribI1ui(std::uint32_t index, std::uint32_t x)
 {
 	gVertexAttribI1ui(index, x);
 	checkError();
 }
 
-void glVertexAttribI2ui(GLuint index, GLuint x, GLuint y)
+void glVertexAttribI2ui(std::uint32_t index, std::uint32_t x, std::uint32_t y)
 {
 	gVertexAttribI2ui(index, x, y);
 	checkError();
 }
 
-void glVertexAttribI3ui(GLuint index, GLuint x, GLuint y, GLuint z)
+void glVertexAttribI3ui(std::uint32_t index, std::uint32_t x, std::uint32_t y, std::uint32_t z)
 {
 	gVertexAttribI3ui(index, x, y, z);
 	checkError();
 }
 
-void glVertexAttribI4ui(GLuint index, GLuint x, GLuint y, GLuint z, GLuint w)
+void glVertexAttribI4ui(std::uint32_t index, std::uint32_t x, std::uint32_t y, std::uint32_t z, std::uint32_t w)
 {
 	gVertexAttribI4ui(index, x, y, z, w);
 	checkError();
 }
 
-void glVertexAttribI1iv(GLuint index, GLint const * v)
+void glVertexAttribI1iv(std::uint32_t index, std::int32_t const * v)
 {
 	gVertexAttribI1iv(index, v);
 	checkError();
 }
 
-void glVertexAttribI2iv(GLuint index, GLint const * v)
+void glVertexAttribI2iv(std::uint32_t index, std::int32_t const * v)
 {
 	gVertexAttribI2iv(index, v);
 	checkError();
 }
 
-void glVertexAttribI3iv(GLuint index, GLint const * v)
+void glVertexAttribI3iv(std::uint32_t index, std::int32_t const * v)
 {
 	gVertexAttribI3iv(index, v);
 	checkError();
 }
 
-void glVertexAttribI4iv(GLuint index, GLint const * v)
+void glVertexAttribI4iv(std::uint32_t index, std::int32_t const * v)
 {
 	gVertexAttribI4iv(index, v);
 	checkError();
 }
 
-void glVertexAttribI1uiv(GLuint index, GLuint const * v)
+void glVertexAttribI1uiv(std::uint32_t index, std::uint32_t const * v)
 {
 	gVertexAttribI1uiv(index, v);
 	checkError();
 }
 
-void glVertexAttribI2uiv(GLuint index, GLuint const * v)
+void glVertexAttribI2uiv(std::uint32_t index, std::uint32_t const * v)
 {
 	gVertexAttribI2uiv(index, v);
 	checkError();
 }
 
-void glVertexAttribI3uiv(GLuint index, GLuint const * v)
+void glVertexAttribI3uiv(std::uint32_t index, std::uint32_t const * v)
 {
 	gVertexAttribI3uiv(index, v);
 	checkError();
 }
 
-void glVertexAttribI4uiv(GLuint index, GLuint const * v)
+void glVertexAttribI4uiv(std::uint32_t index, std::uint32_t const * v)
 {
 	gVertexAttribI4uiv(index, v);
 	checkError();
 }
 
-void glVertexAttribI4bv(GLuint index, GLbyte const * v)
+void glVertexAttribI4bv(std::uint32_t index, std::int8_t const * v)
 {
 	gVertexAttribI4bv(index, v);
 	checkError();
 }
 
-void glVertexAttribI4sv(GLuint index, GLshort const * v)
+void glVertexAttribI4sv(std::uint32_t index, std::int16_t const * v)
 {
 	gVertexAttribI4sv(index, v);
 	checkError();
 }
 
-void glVertexAttribI4ubv(GLuint index, GLubyte const * v)
+void glVertexAttribI4ubv(std::uint32_t index, std::uint8_t const * v)
 {
 	gVertexAttribI4ubv(index, v);
 	checkError();
 }
 
-void glVertexAttribI4usv(GLuint index, GLushort const * v)
+void glVertexAttribI4usv(std::uint32_t index, std::uint16_t const * v)
 {
 	gVertexAttribI4usv(index, v);
 	checkError();
 }
 
-void glGetUniformuiv(GLuint program, GLint location, GLuint * params)
+void glGetUniformuiv(std::uint32_t program, std::int32_t location, std::uint32_t * params)
 {
 	gGetUniformuiv(program, location, params);
 	checkError();
 }
 
-void glBindFragDataLocation(GLuint program, GLuint color, GLchar const * name)
+void glBindFragDataLocation(std::uint32_t program, std::uint32_t color, char const * name)
 {
 	gBindFragDataLocation(program, color, name);
 	checkError();
 }
 
-GLint glGetFragDataLocation(GLuint program, GLchar const * name)
+std::int32_t glGetFragDataLocation(std::uint32_t program, char const * name)
 {
 	auto result = gGetFragDataLocation(program, name);
 	checkError();
 	return result;
 }
 
-void glUniform1ui(GLint location, GLuint v0)
+void glUniform1ui(std::int32_t location, std::uint32_t v0)
 {
 	gUniform1ui(location, v0);
 	checkError();
 }
 
-void glUniform2ui(GLint location, GLuint v0, GLuint v1)
+void glUniform2ui(std::int32_t location, std::uint32_t v0, std::uint32_t v1)
 {
 	gUniform2ui(location, v0, v1);
 	checkError();
 }
 
-void glUniform3ui(GLint location, GLuint v0, GLuint v1, GLuint v2)
+void glUniform3ui(std::int32_t location, std::uint32_t v0, std::uint32_t v1, std::uint32_t v2)
 {
 	gUniform3ui(location, v0, v1, v2);
 	checkError();
 }
 
-void glUniform4ui(GLint location, GLuint v0, GLuint v1, GLuint v2, GLuint v3)
+void glUniform4ui(std::int32_t location, std::uint32_t v0, std::uint32_t v1, std::uint32_t v2, std::uint32_t v3)
 {
 	gUniform4ui(location, v0, v1, v2, v3);
 	checkError();
 }
 
-void glUniform1uiv(GLint location, GLsizei count, GLuint const * value)
+void glUniform1uiv(std::int32_t location, std::int32_t count, std::uint32_t const * value)
 {
 	gUniform1uiv(location, count, value);
 	checkError();
 }
 
-void glUniform2uiv(GLint location, GLsizei count, GLuint const * value)
+void glUniform2uiv(std::int32_t location, std::int32_t count, std::uint32_t const * value)
 {
 	gUniform2uiv(location, count, value);
 	checkError();
 }
 
-void glUniform3uiv(GLint location, GLsizei count, GLuint const * value)
+void glUniform3uiv(std::int32_t location, std::int32_t count, std::uint32_t const * value)
 {
 	gUniform3uiv(location, count, value);
 	checkError();
 }
 
-void glUniform4uiv(GLint location, GLsizei count, GLuint const * value)
+void glUniform4uiv(std::int32_t location, std::int32_t count, std::uint32_t const * value)
 {
 	gUniform4uiv(location, count, value);
 	checkError();
 }
 
-void glTexParameterIiv(GLenum target, GLenum pname, GLint const * params)
+void glTexParameterIiv(std::uint32_t target, std::uint32_t pname, std::int32_t const * params)
 {
 	gTexParameterIiv(target, pname, params);
 	checkError();
 }
 
-void glTexParameterIuiv(GLenum target, GLenum pname, GLuint const * params)
+void glTexParameterIuiv(std::uint32_t target, std::uint32_t pname, std::uint32_t const * params)
 {
 	gTexParameterIuiv(target, pname, params);
 	checkError();
 }
 
-void glGetTexParameterIiv(GLenum target, GLenum pname, GLint * params)
+void glGetTexParameterIiv(std::uint32_t target, std::uint32_t pname, std::int32_t * params)
 {
 	gGetTexParameterIiv(target, pname, params);
 	checkError();
 }
 
-void glGetTexParameterIuiv(GLenum target, GLenum pname, GLuint * params)
+void glGetTexParameterIuiv(std::uint32_t target, std::uint32_t pname, std::uint32_t * params)
 {
 	gGetTexParameterIuiv(target, pname, params);
 	checkError();
 }
 
-void glClearBufferiv(GLenum buffer, GLint drawbuffer, GLint const * value)
+void glClearBufferiv(std::uint32_t buffer, std::int32_t drawbuffer, std::int32_t const * value)
 {
 	gClearBufferiv(buffer, drawbuffer, value);
 	checkError();
 }
 
-void glClearBufferuiv(GLenum buffer, GLint drawbuffer, GLuint const * value)
+void glClearBufferuiv(std::uint32_t buffer, std::int32_t drawbuffer, std::uint32_t const * value)
 {
 	gClearBufferuiv(buffer, drawbuffer, value);
 	checkError();
 }
 
-void glClearBufferfv(GLenum buffer, GLint drawbuffer, GLfloat const * value)
+void glClearBufferfv(std::uint32_t buffer, std::int32_t drawbuffer, float const * value)
 {
 	gClearBufferfv(buffer, drawbuffer, value);
 	checkError();
 }
 
-void glClearBufferfi(GLenum buffer, GLint drawbuffer, GLfloat depth, GLint stencil)
+void glClearBufferfi(std::uint32_t buffer, std::int32_t drawbuffer, float depth, std::int32_t stencil)
 {
 	gClearBufferfi(buffer, drawbuffer, depth, stencil);
 	checkError();
 }
 
-GLubyte const * glGetStringi (GLenum name, GLuint index)
+std::uint8_t const * glGetStringi (std::uint32_t name, std::uint32_t index)
 {
 	auto result = gGetStringi (name, index);
 	checkError();
 	return result;
 }
 
-void glDrawArraysInstanced(GLenum mode, GLint first, GLsizei count, GLsizei primcount)
+void glDrawArraysInstanced(std::uint32_t mode, std::int32_t first, std::int32_t count, std::int32_t primcount)
 {
 	gDrawArraysInstanced(mode, first, count, primcount);
 	checkError();
 }
 
-void glDrawElementsInstanced(GLenum mode, GLsizei count, GLenum type, GLvoid const * indices, GLsizei primcount)
+void glDrawElementsInstanced(std::uint32_t mode, std::int32_t count, std::uint32_t type, void const * indices, std::int32_t primcount)
 {
 	gDrawElementsInstanced(mode, count, type, indices, primcount);
 	checkError();
 }
 
-void glTexBuffer(GLenum target, GLenum internalformat, GLuint buffer)
+void glTexBuffer(std::uint32_t target, std::uint32_t internalformat, std::uint32_t buffer)
 {
 	gTexBuffer(target, internalformat, buffer);
 	checkError();
 }
 
-void glPrimitiveRestartIndex(GLuint index)
+void glPrimitiveRestartIndex(std::uint32_t index)
 {
 	gPrimitiveRestartIndex(index);
 	checkError();
 }
 
-void glGetInteger64i_v(GLenum target, GLuint index, GLint64 *data)
+void glGetInteger64i_v(std::uint32_t target, std::uint32_t index, std::int64_t *data)
 {
 	gGetInteger64i_v(target, index, data);
 	checkError();
 }
 
-void glGetBufferParameteri64v(GLenum target, GLenum pname, GLint64 *params)
+void glGetBufferParameteri64v(std::uint32_t target, std::uint32_t pname, std::int64_t *params)
 {
 	gGetBufferParameteri64v(target, pname, params);
 	checkError();
 }
 
-void glFramebufferTexture(GLenum target, GLenum attachment, GLuint texture, GLint level)
+void glFramebufferTexture(std::uint32_t target, std::uint32_t attachment, std::uint32_t texture, std::int32_t level)
 {
 	gFramebufferTexture(target, attachment, texture, level);
 	checkError();
 }
 
-void glVertexAttribDivisor(GLuint index, GLuint divisor)
+void glVertexAttribDivisor(std::uint32_t index, std::uint32_t divisor)
 {
 	gVertexAttribDivisor(index, divisor);
 	checkError();
 }
 
-void glMinSampleShading(GLclampf value)
+void glMinSampleShading(float value)
 {
 	gMinSampleShading(value);
 	checkError();
 }
 
-void glBlendEquationi(GLuint buf, GLenum mode)
+void glBlendEquationi(std::uint32_t buf, std::uint32_t mode)
 {
 	gBlendEquationi(buf, mode);
 	checkError();
 }
 
-void glBlendEquationSeparatei(GLuint buf, GLenum modeRGB, GLenum modeAlpha)
+void glBlendEquationSeparatei(std::uint32_t buf, std::uint32_t modeRGB, std::uint32_t modeAlpha)
 {
 	gBlendEquationSeparatei(buf, modeRGB, modeAlpha);
 	checkError();
 }
 
-void glBlendFunci(GLuint buf, GLenum src, GLenum dst)
+void glBlendFunci(std::uint32_t buf, std::uint32_t src, std::uint32_t dst)
 {
 	gBlendFunci(buf, src, dst);
 	checkError();
 }
 
-void glBlendFuncSeparatei(GLuint buf, GLenum srcRGB, GLenum dstRGB, GLenum srcAlpha, GLenum dstAlpha)
+void glBlendFuncSeparatei(std::uint32_t buf, std::uint32_t srcRGB, std::uint32_t dstRGB, std::uint32_t srcAlpha, std::uint32_t dstAlpha)
 {
 	gBlendFuncSeparatei(buf, srcRGB, dstRGB, srcAlpha, dstAlpha);
 	checkError();
 }
 
-GLboolean glIsRenderbuffer(GLuint renderbuffer)
+std::uint8_t glIsRenderbuffer(std::uint32_t renderbuffer)
 {
 	auto result = gIsRenderbuffer(renderbuffer);
 	checkError();
 	return result;
 }
 
-void glBindRenderbuffer(GLenum target, GLuint renderbuffer)
+void glBindRenderbuffer(std::uint32_t target, std::uint32_t renderbuffer)
 {
 	gBindRenderbuffer(target, renderbuffer);
 	checkError();
 }
 
-void glDeleteRenderbuffers(GLsizei n, GLuint const * renderbuffers)
+void glDeleteRenderbuffers(std::int32_t n, std::uint32_t const * renderbuffers)
 {
 	gDeleteRenderbuffers(n, renderbuffers);
 	checkError();
 }
 
-void glGenRenderbuffers(GLsizei n, GLuint * renderbuffers)
+void glGenRenderbuffers(std::int32_t n, std::uint32_t * renderbuffers)
 {
 	gGenRenderbuffers(n, renderbuffers);
 	checkError();
 }
 
-void glRenderbufferStorage(GLenum target, GLenum internalformat, GLsizei width, GLsizei height)
+void glRenderbufferStorage(std::uint32_t target, std::uint32_t internalformat, std::int32_t width, std::int32_t height)
 {
 	gRenderbufferStorage(target, internalformat, width, height);
 	checkError();
 }
 
-void glGetRenderbufferParameteriv(GLenum target, GLenum pname, GLint * params)
+void glGetRenderbufferParameteriv(std::uint32_t target, std::uint32_t pname, std::int32_t * params)
 {
 	gGetRenderbufferParameteriv(target, pname, params);
 	checkError();
 }
 
-GLboolean glIsFramebuffer(GLuint framebuffer)
+std::uint8_t glIsFramebuffer(std::uint32_t framebuffer)
 {
 	auto result = gIsFramebuffer(framebuffer);
 	checkError();
 	return result;
 }
 
-void glBindFramebuffer(GLenum target, GLuint framebuffer)
+void glBindFramebuffer(std::uint32_t target, std::uint32_t framebuffer)
 {
 	gBindFramebuffer(target, framebuffer);
 	checkError();
 }
 
-void glDeleteFramebuffers(GLsizei n, GLuint const * framebuffers)
+void glDeleteFramebuffers(std::int32_t n, std::uint32_t const * framebuffers)
 {
 	gDeleteFramebuffers(n, framebuffers);
 	checkError();
 }
 
-void glGenFramebuffers(GLsizei n, GLuint * framebuffers)
+void glGenFramebuffers(std::int32_t n, std::uint32_t * framebuffers)
 {
 	gGenFramebuffers(n, framebuffers);
 	checkError();
 }
 
-GLenum glCheckFramebufferStatus(GLenum target)
+std::uint32_t glCheckFramebufferStatus(std::uint32_t target)
 {
 	auto result = gCheckFramebufferStatus(target);
 	checkError();
 	return result;
 }
 
-void glFramebufferTexture1D(GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level)
+void glFramebufferTexture1D(std::uint32_t target, std::uint32_t attachment, std::uint32_t textarget, std::uint32_t texture, std::int32_t level)
 {
 	gFramebufferTexture1D(target, attachment, textarget, texture, level);
 	checkError();
 }
 
-void glFramebufferTexture2D(GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level)
+void glFramebufferTexture2D(std::uint32_t target, std::uint32_t attachment, std::uint32_t textarget, std::uint32_t texture, std::int32_t level)
 {
 	gFramebufferTexture2D(target, attachment, textarget, texture, level);
 	checkError();
 }
 
-void glFramebufferTexture3D(GLenum target, GLenum attachment, GLenum textarget, GLuint texture, GLint level, GLint zoffset)
+void glFramebufferTexture3D(std::uint32_t target, std::uint32_t attachment, std::uint32_t textarget, std::uint32_t texture, std::int32_t level, std::int32_t zoffset)
 {
 	gFramebufferTexture3D(target, attachment, textarget, texture, level, zoffset);
 	checkError();
 }
 
-void glFramebufferRenderbuffer(GLenum target, GLenum attachment, GLenum renderbuffertarget, GLuint renderbuffer)
+void glFramebufferRenderbuffer(std::uint32_t target, std::uint32_t attachment, std::uint32_t renderbuffertarget, std::uint32_t renderbuffer)
 {
 	gFramebufferRenderbuffer(target, attachment, renderbuffertarget, renderbuffer);
 	checkError();
 }
 
-void glGetFramebufferAttachmentParameteriv(GLenum target, GLenum attachment, GLenum pname, GLint * params)
+void glGetFramebufferAttachmentParameteriv(std::uint32_t target, std::uint32_t attachment, std::uint32_t pname, std::int32_t * params)
 {
 	gGetFramebufferAttachmentParameteriv(target, attachment, pname, params);
 	checkError();
 }
 
-void glGenerateMipmap(GLenum target)
+void glGenerateMipmap(std::uint32_t target)
 {
 	gGenerateMipmap(target);
 	checkError();
 }
 
-void glBlitFramebuffer(GLint srcX0, GLint srcY0, GLint srcX1, GLint srcY1, GLint dstX0, GLint dstY0, GLint dstX1, GLint dstY1, GLbitfield mask, GLenum filter)
+void glBlitFramebuffer(std::int32_t srcX0, std::int32_t srcY0, std::int32_t srcX1, std::int32_t srcY1, std::int32_t dstX0, std::int32_t dstY0, std::int32_t dstX1, std::int32_t dstY1, std::uint32_t mask, std::uint32_t filter)
 {
 	gBlitFramebuffer(srcX0, srcY0, srcX1, srcY1, dstX0, dstY0, dstX1, dstY1, mask, filter);
 	checkError();
 }
 
-void glRenderbufferStorageMultisample(GLenum target, GLsizei samples, GLenum internalformat, GLsizei width, GLsizei height)
+void glRenderbufferStorageMultisample(std::uint32_t target, std::int32_t samples, std::uint32_t internalformat, std::int32_t width, std::int32_t height)
 {
 	gRenderbufferStorageMultisample(target, samples, internalformat, width, height);
 	checkError();
 }
 
-void glFramebufferTextureLayer(GLenum target, GLenum attachment, GLuint texture, GLint level, GLint layer)
+void glFramebufferTextureLayer(std::uint32_t target, std::uint32_t attachment, std::uint32_t texture, std::int32_t level, std::int32_t layer)
 {
 	gFramebufferTextureLayer(target, attachment, texture, level, layer);
 	checkError();
 }
 
-GLvoid * glMapBufferRange(GLenum target, GLintptr offset, GLsizeiptr length, GLbitfield access)
+void * glMapBufferRange(std::uint32_t target, std::ptrdiff_t offset, std::ptrdiff_t length, std::uint32_t access)
 {
 	auto result = gMapBufferRange(target, offset, length, access);
 	checkError();
 	return result;
 }
 
-void glFlushMappedBufferRange(GLenum target, GLintptr offset, GLsizeiptr length)
+void glFlushMappedBufferRange(std::uint32_t target, std::ptrdiff_t offset, std::ptrdiff_t length)
 {
 	gFlushMappedBufferRange(target, offset, length);
 	checkError();
 }
 
-void glBindVertexArray(GLuint array)
+void glBindVertexArray(std::uint32_t array)
 {
 	gBindVertexArray(array);
 	checkError();
 }
 
-void glDeleteVertexArrays(GLsizei n, GLuint const * arrays)
+void glDeleteVertexArrays(std::int32_t n, std::uint32_t const * arrays)
 {
 	gDeleteVertexArrays(n, arrays);
 	checkError();
 }
 
-void glGenVertexArrays(GLsizei n, GLuint * arrays)
+void glGenVertexArrays(std::int32_t n, std::uint32_t * arrays)
 {
 	gGenVertexArrays(n, arrays);
 	checkError();
 }
 
-GLboolean glIsVertexArray(GLuint array)
+std::uint8_t glIsVertexArray(std::uint32_t array)
 {
 	auto result = gIsVertexArray(array);
 	checkError();
 	return result;
 }
 
-void glGetUniformIndices(GLuint program, GLsizei uniformCount, GLchar const * * uniformNames, GLuint * uniformIndices)
+void glGetUniformIndices(std::uint32_t program, std::int32_t uniformCount, char const * * uniformNames, std::uint32_t * uniformIndices)
 {
 	gGetUniformIndices(program, uniformCount, uniformNames, uniformIndices);
 	checkError();
 }
 
-void glGetActiveUniformsiv(GLuint program, GLsizei uniformCount, GLuint const * uniformIndices, GLenum pname, GLint * params)
+void glGetActiveUniformsiv(std::uint32_t program, std::int32_t uniformCount, std::uint32_t const * uniformIndices, std::uint32_t pname, std::int32_t * params)
 {
 	gGetActiveUniformsiv(program, uniformCount, uniformIndices, pname, params);
 	checkError();
 }
 
-void glGetActiveUniformName(GLuint program, GLuint uniformIndex, GLsizei bufSize, GLsizei * length, GLchar * uniformName)
+void glGetActiveUniformName(std::uint32_t program, std::uint32_t uniformIndex, std::int32_t bufSize, std::int32_t * length, char * uniformName)
 {
 	gGetActiveUniformName(program, uniformIndex, bufSize, length, uniformName);
 	checkError();
 }
 
-GLuint glGetUniformBlockIndex(GLuint program, GLchar const * uniformBlockName)
+std::uint32_t glGetUniformBlockIndex(std::uint32_t program, char const * uniformBlockName)
 {
 	auto result = gGetUniformBlockIndex(program, uniformBlockName);
 	checkError();
 	return result;
 }
 
-void glGetActiveUniformBlockiv(GLuint program, GLuint uniformBlockIndex, GLenum pname, GLint * params)
+void glGetActiveUniformBlockiv(std::uint32_t program, std::uint32_t uniformBlockIndex, std::uint32_t pname, std::int32_t * params)
 {
 	gGetActiveUniformBlockiv(program, uniformBlockIndex, pname, params);
 	checkError();
 }
 
-void glGetActiveUniformBlockName(GLuint program, GLuint uniformBlockIndex, GLsizei bufSize, GLsizei * length, GLchar * uniformBlockName)
+void glGetActiveUniformBlockName(std::uint32_t program, std::uint32_t uniformBlockIndex, std::int32_t bufSize, std::int32_t * length, char * uniformBlockName)
 {
 	gGetActiveUniformBlockName(program, uniformBlockIndex, bufSize, length, uniformBlockName);
 	checkError();
 }
 
-void glUniformBlockBinding(GLuint program, GLuint uniformBlockIndex, GLuint uniformBlockBinding)
+void glUniformBlockBinding(std::uint32_t program, std::uint32_t uniformBlockIndex, std::uint32_t uniformBlockBinding)
 {
 	gUniformBlockBinding(program, uniformBlockIndex, uniformBlockBinding);
 	checkError();
 }
 
-void glCopyBufferSubData(GLenum readTarget, GLenum writeTarget, GLintptr readOffset, GLintptr writeOffset, GLsizeiptr size)
+void glCopyBufferSubData(std::uint32_t readTarget, std::uint32_t writeTarget, std::ptrdiff_t readOffset, std::ptrdiff_t writeOffset, std::ptrdiff_t size)
 {
 	gCopyBufferSubData(readTarget, writeTarget, readOffset, writeOffset, size);
 	checkError();
 }
 
-void glDrawElementsBaseVertex(GLenum mode, GLsizei count, GLenum type, GLvoid const * indices, GLint basevertex)
+void glDrawElementsBaseVertex(std::uint32_t mode, std::int32_t count, std::uint32_t type, void const * indices, std::int32_t basevertex)
 {
 	gDrawElementsBaseVertex(mode, count, type, indices, basevertex);
 	checkError();
 }
 
-void glDrawRangeElementsBaseVertex(GLenum mode, GLuint start, GLuint end, GLsizei count, GLenum type, GLvoid const * indices, GLint basevertex)
+void glDrawRangeElementsBaseVertex(std::uint32_t mode, std::uint32_t start, std::uint32_t end, std::int32_t count, std::uint32_t type, void const * indices, std::int32_t basevertex)
 {
 	gDrawRangeElementsBaseVertex(mode, start, end, count, type, indices, basevertex);
 	checkError();
 }
 
-void glDrawElementsInstancedBaseVertex(GLenum mode, GLsizei count, GLenum type, GLvoid const * indices, GLsizei primcount, GLint basevertex)
+void glDrawElementsInstancedBaseVertex(std::uint32_t mode, std::int32_t count, std::uint32_t type, void const * indices, std::int32_t primcount, std::int32_t basevertex)
 {
 	gDrawElementsInstancedBaseVertex(mode, count, type, indices, primcount, basevertex);
 	checkError();
 }
 
-void glMultiDrawElementsBaseVertex(GLenum mode, GLsizei const * count, GLenum type, GLvoid const * * indices, GLsizei primcount, GLint const * basevertex)
+void glMultiDrawElementsBaseVertex(std::uint32_t mode, std::int32_t const * count, std::uint32_t type, void const * * indices, std::int32_t primcount, std::int32_t const * basevertex)
 {
 	gMultiDrawElementsBaseVertex(mode, count, type, indices, primcount, basevertex);
 	checkError();
 }
 
-void glProvokingVertex(GLenum mode)
+void glProvokingVertex(std::uint32_t mode)
 {
 	gProvokingVertex(mode);
 	checkError();
 }
 
-GLsync glFenceSync(GLenum condition, GLbitfield flags)
+GLsync glFenceSync(std::uint32_t condition, std::uint32_t flags)
 {
 	auto result = gFenceSync(condition, flags);
 	checkError();
 	return result;
 }
 
-GLboolean glIsSync(GLsync sync)
+std::uint8_t glIsSync(GLsync sync)
 {
 	auto result = gIsSync(sync);
 	checkError();
@@ -3021,487 +3021,487 @@ void glDeleteSync(GLsync sync)
 	checkError();
 }
 
-GLenum glClientWaitSync(GLsync sync, GLbitfield flags, GLuint64 timeout)
+std::uint32_t glClientWaitSync(GLsync sync, std::uint32_t flags, std::uint64_t timeout)
 {
 	auto result = gClientWaitSync(sync, flags, timeout);
 	checkError();
 	return result;
 }
 
-void glWaitSync(GLsync sync, GLbitfield flags, GLuint64 timeout)
+void glWaitSync(GLsync sync, std::uint32_t flags, std::uint64_t timeout)
 {
 	gWaitSync(sync, flags, timeout);
 	checkError();
 }
 
-void glGetInteger64v(GLenum pname, GLint64 *params)
+void glGetInteger64v(std::uint32_t pname, std::int64_t *params)
 {
 	gGetInteger64v(pname, params);
 	checkError();
 }
 
-void glGetSynciv(GLsync sync, GLenum pname, GLsizei bufSize, GLsizei * length, GLint * values)
+void glGetSynciv(GLsync sync, std::uint32_t pname, std::int32_t bufSize, std::int32_t * length, std::int32_t * values)
 {
 	gGetSynciv(sync, pname, bufSize, length, values);
 	checkError();
 }
 
-void glTexImage2DMultisample(GLenum target, GLsizei samples, GLint internalformat, GLsizei width, GLsizei height, GLboolean fixedsamplelocations)
+void glTexImage2DMultisample(std::uint32_t target, std::int32_t samples, std::int32_t internalformat, std::int32_t width, std::int32_t height, std::uint8_t fixedsamplelocations)
 {
 	gTexImage2DMultisample(target, samples, internalformat, width, height, fixedsamplelocations);
 	checkError();
 }
 
-void glTexImage3DMultisample(GLenum target, GLsizei samples, GLint internalformat, GLsizei width, GLsizei height, GLsizei depth, GLboolean fixedsamplelocations)
+void glTexImage3DMultisample(std::uint32_t target, std::int32_t samples, std::int32_t internalformat, std::int32_t width, std::int32_t height, std::int32_t depth, std::uint8_t fixedsamplelocations)
 {
 	gTexImage3DMultisample(target, samples, internalformat, width, height, depth, fixedsamplelocations);
 	checkError();
 }
 
-void glGetMultisamplefv(GLenum pname, GLuint index, GLfloat * val)
+void glGetMultisamplefv(std::uint32_t pname, std::uint32_t index, float * val)
 {
 	gGetMultisamplefv(pname, index, val);
 	checkError();
 }
 
-void glSampleMaski(GLuint index, GLbitfield mask)
+void glSampleMaski(std::uint32_t index, std::uint32_t mask)
 {
 	gSampleMaski(index, mask);
 	checkError();
 }
 
-void glBlendEquationiARB(GLuint buf, GLenum mode)
+void glBlendEquationiARB(std::uint32_t buf, std::uint32_t mode)
 {
 	gBlendEquationiARB(buf, mode);
 	checkError();
 }
 
-void glBlendEquationSeparateiARB(GLuint buf, GLenum modeRGB, GLenum modeAlpha)
+void glBlendEquationSeparateiARB(std::uint32_t buf, std::uint32_t modeRGB, std::uint32_t modeAlpha)
 {
 	gBlendEquationSeparateiARB(buf, modeRGB, modeAlpha);
 	checkError();
 }
 
-void glBlendFunciARB(GLuint buf, GLenum src, GLenum dst)
+void glBlendFunciARB(std::uint32_t buf, std::uint32_t src, std::uint32_t dst)
 {
 	gBlendFunciARB(buf, src, dst);
 	checkError();
 }
 
-void glBlendFuncSeparateiARB(GLuint buf, GLenum srcRGB, GLenum dstRGB, GLenum srcAlpha, GLenum dstAlpha)
+void glBlendFuncSeparateiARB(std::uint32_t buf, std::uint32_t srcRGB, std::uint32_t dstRGB, std::uint32_t srcAlpha, std::uint32_t dstAlpha)
 {
 	gBlendFuncSeparateiARB(buf, srcRGB, dstRGB, srcAlpha, dstAlpha);
 	checkError();
 }
 
-void glMinSampleShadingARB(GLclampf value)
+void glMinSampleShadingARB(float value)
 {
 	gMinSampleShadingARB(value);
 	checkError();
 }
 
-void glNamedStringARB(GLenum type, GLint namelen, GLchar const * name, GLint stringlen, GLchar const * string)
+void glNamedStringARB(std::uint32_t type, std::int32_t namelen, char const * name, std::int32_t stringlen, char const * string)
 {
 	gNamedStringARB(type, namelen, name, stringlen, string);
 	checkError();
 }
 
-void glDeleteNamedStringARB(GLint namelen, GLchar const * name)
+void glDeleteNamedStringARB(std::int32_t namelen, char const * name)
 {
 	gDeleteNamedStringARB(namelen, name);
 	checkError();
 }
 
-void glCompileShaderIncludeARB(GLuint shader, GLsizei count, GLchar const * * path, GLint const * length)
+void glCompileShaderIncludeARB(std::uint32_t shader, std::int32_t count, char const * * path, std::int32_t const * length)
 {
 	gCompileShaderIncludeARB(shader, count, path, length);
 	checkError();
 }
 
-GLboolean glIsNamedStringARB(GLint namelen, GLchar const * name)
+std::uint8_t glIsNamedStringARB(std::int32_t namelen, char const * name)
 {
 	auto result = gIsNamedStringARB(namelen, name);
 	checkError();
 	return result;
 }
 
-void glGetNamedStringARB(GLint namelen, GLchar const * name, GLsizei bufSize, GLint * stringlen, GLchar * string)
+void glGetNamedStringARB(std::int32_t namelen, char const * name, std::int32_t bufSize, std::int32_t * stringlen, char * string)
 {
 	gGetNamedStringARB(namelen, name, bufSize, stringlen, string);
 	checkError();
 }
 
-void glGetNamedStringivARB(GLint namelen, GLchar const * name, GLenum pname, GLint * params)
+void glGetNamedStringivARB(std::int32_t namelen, char const * name, std::uint32_t pname, std::int32_t * params)
 {
 	gGetNamedStringivARB(namelen, name, pname, params);
 	checkError();
 }
 
-void glBindFragDataLocationIndexed(GLuint program, GLuint colorNumber, GLuint index, GLchar const * name)
+void glBindFragDataLocationIndexed(std::uint32_t program, std::uint32_t colorNumber, std::uint32_t index, char const * name)
 {
 	gBindFragDataLocationIndexed(program, colorNumber, index, name);
 	checkError();
 }
 
-GLint glGetFragDataIndex(GLuint program, GLchar const * name)
+std::int32_t glGetFragDataIndex(std::uint32_t program, char const * name)
 {
 	auto result = gGetFragDataIndex(program, name);
 	checkError();
 	return result;
 }
 
-void glGenSamplers(GLsizei count, GLuint * samplers)
+void glGenSamplers(std::int32_t count, std::uint32_t * samplers)
 {
 	gGenSamplers(count, samplers);
 	checkError();
 }
 
-void glDeleteSamplers(GLsizei count, GLuint const * samplers)
+void glDeleteSamplers(std::int32_t count, std::uint32_t const * samplers)
 {
 	gDeleteSamplers(count, samplers);
 	checkError();
 }
 
-GLboolean glIsSampler(GLuint sampler)
+std::uint8_t glIsSampler(std::uint32_t sampler)
 {
 	auto result = gIsSampler(sampler);
 	checkError();
 	return result;
 }
 
-void glBindSampler(GLuint unit, GLuint sampler)
+void glBindSampler(std::uint32_t unit, std::uint32_t sampler)
 {
 	gBindSampler(unit, sampler);
 	checkError();
 }
 
-void glSamplerParameteri(GLuint sampler, GLenum pname, GLint param)
+void glSamplerParameteri(std::uint32_t sampler, std::uint32_t pname, std::int32_t param)
 {
 	gSamplerParameteri(sampler, pname, param);
 	checkError();
 }
 
-void glSamplerParameteriv(GLuint sampler, GLenum pname, GLint const * param)
+void glSamplerParameteriv(std::uint32_t sampler, std::uint32_t pname, std::int32_t const * param)
 {
 	gSamplerParameteriv(sampler, pname, param);
 	checkError();
 }
 
-void glSamplerParameterf(GLuint sampler, GLenum pname, GLfloat param)
+void glSamplerParameterf(std::uint32_t sampler, std::uint32_t pname, float param)
 {
 	gSamplerParameterf(sampler, pname, param);
 	checkError();
 }
 
-void glSamplerParameterfv(GLuint sampler, GLenum pname, GLfloat const * param)
+void glSamplerParameterfv(std::uint32_t sampler, std::uint32_t pname, float const * param)
 {
 	gSamplerParameterfv(sampler, pname, param);
 	checkError();
 }
 
-void glSamplerParameterIiv(GLuint sampler, GLenum pname, GLint const * param)
+void glSamplerParameterIiv(std::uint32_t sampler, std::uint32_t pname, std::int32_t const * param)
 {
 	gSamplerParameterIiv(sampler, pname, param);
 	checkError();
 }
 
-void glSamplerParameterIuiv(GLuint sampler, GLenum pname, GLuint const * param)
+void glSamplerParameterIuiv(std::uint32_t sampler, std::uint32_t pname, std::uint32_t const * param)
 {
 	gSamplerParameterIuiv(sampler, pname, param);
 	checkError();
 }
 
-void glGetSamplerParameteriv(GLuint sampler, GLenum pname, GLint * params)
+void glGetSamplerParameteriv(std::uint32_t sampler, std::uint32_t pname, std::int32_t * params)
 {
 	gGetSamplerParameteriv(sampler, pname, params);
 	checkError();
 }
 
-void glGetSamplerParameterIiv(GLuint sampler, GLenum pname, GLint * params)
+void glGetSamplerParameterIiv(std::uint32_t sampler, std::uint32_t pname, std::int32_t * params)
 {
 	gGetSamplerParameterIiv(sampler, pname, params);
 	checkError();
 }
 
-void glGetSamplerParameterfv(GLuint sampler, GLenum pname, GLfloat * params)
+void glGetSamplerParameterfv(std::uint32_t sampler, std::uint32_t pname, float * params)
 {
 	gGetSamplerParameterfv(sampler, pname, params);
 	checkError();
 }
 
-void glGetSamplerParameterIuiv(GLuint sampler, GLenum pname, GLuint * params)
+void glGetSamplerParameterIuiv(std::uint32_t sampler, std::uint32_t pname, std::uint32_t * params)
 {
 	gGetSamplerParameterIuiv(sampler, pname, params);
 	checkError();
 }
 
-void glQueryCounter(GLuint id, GLenum target)
+void glQueryCounter(std::uint32_t id, std::uint32_t target)
 {
 	gQueryCounter(id, target);
 	checkError();
 }
 
-void glGetQueryObjecti64v(GLuint id, GLenum pname, GLint64 *params)
+void glGetQueryObjecti64v(std::uint32_t id, std::uint32_t pname, std::int64_t *params)
 {
 	gGetQueryObjecti64v(id, pname, params);
 	checkError();
 }
 
-void glGetQueryObjectui64v(GLuint id, GLenum pname, GLuint64 *params)
+void glGetQueryObjectui64v(std::uint32_t id, std::uint32_t pname, std::uint64_t *params)
 {
 	gGetQueryObjectui64v(id, pname, params);
 	checkError();
 }
 
-void glVertexAttribP1ui(GLuint index, GLenum type, GLboolean normalized, GLuint value)
+void glVertexAttribP1ui(std::uint32_t index, std::uint32_t type, std::uint8_t normalized, std::uint32_t value)
 {
 	gVertexAttribP1ui(index, type, normalized, value);
 	checkError();
 }
 
-void glVertexAttribP1uiv(GLuint index, GLenum type, GLboolean normalized, GLuint const * value)
+void glVertexAttribP1uiv(std::uint32_t index, std::uint32_t type, std::uint8_t normalized, std::uint32_t const * value)
 {
 	gVertexAttribP1uiv(index, type, normalized, value);
 	checkError();
 }
 
-void glVertexAttribP2ui(GLuint index, GLenum type, GLboolean normalized, GLuint value)
+void glVertexAttribP2ui(std::uint32_t index, std::uint32_t type, std::uint8_t normalized, std::uint32_t value)
 {
 	gVertexAttribP2ui(index, type, normalized, value);
 	checkError();
 }
 
-void glVertexAttribP2uiv(GLuint index, GLenum type, GLboolean normalized, GLuint const * value)
+void glVertexAttribP2uiv(std::uint32_t index, std::uint32_t type, std::uint8_t normalized, std::uint32_t const * value)
 {
 	gVertexAttribP2uiv(index, type, normalized, value);
 	checkError();
 }
 
-void glVertexAttribP3ui(GLuint index, GLenum type, GLboolean normalized, GLuint value)
+void glVertexAttribP3ui(std::uint32_t index, std::uint32_t type, std::uint8_t normalized, std::uint32_t value)
 {
 	gVertexAttribP3ui(index, type, normalized, value);
 	checkError();
 }
 
-void glVertexAttribP3uiv(GLuint index, GLenum type, GLboolean normalized, GLuint const * value)
+void glVertexAttribP3uiv(std::uint32_t index, std::uint32_t type, std::uint8_t normalized, std::uint32_t const * value)
 {
 	gVertexAttribP3uiv(index, type, normalized, value);
 	checkError();
 }
 
-void glVertexAttribP4ui(GLuint index, GLenum type, GLboolean normalized, GLuint value)
+void glVertexAttribP4ui(std::uint32_t index, std::uint32_t type, std::uint8_t normalized, std::uint32_t value)
 {
 	gVertexAttribP4ui(index, type, normalized, value);
 	checkError();
 }
 
-void glVertexAttribP4uiv(GLuint index, GLenum type, GLboolean normalized, GLuint const * value)
+void glVertexAttribP4uiv(std::uint32_t index, std::uint32_t type, std::uint8_t normalized, std::uint32_t const * value)
 {
 	gVertexAttribP4uiv(index, type, normalized, value);
 	checkError();
 }
 
-void glDrawArraysIndirect(GLenum mode, GLvoid const * indirect)
+void glDrawArraysIndirect(std::uint32_t mode, void const * indirect)
 {
 	gDrawArraysIndirect(mode, indirect);
 	checkError();
 }
 
-void glDrawElementsIndirect(GLenum mode, GLenum type, GLvoid const * indirect)
+void glDrawElementsIndirect(std::uint32_t mode, std::uint32_t type, void const * indirect)
 {
 	gDrawElementsIndirect(mode, type, indirect);
 	checkError();
 }
 
-void glUniform1d(GLint location, GLdouble x)
+void glUniform1d(std::int32_t location, double x)
 {
 	gUniform1d(location, x);
 	checkError();
 }
 
-void glUniform2d(GLint location, GLdouble x, GLdouble y)
+void glUniform2d(std::int32_t location, double x, double y)
 {
 	gUniform2d(location, x, y);
 	checkError();
 }
 
-void glUniform3d(GLint location, GLdouble x, GLdouble y, GLdouble z)
+void glUniform3d(std::int32_t location, double x, double y, double z)
 {
 	gUniform3d(location, x, y, z);
 	checkError();
 }
 
-void glUniform4d(GLint location, GLdouble x, GLdouble y, GLdouble z, GLdouble w)
+void glUniform4d(std::int32_t location, double x, double y, double z, double w)
 {
 	gUniform4d(location, x, y, z, w);
 	checkError();
 }
 
-void glUniform1dv(GLint location, GLsizei count, GLdouble const * value)
+void glUniform1dv(std::int32_t location, std::int32_t count, double const * value)
 {
 	gUniform1dv(location, count, value);
 	checkError();
 }
 
-void glUniform2dv(GLint location, GLsizei count, GLdouble const * value)
+void glUniform2dv(std::int32_t location, std::int32_t count, double const * value)
 {
 	gUniform2dv(location, count, value);
 	checkError();
 }
 
-void glUniform3dv(GLint location, GLsizei count, GLdouble const * value)
+void glUniform3dv(std::int32_t location, std::int32_t count, double const * value)
 {
 	gUniform3dv(location, count, value);
 	checkError();
 }
 
-void glUniform4dv(GLint location, GLsizei count, GLdouble const * value)
+void glUniform4dv(std::int32_t location, std::int32_t count, double const * value)
 {
 	gUniform4dv(location, count, value);
 	checkError();
 }
 
-void glUniformMatrix2dv(GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
+void glUniformMatrix2dv(std::int32_t location, std::int32_t count, std::uint8_t transpose, double const * value)
 {
 	gUniformMatrix2dv(location, count, transpose, value);
 	checkError();
 }
 
-void glUniformMatrix3dv(GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
+void glUniformMatrix3dv(std::int32_t location, std::int32_t count, std::uint8_t transpose, double const * value)
 {
 	gUniformMatrix3dv(location, count, transpose, value);
 	checkError();
 }
 
-void glUniformMatrix4dv(GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
+void glUniformMatrix4dv(std::int32_t location, std::int32_t count, std::uint8_t transpose, double const * value)
 {
 	gUniformMatrix4dv(location, count, transpose, value);
 	checkError();
 }
 
-void glUniformMatrix2x3dv(GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
+void glUniformMatrix2x3dv(std::int32_t location, std::int32_t count, std::uint8_t transpose, double const * value)
 {
 	gUniformMatrix2x3dv(location, count, transpose, value);
 	checkError();
 }
 
-void glUniformMatrix2x4dv(GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
+void glUniformMatrix2x4dv(std::int32_t location, std::int32_t count, std::uint8_t transpose, double const * value)
 {
 	gUniformMatrix2x4dv(location, count, transpose, value);
 	checkError();
 }
 
-void glUniformMatrix3x2dv(GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
+void glUniformMatrix3x2dv(std::int32_t location, std::int32_t count, std::uint8_t transpose, double const * value)
 {
 	gUniformMatrix3x2dv(location, count, transpose, value);
 	checkError();
 }
 
-void glUniformMatrix3x4dv(GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
+void glUniformMatrix3x4dv(std::int32_t location, std::int32_t count, std::uint8_t transpose, double const * value)
 {
 	gUniformMatrix3x4dv(location, count, transpose, value);
 	checkError();
 }
 
-void glUniformMatrix4x2dv(GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
+void glUniformMatrix4x2dv(std::int32_t location, std::int32_t count, std::uint8_t transpose, double const * value)
 {
 	gUniformMatrix4x2dv(location, count, transpose, value);
 	checkError();
 }
 
-void glUniformMatrix4x3dv(GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
+void glUniformMatrix4x3dv(std::int32_t location, std::int32_t count, std::uint8_t transpose, double const * value)
 {
 	gUniformMatrix4x3dv(location, count, transpose, value);
 	checkError();
 }
 
-void glGetUniformdv(GLuint program, GLint location, GLdouble * params)
+void glGetUniformdv(std::uint32_t program, std::int32_t location, double * params)
 {
 	gGetUniformdv(program, location, params);
 	checkError();
 }
 
-GLint glGetSubroutineUniformLocation(GLuint program, GLenum shadertype, GLchar const * name)
+std::int32_t glGetSubroutineUniformLocation(std::uint32_t program, std::uint32_t shadertype, char const * name)
 {
 	auto result = gGetSubroutineUniformLocation(program, shadertype, name);
 	checkError();
 	return result;
 }
 
-GLuint glGetSubroutineIndex(GLuint program, GLenum shadertype, GLchar const * name)
+std::uint32_t glGetSubroutineIndex(std::uint32_t program, std::uint32_t shadertype, char const * name)
 {
 	auto result = gGetSubroutineIndex(program, shadertype, name);
 	checkError();
 	return result;
 }
 
-void glGetActiveSubroutineUniformiv(GLuint program, GLenum shadertype, GLuint index, GLenum pname, GLint * values)
+void glGetActiveSubroutineUniformiv(std::uint32_t program, std::uint32_t shadertype, std::uint32_t index, std::uint32_t pname, std::int32_t * values)
 {
 	gGetActiveSubroutineUniformiv(program, shadertype, index, pname, values);
 	checkError();
 }
 
-void glGetActiveSubroutineUniformName(GLuint program, GLenum shadertype, GLuint index, GLsizei bufsize, GLsizei * length, GLchar * name)
+void glGetActiveSubroutineUniformName(std::uint32_t program, std::uint32_t shadertype, std::uint32_t index, std::int32_t bufsize, std::int32_t * length, char * name)
 {
 	gGetActiveSubroutineUniformName(program, shadertype, index, bufsize, length, name);
 	checkError();
 }
 
-void glGetActiveSubroutineName(GLuint program, GLenum shadertype, GLuint index, GLsizei bufsize, GLsizei * length, GLchar * name)
+void glGetActiveSubroutineName(std::uint32_t program, std::uint32_t shadertype, std::uint32_t index, std::int32_t bufsize, std::int32_t * length, char * name)
 {
 	gGetActiveSubroutineName(program, shadertype, index, bufsize, length, name);
 	checkError();
 }
 
-void glUniformSubroutinesuiv(GLenum shadertype, GLsizei count, GLuint const * indices)
+void glUniformSubroutinesuiv(std::uint32_t shadertype, std::int32_t count, std::uint32_t const * indices)
 {
 	gUniformSubroutinesuiv(shadertype, count, indices);
 	checkError();
 }
 
-void glGetUniformSubroutineuiv(GLenum shadertype, GLint location, GLuint * params)
+void glGetUniformSubroutineuiv(std::uint32_t shadertype, std::int32_t location, std::uint32_t * params)
 {
 	gGetUniformSubroutineuiv(shadertype, location, params);
 	checkError();
 }
 
-void glGetProgramStageiv(GLuint program, GLenum shadertype, GLenum pname, GLint * values)
+void glGetProgramStageiv(std::uint32_t program, std::uint32_t shadertype, std::uint32_t pname, std::int32_t * values)
 {
 	gGetProgramStageiv(program, shadertype, pname, values);
 	checkError();
 }
 
-void glPatchParameteri(GLenum pname, GLint value)
+void glPatchParameteri(std::uint32_t pname, std::int32_t value)
 {
 	gPatchParameteri(pname, value);
 	checkError();
 }
 
-void glPatchParameterfv(GLenum pname, GLfloat const * values)
+void glPatchParameterfv(std::uint32_t pname, float const * values)
 {
 	gPatchParameterfv(pname, values);
 	checkError();
 }
 
-void glBindTransformFeedback(GLenum target, GLuint id)
+void glBindTransformFeedback(std::uint32_t target, std::uint32_t id)
 {
 	gBindTransformFeedback(target, id);
 	checkError();
 }
 
-void glDeleteTransformFeedbacks(GLsizei n, GLuint const * ids)
+void glDeleteTransformFeedbacks(std::int32_t n, std::uint32_t const * ids)
 {
 	gDeleteTransformFeedbacks(n, ids);
 	checkError();
 }
 
-void glGenTransformFeedbacks(GLsizei n, GLuint * ids)
+void glGenTransformFeedbacks(std::int32_t n, std::uint32_t * ids)
 {
 	gGenTransformFeedbacks(n, ids);
 	checkError();
 }
 
-GLboolean glIsTransformFeedback(GLuint id)
+std::uint8_t glIsTransformFeedback(std::uint32_t id)
 {
 	auto result = gIsTransformFeedback(id);
 	checkError();
@@ -3520,31 +3520,31 @@ void glResumeTransformFeedback(void)
 	checkError();
 }
 
-void glDrawTransformFeedback(GLenum mode, GLuint id)
+void glDrawTransformFeedback(std::uint32_t mode, std::uint32_t id)
 {
 	gDrawTransformFeedback(mode, id);
 	checkError();
 }
 
-void glDrawTransformFeedbackStream(GLenum mode, GLuint id, GLuint stream)
+void glDrawTransformFeedbackStream(std::uint32_t mode, std::uint32_t id, std::uint32_t stream)
 {
 	gDrawTransformFeedbackStream(mode, id, stream);
 	checkError();
 }
 
-void glBeginQueryIndexed(GLenum target, GLuint index, GLuint id)
+void glBeginQueryIndexed(std::uint32_t target, std::uint32_t index, std::uint32_t id)
 {
 	gBeginQueryIndexed(target, index, id);
 	checkError();
 }
 
-void glEndQueryIndexed(GLenum target, GLuint index)
+void glEndQueryIndexed(std::uint32_t target, std::uint32_t index)
 {
 	gEndQueryIndexed(target, index);
 	checkError();
 }
 
-void glGetQueryIndexediv(GLenum target, GLuint index, GLenum pname, GLint * params)
+void glGetQueryIndexediv(std::uint32_t target, std::uint32_t index, std::uint32_t pname, std::int32_t * params)
 {
 	gGetQueryIndexediv(target, index, pname, params);
 	checkError();
@@ -3556,768 +3556,768 @@ void glReleaseShaderCompiler(void)
 	checkError();
 }
 
-void glShaderBinary(GLsizei count, GLuint const * shaders, GLenum binaryformat, GLvoid const * binary, GLsizei length)
+void glShaderBinary(std::int32_t count, std::uint32_t const * shaders, std::uint32_t binaryformat, void const * binary, std::int32_t length)
 {
 	gShaderBinary(count, shaders, binaryformat, binary, length);
 	checkError();
 }
 
-void glGetShaderPrecisionFormat(GLenum shadertype, GLenum precisiontype, GLint * range, GLint * precision)
+void glGetShaderPrecisionFormat(std::uint32_t shadertype, std::uint32_t precisiontype, std::int32_t * range, std::int32_t * precision)
 {
 	gGetShaderPrecisionFormat(shadertype, precisiontype, range, precision);
 	checkError();
 }
 
-void glDepthRangef(GLclampf n, GLclampf f)
+void glDepthRangef(float n, float f)
 {
 	gDepthRangef(n, f);
 	checkError();
 }
 
-void glClearDepthf(GLclampf d)
+void glClearDepthf(float d)
 {
 	gClearDepthf(d);
 	checkError();
 }
 
-void glGetProgramBinary(GLuint program, GLsizei bufSize, GLsizei * length, GLenum * binaryFormat, GLvoid * binary)
+void glGetProgramBinary(std::uint32_t program, std::int32_t bufSize, std::int32_t * length, std::uint32_t * binaryFormat, void * binary)
 {
 	gGetProgramBinary(program, bufSize, length, binaryFormat, binary);
 	checkError();
 }
 
-void glProgramBinary(GLuint program, GLenum binaryFormat, GLvoid const * binary, GLsizei length)
+void glProgramBinary(std::uint32_t program, std::uint32_t binaryFormat, void const * binary, std::int32_t length)
 {
 	gProgramBinary(program, binaryFormat, binary, length);
 	checkError();
 }
 
-void glProgramParameteri(GLuint program, GLenum pname, GLint value)
+void glProgramParameteri(std::uint32_t program, std::uint32_t pname, std::int32_t value)
 {
 	gProgramParameteri(program, pname, value);
 	checkError();
 }
 
-void glUseProgramStages(GLuint pipeline, GLbitfield stages, GLuint program)
+void glUseProgramStages(std::uint32_t pipeline, std::uint32_t stages, std::uint32_t program)
 {
 	gUseProgramStages(pipeline, stages, program);
 	checkError();
 }
 
-void glActiveShaderProgram(GLuint pipeline, GLuint program)
+void glActiveShaderProgram(std::uint32_t pipeline, std::uint32_t program)
 {
 	gActiveShaderProgram(pipeline, program);
 	checkError();
 }
 
-GLuint glCreateShaderProgramv(GLenum type, GLsizei count, GLchar const * * strings)
+std::uint32_t glCreateShaderProgramv(std::uint32_t type, std::int32_t count, char const * * strings)
 {
 	auto result = gCreateShaderProgramv(type, count, strings);
 	checkError();
 	return result;
 }
 
-void glBindProgramPipeline(GLuint pipeline)
+void glBindProgramPipeline(std::uint32_t pipeline)
 {
 	gBindProgramPipeline(pipeline);
 	checkError();
 }
 
-void glDeleteProgramPipelines(GLsizei n, GLuint const * pipelines)
+void glDeleteProgramPipelines(std::int32_t n, std::uint32_t const * pipelines)
 {
 	gDeleteProgramPipelines(n, pipelines);
 	checkError();
 }
 
-void glGenProgramPipelines(GLsizei n, GLuint * pipelines)
+void glGenProgramPipelines(std::int32_t n, std::uint32_t * pipelines)
 {
 	gGenProgramPipelines(n, pipelines);
 	checkError();
 }
 
-GLboolean glIsProgramPipeline(GLuint pipeline)
+std::uint8_t glIsProgramPipeline(std::uint32_t pipeline)
 {
 	auto result = gIsProgramPipeline(pipeline);
 	checkError();
 	return result;
 }
 
-void glGetProgramPipelineiv(GLuint pipeline, GLenum pname, GLint * params)
+void glGetProgramPipelineiv(std::uint32_t pipeline, std::uint32_t pname, std::int32_t * params)
 {
 	gGetProgramPipelineiv(pipeline, pname, params);
 	checkError();
 }
 
-void glProgramUniform1i(GLuint program, GLint location, GLint v0)
+void glProgramUniform1i(std::uint32_t program, std::int32_t location, std::int32_t v0)
 {
 	gProgramUniform1i(program, location, v0);
 	checkError();
 }
 
-void glProgramUniform1iv(GLuint program, GLint location, GLsizei count, GLint const * value)
+void glProgramUniform1iv(std::uint32_t program, std::int32_t location, std::int32_t count, std::int32_t const * value)
 {
 	gProgramUniform1iv(program, location, count, value);
 	checkError();
 }
 
-void glProgramUniform1f(GLuint program, GLint location, GLfloat v0)
+void glProgramUniform1f(std::uint32_t program, std::int32_t location, float v0)
 {
 	gProgramUniform1f(program, location, v0);
 	checkError();
 }
 
-void glProgramUniform1fv(GLuint program, GLint location, GLsizei count, GLfloat const * value)
+void glProgramUniform1fv(std::uint32_t program, std::int32_t location, std::int32_t count, float const * value)
 {
 	gProgramUniform1fv(program, location, count, value);
 	checkError();
 }
 
-void glProgramUniform1d(GLuint program, GLint location, GLdouble v0)
+void glProgramUniform1d(std::uint32_t program, std::int32_t location, double v0)
 {
 	gProgramUniform1d(program, location, v0);
 	checkError();
 }
 
-void glProgramUniform1dv(GLuint program, GLint location, GLsizei count, GLdouble const * value)
+void glProgramUniform1dv(std::uint32_t program, std::int32_t location, std::int32_t count, double const * value)
 {
 	gProgramUniform1dv(program, location, count, value);
 	checkError();
 }
 
-void glProgramUniform1ui(GLuint program, GLint location, GLuint v0)
+void glProgramUniform1ui(std::uint32_t program, std::int32_t location, std::uint32_t v0)
 {
 	gProgramUniform1ui(program, location, v0);
 	checkError();
 }
 
-void glProgramUniform1uiv(GLuint program, GLint location, GLsizei count, GLuint const * value)
+void glProgramUniform1uiv(std::uint32_t program, std::int32_t location, std::int32_t count, std::uint32_t const * value)
 {
 	gProgramUniform1uiv(program, location, count, value);
 	checkError();
 }
 
-void glProgramUniform2i(GLuint program, GLint location, GLint v0, GLint v1)
+void glProgramUniform2i(std::uint32_t program, std::int32_t location, std::int32_t v0, std::int32_t v1)
 {
 	gProgramUniform2i(program, location, v0, v1);
 	checkError();
 }
 
-void glProgramUniform2iv(GLuint program, GLint location, GLsizei count, GLint const * value)
+void glProgramUniform2iv(std::uint32_t program, std::int32_t location, std::int32_t count, std::int32_t const * value)
 {
 	gProgramUniform2iv(program, location, count, value);
 	checkError();
 }
 
-void glProgramUniform2f(GLuint program, GLint location, GLfloat v0, GLfloat v1)
+void glProgramUniform2f(std::uint32_t program, std::int32_t location, float v0, float v1)
 {
 	gProgramUniform2f(program, location, v0, v1);
 	checkError();
 }
 
-void glProgramUniform2fv(GLuint program, GLint location, GLsizei count, GLfloat const * value)
+void glProgramUniform2fv(std::uint32_t program, std::int32_t location, std::int32_t count, float const * value)
 {
 	gProgramUniform2fv(program, location, count, value);
 	checkError();
 }
 
-void glProgramUniform2d(GLuint program, GLint location, GLdouble v0, GLdouble v1)
+void glProgramUniform2d(std::uint32_t program, std::int32_t location, double v0, double v1)
 {
 	gProgramUniform2d(program, location, v0, v1);
 	checkError();
 }
 
-void glProgramUniform2dv(GLuint program, GLint location, GLsizei count, GLdouble const * value)
+void glProgramUniform2dv(std::uint32_t program, std::int32_t location, std::int32_t count, double const * value)
 {
 	gProgramUniform2dv(program, location, count, value);
 	checkError();
 }
 
-void glProgramUniform2ui(GLuint program, GLint location, GLuint v0, GLuint v1)
+void glProgramUniform2ui(std::uint32_t program, std::int32_t location, std::uint32_t v0, std::uint32_t v1)
 {
 	gProgramUniform2ui(program, location, v0, v1);
 	checkError();
 }
 
-void glProgramUniform2uiv(GLuint program, GLint location, GLsizei count, GLuint const * value)
+void glProgramUniform2uiv(std::uint32_t program, std::int32_t location, std::int32_t count, std::uint32_t const * value)
 {
 	gProgramUniform2uiv(program, location, count, value);
 	checkError();
 }
 
-void glProgramUniform3i(GLuint program, GLint location, GLint v0, GLint v1, GLint v2)
+void glProgramUniform3i(std::uint32_t program, std::int32_t location, std::int32_t v0, std::int32_t v1, std::int32_t v2)
 {
 	gProgramUniform3i(program, location, v0, v1, v2);
 	checkError();
 }
 
-void glProgramUniform3iv(GLuint program, GLint location, GLsizei count, GLint const * value)
+void glProgramUniform3iv(std::uint32_t program, std::int32_t location, std::int32_t count, std::int32_t const * value)
 {
 	gProgramUniform3iv(program, location, count, value);
 	checkError();
 }
 
-void glProgramUniform3f(GLuint program, GLint location, GLfloat v0, GLfloat v1, GLfloat v2)
+void glProgramUniform3f(std::uint32_t program, std::int32_t location, float v0, float v1, float v2)
 {
 	gProgramUniform3f(program, location, v0, v1, v2);
 	checkError();
 }
 
-void glProgramUniform3fv(GLuint program, GLint location, GLsizei count, GLfloat const * value)
+void glProgramUniform3fv(std::uint32_t program, std::int32_t location, std::int32_t count, float const * value)
 {
 	gProgramUniform3fv(program, location, count, value);
 	checkError();
 }
 
-void glProgramUniform3d(GLuint program, GLint location, GLdouble v0, GLdouble v1, GLdouble v2)
+void glProgramUniform3d(std::uint32_t program, std::int32_t location, double v0, double v1, double v2)
 {
 	gProgramUniform3d(program, location, v0, v1, v2);
 	checkError();
 }
 
-void glProgramUniform3dv(GLuint program, GLint location, GLsizei count, GLdouble const * value)
+void glProgramUniform3dv(std::uint32_t program, std::int32_t location, std::int32_t count, double const * value)
 {
 	gProgramUniform3dv(program, location, count, value);
 	checkError();
 }
 
-void glProgramUniform3ui(GLuint program, GLint location, GLuint v0, GLuint v1, GLuint v2)
+void glProgramUniform3ui(std::uint32_t program, std::int32_t location, std::uint32_t v0, std::uint32_t v1, std::uint32_t v2)
 {
 	gProgramUniform3ui(program, location, v0, v1, v2);
 	checkError();
 }
 
-void glProgramUniform3uiv(GLuint program, GLint location, GLsizei count, GLuint const * value)
+void glProgramUniform3uiv(std::uint32_t program, std::int32_t location, std::int32_t count, std::uint32_t const * value)
 {
 	gProgramUniform3uiv(program, location, count, value);
 	checkError();
 }
 
-void glProgramUniform4i(GLuint program, GLint location, GLint v0, GLint v1, GLint v2, GLint v3)
+void glProgramUniform4i(std::uint32_t program, std::int32_t location, std::int32_t v0, std::int32_t v1, std::int32_t v2, std::int32_t v3)
 {
 	gProgramUniform4i(program, location, v0, v1, v2, v3);
 	checkError();
 }
 
-void glProgramUniform4iv(GLuint program, GLint location, GLsizei count, GLint const * value)
+void glProgramUniform4iv(std::uint32_t program, std::int32_t location, std::int32_t count, std::int32_t const * value)
 {
 	gProgramUniform4iv(program, location, count, value);
 	checkError();
 }
 
-void glProgramUniform4f(GLuint program, GLint location, GLfloat v0, GLfloat v1, GLfloat v2, GLfloat v3)
+void glProgramUniform4f(std::uint32_t program, std::int32_t location, float v0, float v1, float v2, float v3)
 {
 	gProgramUniform4f(program, location, v0, v1, v2, v3);
 	checkError();
 }
 
-void glProgramUniform4fv(GLuint program, GLint location, GLsizei count, GLfloat const * value)
+void glProgramUniform4fv(std::uint32_t program, std::int32_t location, std::int32_t count, float const * value)
 {
 	gProgramUniform4fv(program, location, count, value);
 	checkError();
 }
 
-void glProgramUniform4d(GLuint program, GLint location, GLdouble v0, GLdouble v1, GLdouble v2, GLdouble v3)
+void glProgramUniform4d(std::uint32_t program, std::int32_t location, double v0, double v1, double v2, double v3)
 {
 	gProgramUniform4d(program, location, v0, v1, v2, v3);
 	checkError();
 }
 
-void glProgramUniform4dv(GLuint program, GLint location, GLsizei count, GLdouble const * value)
+void glProgramUniform4dv(std::uint32_t program, std::int32_t location, std::int32_t count, double const * value)
 {
 	gProgramUniform4dv(program, location, count, value);
 	checkError();
 }
 
-void glProgramUniform4ui(GLuint program, GLint location, GLuint v0, GLuint v1, GLuint v2, GLuint v3)
+void glProgramUniform4ui(std::uint32_t program, std::int32_t location, std::uint32_t v0, std::uint32_t v1, std::uint32_t v2, std::uint32_t v3)
 {
 	gProgramUniform4ui(program, location, v0, v1, v2, v3);
 	checkError();
 }
 
-void glProgramUniform4uiv(GLuint program, GLint location, GLsizei count, GLuint const * value)
+void glProgramUniform4uiv(std::uint32_t program, std::int32_t location, std::int32_t count, std::uint32_t const * value)
 {
 	gProgramUniform4uiv(program, location, count, value);
 	checkError();
 }
 
-void glProgramUniformMatrix2fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
+void glProgramUniformMatrix2fv(std::uint32_t program, std::int32_t location, std::int32_t count, std::uint8_t transpose, float const * value)
 {
 	gProgramUniformMatrix2fv(program, location, count, transpose, value);
 	checkError();
 }
 
-void glProgramUniformMatrix3fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
+void glProgramUniformMatrix3fv(std::uint32_t program, std::int32_t location, std::int32_t count, std::uint8_t transpose, float const * value)
 {
 	gProgramUniformMatrix3fv(program, location, count, transpose, value);
 	checkError();
 }
 
-void glProgramUniformMatrix4fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
+void glProgramUniformMatrix4fv(std::uint32_t program, std::int32_t location, std::int32_t count, std::uint8_t transpose, float const * value)
 {
 	gProgramUniformMatrix4fv(program, location, count, transpose, value);
 	checkError();
 }
 
-void glProgramUniformMatrix2dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
+void glProgramUniformMatrix2dv(std::uint32_t program, std::int32_t location, std::int32_t count, std::uint8_t transpose, double const * value)
 {
 	gProgramUniformMatrix2dv(program, location, count, transpose, value);
 	checkError();
 }
 
-void glProgramUniformMatrix3dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
+void glProgramUniformMatrix3dv(std::uint32_t program, std::int32_t location, std::int32_t count, std::uint8_t transpose, double const * value)
 {
 	gProgramUniformMatrix3dv(program, location, count, transpose, value);
 	checkError();
 }
 
-void glProgramUniformMatrix4dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
+void glProgramUniformMatrix4dv(std::uint32_t program, std::int32_t location, std::int32_t count, std::uint8_t transpose, double const * value)
 {
 	gProgramUniformMatrix4dv(program, location, count, transpose, value);
 	checkError();
 }
 
-void glProgramUniformMatrix2x3fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
+void glProgramUniformMatrix2x3fv(std::uint32_t program, std::int32_t location, std::int32_t count, std::uint8_t transpose, float const * value)
 {
 	gProgramUniformMatrix2x3fv(program, location, count, transpose, value);
 	checkError();
 }
 
-void glProgramUniformMatrix3x2fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
+void glProgramUniformMatrix3x2fv(std::uint32_t program, std::int32_t location, std::int32_t count, std::uint8_t transpose, float const * value)
 {
 	gProgramUniformMatrix3x2fv(program, location, count, transpose, value);
 	checkError();
 }
 
-void glProgramUniformMatrix2x4fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
+void glProgramUniformMatrix2x4fv(std::uint32_t program, std::int32_t location, std::int32_t count, std::uint8_t transpose, float const * value)
 {
 	gProgramUniformMatrix2x4fv(program, location, count, transpose, value);
 	checkError();
 }
 
-void glProgramUniformMatrix4x2fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
+void glProgramUniformMatrix4x2fv(std::uint32_t program, std::int32_t location, std::int32_t count, std::uint8_t transpose, float const * value)
 {
 	gProgramUniformMatrix4x2fv(program, location, count, transpose, value);
 	checkError();
 }
 
-void glProgramUniformMatrix3x4fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
+void glProgramUniformMatrix3x4fv(std::uint32_t program, std::int32_t location, std::int32_t count, std::uint8_t transpose, float const * value)
 {
 	gProgramUniformMatrix3x4fv(program, location, count, transpose, value);
 	checkError();
 }
 
-void glProgramUniformMatrix4x3fv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLfloat const * value)
+void glProgramUniformMatrix4x3fv(std::uint32_t program, std::int32_t location, std::int32_t count, std::uint8_t transpose, float const * value)
 {
 	gProgramUniformMatrix4x3fv(program, location, count, transpose, value);
 	checkError();
 }
 
-void glProgramUniformMatrix2x3dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
+void glProgramUniformMatrix2x3dv(std::uint32_t program, std::int32_t location, std::int32_t count, std::uint8_t transpose, double const * value)
 {
 	gProgramUniformMatrix2x3dv(program, location, count, transpose, value);
 	checkError();
 }
 
-void glProgramUniformMatrix3x2dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
+void glProgramUniformMatrix3x2dv(std::uint32_t program, std::int32_t location, std::int32_t count, std::uint8_t transpose, double const * value)
 {
 	gProgramUniformMatrix3x2dv(program, location, count, transpose, value);
 	checkError();
 }
 
-void glProgramUniformMatrix2x4dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
+void glProgramUniformMatrix2x4dv(std::uint32_t program, std::int32_t location, std::int32_t count, std::uint8_t transpose, double const * value)
 {
 	gProgramUniformMatrix2x4dv(program, location, count, transpose, value);
 	checkError();
 }
 
-void glProgramUniformMatrix4x2dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
+void glProgramUniformMatrix4x2dv(std::uint32_t program, std::int32_t location, std::int32_t count, std::uint8_t transpose, double const * value)
 {
 	gProgramUniformMatrix4x2dv(program, location, count, transpose, value);
 	checkError();
 }
 
-void glProgramUniformMatrix3x4dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
+void glProgramUniformMatrix3x4dv(std::uint32_t program, std::int32_t location, std::int32_t count, std::uint8_t transpose, double const * value)
 {
 	gProgramUniformMatrix3x4dv(program, location, count, transpose, value);
 	checkError();
 }
 
-void glProgramUniformMatrix4x3dv(GLuint program, GLint location, GLsizei count, GLboolean transpose, GLdouble const * value)
+void glProgramUniformMatrix4x3dv(std::uint32_t program, std::int32_t location, std::int32_t count, std::uint8_t transpose, double const * value)
 {
 	gProgramUniformMatrix4x3dv(program, location, count, transpose, value);
 	checkError();
 }
 
-void glValidateProgramPipeline(GLuint pipeline)
+void glValidateProgramPipeline(std::uint32_t pipeline)
 {
 	gValidateProgramPipeline(pipeline);
 	checkError();
 }
 
-void glGetProgramPipelineInfoLog(GLuint pipeline, GLsizei bufSize, GLsizei * length, GLchar * infoLog)
+void glGetProgramPipelineInfoLog(std::uint32_t pipeline, std::int32_t bufSize, std::int32_t * length, char * infoLog)
 {
 	gGetProgramPipelineInfoLog(pipeline, bufSize, length, infoLog);
 	checkError();
 }
 
-void glVertexAttribL1d(GLuint index, GLdouble x)
+void glVertexAttribL1d(std::uint32_t index, double x)
 {
 	gVertexAttribL1d(index, x);
 	checkError();
 }
 
-void glVertexAttribL2d(GLuint index, GLdouble x, GLdouble y)
+void glVertexAttribL2d(std::uint32_t index, double x, double y)
 {
 	gVertexAttribL2d(index, x, y);
 	checkError();
 }
 
-void glVertexAttribL3d(GLuint index, GLdouble x, GLdouble y, GLdouble z)
+void glVertexAttribL3d(std::uint32_t index, double x, double y, double z)
 {
 	gVertexAttribL3d(index, x, y, z);
 	checkError();
 }
 
-void glVertexAttribL4d(GLuint index, GLdouble x, GLdouble y, GLdouble z, GLdouble w)
+void glVertexAttribL4d(std::uint32_t index, double x, double y, double z, double w)
 {
 	gVertexAttribL4d(index, x, y, z, w);
 	checkError();
 }
 
-void glVertexAttribL1dv(GLuint index, GLdouble const * v)
+void glVertexAttribL1dv(std::uint32_t index, double const * v)
 {
 	gVertexAttribL1dv(index, v);
 	checkError();
 }
 
-void glVertexAttribL2dv(GLuint index, GLdouble const * v)
+void glVertexAttribL2dv(std::uint32_t index, double const * v)
 {
 	gVertexAttribL2dv(index, v);
 	checkError();
 }
 
-void glVertexAttribL3dv(GLuint index, GLdouble const * v)
+void glVertexAttribL3dv(std::uint32_t index, double const * v)
 {
 	gVertexAttribL3dv(index, v);
 	checkError();
 }
 
-void glVertexAttribL4dv(GLuint index, GLdouble const * v)
+void glVertexAttribL4dv(std::uint32_t index, double const * v)
 {
 	gVertexAttribL4dv(index, v);
 	checkError();
 }
 
-void glVertexAttribLPointer(GLuint index, GLint size, GLenum type, GLsizei stride, GLvoid const * pointer)
+void glVertexAttribLPointer(std::uint32_t index, std::int32_t size, std::uint32_t type, std::int32_t stride, void const * pointer)
 {
 	gVertexAttribLPointer(index, size, type, stride, pointer);
 	checkError();
 }
 
-void glGetVertexAttribLdv(GLuint index, GLenum pname, GLdouble * params)
+void glGetVertexAttribLdv(std::uint32_t index, std::uint32_t pname, double * params)
 {
 	gGetVertexAttribLdv(index, pname, params);
 	checkError();
 }
 
-void glViewportArrayv(GLuint first, GLsizei count, GLfloat const * v)
+void glViewportArrayv(std::uint32_t first, std::int32_t count, float const * v)
 {
 	gViewportArrayv(first, count, v);
 	checkError();
 }
 
-void glViewportIndexedf(GLuint index, GLfloat x, GLfloat y, GLfloat w, GLfloat h)
+void glViewportIndexedf(std::uint32_t index, float x, float y, float w, float h)
 {
 	gViewportIndexedf(index, x, y, w, h);
 	checkError();
 }
 
-void glViewportIndexedfv(GLuint index, GLfloat const * v)
+void glViewportIndexedfv(std::uint32_t index, float const * v)
 {
 	gViewportIndexedfv(index, v);
 	checkError();
 }
 
-void glScissorArrayv(GLuint first, GLsizei count, GLint const * v)
+void glScissorArrayv(std::uint32_t first, std::int32_t count, std::int32_t const * v)
 {
 	gScissorArrayv(first, count, v);
 	checkError();
 }
 
-void glScissorIndexed(GLuint index, GLint left, GLint bottom, GLsizei width, GLsizei height)
+void glScissorIndexed(std::uint32_t index, std::int32_t left, std::int32_t bottom, std::int32_t width, std::int32_t height)
 {
 	gScissorIndexed(index, left, bottom, width, height);
 	checkError();
 }
 
-void glScissorIndexedv(GLuint index, GLint const * v)
+void glScissorIndexedv(std::uint32_t index, std::int32_t const * v)
 {
 	gScissorIndexedv(index, v);
 	checkError();
 }
 
-void glDepthRangeArrayv(GLuint first, GLsizei count, GLclampd const * v)
+void glDepthRangeArrayv(std::uint32_t first, std::int32_t count, double const * v)
 {
 	gDepthRangeArrayv(first, count, v);
 	checkError();
 }
 
-void glDepthRangeIndexed(GLuint index, GLclampd n, GLclampd f)
+void glDepthRangeIndexed(std::uint32_t index, double n, double f)
 {
 	gDepthRangeIndexed(index, n, f);
 	checkError();
 }
 
-void glGetFloati_v(GLenum target, GLuint index, GLfloat * data)
+void glGetFloati_v(std::uint32_t target, std::uint32_t index, float * data)
 {
 	gGetFloati_v(target, index, data);
 	checkError();
 }
 
-void glGetDoublei_v(GLenum target, GLuint index, GLdouble * data)
+void glGetDoublei_v(std::uint32_t target, std::uint32_t index, double * data)
 {
 	gGetDoublei_v(target, index, data);
 	checkError();
 }
 
-GLsync glCreateSyncFromCLeventARB(struct _cl_context * context, struct _cl_event * event, GLbitfield flags)
+GLsync glCreateSyncFromCLeventARB(struct _cl_context * context, struct _cl_event * event, std::uint32_t flags)
 {
 	auto result = gCreateSyncFromCLeventARB(context, event, flags);
 	checkError();
 	return result;
 }
 
-void glDebugMessageControlARB(GLenum source, GLenum type, GLenum severity, GLsizei count, GLuint const * ids, GLboolean enabled)
+void glDebugMessageControlARB(std::uint32_t source, std::uint32_t type, std::uint32_t severity, std::int32_t count, std::uint32_t const * ids, std::uint8_t enabled)
 {
 	gDebugMessageControlARB(source, type, severity, count, ids, enabled);
 	checkError();
 }
 
-void glDebugMessageInsertARB(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, GLchar const * buf)
+void glDebugMessageInsertARB(std::uint32_t source, std::uint32_t type, std::uint32_t id, std::uint32_t severity, std::int32_t length, char const * buf)
 {
 	gDebugMessageInsertARB(source, type, id, severity, length, buf);
 	checkError();
 }
 
-void glDebugMessageCallbackARB(GLDEBUGPROCARB callback, GLvoid const * userParam)
+void glDebugMessageCallbackARB(GLDEBUGPROCARB callback, void const * userParam)
 {
 	gDebugMessageCallbackARB(callback, userParam);
 	checkError();
 }
 
-GLuint glGetDebugMessageLogARB(GLuint count, GLsizei bufsize, GLenum * sources, GLenum * types, GLuint * ids, GLenum * severities, GLsizei * lengths, GLchar * messageLog)
+std::uint32_t glGetDebugMessageLogARB(std::uint32_t count, std::int32_t bufsize, std::uint32_t * sources, std::uint32_t * types, std::uint32_t * ids, std::uint32_t * severities, std::int32_t * lengths, char * messageLog)
 {
 	auto result = gGetDebugMessageLogARB(count, bufsize, sources, types, ids, severities, lengths, messageLog);
 	checkError();
 	return result;
 }
 
-GLenum glGetGraphicsResetStatusARB(void)
+std::uint32_t glGetGraphicsResetStatusARB(void)
 {
 	auto result = gGetGraphicsResetStatusARB();
 	checkError();
 	return result;
 }
 
-void glGetnMapdvARB(GLenum target, GLenum query, GLsizei bufSize, GLdouble * v)
+void glGetnMapdvARB(std::uint32_t target, std::uint32_t query, std::int32_t bufSize, double * v)
 {
 	gGetnMapdvARB(target, query, bufSize, v);
 	checkError();
 }
 
-void glGetnMapfvARB(GLenum target, GLenum query, GLsizei bufSize, GLfloat * v)
+void glGetnMapfvARB(std::uint32_t target, std::uint32_t query, std::int32_t bufSize, float * v)
 {
 	gGetnMapfvARB(target, query, bufSize, v);
 	checkError();
 }
 
-void glGetnMapivARB(GLenum target, GLenum query, GLsizei bufSize, GLint * v)
+void glGetnMapivARB(std::uint32_t target, std::uint32_t query, std::int32_t bufSize, std::int32_t * v)
 {
 	gGetnMapivARB(target, query, bufSize, v);
 	checkError();
 }
 
-void glGetnPixelMapfvARB(GLenum map, GLsizei bufSize, GLfloat * values)
+void glGetnPixelMapfvARB(std::uint32_t map, std::int32_t bufSize, float * values)
 {
 	gGetnPixelMapfvARB(map, bufSize, values);
 	checkError();
 }
 
-void glGetnPixelMapuivARB(GLenum map, GLsizei bufSize, GLuint * values)
+void glGetnPixelMapuivARB(std::uint32_t map, std::int32_t bufSize, std::uint32_t * values)
 {
 	gGetnPixelMapuivARB(map, bufSize, values);
 	checkError();
 }
 
-void glGetnPixelMapusvARB(GLenum map, GLsizei bufSize, GLushort * values)
+void glGetnPixelMapusvARB(std::uint32_t map, std::int32_t bufSize, std::uint16_t * values)
 {
 	gGetnPixelMapusvARB(map, bufSize, values);
 	checkError();
 }
 
-void glGetnPolygonStippleARB(GLsizei bufSize, GLubyte * pattern)
+void glGetnPolygonStippleARB(std::int32_t bufSize, std::uint8_t * pattern)
 {
 	gGetnPolygonStippleARB(bufSize, pattern);
 	checkError();
 }
 
-void glGetnColorTableARB(GLenum target, GLenum format, GLenum type, GLsizei bufSize, GLvoid * table)
+void glGetnColorTableARB(std::uint32_t target, std::uint32_t format, std::uint32_t type, std::int32_t bufSize, void * table)
 {
 	gGetnColorTableARB(target, format, type, bufSize, table);
 	checkError();
 }
 
-void glGetnConvolutionFilterARB(GLenum target, GLenum format, GLenum type, GLsizei bufSize, GLvoid * image)
+void glGetnConvolutionFilterARB(std::uint32_t target, std::uint32_t format, std::uint32_t type, std::int32_t bufSize, void * image)
 {
 	gGetnConvolutionFilterARB(target, format, type, bufSize, image);
 	checkError();
 }
 
-void glGetnSeparableFilterARB(GLenum target, GLenum format, GLenum type, GLsizei rowBufSize, GLvoid * row, GLsizei columnBufSize, GLvoid * column, GLvoid * span)
+void glGetnSeparableFilterARB(std::uint32_t target, std::uint32_t format, std::uint32_t type, std::int32_t rowBufSize, void * row, std::int32_t columnBufSize, void * column, void * span)
 {
 	gGetnSeparableFilterARB(target, format, type, rowBufSize, row, columnBufSize, column, span);
 	checkError();
 }
 
-void glGetnHistogramARB(GLenum target, GLboolean reset, GLenum format, GLenum type, GLsizei bufSize, GLvoid * values)
+void glGetnHistogramARB(std::uint32_t target, std::uint8_t reset, std::uint32_t format, std::uint32_t type, std::int32_t bufSize, void * values)
 {
 	gGetnHistogramARB(target, reset, format, type, bufSize, values);
 	checkError();
 }
 
-void glGetnMinmaxARB(GLenum target, GLboolean reset, GLenum format, GLenum type, GLsizei bufSize, GLvoid * values)
+void glGetnMinmaxARB(std::uint32_t target, std::uint8_t reset, std::uint32_t format, std::uint32_t type, std::int32_t bufSize, void * values)
 {
 	gGetnMinmaxARB(target, reset, format, type, bufSize, values);
 	checkError();
 }
 
-void glGetnTexImageARB(GLenum target, GLint level, GLenum format, GLenum type, GLsizei bufSize, GLvoid * img)
+void glGetnTexImageARB(std::uint32_t target, std::int32_t level, std::uint32_t format, std::uint32_t type, std::int32_t bufSize, void * img)
 {
 	gGetnTexImageARB(target, level, format, type, bufSize, img);
 	checkError();
 }
 
-void glReadnPixelsARB(GLint x, GLint y, GLsizei width, GLsizei height, GLenum format, GLenum type, GLsizei bufSize, GLvoid * data)
+void glReadnPixelsARB(std::int32_t x, std::int32_t y, std::int32_t width, std::int32_t height, std::uint32_t format, std::uint32_t type, std::int32_t bufSize, void * data)
 {
 	gReadnPixelsARB(x, y, width, height, format, type, bufSize, data);
 	checkError();
 }
 
-void glGetnCompressedTexImageARB(GLenum target, GLint lod, GLsizei bufSize, GLvoid * img)
+void glGetnCompressedTexImageARB(std::uint32_t target, std::int32_t lod, std::int32_t bufSize, void * img)
 {
 	gGetnCompressedTexImageARB(target, lod, bufSize, img);
 	checkError();
 }
 
-void glGetnUniformfvARB(GLuint program, GLint location, GLsizei bufSize, GLfloat * params)
+void glGetnUniformfvARB(std::uint32_t program, std::int32_t location, std::int32_t bufSize, float * params)
 {
 	gGetnUniformfvARB(program, location, bufSize, params);
 	checkError();
 }
 
-void glGetnUniformivARB(GLuint program, GLint location, GLsizei bufSize, GLint * params)
+void glGetnUniformivARB(std::uint32_t program, std::int32_t location, std::int32_t bufSize, std::int32_t * params)
 {
 	gGetnUniformivARB(program, location, bufSize, params);
 	checkError();
 }
 
-void glGetnUniformuivARB(GLuint program, GLint location, GLsizei bufSize, GLuint * params)
+void glGetnUniformuivARB(std::uint32_t program, std::int32_t location, std::int32_t bufSize, std::uint32_t * params)
 {
 	gGetnUniformuivARB(program, location, bufSize, params);
 	checkError();
 }
 
-void glGetnUniformdvARB(GLuint program, GLint location, GLsizei bufSize, GLdouble * params)
+void glGetnUniformdvARB(std::uint32_t program, std::int32_t location, std::int32_t bufSize, double * params)
 {
 	gGetnUniformdvARB(program, location, bufSize, params);
 	checkError();
 }
 
-void glDrawArraysInstancedBaseInstance(GLenum mode, GLint first, GLsizei count, GLsizei primcount, GLuint baseinstance)
+void glDrawArraysInstancedBaseInstance(std::uint32_t mode, std::int32_t first, std::int32_t count, std::int32_t primcount, std::uint32_t baseinstance)
 {
 	gDrawArraysInstancedBaseInstance(mode, first, count, primcount, baseinstance);
 	checkError();
 }
 
-void glDrawElementsInstancedBaseInstance(GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei primcount, GLuint baseinstance)
+void glDrawElementsInstancedBaseInstance(std::uint32_t mode, std::int32_t count, std::uint32_t type, const void *indices, std::int32_t primcount, std::uint32_t baseinstance)
 {
 	gDrawElementsInstancedBaseInstance(mode, count, type,  indices, primcount, baseinstance);
 	checkError();
 }
 
-void glDrawElementsInstancedBaseVertexBaseInstance(GLenum mode, GLsizei count, GLenum type, const void *indices, GLsizei primcount, GLint basevertex, GLuint baseinstance)
+void glDrawElementsInstancedBaseVertexBaseInstance(std::uint32_t mode, std::int32_t count, std::uint32_t type, const void *indices, std::int32_t primcount, std::int32_t basevertex, std::uint32_t baseinstance)
 {
 	gDrawElementsInstancedBaseVertexBaseInstance(mode, count, type,  indices, primcount, basevertex, baseinstance);
 	checkError();
 }
 
-void glDrawTransformFeedbackInstanced(GLenum mode, GLuint id, GLsizei primcount)
+void glDrawTransformFeedbackInstanced(std::uint32_t mode, std::uint32_t id, std::int32_t primcount)
 {
 	gDrawTransformFeedbackInstanced(mode, id, primcount);
 	checkError();
 }
 
-void glDrawTransformFeedbackStreamInstanced(GLenum mode, GLuint id, GLuint stream, GLsizei primcount)
+void glDrawTransformFeedbackStreamInstanced(std::uint32_t mode, std::uint32_t id, std::uint32_t stream, std::int32_t primcount)
 {
 	gDrawTransformFeedbackStreamInstanced(mode, id, stream, primcount);
 	checkError();
 }
 
-void glGetInternalformativ(GLenum target, GLenum internalformat, GLenum pname, GLsizei bufSize, GLint * params)
+void glGetInternalformativ(std::uint32_t target, std::uint32_t internalformat, std::uint32_t pname, std::int32_t bufSize, std::int32_t * params)
 {
 	gGetInternalformativ(target, internalformat, pname, bufSize, params);
 	checkError();
 }
 
-void glGetActiveAtomicCounterBufferiv(GLuint program, GLuint bufferIndex, GLenum pname, GLint * params)
+void glGetActiveAtomicCounterBufferiv(std::uint32_t program, std::uint32_t bufferIndex, std::uint32_t pname, std::int32_t * params)
 {
 	gGetActiveAtomicCounterBufferiv(program, bufferIndex, pname, params);
 	checkError();
 }
 
-void glBindImageTexture(GLuint unit, GLuint texture, GLint level, GLboolean layered, GLint layer, GLenum access, GLenum format)
+void glBindImageTexture(std::uint32_t unit, std::uint32_t texture, std::int32_t level, std::uint8_t layered, std::int32_t layer, std::uint32_t access, std::uint32_t format)
 {
 	gBindImageTexture(unit, texture, level, layered, layer, access, format);
 	checkError();
 }
 
-void glMemoryBarrier(GLbitfield barriers)
+void glMemoryBarrier(std::uint32_t barriers)
 {
 	gMemoryBarrier(barriers);
 	checkError();
 }
 
-void glTexStorage1D(GLenum target, GLsizei levels, GLenum internalformat, GLsizei width)
+void glTexStorage1D(std::uint32_t target, std::int32_t levels, std::uint32_t internalformat, std::int32_t width)
 {
 	gTexStorage1D(target, levels, internalformat, width);
 	checkError();
 }
 
-void glTexStorage2D(GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height)
+void glTexStorage2D(std::uint32_t target, std::int32_t levels, std::uint32_t internalformat, std::int32_t width, std::int32_t height)
 {
 	gTexStorage2D(target, levels, internalformat, width, height);
 	checkError();
 }
 
-void glTexStorage3D(GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth)
+void glTexStorage3D(std::uint32_t target, std::int32_t levels, std::uint32_t internalformat, std::int32_t width, std::int32_t height, std::int32_t depth)
 {
 	gTexStorage3D(target, levels, internalformat, width, height, depth);
 	checkError();
 }
 
-void glTextureStorage1DEXT(GLuint texture, GLenum target, GLsizei levels, GLenum internalformat, GLsizei width)
+void glTextureStorage1DEXT(std::uint32_t texture, std::uint32_t target, std::int32_t levels, std::uint32_t internalformat, std::int32_t width)
 {
 	gTextureStorage1DEXT(texture, target, levels, internalformat, width);
 	checkError();
 }
 
-void glTextureStorage2DEXT(GLuint texture, GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height)
+void glTextureStorage2DEXT(std::uint32_t texture, std::uint32_t target, std::int32_t levels, std::uint32_t internalformat, std::int32_t width, std::int32_t height)
 {
 	gTextureStorage2DEXT(texture, target, levels, internalformat, width, height);
 	checkError();
 }
 
-void glTextureStorage3DEXT(GLuint texture, GLenum target, GLsizei levels, GLenum internalformat, GLsizei width, GLsizei height, GLsizei depth)
+void glTextureStorage3DEXT(std::uint32_t texture, std::uint32_t target, std::int32_t levels, std::uint32_t internalformat, std::int32_t width, std::int32_t height, std::int32_t depth)
 {
 	gTextureStorage3DEXT(texture, target, levels, internalformat, width, height, depth);
 	checkError();

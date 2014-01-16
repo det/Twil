@@ -37,7 +37,7 @@ namespace Ft {
 // SubBitmapIterator
 
 SubBitmapIteratorT::SubBitmapIteratorT(
-	unsigned char const * Pointer,
+	std::uint8_t const * Pointer,
 	std::size_t Pitch,
 	std::size_t Width,
 	std::size_t RowCount)
@@ -73,7 +73,7 @@ bool SubBitmapIteratorT::operator!=(SubBitmapIteratorT const & Other)
 	return mPointer != Other.mPointer;
 }
 
-unsigned char SubBitmapIteratorT::operator*() const
+std::uint8_t SubBitmapIteratorT::operator*() const
 {
 	return *mPointer;
 }
@@ -111,7 +111,7 @@ void BitmapT::resize(std::size_t Width, std::size_t Height)
 		if (mCapacity == 0) mCapacity = 1;
 		while (mCapacity < Size) mCapacity *= 2;
 		delete[] mId.buffer;
-		mId.buffer = new unsigned char[mCapacity * mCapacity];
+		mId.buffer = new std::uint8_t[mCapacity * mCapacity];
 	}
 
 	std::fill(mId.buffer, mId.buffer + Width * Height, 0);
@@ -147,17 +147,17 @@ std::size_t BitmapT::size() const
 	return mId.pitch * mId.rows;
 }
 
-unsigned char const * BitmapT::data() const
+std::uint8_t const * BitmapT::data() const
 {
 	return mId.buffer;
 }
 
-unsigned char const * BitmapT::begin() const
+std::uint8_t const * BitmapT::begin() const
 {
 	return mId.buffer;
 }
 
-unsigned char const * BitmapT::end() const
+std::uint8_t const * BitmapT::end() const
 {
 	return mId.buffer + size();
 }

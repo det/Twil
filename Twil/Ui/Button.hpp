@@ -30,7 +30,7 @@ private:
 	bool mIsPressed;
 	bool mHasMouse;
 
-	bool checkThisContains(std::int16_t X, std::int16_t Y)
+	bool checkThisContains(float X, float Y)
 	{
 		return (
 			X >= getLeft() && X >= getClipLeft() &&
@@ -77,105 +77,105 @@ public:
 	}
 
 	// Widget
-	void moveX(std::int16_t X)
+	void moveX(float X)
 	{
 		mThemeButton.moveX(X);
 		mChild.moveX(X);
 	}
 
-	void moveY(std::int16_t Y)
+	void moveY(float Y)
 	{
 		mThemeButton.moveY(Y);
 		mChild.moveY(Y);
 	}
 
-	void resizeWidth(std::int16_t X)
+	void resizeWidth(float X)
 	{
 		mThemeButton.resizeWidth(X);
 		mChild.resizeWidth(X);
 	}
 
-	void resizeHeight(std::int16_t Y)
+	void resizeHeight(float Y)
 	{
 		mThemeButton.resizeHeight(Y);
 		mChild.resizeHeight(Y);
 	}
 
-	void setClipLeft(std::int16_t X)
+	void setClipLeft(float X)
 	{
 		mThemeButton.setClipLeft(X);
 		mChild.setClipLeft(X);
 	}
 
-	void setClipBottom(std::int16_t Y)
+	void setClipBottom(float Y)
 	{
 		mThemeButton.setClipBottom(Y);
 		mChild.setClipBottom(Y);
 	}
 
-	void setClipRight(std::int16_t X)
+	void setClipRight(float X)
 	{
 		mThemeButton.setClipRight(X);
 		mChild.setClipRight(X);
 	}
 
-	void setClipTop(std::int16_t Y)
+	void setClipTop(float Y)
 	{
 		mThemeButton.setClipTop(Y);
 		mChild.setClipTop(Y);
 	}
 
-	std::int16_t getLeft() const
+	float getLeft() const
 	{
 		return mThemeButton.getLeft();
 	}
 
-	std::int16_t getBottom() const
+	float getBottom() const
 	{
 		return mThemeButton.getBottom();
 	}
 
-	std::int16_t getRight() const
+	float getRight() const
 	{
 		return mThemeButton.getRight();
 	}
 
-	std::int16_t getTop() const
+	float getTop() const
 	{
 		return mThemeButton.getTop();
 	}
 
-	std::int16_t getClipLeft() const
+	float getClipLeft() const
 	{
 		return mThemeButton.getClipLeft();
 	}
 
-	std::int16_t getClipBottom() const
+	float getClipBottom() const
 	{
 		return mThemeButton.getClipBottom();
 	}
 
-	std::int16_t getClipRight() const
+	float getClipRight() const
 	{
 		return mThemeButton.getClipRight();
 	}
 
-	std::int16_t getClipTop() const
+	float getClipTop() const
 	{
 		return mThemeButton.getClipTop();
 	}
 
-	std::int16_t getBaseWidth() const
+	float getBaseWidth() const
 	{
 		return mThemeButton.getBaseWidth(mChild.getBaseWidth());
 	}
 
-	std::int16_t getBaseHeight() const
+	float getBaseHeight() const
 	{
 		return mThemeButton.getBaseHeight(mChild.getBaseHeight());
 	}
 
-	void delegateMouse(std::int16_t, std::int16_t)
+	void delegateMouse(float, float)
 	{
 		mWindow->getMouseManager().setHandler(*this);
 		mHasMouse = true;
@@ -192,13 +192,13 @@ public:
 		mParent->handleChildBaseHeightChanged(this);
 	}
 
-	void releaseMouse(std::int16_t X, std::int16_t Y) final
+	void releaseMouse(float X, float Y) final
 	{
 		mParent->releaseMouse(X, Y);
 	}
 
 	// MouseHandler
-	void handleButtonPress(std::int16_t, std::int16_t, unsigned char Index) final
+	void handleButtonPress(float, float, std::uint8_t Index) final
 	{
 		if (Index == 1)
 		{
@@ -207,7 +207,7 @@ public:
 		}
 	}
 
-	void handleButtonRelease(std::int16_t X, std::int16_t Y, unsigned char Index) final
+	void handleButtonRelease(float X, float Y, std::uint8_t Index) final
 	{
 		if (Index == 1)
 		{
@@ -226,7 +226,7 @@ public:
 		}
 	}
 
-	void handleMouseMotion(std::int16_t X, std::int16_t Y) final
+	void handleMouseMotion(float X, float Y) final
 	{
 		auto HasMouse = checkThisContains(X, Y);
 

@@ -2,6 +2,8 @@
 
 #include "Loader/Png.hpp"
 
+#include <algorithm>
+#include <cmath>
 #include <iostream>
 
 namespace Twil {
@@ -15,8 +17,8 @@ ManagerT::ManagerT()
 	mLabelSize{
 		mLabelFace,
 		Settings::Label::Size,
-		Settings::Global::HorizontalDpi,
-		Settings::Global::VerticalDpi},
+		static_cast<FT_UInt>(96 * Settings::Global::HorizontalScale),
+		static_cast<FT_UInt>(96 * Settings::Global::VerticalScale)},
 	mRedTexture{GL_R8},
 	mRgbaTexture{GL_RGBA8},
 	mNeedsRedraw{false}
@@ -33,7 +35,7 @@ ManagerT::ManagerT()
 	glDisable(GL_MULTISAMPLE);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-	generateButtonBitmaps();
+	setupButton();
 }
 
 ManagerT::~ManagerT() noexcept
@@ -41,37 +43,62 @@ ManagerT::~ManagerT() noexcept
 	for (std::size_t I = 0; I != mNumBuffers; ++I) glDeleteSync(mFences[I]);
 }
 
-void ManagerT::generateButtonBitmaps()
+std::int16_t ManagerT::fitHorizontalGrid(float X)
 {
-	std::int16_t Roundness = Settings::Button::Roundness;
+	return std::round(X * Settings::Global::HorizontalScale);
+}
 
-	std::int16_t BorderSize = 1;
-	std::int16_t CornerSize = BorderSize + Roundness;
-	std::int16_t BitmapSize = BorderSize * 2 + 1 + CornerSize * 2;
+std::int16_t ManagerT::fitVerticalGrid(float Y)
+{
+	return std::round(Y * Settings::Global::VerticalScale);
+}
 
-	std::int16_t Pos1 = 0;
-	std::int16_t Pos2 = Pos1 + BorderSize;
-	std::int16_t Pos3 = Pos2 + Roundness;
-	std::int16_t Pos4 = Pos3 + 1;
-	std::int16_t Pos5 = Pos4 + Roundness;
+void ManagerT::setupButton()
+{
+	std::int16_t HorizontalRoundness = fitHorizontalGrid(Settings::Button::Roundness);
+	std::int16_t VerticalRoundness = fitVerticalGrid(Settings::Button::Roundness);
+	std::int16_t HorizontalBorderSize = fitHorizontalGrid(Settings::Button::BorderWidth);
+	std::int16_t VerticalBorderSize = fitVerticalGrid(Settings::Button::BorderWidth);
 
-	FT_Pos Fix2 = Pos2 * 64;
-	FT_Pos Fix3 = Pos3 * 64;
-	FT_Pos Fix4 = Pos4 * 64;
-	FT_Pos Fix5 = Pos5 * 64;
+	std::int16_t HorizontalPos1 = 0;
+	std::int16_t HorizontalPos2 = HorizontalPos1 + HorizontalBorderSize;
+	std::int16_t HorizontalPos3 = HorizontalPos2 + HorizontalRoundness;
+	std::int16_t HorizontalPos4 = HorizontalPos3 + 1;
+	std::int16_t HorizontalPos5 = HorizontalPos4 + HorizontalRoundness;
 
-	FT_Vector A{Fix3, Fix2};
-	FT_Vector B{Fix2, Fix2};
-	FT_Vector C{Fix2, Fix3};
-	FT_Vector D{Fix2, Fix4};
-	FT_Vector E{Fix2, Fix5};
-	FT_Vector F{Fix3, Fix5};
-	FT_Vector G{Fix4, Fix5};
-	FT_Vector H{Fix5, Fix5};
-	FT_Vector I{Fix5, Fix4};
-	FT_Vector J{Fix5, Fix3};
-	FT_Vector K{Fix5, Fix2};
-	FT_Vector L{Fix4, Fix2};
+	std::int16_t VerticalPos1 = 0;
+	std::int16_t VerticalPos2 = VerticalPos1 + VerticalBorderSize;
+	std::int16_t VerticalPos3 = VerticalPos2 + VerticalRoundness;
+	std::int16_t VerticalPos4 = VerticalPos3 + 1;
+	std::int16_t VerticalPos5 = VerticalPos4 + VerticalRoundness;
+
+	std::int16_t BitmapWidth = HorizontalBorderSize * 2 + HorizontalRoundness * 2 + 1;
+	std::int16_t BitmapHeight = VerticalBorderSize * 2 + VerticalRoundness * 2 + 1;
+	std::int16_t HorizontalCornerSize = HorizontalBorderSize + HorizontalRoundness;
+	std::int16_t VerticalCornerSize = VerticalBorderSize + VerticalRoundness;
+
+	FT_Pos HorizontalFix2 = HorizontalPos2 * 64;
+	FT_Pos HorizontalFix3 = HorizontalPos3 * 64;
+	FT_Pos HorizontalFix4 = HorizontalPos4 * 64;
+	FT_Pos HorizontalFix5 = HorizontalPos5 * 64;
+
+	FT_Pos VerticalFix2 = VerticalPos2 * 64;
+	FT_Pos VerticalFix3 = VerticalPos3 * 64;
+	FT_Pos VerticalFix4 = VerticalPos4 * 64;
+	FT_Pos VerticalFix5 = VerticalPos5 * 64;
+
+	FT_Vector A{HorizontalFix3, VerticalFix2};
+	FT_Vector B{HorizontalFix2, VerticalFix2};
+	FT_Vector C{HorizontalFix2, VerticalFix3};
+	FT_Vector D{HorizontalFix2, VerticalFix4};
+	FT_Vector E{HorizontalFix2, VerticalFix5};
+	FT_Vector F{HorizontalFix3, VerticalFix5};
+	FT_Vector G{HorizontalFix4, VerticalFix5};
+	FT_Vector H{HorizontalFix5, VerticalFix5};
+	FT_Vector I{HorizontalFix5, VerticalFix4};
+	FT_Vector J{HorizontalFix5, VerticalFix3};
+	FT_Vector K{HorizontalFix5, VerticalFix2};
+	FT_Vector L{HorizontalFix4, VerticalFix2};
 
 	mOutline.clear();
 	mOutline.beginContour(A);
@@ -86,35 +113,58 @@ void ManagerT::generateButtonBitmaps()
 	mOutline.endContour();
 
 	// In
-	mBitmap.resize(BitmapSize, BitmapSize);
+	mBitmap.resize(BitmapWidth, BitmapHeight);
 	mBitmap.render(mOutline);
 
-	mButtonCenterIn = mRedTexture.append(mBitmap.getSubRange(Pos3, Pos3, BorderSize, BorderSize));
-	mButtonBottomIn = mRedTexture.append(mBitmap.getSubRange(Pos3, Pos1, BorderSize, CornerSize));
-	mButtonTopIn = mRedTexture.append(mBitmap.getSubRange(Pos3, Pos4, BorderSize, CornerSize));
-	mButtonLeftIn = mRedTexture.append(mBitmap.getSubRange(Pos1, Pos3, CornerSize, BorderSize));
-	mButtonRightIn = mRedTexture.append(mBitmap.getSubRange(Pos4, Pos3, CornerSize, BorderSize));
-	mButtonSwIn = mRedTexture.append(mBitmap.getSubRange(Pos1, Pos1, CornerSize, CornerSize));
-	mButtonSeIn = mRedTexture.append(mBitmap.getSubRange(Pos4, Pos1, CornerSize, CornerSize));
-	mButtonNeIn = mRedTexture.append(mBitmap.getSubRange(Pos4, Pos4, CornerSize, CornerSize));
-	mButtonNwIn = mRedTexture.append(mBitmap.getSubRange(Pos1, Pos4, CornerSize, CornerSize));
+	mButtonCenterIn = mRedTexture.append(mBitmap.getSubRange(HorizontalPos3, VerticalPos3, 1, 1));
+	mButtonBottomIn = mRedTexture.append(mBitmap.getSubRange(HorizontalPos3, VerticalPos1, 1, VerticalCornerSize));
+	mButtonTopIn = mRedTexture.append(mBitmap.getSubRange(HorizontalPos3, VerticalPos4, 1, VerticalCornerSize));
+	mButtonLeftIn = mRedTexture.append(mBitmap.getSubRange(HorizontalPos1, VerticalPos3, HorizontalCornerSize, 1));
+	mButtonRightIn = mRedTexture.append(mBitmap.getSubRange(HorizontalPos4, VerticalPos3, HorizontalCornerSize, 1));
+	mButtonSwIn = mRedTexture.append(mBitmap.getSubRange(HorizontalPos1, VerticalPos1, HorizontalCornerSize, VerticalCornerSize));
+	mButtonSeIn = mRedTexture.append(mBitmap.getSubRange(HorizontalPos4, VerticalPos1, HorizontalCornerSize, VerticalCornerSize));
+	mButtonNeIn = mRedTexture.append(mBitmap.getSubRange(HorizontalPos4, VerticalPos4, HorizontalCornerSize, VerticalCornerSize));
+	mButtonNwIn = mRedTexture.append(mBitmap.getSubRange(HorizontalPos1, VerticalPos4, HorizontalCornerSize, VerticalCornerSize));
 
 	// Out
-	mStroker.setOptions(BorderSize * 64, FT_STROKER_LINECAP_ROUND, FT_STROKER_LINEJOIN_ROUND, 0);
+	mOutline.transform({65536 * VerticalBorderSize, 0, 0, 65536 * HorizontalBorderSize});
+	mStroker.setOptions(64 * HorizontalBorderSize * VerticalBorderSize, FT_STROKER_LINECAP_ROUND, FT_STROKER_LINEJOIN_ROUND, 0);
 	mStroker.set(mOutline);
 	mOutline.clear();
 	mOutline.append(mStroker, FT_STROKER_BORDER_LEFT);
+	mOutline.transform({65536 / VerticalBorderSize, 0, 0, 65536 / HorizontalBorderSize});
 	mBitmap.render(mOutline);
 
-	mButtonCenterOut = mRedTexture.append(mBitmap.getSubRange(Pos3, Pos3, BorderSize, BorderSize));
-	mButtonBottomOut = mRedTexture.append(mBitmap.getSubRange(Pos3, Pos1, BorderSize, CornerSize));
-	mButtonTopOut = mRedTexture.append(mBitmap.getSubRange(Pos3, Pos4, BorderSize, CornerSize));
-	mButtonLeftOut = mRedTexture.append(mBitmap.getSubRange(Pos1, Pos3, CornerSize, BorderSize));
-	mButtonRightOut = mRedTexture.append(mBitmap.getSubRange(Pos4, Pos3, CornerSize, BorderSize));
-	mButtonSwOut = mRedTexture.append(mBitmap.getSubRange(Pos1, Pos1, CornerSize, CornerSize));
-	mButtonSeOut = mRedTexture.append(mBitmap.getSubRange(Pos4, Pos1, CornerSize, CornerSize));
-	mButtonNeOut = mRedTexture.append(mBitmap.getSubRange(Pos4, Pos4, CornerSize, CornerSize));
-	mButtonNwOut = mRedTexture.append(mBitmap.getSubRange(Pos1, Pos4, CornerSize, CornerSize));
+	mButtonCenterOut = mRedTexture.append(mBitmap.getSubRange(HorizontalPos3, VerticalPos3, 1, 1));
+	mButtonBottomOut = mRedTexture.append(mBitmap.getSubRange(HorizontalPos3, VerticalPos1, 1, VerticalCornerSize));
+	mButtonTopOut = mRedTexture.append(mBitmap.getSubRange(HorizontalPos3, VerticalPos4, 1, VerticalCornerSize));
+	mButtonLeftOut = mRedTexture.append(mBitmap.getSubRange(HorizontalPos1, VerticalPos3, HorizontalCornerSize, 1));
+	mButtonRightOut = mRedTexture.append(mBitmap.getSubRange(HorizontalPos4, VerticalPos3, HorizontalCornerSize, 1));
+	mButtonSwOut = mRedTexture.append(mBitmap.getSubRange(HorizontalPos1, VerticalPos1, HorizontalCornerSize, VerticalCornerSize));
+	mButtonSeOut = mRedTexture.append(mBitmap.getSubRange(HorizontalPos4, VerticalPos1, HorizontalCornerSize, VerticalCornerSize));
+	mButtonNeOut = mRedTexture.append(mBitmap.getSubRange(HorizontalPos4, VerticalPos4, HorizontalCornerSize, VerticalCornerSize));
+	mButtonNwOut = mRedTexture.append(mBitmap.getSubRange(HorizontalPos1, VerticalPos4, HorizontalCornerSize, VerticalCornerSize));
+
+	mButtonHorizontalCornerSize = HorizontalCornerSize;
+	mButtonVerticalCornerSize = VerticalCornerSize;
+}
+
+template<typename SourceT, typename DestT, std::size_t Channels = 4>
+void resize(
+	SourceT Source, std::size_t SourceWidth, std::size_t SourceHeight,
+	DestT Dest, std::size_t DestWidth, std::size_t DestHeight)
+{
+	for (std::size_t DestY = 0; DestY != DestHeight; ++DestY)
+	{
+		for (std::size_t DestX = 0; DestX != DestWidth; ++DestX)
+		{
+			std::size_t SourceX = DestX * SourceWidth / DestWidth;
+			std::size_t SourceY = DestY * SourceHeight / DestHeight;
+			auto DestPtr = Dest + DestY * DestWidth * Channels + DestX * Channels;
+			auto SourcePtr = Source + SourceY * SourceWidth * Channels + SourceX * Channels;
+			std::copy(SourcePtr, SourcePtr + Channels, DestPtr);
+		}
+	}
 }
 
 BitmapEntryT const & ManagerT::loadBitmapEntry(char const * Path)
@@ -123,10 +173,16 @@ BitmapEntryT const & ManagerT::loadBitmapEntry(char const * Path)
 	if (Iter != mBitmapEntries.end()) return Iter->second;
 
 	Loader::PngT Image{Path};
-	// The offset that OpenGL needs is pixel offset, not the byte offset, so divide by 4
-	unsigned int Offset = mRgbaTexture.append(Image.begin(), Image.end()) / 4;
+	std::uint16_t Width = fitHorizontalGrid(Image.getWidth());
+	std::uint16_t Height = fitVerticalGrid(Image.getHeight());
+	auto Allocation = mRgbaTexture.allocate(Width * Height * 4);
+	std::uint32_t Offset = Allocation.second / 4;
 
-	BitmapEntryT Entry{Offset, Image.getWidth(), Image.getHeight()};
+	resize(
+		Image.begin(), Image.getWidth(), Image.getHeight(),
+		Allocation.first, Width, Height);
+
+	BitmapEntryT Entry{Offset, Width, Height};
 	auto Pair = mBitmapEntries.insert({Path, Entry});
 	return Pair.first->second;
 }
@@ -152,7 +208,7 @@ GlyphEntryT const & ManagerT::loadGlyphEntry(Ft::FaceT & Face, char32_t Codepoin
 	Face.translate(-Box.xMin, -Box.yMin);
 	mBitmap.resize(Width, Height);
 	mBitmap.render(Face);
-	unsigned int Offset = mRedTexture.append(mBitmap.begin(), mBitmap.end());
+	std::uint32_t Offset = mRedTexture.append(mBitmap.begin(), mBitmap.end());
 
 	// Return entry
 	GlyphEntryT Entry{Bearings, Advance, Index, LsbDelta, RsbDelta, Offset, Width, Height};
@@ -173,7 +229,7 @@ bool ManagerT::update(std::uint16_t Width, std::uint16_t Height)
 
 	if (!mNeedsRedraw || Width == 0 || Height == 0) return false;
 
-	GLenum Result = glClientWaitSync(mFences[mFenceIndex], 0, 10000000); // wait at most 10ms
+	std::uint32_t Result = glClientWaitSync(mFences[mFenceIndex], 0, 10000000); // wait at most 10ms
 	if (Result == GL_WAIT_FAILED || Result == GL_TIMEOUT_EXPIRED) return false;
 	glDeleteSync(mFences[mFenceIndex]);
 

@@ -96,17 +96,17 @@ protected:
 		getImage<2, 2>().setImage("/usr/share/pixmaps/nobody.png");
 		getBottomLabel().setText(U"Bottom");
 
-		getButton<1, 1>().Clicked += [&]()
+		getButton<1, 1>().Clicked += [&]
 		{
 			getImage<1, 1>().setImage("/usr/share/pixmaps/nohost.png");
 		};
 
-		getTopButton().Clicked += [&]()
+		getTopButton().Clicked += [&]
 		{
 			getBottomLabel().setText(U"Clicked!");
 		};
 
-		getWindow().Deleted += [&]()
+		getWindow().Deleted += [&]
 		{
 			getApplication().stop();
 		};

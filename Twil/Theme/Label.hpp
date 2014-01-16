@@ -1,3 +1,4 @@
+
 #pragma once
 
 #include "Drawable.hpp"
@@ -28,17 +29,17 @@ class LabelT
 	LabelT(LabelT const &) = delete;
 	LabelT & operator =(LabelT const &) = delete;
 
-private:	
+private:
 	ManagerT * mManager;
 	std::vector<LabelGlyph> mGlyphs;
-	std::int16_t mLeft = 0;
-	std::int16_t mBottom = 0;
 	std::int16_t mWidth = 0;
 	std::int16_t mHeight = 0;
-	std::int16_t mClipLeft = 0;
-	std::int16_t mClipBottom = 0;
-	std::int16_t mClipRight = 0;
-	std::int16_t mClipTop = 0;
+	float mLeft = 0.0f;
+	float mBottom = 0.0f;
+	float mClipLeft = 0.0f;
+	float mClipBottom = 0.0f;
+	float mClipRight = 0.0f;
+	float mClipTop = 0.0f;
 
 public:
 	LabelT() = default;
@@ -51,26 +52,26 @@ public:
 	void draw(Vertex::FillSolidT *) const final;
 
 	// Widget
-	void moveX(std::int16_t);
-	void moveY(std::int16_t);
+	void moveX(float);
+	void moveY(float);
 
-	void setClipLeft(std::int16_t);
-	void setClipBottom(std::int16_t);
-	void setClipRight(std::int16_t);
-	void setClipTop(std::int16_t);
+	void setClipLeft(float);
+	void setClipBottom(float);
+	void setClipRight(float);
+	void setClipTop(float);
 
-	std::int16_t getLeft() const;
-	std::int16_t getBottom() const;
-	std::int16_t getRight() const;
-	std::int16_t getTop() const;
+	float getLeft() const;
+	float getBottom() const;
+	float getRight() const;
+	float getTop() const;
 
-	std::int16_t getClipLeft() const;
-	std::int16_t getClipRight() const;
-	std::int16_t getClipBottom() const;
-	std::int16_t getClipTop() const;
+	float getClipLeft() const;
+	float getClipRight() const;
+	float getClipBottom() const;
+	float getClipTop() const;
 
-	std::int16_t getBaseWidth() const;
-	std::int16_t getBaseHeight() const;
+	float getBaseWidth() const;
+	float getBaseHeight() const;
 };
 
 }

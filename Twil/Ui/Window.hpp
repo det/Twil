@@ -7,7 +7,7 @@
 #include "WindowBase.hpp"
 #include "Data/Event.hpp"
 #include "Gl/Context.hpp"
-
+#include "Theme/Settings.hpp"
 
 namespace Twil {
 namespace Ui {
@@ -27,11 +27,13 @@ class WindowT
 private:
 	Platform::WindowT mPlatformWindow;
 	WindowBaseT mBase;
+	std::int16_t mPixelWidth;
+	std::int16_t mPixelHeight;
 
 	T mChild;
 	bool mIsFullscreen = false;
 
-	bool checkChildContains(std::int16_t X, std::int16_t Y)
+	bool checkChildContains(float X, float Y)
 	{
 		return X >= 0 && X <= mChild.getRight() && Y >= 0 && Y <= mChild.getTop();
 	}
@@ -41,7 +43,10 @@ public:
 	Data::EventT<> Deleted;
 
 	WindowT(Platform::ApplicationT & Application) :
-		mPlatformWindow{Application}
+		mPlatformWindow{
+			Application,
+			static_cast<std::int16_t>(320 * Theme::Settings::Global::HorizontalScale),
+			static_cast<std::int16_t>(240 * Theme::Settings::Global::VerticalScale)}
 	{}
 
 	void init()
@@ -90,7 +95,9 @@ public:
 	/// \brief Resize the window.
 	void resize(std::uint16_t Width, std::uint16_t Height)
 	{
-		mPlatformWindow.resize(Width, Height);
+		mPlatformWindow.resize(
+			getThemeManager().fitHorizontalGrid(Width),
+			getThemeManager().fitVerticalGrid(Height));
 	}
 
 	/// \brief Set the title.
@@ -106,14 +113,25 @@ public:
 		setFullscreen(mIsFullscreen);
 	}
 
+	std::int16_t getPixelWidth()
+	{
+		return mPixelWidth;
+	}
+
+	std::int16_t getPixelHeight()
+	{
+		return mPixelHeight;
+	}
+
+
 	/// \returns The width.
-	std::uint16_t getWidth() const
+	float getWidth() const
 	{
 		return mChild.getRight();
 	}
 
 	/// \returns The height.
-	std::uint16_t getHeight() const
+	float getHeight() const
 	{
 		return mChild.getTop();
 	}
@@ -130,29 +148,80 @@ public:
 		return mChild;
 	}
 
-	void handleExposed()
+	void onMouseEnterWindow(std::int16_t X, std::int16_t Y)
+	{
+		getMouseManager().handleMouseEnterWindow(
+			X / Theme::Settings::Global::HorizontalScale,
+			Y / Theme::Settings::Global::VerticalScale);
+	}
+
+	void onMouseLeaveWindow(std::int16_t X, std::int16_t Y)
+	{
+		getMouseManager().handleMouseLeaveWindow(
+			X / Theme::Settings::Global::HorizontalScale,
+			Y / Theme::Settings::Global::VerticalScale);
+	}
+
+	void onMouseMotion(std::int16_t X, std::int16_t Y)
+	{
+		getMouseManager().handleMouseMotion(
+			X / Theme::Settings::Global::HorizontalScale,
+			Y / Theme::Settings::Global::VerticalScale);
+	}
+
+	void onButtonPress(std::int16_t X, std::int16_t Y, std::int8_t Button)
+	{
+		getMouseManager().handleButtonPress(
+			X / Theme::Settings::Global::HorizontalScale,
+			Y / Theme::Settings::Global::VerticalScale,
+			Button);
+	}
+
+	void onButtonRelease(std::int16_t X, std::int16_t Y, std::int8_t Button)
+	{
+		getMouseManager().handleButtonRelease(
+			X / Theme::Settings::Global::HorizontalScale,
+			Y / Theme::Settings::Global::VerticalScale,
+			Button);
+	}
+
+	void onExposed()
 	{
 		getThemeManager().markNeedsRedraw();
 	}
 
-	void handleDeleted()
+
+	void onDeleted()
 	{
 		Deleted();
 	}
 
-	void handleResize(std::uint16_t Width, std::uint16_t Height)
+	void onResize(std::int16_t Width, std::int16_t Height)
 	{
-		if (Width != getWidth()) mChild.resizeWidth(Width - getWidth());
-		if (Height != getHeight()) mChild.resizeHeight(Height - getHeight());
+		if (Width != mPixelWidth)
+		{
+			mPixelWidth = Width;
+			mChild.resizeWidth(Width / Theme::Settings::Global::HorizontalScale - getWidth());
+		}
+
+		if (Height != mPixelHeight)
+		{
+			mPixelHeight = Height;
+			mChild.resizeHeight(Height / Theme::Settings::Global::VerticalScale - getHeight());
+		}
+
 	}
 
 	void update()
 	{
-		if (getThemeManager().update(getWidth(), getHeight())) mPlatformWindow.swapBuffers();
+		auto b = getThemeManager().update(
+			getWidth() * Theme::Settings::Global::HorizontalScale,
+			getHeight() * Theme::Settings::Global::VerticalScale);
+		if (b) mPlatformWindow.swapBuffers();
 	}
 
 	// Container
-	void releaseMouse(std::int16_t, std::int16_t) final
+	void releaseMouse(float, float) final
 	{
 		getMouseManager().setHandler(*this);
 	}
@@ -164,7 +233,7 @@ public:
 	{}
 
 	// MouseHandler
-	void handleMouseMotion(std::int16_t X, std::int16_t Y) final
+	void handleMouseMotion(float X, float Y) final
 	{
 		if (checkChildContains(X, Y)) mChild.delegateMouse(X, Y);
 	}

@@ -31,7 +31,7 @@ BitmapT::BitmapT()
 	mScalingLoc = mProgram.getLocation("Scaling");
 }
 
-BitmapT::operator GLuint() const
+BitmapT::operator std::uint32_t() const
 {
 	return mProgram;
 }

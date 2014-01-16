@@ -10,7 +10,7 @@ namespace Vertex {
 void BitmapT::setup()
 {
 	using VertexT = BitmapT;
-	using OffsetT = GLvoid const *;
+	using OffsetT = void const *;
 
 	auto Stride = sizeof(VertexT);
 	auto ClipMinOffset = reinterpret_cast<OffsetT>(offsetof(VertexT, ClipMin));

@@ -3,6 +3,7 @@
 #include "Gl/Buffer.hpp"
 #include "Gl/Texture.hpp"
 
+#include <cstdint>
 #include <vector>
 
 namespace Twil {
@@ -18,16 +19,23 @@ private:
 	Gl::BufferT mBuffer;
 	Gl::TextureT mTexture;
 
-	std::vector<GLubyte> mBytes;
+	std::vector<std::uint8_t> mBytes;
 	std::size_t mSize = 0;
 	std::size_t mCapacity = 0;
-	GLenum mFormat;
+	std::uint32_t mFormat;
 
 public:
-	TextureArrayT(GLenum);
+	TextureArrayT(std::uint32_t);
 
 	/// \returns The Texture.
 	Gl::TextureT & getTexture();
+
+	std::pair<std::uint8_t *, std::size_t> allocate(std::size_t Bytes)
+	{
+		auto Size = mBytes.size();
+		mBytes.resize(Size + Bytes);
+		return {mBytes.data() + Size, Size};
+	}
 
 	/// \brief Copies bytes from a pair of iterators into the local buffer.
 	/// \returns The begin index for the range.
@@ -35,7 +43,7 @@ public:
 	std::size_t append(T First, T Last)
 	{
 		auto Index = mBytes.size();
-		mBytes.insert(end(mBytes), First, Last);
+		mBytes.insert(mBytes.end(), First, Last);
 		return Index;
 	}
 

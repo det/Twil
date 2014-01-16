@@ -18,6 +18,7 @@
 #include "Vertex/FillSolid.hpp"
 #include "Vertex/OutlineGradient.hpp"
 
+#include <cstdint>
 #include <unordered_map>
 #include <vector>
 
@@ -36,7 +37,7 @@ struct GlyphEntryT
 	FT_UInt Index;
 	FT_Pos LsbDelta;
 	FT_Pos RsbDelta;
-	unsigned int Offset;
+	std::uint32_t Offset;
 	std::uint16_t Width;
 	std::uint16_t Height;
 };
@@ -44,7 +45,7 @@ struct GlyphEntryT
 /// \brief Represents a loaded bitmap.
 struct BitmapEntryT
 {
-	unsigned int Offset;
+	std::uint32_t Offset;
 	std::uint16_t Width;
 	std::uint16_t Height;
 };
@@ -89,30 +90,33 @@ private:
 	bool mNeedsRedraw;
 
 	// Button offsets
-	GLuint mButtonCenterIn;
-	GLuint mButtonLeftIn;
-	GLuint mButtonRightIn;
-	GLuint mButtonBottomIn;
-	GLuint mButtonTopIn;
-	GLuint mButtonSwIn;
-	GLuint mButtonSeIn;
-	GLuint mButtonNeIn;
-	GLuint mButtonNwIn;
-	GLuint mButtonCenterOut;
-	GLuint mButtonLeftOut;
-	GLuint mButtonRightOut;
-	GLuint mButtonBottomOut;
-	GLuint mButtonTopOut;
-	GLuint mButtonSwOut;
-	GLuint mButtonSeOut;
-	GLuint mButtonNeOut;
-	GLuint mButtonNwOut;
+	std::uint32_t mButtonCenterIn;
+	std::uint32_t mButtonLeftIn;
+	std::uint32_t mButtonRightIn;
+	std::uint32_t mButtonBottomIn;
+	std::uint32_t mButtonTopIn;
+	std::uint32_t mButtonSwIn;
+	std::uint32_t mButtonSeIn;
+	std::uint32_t mButtonNeIn;
+	std::uint32_t mButtonNwIn;
+	std::uint32_t mButtonCenterOut;
+	std::uint32_t mButtonLeftOut;
+	std::uint32_t mButtonRightOut;
+	std::uint32_t mButtonBottomOut;
+	std::uint32_t mButtonTopOut;
+	std::uint32_t mButtonSwOut;
+	std::uint32_t mButtonSeOut;
+	std::uint32_t mButtonNeOut;
+	std::uint32_t mButtonNwOut;
+
+	std::int16_t mButtonHorizontalCornerSize;
+	std::int16_t mButtonVerticalCornerSize;
 
 	BitmapEntryT const & loadBitmapEntry(char const *);
 	GlyphEntryT const & loadGlyphEntry(Ft::FaceT &, char32_t);
-	void generateButtonBitmaps();
+	void setupButton();
 
-public:	
+public:
 	ManagerT();
 	~ManagerT() noexcept;
 
@@ -123,6 +127,8 @@ public:
 	///
 	/// \returns true if the GUI was drawn.
 	bool update(std::uint16_t Width, std::uint16_t Height);
+	std::int16_t fitHorizontalGrid(float X);
+	std::int16_t fitVerticalGrid(float Y);
 };
 
 }

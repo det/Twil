@@ -7,15 +7,15 @@ namespace Attribute {
 
 struct Color4bT
 {
-	GLubyte Red;
-	GLubyte Green;
-	GLubyte Blue;
-	GLubyte Alpha;
+	std::uint8_t Red;
+	std::uint8_t Green;
+	std::uint8_t Blue;
+	std::uint8_t Alpha;
 
-	static void setup(GLuint, GLsizei, GLvoid const *);
+	static void setup(std::uint32_t, std::int32_t, void const *);
 };
 
-Color4bT mix(Color4bT const &, Color4bT const &, GLushort);
+Color4bT mix(Color4bT const &, Color4bT const &, std::uint16_t);
 
 }
 }

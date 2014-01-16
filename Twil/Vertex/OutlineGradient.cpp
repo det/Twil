@@ -10,7 +10,7 @@ namespace Vertex {
 void OutlineGradientT::setup()
 {
 	using VertexT = OutlineGradientT;
-	using OffsetT = GLvoid const *;
+	using OffsetT = void const *;
 
 	auto Stride = sizeof(VertexT);
 	auto BorderColorOffset = reinterpret_cast<OffsetT>(offsetof(VertexT, BorderColor));

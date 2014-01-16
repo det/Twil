@@ -10,19 +10,19 @@ class MouseHandlerT
 public:
 	virtual ~MouseHandlerT() = default;
 	/// \brief Called on the current handler when the pointer is moved.
-	virtual void handleMouseMotion(std::int16_t X, std::int16_t Y) {}
+	virtual void handleMouseMotion(float X, float Y) {}
 
 	/// \brief Called on the current handler when a mouse button is clicked.
-	virtual void handleButtonPress(std::int16_t X, std::int16_t Y, unsigned char Index) {}
+	virtual void handleButtonPress(float X, float Y, std::uint8_t Index) {}
 
 	/// \brief Called on the current handler when a mouse button is released.
-	virtual void handleButtonRelease(std::int16_t X, std::int16_t Y, unsigned char Index) {}
+	virtual void handleButtonRelease(float X, float Y, std::uint8_t Index) {}
 
 	/// \brief Called on the current handler when the pointer leaves the window.
-	virtual void handleMouseLeaveWindow(std::int16_t X, std::int16_t Y) {}
+	virtual void handleMouseLeaveWindow(float X, float Y) {}
 
 	/// \brief Called on the current handler when the pointer enters the window.
-	virtual void handleMouseEnterWindow(std::int16_t X, std::int16_t Y) {}
+	virtual void handleMouseEnterWindow(float X, float Y) {}
 };
 
 }

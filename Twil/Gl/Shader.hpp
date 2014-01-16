@@ -16,15 +16,15 @@ class ShaderT
 	ShaderT & operator =(ShaderT const &) = delete;
 
 private:
-	GLuint mId;
+	std::uint32_t mId;
 
 public:
 	/// \param Type The Shader type, as defined by glCreateShader().
-	ShaderT(GLenum Type);
+	ShaderT(std::uint32_t Type);
 	~ShaderT() noexcept;
 
 	/// \brief Implicit conversion operator so it can be used in gl* functions.
-	operator GLuint() const;
+	operator std::uint32_t() const;
 
 	/// \brief Uploads shader source to OpenGL
 	///

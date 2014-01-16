@@ -30,7 +30,7 @@ OutlineGradientT::OutlineGradientT()
 	mScalingLoc = mProgram.getLocation("Scaling");
 }
 
-OutlineGradientT::operator GLuint() const
+OutlineGradientT::operator std::uint32_t() const
 {
 	return mProgram;
 }

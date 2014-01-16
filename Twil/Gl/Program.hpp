@@ -16,14 +16,14 @@ class ProgramT
 	ProgramT & operator =(ProgramT const &) = delete;
 
 private:
-	GLuint mId;
+	std::uint32_t mId;
 
 public:
 	ProgramT();
 	~ProgramT() noexcept;
 
 	/// \brief Implicit conversion operator so it can be used in gl* functions.
-	operator GLuint() const;
+	operator std::uint32_t() const;
 
 	/// \brief Attach a shader.
 	void attach(ShaderT const & Shader);
@@ -34,19 +34,19 @@ public:
 	void link();
 
 	/// \brief Sets a uniform int.
-	static void setUniform(GLint Location, int X);
+	static void setUniform(std::int32_t Location, int X);
 
 	/// \brief Sets a uniform float.
-	static void setUniform(GLint Location, float X);
+	static void setUniform(std::int32_t Location, float X);
 
 	/// \brief Sets a uniform vec2.
-	static void setUniform(GLint Location, float X, float Y);
+	static void setUniform(std::int32_t Location, float X, float Y);
 
 	/// \brief Sets a uniform vec4.
-	static void setUniform(GLint Location, float X, float Y, float Z, float W);
+	static void setUniform(std::int32_t Location, float X, float Y, float Z, float W);
 
 	/// \returns The Location of a uniform.
-	GLint getLocation(char const * String) const;
+	std::int32_t getLocation(char const * String) const;
 };
 
 }

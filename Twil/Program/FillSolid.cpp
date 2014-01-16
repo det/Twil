@@ -31,7 +31,7 @@ FillSolidT::FillSolidT()
 	mScalingLoc = mProgram.getLocation("Scaling");
 }
 
-FillSolidT::operator GLuint() const
+FillSolidT::operator std::uint32_t() const
 {
 	return mProgram;
 }

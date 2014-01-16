@@ -20,17 +20,17 @@ class ImageT
 	ImageT(ImageT const &) = delete;
 	ImageT & operator =(ImageT const &) = delete;
 
-private:	
+private:
 	ManagerT * mManager;
-	unsigned int mOffset = 0;
-	std::int16_t mLeft = 0;
-	std::int16_t mBottom = 0;
-	std::int16_t mWidth = 0;
-	std::int16_t mHeight = 0;
-	std::int16_t mClipLeft = 0;
-	std::int16_t mClipBottom = 0;
-	std::int16_t mClipRight = 0;
-	std::int16_t mClipTop = 0;
+	std::uint32_t mOffset = 0;
+	std::uint16_t mWidth = 0;
+	std::uint16_t mHeight = 0;
+	float mLeft = 0;
+	float mBottom = 0;
+	float mClipLeft = 0;
+	float mClipBottom = 0;
+	float mClipRight = 0;
+	float mClipTop = 0;
 
 public:
 	ImageT() = default;
@@ -43,26 +43,26 @@ public:
 	void draw(Vertex::BitmapT *) const final;
 
 	// Widget
-	void moveX(std::int16_t);
-	void moveY(std::int16_t);
+	void moveX(float);
+	void moveY(float);
 
-	void setClipLeft(std::int16_t);
-	void setClipBottom(std::int16_t);
-	void setClipRight(std::int16_t);
-	void setClipTop(std::int16_t);
+	void setClipLeft(float);
+	void setClipBottom(float);
+	void setClipRight(float);
+	void setClipTop(float);
 
-	std::int16_t getLeft() const;
-	std::int16_t getBottom() const;
-	std::int16_t getRight() const;
-	std::int16_t getTop() const;
+	float getLeft() const;
+	float getBottom() const;
+	float getRight() const;
+	float getTop() const;
 
-	std::int16_t getClipLeft() const;
-	std::int16_t getClipRight() const;
-	std::int16_t getClipBottom() const;
-	std::int16_t getClipTop() const;
+	float getClipLeft() const;
+	float getClipRight() const;
+	float getClipBottom() const;
+	float getClipTop() const;
 
-	std::int16_t getBaseWidth() const;
-	std::int16_t getBaseHeight() const;
+	float getBaseWidth() const;
+	float getBaseHeight() const;
 };
 
 }

@@ -12,14 +12,14 @@ class VertexArrayT
 	VertexArrayT & operator =(VertexArrayT const &) = delete;
 
 private:
-	GLuint mId;
+	std::uint32_t mId;
 
 public:
 	VertexArrayT();
 	~VertexArrayT() noexcept;
 
 	/// \brief Implicit conversion operator so it can be used in gl* functions.
-	operator GLuint() const;
+	operator std::uint32_t() const;
 };
 
 }

@@ -7,10 +7,10 @@ namespace Attribute {
 
 struct Size2hT
 {
-	GLushort Width;
-	GLushort Height;
+	std::uint16_t Width;
+	std::uint16_t Height;
 
-	static void setup(GLuint, GLsizei, GLvoid const *);
+	static void setup(std::uint32_t, std::int32_t, void const *);
 };
 
 }

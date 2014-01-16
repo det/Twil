@@ -17,18 +17,18 @@ class FaceT;
 /// \brief An iterator that operates on a sub rectangle of a Twil::Ft::BitmapT.
 class SubBitmapIteratorT
 :
-	public std::iterator<std::input_iterator_tag, unsigned char>
+	public std::iterator<std::input_iterator_tag, std::uint8_t>
 {
 	friend class BitmapT;
 
 private:
-	unsigned char const * mPointer;
+	std::uint8_t const * mPointer;
 	std::size_t mPitch;
 	std::size_t mWidth;
 	std::size_t mRowCount;
 
 	SubBitmapIteratorT(
-		unsigned char const * Pointer,
+		std::uint8_t const * Pointer,
 		std::size_t Pitch,
 		std::size_t Width,
 		std::size_t RowCount);
@@ -37,7 +37,7 @@ public:
 	SubBitmapIteratorT & operator++();
 	bool operator==(SubBitmapIteratorT const &);
 	bool operator!=(SubBitmapIteratorT const &);
-	unsigned char operator*() const;
+	std::uint8_t operator*() const;
 };
 
 /// \brief An 8 bit FreeType bitmap used as a target for rendering operations.
@@ -82,13 +82,13 @@ public:
 	std::size_t size() const;
 
 	/// \returns A pointer to the first byte of the bitmap, or nullptr if it is size 0.
-	unsigned char const * data() const;
+	std::uint8_t const * data() const;
 
 	/// \returns The begin iterator for the bytes of the bitmap.
-	unsigned char const * begin() const;
+	std::uint8_t const * begin() const;
 
 	/// \returns The end iterator for the bytes of the bitmap.
-	unsigned char const * end() const;
+	std::uint8_t const * end() const;
 
 	/// \returns A pair of begin and end iterators for the bytes of a sub-rectangle of the bitmap.
 	RangeT getSubRange(std::size_t X, std::size_t Y, std::size_t Width, std::size_t Height);

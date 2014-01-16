@@ -10,12 +10,12 @@ class OutlineGradientT
 {
 private:
 	Gl::ProgramT mProgram;
-	GLint mScalingLoc;
+	std::int32_t mScalingLoc;
 
 public:	
 	OutlineGradientT();
 
-	operator GLuint() const;
+	operator std::uint32_t() const;
 	void setScaling(float, float);
 };
 
