@@ -191,11 +191,3 @@ target_link_libraries (Twil
 	${FREETYPE_LIBRARIES}
 	${OPENGL_LIBRARIES}
 	${PNG_LIBRARIES})
-
-set (fonts
-	Font/DejaVuSans.ttf
-	Font/DejaVuSans-Bold.ttf
-	Font/DejaVuSansMono.ttf)
-
-install (FILES ${fonts} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Font)
-install (FILES ${shader_sources} DESTINATION ${CMAKE_CURRENT_BINARY_DIR}/Shader)
