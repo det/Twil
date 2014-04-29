@@ -30,11 +30,19 @@ out FragmentT
 void main()
 {
 	gl_Position = vec4(Geometry[0].PositionMin.x, Geometry[0].PositionMin.y, 0, 1);
+	Fragment.Pitch = Geometry[0].Pitch;
+	Fragment.BorderColor = Geometry[0].BorderColor;
+	Fragment.InsideIndex = Geometry[0].InsideIndex;
+	Fragment.OutsideIndex = Geometry[0].OutsideIndex;
 	Fragment.Color = Geometry[0].BottomColor;
 	Fragment.Texcoord = vec2(Geometry[0].TextureMin.x, Geometry[0].TextureMin.y);
 	EmitVertex();
 
 	gl_Position = vec4(Geometry[0].PositionMax.x, Geometry[0].PositionMin.y, 0, 1);
+	Fragment.Pitch = Geometry[0].Pitch;
+	Fragment.BorderColor = Geometry[0].BorderColor;
+	Fragment.InsideIndex = Geometry[0].InsideIndex;
+	Fragment.OutsideIndex = Geometry[0].OutsideIndex;
 	Fragment.Color = Geometry[0].BottomColor;
 	Fragment.Texcoord = vec2(Geometry[0].TextureMax.x, Geometry[0].TextureMin.y);
 	EmitVertex();

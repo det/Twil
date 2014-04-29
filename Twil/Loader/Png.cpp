@@ -107,7 +107,7 @@ PngT::PngT(char const * Path)
 	} break;
 	case PNG_COLOR_TYPE_GRAY:
 	{
-		if (BitDepth < 8) png_set_gray_1_2_4_to_8(Png);
+		if (BitDepth < 8) png_set_expand_gray_1_2_4_to_8(Png);
 		png_set_gray_to_rgb(Png);
 		png_set_add_alpha(Png, 255, PNG_FILLER_AFTER);
 	} break;

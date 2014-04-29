@@ -85,20 +85,20 @@ protected:
 	HelloBaseT()
 	{
 		getTopLabel().setText(U"Top");
-		getImage<0, 0>().setImage("/usr/share/pixmaps/debian-logo.png");
-		getImage<0, 1>().setImage("/usr/share/pixmaps/firefox.png");
-		getImage<0, 2>().setImage("/usr/share/pixmaps/gdm-foot-logo.png");
-		getImage<1, 0>().setImage("/usr/share/pixmaps/gdm-setup.png");
-		getImage<1, 1>().setImage("/usr/share/pixmaps/gdm-xnest.png");
-		getImage<1, 2>().setImage("/usr/share/pixmaps/gdm.png");
-		getImage<2, 0>().setImage("/usr/share/pixmaps/hplj1020_icon.png");
-		getImage<2, 1>().setImage("/usr/share/pixmaps/language-selector.png");
-		getImage<2, 2>().setImage("/usr/share/pixmaps/nobody.png");
+		getImage<0, 0>().setImage("/usr/share/icons/mate/48x48/mimetypes/text-x-boo.png");
+		getImage<0, 1>().setImage("/usr/share/icons/mate/48x48/mimetypes/misc.png");
+		getImage<0, 2>().setImage("/usr/share/icons/mate/48x48/mimetypes/text-x-makefile.png");
+		getImage<1, 0>().setImage("/usr/share/icons/mate/48x48/mimetypes/vcalendar.png");
+		getImage<1, 1>().setImage("/usr/share/icons/mate/48x48/mimetypes/x-office-spreadsheet.png");
+		getImage<1, 2>().setImage("/usr/share/icons/mate/48x48/mimetypes/contents2.png");
+		getImage<2, 0>().setImage("/usr/share/icons/mate/48x48/mimetypes/video.png");
+		getImage<2, 1>().setImage("/usr/share/icons/mate/48x48/mimetypes/font_truetype.png");
+		getImage<2, 2>().setImage("/usr/share/icons/mate/48x48/mimetypes/gnome-mime-text-x-vcalendar.png");
 		getBottomLabel().setText(U"Bottom");
 
 		getButton<1, 1>().Clicked += [&]
 		{
-			getImage<1, 1>().setImage("/usr/share/pixmaps/nohost.png");
+			getImage<1, 1>().setImage("/usr/share/icons/mate/48x48/mimetypes/exec.png");
 		};
 
 		getTopButton().Clicked += [&]
