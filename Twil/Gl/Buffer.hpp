@@ -1,5 +1,7 @@
 #pragma once
 
+#include "BufferFwd.hpp"
+
 #include "Context.hpp"
 
 namespace Twil {
@@ -12,14 +14,14 @@ class BufferT
 	BufferT & operator =(BufferT const &) = delete;
 
 private:
-	std::uint32_t mId;
+	GLuint mId;
 
 public:
 	BufferT();
 	~BufferT() noexcept;
 
 	/// \brief Implicit conversion operator so it can be used in gl* functions.
-	operator std::uint32_t() const;
+	operator GLuint() const;
 };
 
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "MarginFwd.hpp"
+
 #include "Container.hpp"
 #include "MouseHandler.hpp"
 #include "WindowBase.hpp"
@@ -164,7 +166,7 @@ public:
 	void delegateMouse(float X, float Y)
 	{
 		if (checkChildContains(X, Y)) mChild.delegateMouse(X, Y);
-		else mWindow->getMouseManager().setHandler(*this);
+		else mWindow->setMouseHandler(*this);
 	}
 
 	// Container
@@ -180,7 +182,7 @@ public:
 
 	void releaseMouse(float X, float Y) final
 	{
-		if (checkThisContains(X, Y)) mWindow->getMouseManager().setHandler(*this);
+		if (checkThisContains(X, Y)) mWindow->setMouseHandler(*this);
 		else mParent->releaseMouse(X, Y);
 	}
 

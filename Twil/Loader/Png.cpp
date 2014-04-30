@@ -1,6 +1,6 @@
 #include "Png.hpp"
 
-#include "Data/Memory.hpp"
+#include "Data/ScopeGuard.hpp"
 
 #include <fstream>
 #include <stdexcept>
@@ -8,44 +8,6 @@
 #include <png.h>
 
 namespace {
-
-// Make sure we release our resources on an exception
-
-class PngStructsT
-{
-private:
-	png_structp mPng;
-	png_infop mInfo;
-
-public:
-	PngStructsT()
-	{
-		mPng = png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
-		if (mPng == nullptr) throw std::runtime_error{"PNG load error"};
-
-		mInfo = png_create_info_struct(mPng);
-		if (mInfo == nullptr)
-		{
-			png_destroy_read_struct(&mPng, nullptr, nullptr);
-			throw std::runtime_error{"PNG load error"};
-		}
-	}
-
-	~PngStructsT() noexcept
-	{
-		png_destroy_read_struct(&mPng, &mInfo, nullptr);
-	}
-
-	png_structp & getPng()
-	{
-		return mPng;
-	}
-
-	png_infop & getInfo()
-	{
-		return mInfo;
-	}
-};
 
 // Custom error handler to avoid libpng's longjmp error handling
 
@@ -84,9 +46,15 @@ PngT::PngT(char const * Path)
 	if (File.gcount() != sizeof(Magic)) throw std::runtime_error{"Png read error"};
 	if (!png_check_sig(Magic, sizeof(Magic))) throw std::runtime_error{"PNG load error"};
 
-	PngStructsT Structs;
-	auto & Png = Structs.getPng();
-	auto & Info = Structs.getInfo();
+	auto Png = png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
+	if (Png == nullptr) throw std::runtime_error{"PNG load error"};
+	auto Info = png_create_info_struct(Png);
+	if (Info == nullptr)
+	{
+		png_destroy_read_struct(&Png, nullptr, nullptr);
+		throw std::runtime_error{"PNG load error"};
+	}
+	auto && PngGuard = Data::makeScopeGuard([&] { png_destroy_read_struct(&Png, &Info, nullptr); });
 
 	png_set_read_fn(Png, &File, readPngData);
 	png_set_error_fn(Png, nullptr, throwPngError, nullptr);
@@ -146,13 +114,15 @@ PngT::PngT(char const * Path)
 	mHeight = Height;
 
 	// Setup a pointer array.  Each one points at the begening of a row
-	mBytes = Data::allocUnique<std::uint8_t>(Width * Height * 4);
-	auto Rows = Data::allocUnique<std::uint8_t *>(Height);
-	for (std::size_t I = 0; I < Height; ++I) Rows[I] = &mBytes[(Height - I - 1) * Width * 4];
+	auto Bytes = Data::makeUniqueArray<std::uint8_t>(Width * Height * 4);
+	auto Rows = Data::makeUniqueArray<std::uint8_t *>(Height);
+	for (std::size_t I = 0; I < Height; ++I) Rows[I] = &Bytes[(Height - I - 1) * Width * 4];
 
 	// Read pixel data using row pointers
 	png_read_image(Png, Rows.get());
 	png_read_end(Png, nullptr);
+
+	mBytes.reset(Bytes.release());
 }
 
 std::uint16_t PngT::getWidth() const

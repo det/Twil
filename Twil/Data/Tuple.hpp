@@ -1,5 +1,7 @@
 #pragma once
 
+#include "TupleFwd.hpp"
+
 #include <array>
 #include <tuple>
 
@@ -7,9 +9,6 @@ namespace Twil {
 namespace Data {
 
 // iterate
-
-template<std::size_t, std::size_t>
-struct IterateFunctorT;
 
 template<std::size_t N, std::size_t I>
 struct IterateFunctorT
@@ -46,9 +45,6 @@ void iterate(TupleT const & Tuple, FunctorT Functor)
 }
 
 // iterateUntil
-
-template<std::size_t, std::size_t>
-struct IterateUntilFunctorT;
 
 template<std::size_t N, std::size_t I>
 struct IterateUntilFunctorT

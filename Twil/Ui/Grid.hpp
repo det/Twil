@@ -1,5 +1,7 @@
 #pragma once
 
+#include "GridFwd.hpp"
+
 #include "PartitionBox.hpp"
 #include "Widget.hpp"
 

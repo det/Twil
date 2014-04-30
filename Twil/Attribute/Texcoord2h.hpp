@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Texcoord2hFwd.hpp"
+
 #include "Gl/Context.hpp"
 
 namespace Twil {
@@ -7,10 +9,10 @@ namespace Attribute {
 
 struct Texcoord2hT
 {
-	std::uint16_t S;
-	std::uint16_t T;
+	GLushort S;
+	GLushort T;
 
-	static void setup(std::uint32_t, std::int32_t, void const *);
+	static void setup(GLuint, GLsizei, GLvoid const *);
 };
 
 }

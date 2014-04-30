@@ -1,5 +1,7 @@
 #pragma once
 
+#include "MouseHandlerFwd.hpp"
+
 #include <cstdint>
 
 namespace Twil {

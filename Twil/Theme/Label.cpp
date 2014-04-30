@@ -1,31 +1,32 @@
 #include "Label.hpp"
 
-#include "Manager.hpp"
-
-#include <iostream>
+#include "Ui/WindowBase.hpp"
 
 namespace Twil {
 namespace Theme {
 
-void LabelT::init(ManagerT & Manager)
+void LabelT::init(Ui::WindowBaseT & Window)
 {
-	mManager = &Manager;
-	mManager->mSolidArray.allocate(*this, 0);
-	mHeight = mManager->mLabelSize.getHeight() / 64;
+	mWindow = &Window;
+	auto & Manager = mWindow->getThemeManager();
+	Manager.mSolidArray.allocate(*this, 0);
+	mHeight = Manager.mLabelSize.getHeight() / 64;
 }
 
 void LabelT::setText(std::u32string const & Text)
 {
-	mGlyphs.clear();
-	auto & Face = mManager->mLabelFace;
-	Face.setActiveSize(mManager->mLabelSize);
+	auto & Manager = mWindow->getThemeManager();
 
-	FT_Vector Pen{0, -mManager->mLabelSize.getDescender()};
+	mGlyphs.clear();
+	auto & Face = Manager.mLabelFace;
+	Face.setActiveSize(Manager.mLabelSize);
+
+	FT_Vector Pen{0, -Manager.mLabelSize.getDescender()};
 	GlyphEntryT PreviousEntry{};
 
 	for (auto Codepoint : Text)
 	{
-		auto Entry = mManager->loadGlyphEntry(Face, Codepoint);
+		auto Entry = Manager.loadGlyphEntry(Face, Codepoint);
 
 		// We can hit a divide by 0 in clipping without this check
 		if (Entry.Width == 0 || Entry.Height == 0) continue;
@@ -56,38 +57,40 @@ void LabelT::setText(std::u32string const & Text)
 	}
 
 	mWidth = Pen.x / 64;
-	mManager->mSolidArray.resize(*this, mGlyphs.size());
-	mManager->mSolidArray.markNeedsRedraw(*this);
+	Manager.mSolidArray.resize(*this, mGlyphs.size());
+	Manager.mSolidArray.markNeedsRedraw(*this);
 }
 
 void LabelT::setClipLeft(float X)
 {
 	mClipLeft = X;
-	mManager->mSolidArray.markNeedsRedraw(*this);
+	mWindow->getThemeManager().mSolidArray.markNeedsRedraw(*this);
 }
 
 void LabelT::setClipRight(float X)
 {
 	mClipRight = X;
-	mManager->mSolidArray.markNeedsRedraw(*this);
+	mWindow->getThemeManager().mSolidArray.markNeedsRedraw(*this);
 }
 
 void LabelT::setClipBottom(float Y)
 {
 	mClipBottom = Y;
-	mManager->mSolidArray.markNeedsRedraw(*this);
+	mWindow->getThemeManager().mSolidArray.markNeedsRedraw(*this);
 }
 
 void LabelT::setClipTop(float Y)
 {
 	mClipTop = Y;
-	mManager->mSolidArray.markNeedsRedraw(*this);
+	mWindow->getThemeManager().mSolidArray.markNeedsRedraw(*this);
 }
 
 void LabelT::draw(Vertex::FillSolidT * Vertices) const
 {
-	std::int16_t Left = mManager->fitHorizontalGrid(mLeft);
-	std::int16_t Bottom = mManager->fitVerticalGrid(mBottom);
+	auto & Manager = mWindow->getThemeManager();
+
+	std::int16_t Left = mWindow->convertDipToPixelX(mLeft);
+	std::int16_t Bottom = mWindow->convertDipToPixelY(mBottom);
 
 	for (std::size_t I = 0, E = mGlyphs.size(); I != E; ++I)
 	{
@@ -96,10 +99,10 @@ void LabelT::draw(Vertex::FillSolidT * Vertices) const
 		std::int16_t GlyphBottom = Bottom + mGlyphs[I].PositionMin.Y;
 		std::int16_t GlyphTop = Bottom + mGlyphs[I].PositionMax.Y;
 
-		std::int16_t ClipLeft = mManager->fitHorizontalGrid(mClipLeft);
-		std::int16_t ClipRight = mManager->fitHorizontalGrid(mClipRight);
-		std::int16_t ClipBottom = mManager->fitVerticalGrid(mClipBottom);
-		std::int16_t ClipTop = mManager->fitVerticalGrid(mClipTop);
+		std::int16_t ClipLeft = mWindow->convertDipToPixelX(mClipLeft);
+		std::int16_t ClipRight = mWindow->convertDipToPixelX(mClipRight);
+		std::int16_t ClipBottom = mWindow->convertDipToPixelY(mClipBottom);
+		std::int16_t ClipTop = mWindow->convertDipToPixelY(mClipTop);
 
 		std::int16_t Width = GlyphRight - GlyphLeft;
 		std::int16_t Height = GlyphTop - GlyphBottom;
@@ -135,7 +138,7 @@ void LabelT::moveX(float X)
 	mLeft += X;
 	mClipLeft += X;
 	mClipRight += X;
-	mManager->mSolidArray.markNeedsRedraw(*this);
+	mWindow->getThemeManager().mSolidArray.markNeedsRedraw(*this);
 }
 
 void LabelT::moveY(float Y)
@@ -143,7 +146,7 @@ void LabelT::moveY(float Y)
 	mBottom += Y;
 	mClipBottom += Y;
 	mClipTop += Y;
-	mManager->mSolidArray.markNeedsRedraw(*this);
+	mWindow->getThemeManager().mSolidArray.markNeedsRedraw(*this);
 }
 
 float LabelT::getLeft() const
@@ -188,12 +191,12 @@ float LabelT::getClipTop() const
 
 float LabelT::getBaseWidth() const
 {
-	return mWidth / Settings::Global::HorizontalScale;
+	return mWindow->convertPixelToDipX(mWidth);
 }
 
 float LabelT::getBaseHeight() const
 {
-	return mHeight / Settings::Global::VerticalScale;
+	return mWindow->convertPixelToDipY(mHeight);
 }
 
 }

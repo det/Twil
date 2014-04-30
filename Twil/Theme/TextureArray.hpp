@@ -1,5 +1,7 @@
 #pragma once
 
+#include "TextureArrayFwd.hpp"
+
 #include "Gl/Buffer.hpp"
 #include "Gl/Texture.hpp"
 
@@ -43,6 +45,14 @@ public:
 	std::size_t append(T First, T Last)
 	{
 		auto Index = mBytes.size();
+
+		// Work around libstdc++ bug #61086
+		if (mBytes.empty())
+		{
+			mBytes.push_back(*First);
+			++First;
+		}
+
 		mBytes.insert(mBytes.end(), First, Last);
 		return Index;
 	}

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "EventFwd.hpp"
+
 #include <functional>
 #include <utility>
 #include <list>

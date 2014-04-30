@@ -1,5 +1,9 @@
 #pragma once
 
+#include "ManagerFwd.hpp"
+
+#include "ButtonFwd.hpp"
+#include "LabelFwd.hpp"
 #include "Settings.hpp"
 #include "StreamArray.hpp"
 #include "TextureArray.hpp"
@@ -13,7 +17,7 @@
 #include "Program/FillSolid.hpp"
 #include "Program/OutlineGradient.hpp"
 #include "Gl/Context.hpp"
-#include "Gl/VertexArray.hpp"
+#include "Ui/WindowBaseFwd.hpp"
 #include "Vertex/Bitmap.hpp"
 #include "Vertex/FillSolid.hpp"
 #include "Vertex/OutlineGradient.hpp"
@@ -24,10 +28,6 @@
 
 namespace Twil {
 namespace Theme {
-
-class ButtonT;
-class LabelT;
-class Window;
 
 /// \brief Represents a loaded unicode glyph.
 struct GlyphEntryT
@@ -63,6 +63,8 @@ class ManagerT
 
 private:
 	static std::size_t const mNumBuffers = Settings::Manager::NumBuffers;
+
+	Ui::WindowBaseT & mWindow;
 
 	Ft::LibraryT mLibrary;
 	Ft::BitmapT mBitmap;
@@ -117,7 +119,7 @@ private:
 	void setupButton();
 
 public:
-	ManagerT();
+	ManagerT(Ui::WindowBaseT & Window);
 	~ManagerT() noexcept;
 
 	/// \brief Make sure the GUI is drawn on the next update call
@@ -126,9 +128,7 @@ public:
 	/// \brief Draw the GUI if needed
 	///
 	/// \returns true if the GUI was drawn.
-	bool update(std::uint16_t Width, std::uint16_t Height);
-	std::int16_t fitHorizontalGrid(float X);
-	std::int16_t fitVerticalGrid(float Y);
+	bool update(std::int16_t Width, std::int16_t Height);
 };
 
 }

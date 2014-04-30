@@ -1,11 +1,10 @@
 #pragma once
 
-#include "Drawable.hpp"
-#include "Manager.hpp"
-#include "Settings.hpp"
-#include "Vertex/OutlineGradient.hpp"
+#include "ButtonFwd.hpp"
 
-#include <vector>
+#include "Drawable.hpp"
+#include "Ui/WindowBaseFwd.hpp"
+#include "Vertex/OutlineGradient.hpp"
 
 namespace Twil {
 namespace Theme {
@@ -19,7 +18,7 @@ class ButtonT
 	ButtonT & operator =(ButtonT const &) = delete;
 
 private:
-	ManagerT * mManager;
+	Ui::WindowBaseT * mWindow;
 	float mLeft = 0.0f;
 	float mBottom = 0.0f;
 	float mRight = 0.0f;
@@ -32,7 +31,7 @@ private:
 
 public:
 	ButtonT() = default;
-	void init(ManagerT &);
+	void init(Ui::WindowBaseT &);
 
 	/// \brief Sets whether the button is up or down.
 	void setIsDown(bool IsDown);

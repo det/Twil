@@ -1,13 +1,14 @@
 #pragma once
 
+#include "ProgramFwd.hpp"
+
 #include "Context.hpp"
+#include "ShaderFwd.hpp"
 
 #include <string>
 
 namespace Twil {
 namespace Gl {
-
-class ShaderT;
 
 /// \brief Container for an OpenGL Program.
 class ProgramT
@@ -16,14 +17,14 @@ class ProgramT
 	ProgramT & operator =(ProgramT const &) = delete;
 
 private:
-	std::uint32_t mId;
+	GLuint mId;
 
 public:
 	ProgramT();
 	~ProgramT() noexcept;
 
 	/// \brief Implicit conversion operator so it can be used in gl* functions.
-	operator std::uint32_t() const;
+	operator GLuint() const;
 
 	/// \brief Attach a shader.
 	void attach(ShaderT const & Shader);
@@ -34,19 +35,19 @@ public:
 	void link();
 
 	/// \brief Sets a uniform int.
-	static void setUniform(std::int32_t Location, int X);
+	static void setUniform(GLint Location, int X);
 
 	/// \brief Sets a uniform float.
-	static void setUniform(std::int32_t Location, float X);
+	static void setUniform(GLint Location, float X);
 
 	/// \brief Sets a uniform vec2.
-	static void setUniform(std::int32_t Location, float X, float Y);
+	static void setUniform(GLint Location, float X, float Y);
 
 	/// \brief Sets a uniform vec4.
-	static void setUniform(std::int32_t Location, float X, float Y, float Z, float W);
+	static void setUniform(GLint Location, float X, float Y, float Z, float W);
 
 	/// \returns The Location of a uniform.
-	std::int32_t getLocation(char const * String) const;
+	GLint getLocation(char const * String) const;
 };
 
 }

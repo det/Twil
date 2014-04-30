@@ -1,13 +1,15 @@
 #pragma once
 
+#include "WidgetFwd.hpp"
+
+#include "ContainerFwd.hpp"
+#include "WindowBaseFwd.hpp"
+
 #include <cstdint>
 #include <utility>
 
 namespace Twil {
 namespace Ui {
-
-class ContainerT;
-class WindowBaseT;
 
 class WidgetT
 {

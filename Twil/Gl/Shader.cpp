@@ -10,7 +10,7 @@
 namespace Twil {
 namespace Gl {
 
-ShaderT::ShaderT(std::uint32_t Type)
+ShaderT::ShaderT(GLenum Type)
 {
 	mId = glCreateShader(Type);
 }
@@ -20,7 +20,7 @@ ShaderT::~ShaderT() noexcept
 	glDeleteShader(mId);
 }
 
-ShaderT::operator std::uint32_t() const
+ShaderT::operator GLuint() const
 {
 	return mId;
 }
@@ -34,27 +34,27 @@ void ShaderT::loadFile(char const * Path)
 	auto Pos = File.tellg();
 	if (Pos < 0) throw std::runtime_error{"Unable to read shader"};
 	File.seekg(0, std::ios_base::beg);
-	auto Buffer = Data::allocUnique<char>(static_cast<std::size_t>(Pos));
+	auto Buffer = Data::makeUniqueArray<GLchar>(static_cast<std::size_t>(Pos));
 	File.read(Buffer.get(), Pos);
 	File.close();
 
-	char const * Sources[] = {Buffer.get()};
-	std::int32_t const Lengths[] = {static_cast<std::int32_t>(Pos)};
+	GLchar const * Sources[] = {Buffer.get()};
+	GLint const Lengths[] = {static_cast<GLint>(Pos)};
 	glShaderSource(mId, 1, Sources, Lengths);
 }
 
 void ShaderT::compile()
 {
 	glCompileShader(mId);
-	std::int32_t IsCompiled = 0;
+	GLint IsCompiled = 0;
 	glGetShaderiv(mId, GL_COMPILE_STATUS, &IsCompiled);
 
 	if (!IsCompiled)
 	{
-		std::int32_t LogLength = 0;
+		GLint LogLength = 0;
 		glGetShaderiv(mId, GL_INFO_LOG_LENGTH , &LogLength);
 		if (LogLength < 1) throw std::runtime_error{"Shader compile error, unable to retrieve log"};
-		auto Log = Data::allocUnique<char>(LogLength);
+		auto Log = Data::makeUniqueArray<GLchar>(LogLength);
 		glGetShaderInfoLog(mId, LogLength, &LogLength, Log.get());
 		std::cerr << Log.get();
 		throw std::runtime_error{"Shader compile error"};

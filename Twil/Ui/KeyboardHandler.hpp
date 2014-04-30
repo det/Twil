@@ -1,5 +1,7 @@
 #pragma once
 
+#include "KeyboardHandlerFwd.hpp"
+
 #include "Platform/Key.hpp"
 
 namespace Twil {

@@ -2,7 +2,7 @@
 
 #include "Gl/Context.hpp"
 
-#include <cstddef>
+#include <stddef.h>
 
 namespace Twil {
 namespace Vertex {

@@ -1,8 +1,10 @@
 #pragma once
 
+#include "PngFwd.hpp"
+
 #include "Data/Memory.hpp"
 
-#include <string>
+#include <cstdint>
 
 namespace Twil {
 namespace Loader {

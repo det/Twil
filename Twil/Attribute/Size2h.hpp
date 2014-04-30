@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Size2hFwd.hpp"
+
 #include "Gl/Context.hpp"
 
 namespace Twil {
@@ -7,10 +9,10 @@ namespace Attribute {
 
 struct Size2hT
 {
-	std::uint16_t Width;
-	std::uint16_t Height;
+	GLushort Width;
+	GLushort Height;
 
-	static void setup(std::uint32_t, std::int32_t, void const *);
+	static void setup(GLuint, GLsizei, GLvoid const *);
 };
 
 }

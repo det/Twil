@@ -45,8 +45,8 @@ void OutlineT::reservePoints(std::uint16_t Num)
 	if (PointCapacity == 0) PointCapacity = 1;
 	while (PointCapacity < Num) PointCapacity *= 2;
 
-	auto Points = Data::allocUnique<FT_Vector>(PointCapacity);
-	auto Tags = Data::allocUnique<char>(PointCapacity);
+	auto Points = Data::makeUniqueArray<FT_Vector>(PointCapacity);
+	auto Tags = Data::makeUniqueArray<char>(PointCapacity);
 	std::copy(mId.points, mId.points + mId.n_points, Points.get());
 	std::copy(mId.tags, mId.tags + mId.n_points, Tags.get());
 
@@ -64,7 +64,7 @@ void OutlineT::reserveContours(std::uint16_t Num)
 	if (ContourCapacity == 0) ContourCapacity = 1;
 	while (ContourCapacity < Num) ContourCapacity *= 2;
 
-	auto Contours = Data::allocUnique<FT_Short>(ContourCapacity);
+	auto Contours = Data::makeUniqueArray<FT_Short>(ContourCapacity);
 	std::copy(mId.contours, mId.contours + mId.n_contours, Contours.get());
 
 	delete[] mId.contours;

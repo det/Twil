@@ -1,5 +1,7 @@
 #pragma once
 
+#include "FillSolidFwd.hpp"
+
 #include "Attribute/Color4b.hpp"
 #include "Attribute/Offset1i.hpp"
 #include "Attribute/Position2h.hpp"

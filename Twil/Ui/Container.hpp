@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ContainerFwd.hpp"
+
 #include <cstdint>
 
 namespace Twil {

@@ -1,16 +1,15 @@
 #pragma once
 
-#include "Drawable.hpp"
-#include "Manager.hpp"
-#include "Vertex/FillSolid.hpp"
+#include "ImageFwd.hpp"
 
-#include <string>
-#include <vector>
+#include "Drawable.hpp"
+#include "Ui/WindowBaseFwd.hpp"
+#include "Vertex/Bitmap.hpp"
+
+#include <cstdint>
 
 namespace Twil {
 namespace Theme {
-
-class ManagerT;
 
 /// \brief Responsible for drawing a Image.
 class ImageT
@@ -21,7 +20,7 @@ class ImageT
 	ImageT & operator =(ImageT const &) = delete;
 
 private:
-	ManagerT * mManager;
+	Ui::WindowBaseT * mWindow;
 	std::uint32_t mOffset = 0;
 	std::uint16_t mWidth = 0;
 	std::uint16_t mHeight = 0;
@@ -34,7 +33,7 @@ private:
 
 public:
 	ImageT() = default;
-	void init(ManagerT &);
+	void init(Ui::WindowBaseT &);
 
 	/// \brief Sets the text to display.
 	void setImage(char const *);

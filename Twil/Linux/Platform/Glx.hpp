@@ -1,5 +1,9 @@
 #pragma once
 
+#include "GlxFwd.hpp"
+
+#include "SymbolLoaderFwd.hpp"
+
 #include <GL/glx.h>
 #include <GL/glxext.h>
 
@@ -17,8 +21,6 @@ using namespace Twil::Platform::Procs;
 
 namespace Twil {
 namespace Platform {
-
-class SymbolLoaderT;
 
 namespace Glx {
 

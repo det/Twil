@@ -1,44 +1,47 @@
 #pragma once
 
-#include <cstdint>
+#include "WindowFwd.hpp"
 
-#include <xcb/xcb.h>
+#include "ApplicationFwd.hpp"
+#include "GlxFwd.hpp"
+#include "X11Fwd.hpp"
+#include "Theme/Manager.hpp"
+#include "Ui/KeyboardHandlerFwd.hpp"
+#include "Ui/MouseHandlerFwd.hpp"
+#include "Ui/WindowBaseFwd.hpp"
+#include "Ui/WindowHandlerFwd.hpp"
+
+#include <cstdint>
 
 namespace Twil {
 namespace Platform {
 
-class ApplicationT;
-
 /// \brief A Linux window.
+
 class WindowT
 {
 	WindowT(WindowT const &) = delete;
 	WindowT & operator =(WindowT const &) = delete;
 
-private:
+protected:
 	ApplicationT * mApplication;
-	xcb_window_t mId;
-
-	// We Use void * here and cast later because including the X11 headers polutes our namespace
-	// with all kinds of generically named macros such as "None"
-	void * mContext;
-
-public:
-	/// \throws std::runtime_error on error.
-	WindowT(ApplicationT &, std::int16_t Width, std::int16_t Height);
-	~WindowT() noexcept;
-
-	/// \brief Make this window the current rendering context.
-	void makeCurrent();
+	XWindow mId;
+	XColormap mColormap;
+	GLXContext mContext;
 
 	/// \brief Swap the front and back buffers.
 	void swapBuffers();
+
+public:
+	/// \throws std::runtime_error on error.
+	WindowT(Ui::WindowBaseT & Window, ApplicationT & Application, std::int16_t Width, std::int16_t Height);
+	~WindowT() noexcept;
 
 	// Documented in Ui::Window
 	void show();
 	void hide();
 	void setFullscreen(bool IsFullScreen);
-	void resize(std::uint16_t Width, std::uint16_t Height);
+	void resizePixels(std::int16_t Width, std::int16_t Height);
 	void setTitle(char const * String);
 };
 

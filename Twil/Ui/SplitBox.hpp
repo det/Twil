@@ -1,5 +1,7 @@
 #pragma once
 
+#include "SplitBoxFwd.hpp"
+
 #include "Container.hpp"
 #include "WindowBase.hpp"
 
@@ -259,9 +261,6 @@ public:
 		mParent->handleChildBaseWidthChanged(this);
 	}
 };
-
-template<bool IsHorizontal, bool IsFirstStatic, typename FirstT, typename SecondT>
-class SplitBoxT;
 
 /// \brief A horizontal split box where the first child is fixed width.
 ///

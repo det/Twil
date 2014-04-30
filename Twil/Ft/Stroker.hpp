@@ -1,15 +1,17 @@
 #pragma once
 
+#include "StrokerFwd.hpp"
+
+#include "FaceFwd.hpp"
+#include "LibraryFwd.hpp"
+#include "OutlineFwd.hpp"
+
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include FT_STROKER_H
 
 namespace Twil {
 namespace Ft {
-
-class FaceT;
-class LibraryT;
-class OutlineT;
 
 /// \brief A FreeType Stroker.
 ///

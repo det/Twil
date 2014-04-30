@@ -15,7 +15,7 @@ BufferT::~BufferT() noexcept
 	glDeleteBuffers(1, &mId);
 }
 
-BufferT::operator std::uint32_t() const
+BufferT::operator GLuint() const
 {
 	return mId;
 }

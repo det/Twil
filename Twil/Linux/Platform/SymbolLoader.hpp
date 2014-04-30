@@ -1,7 +1,6 @@
 #pragma once
 
-#include <stdexcept>
-#include <string>
+#include "SymbolLoaderFwd.hpp"
 
 namespace Twil {
 namespace Platform {

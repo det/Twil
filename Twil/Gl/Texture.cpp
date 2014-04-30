@@ -15,7 +15,7 @@ TextureT::~TextureT() noexcept
 	glDeleteTextures(1, &mId);
 }
 
-TextureT::operator std::uint32_t() const
+TextureT::operator GLuint() const
 {
 	return mId;
 }

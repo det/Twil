@@ -1,5 +1,7 @@
 #pragma once
 
+#include "SettingsFwd.hpp"
+
 #include "Attribute/Color4b.hpp"
 
 #include <cstdint>
@@ -10,13 +12,6 @@ namespace Theme {
 
 namespace Settings {
 
-namespace Global {
-
-float const HorizontalScale = 1.0f;
-float const VerticalScale = 1.0f;
-
-}
-
 namespace Manager {
 
 std::size_t const NumBuffers = 4;
@@ -25,7 +20,7 @@ std::size_t const NumBuffers = 4;
 
 namespace Button {
 
-Attribute::Color4bT const BorderColor{127, 127, 127, 255};
+Attribute::Color4bT const BorderColor{95, 95, 95, 255};
 Attribute::Color4bT const TopDownColor{191, 191, 191, 255};
 Attribute::Color4bT const BottomDownColor{111, 111, 111, 255};
 Attribute::Color4bT const TopUpColor{255, 255, 255, 255};

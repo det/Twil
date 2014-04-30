@@ -1,5 +1,4 @@
 #include "Ui/Application.hpp"
-#include "Ui/ApplicationAdaptor.hpp"
 #include "Ui/Button.hpp"
 #include "Ui/Centered.hpp"
 #include "Ui/Grid.hpp"

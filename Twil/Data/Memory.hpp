@@ -1,19 +1,15 @@
 #pragma once
 
+#include "MemoryFwd.hpp"
+
 #include <cstdlib>
 #include <memory>
 
 namespace Twil {
 namespace Data {
 
-template<typename T, typename ... ArgsT>
-std::unique_ptr<T> makeUnique(ArgsT && ... Args)
-{
-	return std::unique_ptr<T>(new T{std::forward<ArgsT>(Args) ...});
-}
-
 template<typename T>
-std::unique_ptr<T[]> allocUnique(std::size_t Size)
+std::unique_ptr<T[]> makeUniqueArray(std::size_t Size)
 {
 	return std::unique_ptr<T[]>{new T[Size]};
 }

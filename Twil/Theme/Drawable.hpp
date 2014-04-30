@@ -1,12 +1,12 @@
 #pragma once
 
+#include "DrawableFwd.hpp"
+#include "StreamArrayFwd.hpp"
+
 #include <cstdlib>
 
 namespace Twil {
 namespace Theme {
-
-template<typename T>
-class StreamArrayT;
 
 template<typename T>
 class DrawableT

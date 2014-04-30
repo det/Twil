@@ -1,13 +1,15 @@
 #pragma once
 
+#include "SizeFwd.hpp"
+
+#include "FaceFwd.hpp"
+
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include FT_SIZES_H
 
 namespace Twil {
 namespace Ft {
-
-class FaceT;
 
 /// \brief A FreeType font face size.
 class SizeT

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "StreamArrayFwd.hpp"
+
 #include "Drawable.hpp"
 #include "Settings.hpp"
 #include "Gl/Buffer.hpp"
@@ -8,7 +10,6 @@
 
 #include <algorithm>
 #include <cassert>
-#include <iostream>
 #include <vector>
 
 namespace Twil {

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "LabelFwd.hpp"
+
 #include "Container.hpp"
 #include "MouseHandler.hpp"
 #include "WindowBase.hpp"
@@ -8,11 +10,6 @@
 #include <string>
 
 namespace Twil {
-
-namespace Theme {
-class ManagerT;
-}
-
 namespace Ui {
 
 /// \brief A Widget that draws text on the screen.
@@ -66,7 +63,7 @@ public:
 	{
 		mParent = &Parent;
 		mWindow = &Window;
-		mThemeLabel.init(Window.getThemeManager());
+		mThemeLabel.init(Window);
 	}
 
 	/// \brief Set the text that the label displays.
@@ -179,7 +176,7 @@ public:
 
 	void delegateMouse(float, float)
 	{
-		mWindow->getMouseManager().setHandler(*this);
+		mWindow->setMouseHandler(*this);
 	}
 
 	// MouseHandler

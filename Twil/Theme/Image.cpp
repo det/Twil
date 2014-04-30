@@ -1,51 +1,54 @@
 #include "Image.hpp"
 
-#include "Manager.hpp"
+#include "Ui/WindowBase.hpp"
 
 namespace Twil {
 namespace Theme {
 
-void ImageT::init(ManagerT & Manager)
+void ImageT::init(Ui::WindowBaseT & Window)
 {
-	mManager = &Manager;
-	mManager->mBitmapArray.allocate(*this, 1);
+	mWindow = &Window;
+	mWindow->getThemeManager().mBitmapArray.allocate(*this, 1);
 }
 
 void ImageT::setImage(char const * Path)
 {
-	auto Entry = mManager->loadBitmapEntry(Path);
+	auto & Manager = mWindow->getThemeManager();
+	auto Entry = Manager.loadBitmapEntry(Path);
 	mOffset = Entry.Offset;
 	mWidth = Entry.Width;
 	mHeight = Entry.Height;
-	mManager->mBitmapArray.markNeedsRedraw(*this);
+	Manager.mBitmapArray.markNeedsRedraw(*this);
 }
 
 void ImageT::setClipLeft(float X)
 {
 	mClipLeft = X;
-	mManager->mBitmapArray.markNeedsRedraw(*this);
+	mWindow->getThemeManager().mBitmapArray.markNeedsRedraw(*this);
 }
 
 void ImageT::setClipRight(float X)
 {
 	mClipRight = X;
-	mManager->mBitmapArray.markNeedsRedraw(*this);
+	mWindow->getThemeManager().mBitmapArray.markNeedsRedraw(*this);
 }
 
 void ImageT::setClipBottom(float Y)
 {
 	mClipBottom = Y;
-	mManager->mBitmapArray.markNeedsRedraw(*this);
+	mWindow->getThemeManager().mBitmapArray.markNeedsRedraw(*this);
 }
 
 void ImageT::setClipTop(float Y)
 {
 	mClipTop = Y;
-	mManager->mBitmapArray.markNeedsRedraw(*this);
+	mWindow->getThemeManager().mBitmapArray.markNeedsRedraw(*this);
 }
 
 void ImageT::draw(Vertex::BitmapT * Vertices) const
 {
+	auto & Manager = mWindow->getThemeManager();
+
 	// Avoid divide by 0
 	if (mWidth == 0 || mHeight == 0)
 	{
@@ -53,15 +56,15 @@ void ImageT::draw(Vertex::BitmapT * Vertices) const
 		return;
 	}
 
-	std::int16_t Left = mManager->fitHorizontalGrid(mLeft);
+	std::int16_t Left = mWindow->convertDipToPixelX(mLeft);
 	std::int16_t Right = Left + mWidth;
-	std::int16_t Bottom = mManager->fitVerticalGrid(mBottom);
+	std::int16_t Bottom = mWindow->convertDipToPixelY(mBottom);
 	std::int16_t Top = Bottom + mHeight;
 
-	std::int16_t ClipLeft = mManager->fitHorizontalGrid(mClipLeft);
-	std::int16_t ClipRight = mManager->fitHorizontalGrid(mClipRight);
-	std::int16_t ClipBottom = mManager->fitVerticalGrid(mClipBottom);
-	std::int16_t ClipTop = mManager->fitVerticalGrid(mClipTop);
+	std::int16_t ClipLeft = mWindow->convertDipToPixelX(mClipLeft);
+	std::int16_t ClipRight = mWindow->convertDipToPixelX(mClipRight);
+	std::int16_t ClipBottom = mWindow->convertDipToPixelY(mClipBottom);
+	std::int16_t ClipTop = mWindow->convertDipToPixelY(mClipTop);
 
 	std::int16_t LeftClipped = Left;
 	std::int16_t RightClipped = Right;
@@ -93,7 +96,7 @@ void ImageT::moveX(float X)
 	mClipLeft += X;
 	mClipRight += X;
 
-	mManager->mBitmapArray.markNeedsRedraw(*this);
+	mWindow->getThemeManager().mBitmapArray.markNeedsRedraw(*this);
 }
 
 void ImageT::moveY(float Y)
@@ -102,7 +105,7 @@ void ImageT::moveY(float Y)
 	mClipBottom += Y;
 	mClipTop += Y;
 
-	mManager->mBitmapArray.markNeedsRedraw(*this);
+	mWindow->getThemeManager().mBitmapArray.markNeedsRedraw(*this);
 }
 
 float ImageT::getLeft() const
@@ -147,12 +150,12 @@ float ImageT::getClipTop() const
 
 float ImageT::getBaseWidth() const
 {
-	return mWidth / Settings::Global::HorizontalScale;
+	return mWindow->convertPixelToDipX(mWidth);
 }
 
 float ImageT::getBaseHeight() const
 {
-	return mHeight / Settings::Global::VerticalScale;
+	return mWindow->convertPixelToDipY(mHeight);
 }
 
 }

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ApplicationFwd.hpp"
+
 #include "Gl/Context.hpp"
 #include "Platform/Application.hpp"
 
@@ -11,32 +13,21 @@ namespace Ui {
 /// \param T Type of the window.
 template<typename T>
 class ApplicationT
+:
+	public Platform::ApplicationT
 {
 	ApplicationT(ApplicationT const &) = delete;
 	ApplicationT & operator =(ApplicationT const &) = delete;
 
 private:
-	Platform::ApplicationT mApplication;
 	T mChild;
 
 public:
 	ApplicationT()
 	:
-		mChild{mApplication}
+		mChild{*this}
 	{
 		mChild.init();
-	}
-
-	/// \brief Start the event loop.
-	void run()
-	{
-		mApplication.run(mChild);
-	}
-
-	/// \brief Stop the event loop.
-	void stop()
-	{
-		mApplication.stop();
 	}
 
 	/// \returns A reference to the child window.
@@ -49,6 +40,27 @@ public:
 	T const & getChild() const
 	{
 		return mChild;
+	}
+};
+
+template<typename T>
+class ApplicationAdaptorT
+:
+	public T
+{
+protected:
+	using T::getApplication;
+
+public:
+	// Application
+	void run()
+	{
+		getApplication().run();
+	}
+
+	void stop()
+	{
+		getApplication().stop();
 	}
 };
 

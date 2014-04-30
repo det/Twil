@@ -15,16 +15,16 @@ layout(location = 9) in int OutsideIndex;
 
 out GeometryT
 {
-	flat vec4 BorderColor;
-	flat vec4 BottomColor;
-	flat vec4 TopColor;
-	flat vec2 PositionMin;
-	flat vec2 PositionMax;
-	flat vec2 TextureMin;
-	flat vec2 TextureMax;
-	flat int Pitch;
-	flat int InsideIndex;
-	flat int OutsideIndex;
+	vec4 BorderColor;
+	vec4 BottomColor;
+	vec4 TopColor;
+	vec2 PositionMin;
+	vec2 PositionMax;
+	vec2 TextureMin;
+	vec2 TextureMax;
+	int Pitch;
+	int InsideIndex;
+	int OutsideIndex;
 } Geometry;
 
 void main(void)

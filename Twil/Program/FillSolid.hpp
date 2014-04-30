@@ -1,7 +1,11 @@
 #pragma once
 
+#include "FillSolidFwd.hpp"
+
 #include "Gl/Context.hpp"
 #include "Gl/Program.hpp"
+
+#include <cstdint>
 
 namespace Twil {
 namespace Program {

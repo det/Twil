@@ -1,5 +1,7 @@
 #pragma once
 
+#include "VertexArrayFwd.hpp"
+
 #include "Context.hpp"
 
 namespace Twil {
@@ -12,14 +14,14 @@ class VertexArrayT
 	VertexArrayT & operator =(VertexArrayT const &) = delete;
 
 private:
-	std::uint32_t mId;
+	GLuint mId;
 
 public:
 	VertexArrayT();
 	~VertexArrayT() noexcept;
 
 	/// \brief Implicit conversion operator so it can be used in gl* functions.
-	operator std::uint32_t() const;
+	operator GLuint() const;
 };
 
 }

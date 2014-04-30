@@ -1,9 +1,11 @@
 #pragma once
 
+#include "ButtonFwd.hpp"
+
 #include "Container.hpp"
-#include "Window.hpp"
+#include "MouseHandler.hpp"
 #include "Data/Event.hpp"
-#include "Gl/Context.hpp"
+#include "WindowBase.hpp"
 #include "Theme/Button.hpp"
 
 #include <stdexcept>
@@ -52,7 +54,7 @@ public:
 		mIsPressed = false;
 		mHasMouse = false;
 
-		mThemeButton.init(Window.getThemeManager());
+		mThemeButton.init(Window);
 		mChild.init(*this, Window);
 		auto LeftMargin = mThemeButton.getLeftMargin();
 		auto RightMargin = mThemeButton.getRightMargin();
@@ -177,7 +179,7 @@ public:
 
 	void delegateMouse(float, float)
 	{
-		mWindow->getMouseManager().setHandler(*this);
+		mWindow->setMouseHandler(*this);
 		mHasMouse = true;
 	}
 

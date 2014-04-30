@@ -5,13 +5,13 @@ layout(triangle_strip, max_vertices=4) out;
 
 in GeometryT
 {
-	flat vec4 Color;
-	flat vec2 PositionMin;
-	flat vec2 PositionMax;
-	flat vec2 TextureMin;
-	flat vec2 TextureMax;
-	flat int Pitch;
-	flat int Offset;
+	vec4 Color;
+	vec2 PositionMin;
+	vec2 PositionMax;
+	vec2 TextureMin;
+	vec2 TextureMax;
+	int Pitch;
+	int Offset;
 } Geometry[];
 
 out FragmentT

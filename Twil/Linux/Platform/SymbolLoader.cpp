@@ -2,6 +2,8 @@
 
 #include "Glx.hpp"
 
+#include <cstdint>
+
 namespace Twil {
 namespace Platform {
 

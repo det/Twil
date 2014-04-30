@@ -1,13 +1,14 @@
 #pragma once
 
+#include "ShaderFwd.hpp"
+
 #include "Context.hpp"
+#include "ProgramFwd.hpp"
 
 #include <string>
 
 namespace Twil {
 namespace Gl {
-
-class ProgramT;
 
 /// \brief Container for an OpenGL Shader.
 class ShaderT
@@ -16,15 +17,15 @@ class ShaderT
 	ShaderT & operator =(ShaderT const &) = delete;
 
 private:
-	std::uint32_t mId;
+	GLuint mId;
 
 public:
 	/// \param Type The Shader type, as defined by glCreateShader().
-	ShaderT(std::uint32_t Type);
+	ShaderT(GLenum Type);
 	~ShaderT() noexcept;
 
 	/// \brief Implicit conversion operator so it can be used in gl* functions.
-	operator std::uint32_t() const;
+	operator GLuint() const;
 
 	/// \brief Uploads shader source to OpenGL
 	///

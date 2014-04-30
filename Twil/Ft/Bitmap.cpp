@@ -4,8 +4,10 @@
 #include "Outline.hpp"
 #include "Face.hpp"
 
-#include FT_SIZES_H
+
 #include <algorithm>
+
+#include FT_SIZES_H
 
 namespace {
 

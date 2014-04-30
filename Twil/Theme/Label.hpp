@@ -1,8 +1,10 @@
-
 #pragma once
 
+#include "LabelFwd.hpp"
+
+
 #include "Drawable.hpp"
-#include "Manager.hpp"
+#include "Ui/WindowBaseFwd.hpp"
 #include "Vertex/FillSolid.hpp"
 
 #include <string>
@@ -10,8 +12,6 @@
 
 namespace Twil {
 namespace Theme {
-
-class ManagerT;
 
 struct LabelGlyph
 {
@@ -30,7 +30,7 @@ class LabelT
 	LabelT & operator =(LabelT const &) = delete;
 
 private:
-	ManagerT * mManager;
+	Ui::WindowBaseT * mWindow;
 	std::vector<LabelGlyph> mGlyphs;
 	std::int16_t mWidth = 0;
 	std::int16_t mHeight = 0;
@@ -43,7 +43,7 @@ private:
 
 public:
 	LabelT() = default;
-	void init(ManagerT &);
+	void init(Ui::WindowBaseT & Window);
 
 	/// \brief Sets the text to display.
 	void setText(std::u32string const & Text);

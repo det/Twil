@@ -2,11 +2,15 @@
 
 #include "Glx.hpp"
 #include "SymbolLoader.hpp"
+#include "X11.hpp"
+#include "Data/ScopeGuard.hpp"
+#include "Ui/KeyboardHandler.hpp"
+#include "Ui/MouseHandler.hpp"
+#include "Ui/WindowBase.hpp"
+#include "Ui/WindowHandler.hpp"
 
+#include <iostream>
 #include <stdexcept>
-
-#include <X11/Xlib.h>
-#include <X11/Xlib-xcb.h>
 
 namespace Twil {
 namespace Platform {
@@ -15,53 +19,144 @@ ApplicationT::ApplicationT() :
 	mRunning{false}
 {
 	mDisplay = XOpenDisplay(0);
-	auto Display = static_cast< ::Display *>(mDisplay);
-	if (Display == nullptr) throw std::runtime_error{"Unable to open display"};
+	if (mDisplay == nullptr) throw std::runtime_error{"Unable to open display"};
+	auto && DisplayGuard = Data::makeScopeGuard([&] { XCloseDisplay(mDisplay); });
 
-	// Let xcb take over event handling
-	mConnection = XGetXCBConnection(Display);
-	if (mConnection == nullptr) throw std::runtime_error{"Can't get xcb connection from display"};
-	XSetEventQueueOwner(Display, XCBOwnsEventQueue);
+	mWmDeleteWindow = XInternAtom(mDisplay, "WM_DELETE_WINDOW", False);
+	mWmStateFullscreen = XInternAtom(mDisplay, "_NET_WM_STATE_FULLSCREEN", False);
+	mWmState = XInternAtom(mDisplay, "_NET_WM_STATE", False);
+	mContext = XUniqueContext();
 
-	// Load atoms
-	auto AtomCookie = xcb_intern_atom(mConnection, 0, 4, "ATOM");
-	auto NetWmStateCookie = xcb_intern_atom(mConnection, 0, 13, "_NET_WM_STATE");
-	auto NetWmStateFullscreenCookie =
-		xcb_intern_atom(mConnection, 0, 24, "_NET_WM_STATE_FULLSCREEN");
-	auto StringCookie = xcb_intern_atom(mConnection, 0, 6, "STRING");
-	auto WmDeleteWindowCookie = xcb_intern_atom(mConnection, 0, 16, "WM_DELETE_WINDOW");
-	auto WmNameCookie = xcb_intern_atom(mConnection, 0, 7, "WM_NAME");
-	auto WmProtocolsCookie = xcb_intern_atom(mConnection, 0, 12, "WM_PROTOCOLS");
+	SymbolLoaderT Loader;
+	Glx::initialize(Loader);
 
-	using ReplyT = std::unique_ptr<xcb_intern_atom_reply_t, Data::FreeDeleterT>;
-	ReplyT AtomReply{xcb_intern_atom_reply(mConnection, AtomCookie, nullptr)};
-	ReplyT NetWmStateReply{xcb_intern_atom_reply(mConnection, NetWmStateCookie, nullptr)};
-	ReplyT NetWmStateFullscreenReply{
-		xcb_intern_atom_reply(mConnection, NetWmStateFullscreenCookie, nullptr)};
-	ReplyT StringReply{xcb_intern_atom_reply(mConnection, StringCookie, nullptr)};
-	ReplyT WmDeleteWindowReply{xcb_intern_atom_reply(mConnection, WmDeleteWindowCookie, nullptr)};
-	ReplyT WmNameReply{xcb_intern_atom_reply(mConnection, WmNameCookie, nullptr)};
-	ReplyT WmProtocolsReply{xcb_intern_atom_reply(mConnection, WmProtocolsCookie, nullptr)};
+	static int VisualAttributes[] = {
+		GLX_X_RENDERABLE ,					True,
+		GLX_DRAWABLE_TYPE,					GLX_WINDOW_BIT,
+		GLX_RENDER_TYPE,					GLX_RGBA_BIT,
+		GLX_X_VISUAL_TYPE,					GLX_TRUE_COLOR,
+		GLX_RED_SIZE,						8,
+		GLX_GREEN_SIZE,						8,
+		GLX_BLUE_SIZE,						8,
+		GLX_ALPHA_SIZE,						8,
+		GLX_DOUBLEBUFFER,					True,
+		GLX_FRAMEBUFFER_SRGB_CAPABLE_ARB,	True,
+		None};
 
-	mAtomAtom = AtomReply->atom;
-	mNetWmStateAtom = NetWmStateReply->atom;
-	mNetWmStateFullscreenAtom = NetWmStateFullscreenReply->atom;
-	mStringAtom = StringReply->atom;
-	mWmDeleteWindowAtom = WmDeleteWindowReply->atom;
-	mWmNameAtom = WmNameReply->atom;
-	mWmProtocolsAtom = WmProtocolsReply->atom;
+	int FramebufferCount;
+	auto ScreenId = DefaultScreen(mDisplay);
+
+	auto Screen = ScreenOfDisplay(mDisplay, ScreenId);
+	mDpiX = 25.4 * Screen->width / Screen->mwidth;
+	mDpiY = 25.4 * Screen->height / Screen->mheight;
+
+	mConfigs = glXChooseFBConfig(mDisplay, ScreenId, VisualAttributes, &FramebufferCount);
+	if (mConfigs == nullptr) throw std::runtime_error{"Unable to find matching video mode"};
+	auto && ConfigsGuard = Data::makeScopeGuard([&] { XFree(mConfigs); });
+
+	ConfigsGuard.dismiss();
+	DisplayGuard.dismiss();
 }
 
 ApplicationT::~ApplicationT() noexcept
 {
-	auto Display = static_cast< ::Display *>(mDisplay);
-	XCloseDisplay(Display);
+	XFree(mConfigs);
+	XCloseDisplay(mDisplay);
+}
+
+float ApplicationT::getDpiX()
+{
+	return mDpiX;
+}
+
+float ApplicationT::getDpiY()
+{
+	return mDpiY;
 }
 
 void ApplicationT::stop()
 {
 	mRunning = false;
 }
+
+void ApplicationT::run()
+{
+	assert(mRunning == false);
+	mRunning = true;
+	XEvent Event;
+	while (mRunning)
+	{
+		XNextEvent(mDisplay, &Event);
+
+		Ui::WindowBaseT * Window;
+		auto Ret = XFindContext(
+			mDisplay,
+			Event.xany.window,
+			mContext,
+			reinterpret_cast<XPointer *>(&Window));
+
+		if (Ret != 0) continue;
+
+		switch (Event.type)
+		{
+
+		case ConfigureNotify:
+		{
+			Window->handleWindowResize(Event.xconfigure.width, Event.xconfigure.height);
+			break;
+		}
+
+		case Expose:
+		{
+			Window->handleWindowExposed();
+			break;
+		}
+
+		case MotionNotify:
+		{
+			Window->handleMouseMotion(Event.xmotion.x, Event.xmotion.y);
+			break;
+		}
+
+		case ButtonPress:
+		{
+			Window->handleButtonPress(Event.xbutton.x, Event.xbutton.y, Event.xbutton.button);
+			break;
+		}
+
+		case ButtonRelease:
+		{
+			Window->handleButtonRelease(Event.xbutton.x, Event.xbutton.y, Event.xbutton.button);
+			break;
+		}
+
+		case EnterNotify:
+		{
+			Window->handleMouseEnterWindow(Event.xbutton.x, Event.xbutton.y);
+			break;
+		}
+
+		case LeaveNotify:
+		{
+			Window->handleMouseLeaveWindow(Event.xbutton.x, Event.xbutton.y);
+			break;
+		}
+
+		case ClientMessage:
+		{
+			if (static_cast<XAtom>(Event.xclient.data.l[0]) == mWmDeleteWindow)
+			{
+				Window->handleWindowDeleted();
+			}
+			break;
+		}
+
+		}
+
+		Window->handleWindowUpdate();
+	}
+}
+
 
 }
 }

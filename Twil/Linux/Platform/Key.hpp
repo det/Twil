@@ -1,7 +1,6 @@
 #pragma once
 
-#include <xcb/xcb.h>
-#include <xcb/xcb_keysyms.h>
+#include "KeyFwd.hpp"
 
 namespace Twil {
 namespace Platform {

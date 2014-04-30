@@ -1,24 +1,25 @@
 #include "Manager.hpp"
 
 #include "Loader/Png.hpp"
+#include "Ui/WindowBase.hpp"
 
 #include <algorithm>
 #include <cmath>
-#include <iostream>
 
 namespace Twil {
 namespace Theme {
 
-ManagerT::ManagerT()
+ManagerT::ManagerT(Ui::WindowBaseT & Window)
 :
+	mWindow{Window},
 	mBitmap{mLibrary},
 	mStroker{mLibrary},
 	mLabelFace{mLibrary, Settings::Label::Font, 0},
 	mLabelSize{
 		mLabelFace,
 		Settings::Label::Size,
-		static_cast<FT_UInt>(96 * Settings::Global::HorizontalScale),
-		static_cast<FT_UInt>(96 * Settings::Global::VerticalScale)},
+		static_cast<FT_UInt>(mWindow.convertDipToPixelX(96)), //XXX
+		static_cast<FT_UInt>(mWindow.convertDipToPixelY(96))},
 	mRedTexture{GL_R8},
 	mRgbaTexture{GL_RGBA8},
 	mNeedsRedraw{false}
@@ -43,22 +44,12 @@ ManagerT::~ManagerT() noexcept
 	for (std::size_t I = 0; I != mNumBuffers; ++I) glDeleteSync(mFences[I]);
 }
 
-std::int16_t ManagerT::fitHorizontalGrid(float X)
-{
-	return std::round(X * Settings::Global::HorizontalScale);
-}
-
-std::int16_t ManagerT::fitVerticalGrid(float Y)
-{
-	return std::round(Y * Settings::Global::VerticalScale);
-}
-
 void ManagerT::setupButton()
 {
-	std::int16_t HorizontalRoundness = fitHorizontalGrid(Settings::Button::Roundness);
-	std::int16_t VerticalRoundness = fitVerticalGrid(Settings::Button::Roundness);
-	std::int16_t HorizontalBorderSize = fitHorizontalGrid(Settings::Button::BorderWidth);
-	std::int16_t VerticalBorderSize = fitVerticalGrid(Settings::Button::BorderWidth);
+	std::int16_t HorizontalRoundness = mWindow.convertDipToPixelX(Settings::Button::Roundness);
+	std::int16_t VerticalRoundness = mWindow.convertDipToPixelY(Settings::Button::Roundness);
+	std::int16_t HorizontalBorderSize = mWindow.convertDipToPixelX(Settings::Button::BorderWidth);
+	std::int16_t VerticalBorderSize = mWindow.convertDipToPixelY(Settings::Button::BorderWidth);
 
 	std::int16_t HorizontalPos1 = 0;
 	std::int16_t HorizontalPos2 = HorizontalPos1 + HorizontalBorderSize;
@@ -173,8 +164,8 @@ BitmapEntryT const & ManagerT::loadBitmapEntry(char const * Path)
 	if (Iter != mBitmapEntries.end()) return Iter->second;
 
 	Loader::PngT Image{Path};
-	std::uint16_t Width = fitHorizontalGrid(Image.getWidth());
-	std::uint16_t Height = fitVerticalGrid(Image.getHeight());
+	std::uint16_t Width = mWindow.convertDipToPixelX(Image.getWidth());
+	std::uint16_t Height = mWindow.convertDipToPixelY(Image.getHeight());
 	auto Allocation = mRgbaTexture.allocate(Width * Height * 4);
 	std::uint32_t Offset = Allocation.second / 4;
 
@@ -221,7 +212,7 @@ void ManagerT::markNeedsRedraw()
 	mNeedsRedraw = true;
 }
 
-bool ManagerT::update(std::uint16_t Width, std::uint16_t Height)
+bool ManagerT::update(std::int16_t Width, std::int16_t Height)
 {
 	mNeedsRedraw |= mSolidArray.checkNeedsRedraw();
 	mNeedsRedraw |= mOutlineArray.checkNeedsRedraw();

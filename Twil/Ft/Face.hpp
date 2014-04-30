@@ -1,16 +1,18 @@
 #pragma once
 
+#include "FaceFwd.hpp"
+
+#include "BitmapFwd.hpp"
+#include "LibraryFwd.hpp"
+#include "SizeFwd.hpp"
+#include "StrokerFwd.hpp"
+
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include <string>
 
 namespace Twil {
 namespace Ft {
-
-class BitmapT;
-class LibraryT;
-class SizeT;
-class StrokerT;
 
 /// \brief A FreeType font face.
 class FaceT

@@ -1,18 +1,21 @@
 #pragma once
 
-#include <cstddef>
-#include <ft2build.h>
-#include FT_FREETYPE_H
-#include FT_BITMAP_H
+#include "BitmapFwd.hpp"
+
+#include "LibraryFwd.hpp"
+#include "OutlineFwd.hpp"
+#include "FaceFwd.hpp"
+
+#include <cstdint>
 #include <iterator>
 #include <utility>
 
+#include <ft2build.h>
+#include FT_FREETYPE_H
+#include FT_BITMAP_H
+
 namespace Twil {
 namespace Ft {
-
-class LibraryT;
-class OutlineT;
-class FaceT;
 
 /// \brief An iterator that operates on a sub rectangle of a Twil::Ft::BitmapT.
 class SubBitmapIteratorT

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "CenteredFwd.hpp"
+
 #include <cstdint>
 
 namespace Twil {

@@ -1,5 +1,11 @@
 #pragma once
 
+#include "OutlineFwd.hpp"
+
+#include "BitmapFwd.hpp"
+#include "LibraryFwd.hpp"
+#include "StrokerFwd.hpp"
+
 #include <cstdint>
 
 #include <ft2build.h>
@@ -9,11 +15,6 @@
 
 namespace Twil {
 namespace Ft {
-
-class BitmapT;
-class LibraryT;
-class Path;
-class StrokerT;
 
 /// \brief A FreeType outline.
 ///

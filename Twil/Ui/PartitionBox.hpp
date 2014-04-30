@@ -1,17 +1,14 @@
 #pragma once
 
+#include "PartitionBoxFwd.hpp"
+
 #include "Container.hpp"
-#include "WindowBase.hpp"
 #include "Data/Tuple.hpp"
+#include "WindowBase.hpp"
 
 #include <algorithm>
 
 namespace Twil {
-
-namespace Theme {
-class ManagerT;
-}
-
 namespace Ui {
 
 /// \brief Functionality shared by both horizontal and vertical partition boxes.
@@ -42,22 +39,13 @@ public:
 	// PartitionBoxBase
 	PartitionBoxBaseT() = default;
 
-	struct InitFunctorT
-	{
-		ContainerT & Parent;
-		WindowBaseT & Window;
-
-		template<typename T>
-		void operator()(T & Child)
-		{
-			Child.init(Parent, Window);
-		}
-	};
-
 	void init(ContainerT & Parent, WindowBaseT & Window)
 	{
 		mParent = &Parent;
-		Data::iterate(mChildren, InitFunctorT{*this, Window});
+		Data::iterate(mChildren, [&](auto & Child)
+		{
+			Child.init(*this, Window);
+		});
 	}
 
 	/// \returns A reference to a child widget.
@@ -79,110 +67,54 @@ public:
 	}
 
 	// Widget
-	struct MoveXFunctorT
-	{
-		float X;
-
-		template<typename T>
-		void operator()(T & Child)
-		{
-			Child.moveX(X);
-		}
-	};
 
 	void moveX(float X)
 	{
-		Data::iterate(mChildren, MoveXFunctorT{X});
-	}
-
-	struct MoveYFunctorT
-	{
-		float Y;
-
-		template<typename T>
-		void operator()(T & Child)
+		Data::iterate(mChildren, [=](auto & Child)
 		{
-			Child.moveY(Y);
-		}
-	};
+			Child.moveX(X);
+		});
+	}
 
 	void moveY(float Y)
 	{
-		Data::iterate(mChildren, MoveYFunctorT{Y});
-	}
-
-	struct SetClipLeftFunctorT
-	{
-		float X;
-
-		template<typename T>
-		void operator()(T & Child)
+		Data::iterate(mChildren, [=](auto & Child)
 		{
-			Child.setClipLeft(X);
-		}
-	};
+			Child.moveY(Y);
+		});
+	}
 
 	void setClipLeft(float X)
 	{
-		Data::iterate(mChildren, SetClipLeftFunctorT{X});
-	}
-
-	struct SetClipBottomFunctorT
-	{
-		float Y;
-
-		template<typename T>
-		void operator()(T & Child)
+		Data::iterate(mChildren, [=](auto & Child)
 		{
-			Child.setClipBottom(Y);
-		}
-	};
+			Child.setClipLeft(X);
+		});
+	}
 
 	void setClipBottom(float Y)
 	{
-		Data::iterate(mChildren, SetClipBottomFunctorT{Y});
-	}
-
-	struct SetClipRightFunctorT
-	{
-		float X;
-
-		template<typename T>
-		void operator()(T & Child)
+		Data::iterate(mChildren, [=](auto & Child)
 		{
-			Child.setClipRight(X);
-		}
-	};
+			Child.setClipBottom(Y);
+		});
+	}
 
 	void setClipRight(float X)
 	{
-		Data::iterate(mChildren, SetClipRightFunctorT{X});
-	}
-
-	struct SetClipTopFunctorT
-	{
-		float Y;
-
-		template<typename T>
-		void operator()(T & Child)
+		Data::iterate(mChildren, [=](auto & Child)
 		{
-			Child.setClipTop(Y);
-		}
-	};
+			Child.setClipRight(X);
+		});
+	}
 
 	void setClipTop(float Y)
 	{
-		Data::iterate(mChildren, SetClipTopFunctorT{Y});
-	}
-
-	struct DrawFunctorT
-	{
-		template<typename T>
-		void operator()(T const & Child)
+		Data::iterate(mChildren, [=](auto & Child)
 		{
-			Child.draw();
-		}
-	};
+			Child.setClipTop(Y);
+		});
+	}
 
 	float getLeft() const
 	{
@@ -224,27 +156,25 @@ public:
 		return getChild<mSize - 1>().getClipTop();
 	}
 
-	struct MaxWidthFunctorT
+	float getMaxWidth()
 	{
-		float & MaxWidth;
-
-		template<typename T>
-		void operator()(T const & Child)
+		float MaxWidth = 0;
+		Data::iterate(mChildren, [&](auto & Child)
 		{
 			MaxWidth = std::max(MaxWidth, Child.getBaseWidth());
-		}
-	};
+		});
+		return MaxWidth;
+	}
 
-	struct MaxHeightFunctorT
+	float getMaxHeight()
 	{
-		float & MaxHeight;
-
-		template<typename T>
-		void operator()(T const & Child)
+		float MaxHeight = 0;
+		Data::iterate(mChildren, [&](auto & Child)
 		{
 			MaxHeight = std::max(MaxHeight, Child.getBaseHeight());
-		}
-	};
+		});
+		return MaxHeight;
+	}
 
 	// Container
 	void handleChildBaseWidthChanged(void *) final
@@ -257,9 +187,6 @@ public:
 		mParent->handleChildBaseHeightChanged(this);
 	}
 };
-
-template<bool IsHorizontal, typename ChildrenT>
-class PartitionBoxT;
 
 /// \brief A horizontal partition box.
 ///
@@ -277,8 +204,8 @@ private:
 	using PartitionBoxBaseT<ChildrenT>::mChildren;
 	using PartitionBoxBaseT<ChildrenT>::mSize;
 	using PartitionBoxBaseT<ChildrenT>::checkThisContains;
-	using typename PartitionBoxBaseT<ChildrenT>::MaxWidthFunctorT;
-	using typename PartitionBoxBaseT<ChildrenT>::MaxHeightFunctorT;
+	using PartitionBoxBaseT<ChildrenT>::getMaxWidth;
+	using PartitionBoxBaseT<ChildrenT>::getMaxHeight;
 
 public:
 	using PartitionBoxBaseT<ChildrenT>::getLeft;
@@ -287,65 +214,41 @@ public:
 	using PartitionBoxBaseT<ChildrenT>::getTop;
 
 	// Widget
-	struct ResizeWidthFunctorT
-	{
-		float Left;
-		float BoxWidth;
-
-		template<typename T>
-		void operator()(T & Child)
-		{
-			Child.moveX(Left - Child.getLeft());
-			Child.resizeWidth(Left + BoxWidth - Child.getRight());
-			Left += BoxWidth;
-		}
-	};
-
 	void resizeWidth(float X)
 	{
 		float Width = getRight() + X - getLeft();
 		float BoxWidth = Width / mSize;
+		auto Left = getLeft();
 
-		Data::iterate(mChildren, ResizeWidthFunctorT{getLeft(), BoxWidth});
-	}
-
-	struct ResizeHeightFunctorT
-	{
-		float Top;
-
-		template<typename T>
-		void operator()(T & Child)
+		Data::iterate(mChildren, [&](auto & Child)
 		{
-			Child.resizeHeight(Top);
-		}
-	};
+			Child.moveX(Left - Child.getLeft());
+			Child.resizeWidth(Left + BoxWidth - Child.getRight());
+			Left += BoxWidth;
+		});
+	}
 
 	void resizeHeight(float Y)
 	{
-		Data::iterate(mChildren, ResizeHeightFunctorT{Y});
+		Data::iterate(mChildren, [&](auto & Child)
+		{
+			Child.resizeHeight(Y);
+		});
 	}
 
 	float getBaseWidth() const
 	{
-		float MaxWidth = 0;
-		Data::iterate(mChildren, MaxWidthFunctorT{MaxWidth});
-		return MaxWidth * mSize;
+		return getMaxWidth() * mSize;
 	}
 
 	float getBaseHeight() const
 	{
-		float MaxHeight = 0;
-		Data::iterate(mChildren, MaxHeightFunctorT{MaxHeight});
-		return MaxHeight;
+		return getMaxHeight();
 	}
 
-	struct DelegateMouseFunctorT
+	void delegateMouse(float X, float Y)
 	{
-		float X;
-		float Y;
-
-		template<typename T>
-		bool operator()(T & Child)
+		Data::iterateUntil(mChildren, [=](auto & Child)
 		{
 			if (X < Child.getRight())
 			{
@@ -353,12 +256,7 @@ public:
 				return false;
 			}
 			return true;
-		}
-	};
-
-	void delegateMouse(float X, float Y)
-	{
-		Data::iterateUntil(mChildren, DelegateMouseFunctorT{X, Y});
+		});
 	}
 
 	// Container
@@ -386,8 +284,8 @@ private:
 	using PartitionBoxBaseT<ChildrenT>::mChildren;
 	using PartitionBoxBaseT<ChildrenT>::mSize;
 	using PartitionBoxBaseT<ChildrenT>::checkThisContains;
-	using typename PartitionBoxBaseT<ChildrenT>::MaxWidthFunctorT;
-	using typename PartitionBoxBaseT<ChildrenT>::MaxHeightFunctorT;
+	using PartitionBoxBaseT<ChildrenT>::getMaxWidth;
+	using PartitionBoxBaseT<ChildrenT>::getMaxHeight;
 
 public:
 	using PartitionBoxBaseT<ChildrenT>::getLeft;
@@ -396,65 +294,41 @@ public:
 	using PartitionBoxBaseT<ChildrenT>::getTop;
 
 	// Widget
-	struct ResizeWidthFunctorT
-	{
-		float Right;
-
-		template<typename T>
-		void operator()(T & Child)
-		{
-			Child.resizeWidth(Right);
-		}
-	};
-
 	void resizeWidth(float X)
 	{
-		Data::iterate(mChildren, ResizeWidthFunctorT{X});
-	}
-
-	struct ResizeHeightFunctorT
-	{
-		float Bottom;
-		float BoxHeight;
-
-		template<typename T>
-		void operator()(T & Child)
+		Data::iterate(mChildren, [=](auto & Child)
 		{
-			Child.moveY(Bottom - Child.getBottom());
-			Child.resizeHeight(Bottom + BoxHeight - Child.getTop());
-			Bottom += BoxHeight;
-		}
-	};
+			Child.resizeWidth(X);
+		});
+	}
 
 	void resizeHeight(float Y)
 	{
 		float Height = getTop() + Y - getBottom();
 		float BoxHeight = Height / mSize;
+		auto Bottom = getBottom();
 
-		Data::iterate(mChildren, ResizeHeightFunctorT{getBottom(), BoxHeight});
+		Data::iterate(mChildren, [&](auto & Child)
+		{
+			Child.moveY(Bottom - Child.getBottom());
+			Child.resizeHeight(Bottom + BoxHeight - Child.getTop());
+			Bottom += BoxHeight;
+		});
 	}
 
 	float getBaseWidth() const
 	{
-		float MaxWidth = 0;
-		Data::iterate(mChildren, MaxWidthFunctorT{MaxWidth});
-		return MaxWidth;
+		return getMaxWidth();
 	}
 
 	float getBaseHeight() const
 	{
-		float MaxHeight = 0;
-		Data::iterate(mChildren, MaxHeightFunctorT{MaxHeight});
-		return MaxHeight * mSize;
+		return getMaxHeight() * mSize;
 	}
 
-	struct DelegateMouseFunctorT
+	void delegateMouse(float X, float Y)
 	{
-		float X;
-		float Y;
-
-		template<typename T>
-		bool operator()(T & Child)
+		Data::iterateUntil(mChildren, [=](auto & Child)
 		{
 			if (Y < Child.getTop())
 			{
@@ -462,12 +336,7 @@ public:
 				return false;
 			}
 			return true;
-		}
-	};
-
-	void delegateMouse(float X, float Y)
-	{
-		Data::iterateUntil(mChildren, DelegateMouseFunctorT{X, Y});
+		});
 	}
 
 	// Container

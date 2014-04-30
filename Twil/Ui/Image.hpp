@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ImageFwd.hpp"
+
 #include "Container.hpp"
 #include "MouseHandler.hpp"
 #include "WindowBase.hpp"
@@ -8,11 +10,6 @@
 #include <string>
 
 namespace Twil {
-
-namespace Theme {
-class ManagerT;
-}
-
 namespace Ui {
 
 /// \brief A Widget that draws an image on the screen.
@@ -61,11 +58,11 @@ public:
 	// Image
 	ImageT() = default;
 
-	void init(ContainerT & Parent, WindowBaseT & Window)
+	void init(ContainerT & Parent, WindowBaseT  & Window)
 	{
 		mParent = &Parent;
 		mWindow = &Window;
-		mThemeImage.init(Window.getThemeManager());
+		mThemeImage.init(Window);
 	}
 
 	/// \brief Set the bitmap that the Image displays.
@@ -179,7 +176,7 @@ public:
 
 	void delegateMouse(float, float)
 	{
-		mWindow->getMouseManager().setHandler(*this);
+		mWindow->setMouseHandler(*this);
 	}
 
 	// MouseHandler

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Position2hFwd.hpp"
+
 #include "Gl/Context.hpp"
 
 namespace Twil {
@@ -7,10 +9,10 @@ namespace Attribute {
 
 struct Position2hT
 {
-	std::int16_t X;
-	std::int16_t Y;
+	GLshort X;
+	GLshort Y;
 
-	static void setup(std::uint32_t, std::int32_t, void const *);
+	static void setup(GLuint, GLsizei, GLvoid const *);
 };
 
 }

@@ -1,15 +1,17 @@
 #pragma once
 
+#include "LibraryFwd.hpp"
+
+#include "BitmapFwd.hpp"
+#include "OutlineFwd.hpp"
+#include "FaceFwd.hpp"
+#include "StrokerFwd.hpp"
+
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
 namespace Twil {
 namespace Ft {
-
-class BitmapT;
-class OutlineT;
-class FaceT;
-class StrokerT;
 
 /// \brief A FreeType library.
 class LibraryT
