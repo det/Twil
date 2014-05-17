@@ -4,9 +4,9 @@
 
 #include "ApplicationFwd.hpp"
 #include "Container.hpp"
+#include "Dip.hpp"
 #include "KeyboardHandler.hpp"
 #include "MouseHandler.hpp"
-#include "Operator.hpp"
 #include "WindowBase.hpp"
 #include "WindowHandler.hpp"
 #include "Data/Event.hpp"
@@ -33,7 +33,7 @@ class WindowT
 private:
 	T mChild;
 
-	bool checkChildContains(std::int32_t X, std::int32_t Y)
+	bool checkChildContains(DipT X, DipT Y)
 	{
 		return X >= 0 && X <= mChild.getRight() && Y >= 0 && Y <= mChild.getTop();
 	}
@@ -56,13 +56,13 @@ public:
 	}
 
 	/// \returns The width.
-	std::int32_t getWidth() const
+	DipT getWidth() const
 	{
 		return mChild.getRight();
 	}
 
 	/// \returns The height.
-	std::int32_t getHeight() const
+	DipT getHeight() const
 	{
 		return mChild.getTop();
 	}
@@ -90,18 +90,18 @@ public:
 		Deleted();
 	}
 
-	void handleWindowResizeWidth(std::int32_t Width) final
+	void handleWindowResizeWidth(DipT Width) final
 	{
 		mChild.resizeWidth(Width - getWidth());
 	}
 
-	void handleWindowResizeHeight(std::int32_t Height) final
+	void handleWindowResizeHeight(DipT Height) final
 	{
 		mChild.resizeHeight(Height - getHeight());
 	}
 
 	// Container
-	void releaseMouse(std::int32_t, std::int32_t) final
+	void releaseMouse(DipT, DipT) final
 	{
 		setMouseHandler(*this);
 	}
@@ -113,7 +113,7 @@ public:
 	{}
 
 	// MouseHandler
-	void handleMouseMotion(std::int32_t X, std::int32_t Y) final
+	void handleMouseMotion(DipT X, DipT Y) final
 	{
 		if (checkChildContains(X, Y)) mChild.delegateMouse(X, Y);
 	}

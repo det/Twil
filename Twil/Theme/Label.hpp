@@ -2,8 +2,8 @@
 
 #include "LabelFwd.hpp"
 
-
 #include "Drawable.hpp"
+#include "Ui/DipFwd.hpp"
 #include "Ui/WindowBaseFwd.hpp"
 #include "Vertex/FillSolid.hpp"
 
@@ -34,12 +34,12 @@ private:
 	std::vector<LabelGlyph> mGlyphs;
 	std::int16_t mWidth = 0;
 	std::int16_t mHeight = 0;
-	std::int32_t mLeft = 0.0f;
-	std::int32_t mBottom = 0.0f;
-	std::int32_t mClipLeft = 0.0f;
-	std::int32_t mClipBottom = 0.0f;
-	std::int32_t mClipRight = 0.0f;
-	std::int32_t mClipTop = 0.0f;
+	Ui::DipT mLeft = 0.0f;
+	Ui::DipT mBottom = 0.0f;
+	Ui::DipT mClipLeft = 0.0f;
+	Ui::DipT mClipBottom = 0.0f;
+	Ui::DipT mClipRight = 0.0f;
+	Ui::DipT mClipTop = 0.0f;
 
 public:
 	LabelT() = default;
@@ -52,26 +52,26 @@ public:
 	void draw(Vertex::FillSolidT *) const final;
 
 	// Widget
-	void moveX(std::int32_t);
-	void moveY(std::int32_t);
+	void moveX(Ui::DipT);
+	void moveY(Ui::DipT);
 
-	void setClipLeft(std::int32_t);
-	void setClipBottom(std::int32_t);
-	void setClipRight(std::int32_t);
-	void setClipTop(std::int32_t);
+	void setClipLeft(Ui::DipT);
+	void setClipBottom(Ui::DipT);
+	void setClipRight(Ui::DipT);
+	void setClipTop(Ui::DipT);
 
-	std::int32_t getLeft() const;
-	std::int32_t getBottom() const;
-	std::int32_t getRight() const;
-	std::int32_t getTop() const;
+	Ui::DipT getLeft() const;
+	Ui::DipT getBottom() const;
+	Ui::DipT getRight() const;
+	Ui::DipT getTop() const;
 
-	std::int32_t getClipLeft() const;
-	std::int32_t getClipRight() const;
-	std::int32_t getClipBottom() const;
-	std::int32_t getClipTop() const;
+	Ui::DipT getClipLeft() const;
+	Ui::DipT getClipRight() const;
+	Ui::DipT getClipBottom() const;
+	Ui::DipT getClipTop() const;
 
-	std::int32_t getBaseWidth() const;
-	std::int32_t getBaseHeight() const;
+	Ui::DipT getBaseWidth() const;
+	Ui::DipT getBaseHeight() const;
 };
 
 }

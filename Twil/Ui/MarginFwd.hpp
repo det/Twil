@@ -1,11 +1,13 @@
 #pragma once
 
+#include "DipFwd.hpp"
+
 #include <cstdint>
 
 namespace Twil {
 namespace Ui {
 
-template<std::int32_t SpaceX, std::int32_t SpaceY, typename T>
+template<DipT SpaceX, DipT SpaceY, typename T>
 class MarginT;
 
 }

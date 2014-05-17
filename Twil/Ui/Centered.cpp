@@ -5,57 +5,57 @@
 namespace Twil {
 namespace Ui {
 
-std::int32_t CenteredT::getLayoutLeft(std::int32_t Width) const
+DipT CenteredT::getLayoutLeft(DipT Width) const
 {
 	return mLeft + (mRight - Width - mLeft) / 2;
 }
 
-std::int32_t CenteredT::getLayoutBottom(std::int32_t Height) const
+DipT CenteredT::getLayoutBottom(DipT Height) const
 {
 	return mBottom + (mTop - Height - mBottom) / 2;
 }
 
-std::int32_t CenteredT::getLayoutClipLeft() const
+DipT CenteredT::getLayoutClipLeft() const
 {
-	return std::max<std::int32_t>(mLeft, mClipLeft);
+	return std::max<DipT>(mLeft, mClipLeft);
 }
 
-std::int32_t CenteredT::getLayoutClipRight() const
+DipT CenteredT::getLayoutClipRight() const
 {
-	return std::min<std::int32_t>(mRight, mClipRight);
+	return std::min<DipT>(mRight, mClipRight);
 }
 
-std::int32_t CenteredT::getLayoutClipBottom() const
+DipT CenteredT::getLayoutClipBottom() const
 {
-	return std::max<std::int32_t>(mBottom, mClipBottom);
+	return std::max<DipT>(mBottom, mClipBottom);
 }
 
-std::int32_t CenteredT::getLayoutClipTop() const
+DipT CenteredT::getLayoutClipTop() const
 {
-	return std::min<std::int32_t>(mTop, mClipTop);
+	return std::min<DipT>(mTop, mClipTop);
 }
 
-void CenteredT::setClipLeft(std::int32_t X)
+void CenteredT::setClipLeft(DipT X)
 {
 	mClipLeft = X;
 }
 
-void CenteredT::setClipRight(std::int32_t X)
+void CenteredT::setClipRight(DipT X)
 {
 	mClipRight = X;
 }
 
-void CenteredT::setClipBottom(std::int32_t Y)
+void CenteredT::setClipBottom(DipT Y)
 {
 	mClipBottom = Y;
 }
 
-void CenteredT::setClipTop(std::int32_t Y)
+void CenteredT::setClipTop(DipT Y)
 {
 	mClipTop = Y;
 }
 
-void CenteredT::moveX(std::int32_t X)
+void CenteredT::moveX(DipT X)
 {
 	mLeft += X;
 	mRight += X;
@@ -63,7 +63,7 @@ void CenteredT::moveX(std::int32_t X)
 	mClipRight += X;
 }
 
-void CenteredT::moveY(std::int32_t Y)
+void CenteredT::moveY(DipT Y)
 {
 	mBottom += Y;
 	mTop += Y;
@@ -71,54 +71,54 @@ void CenteredT::moveY(std::int32_t Y)
 	mClipTop += Y;
 }
 
-void CenteredT::resizeWidth(std::int32_t X)
+void CenteredT::resizeWidth(DipT X)
 {
 	mRight += X;
 	mClipRight += X;
 }
 
-void CenteredT::resizeHeight(std::int32_t Y)
+void CenteredT::resizeHeight(DipT Y)
 {
 	mTop += Y;
 	mClipTop += Y;
 }
 
-std::int32_t CenteredT::getLeft() const
+DipT CenteredT::getLeft() const
 {
 	return mLeft;
 }
 
-std::int32_t CenteredT::getRight() const
+DipT CenteredT::getRight() const
 {
 	return mRight;
 }
 
-std::int32_t CenteredT::getBottom() const
+DipT CenteredT::getBottom() const
 {
 	return mBottom;
 }
 
-std::int32_t CenteredT::getTop() const
+DipT CenteredT::getTop() const
 {
 	return mTop;
 }
 
-std::int32_t CenteredT::getClipLeft() const
+DipT CenteredT::getClipLeft() const
 {
 	return mClipLeft;
 }
 
-std::int32_t CenteredT::getClipRight() const
+DipT CenteredT::getClipRight() const
 {
 	return mClipRight;
 }
 
-std::int32_t CenteredT::getClipBottom() const
+DipT CenteredT::getClipBottom() const
 {
 	return mClipBottom;
 }
 
-std::int32_t CenteredT::getClipTop() const
+DipT CenteredT::getClipTop() const
 {
 	return mClipTop;
 }

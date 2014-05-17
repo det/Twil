@@ -29,26 +29,26 @@ WindowConverterT::WindowConverterT(Platform::ApplicationT & Application)
 	mHalfPixelY{mPixelToDipFactorY / 131072}
 {}
 
-std::int16_t WindowConverterT::convertDipToPixelX(std::int32_t X)
+std::int16_t WindowConverterT::convertDipToPixelX(DipT X)
 {
 	if (X > 0) X += mHalfPixelX;
 	else X -= mHalfPixelX;
 	return X * mDipToPixelFactorX / 281474976710656;
 }
 
-std::int16_t WindowConverterT::convertDipToPixelY(std::int32_t Y)
+std::int16_t WindowConverterT::convertDipToPixelY(DipT Y)
 {
 	if (Y > 0) Y += mHalfPixelY;
 	else Y -= mHalfPixelY;
 	return Y * mDipToPixelFactorY / 281474976710656;
 }
 
-std::int32_t WindowConverterT::convertPixelToDipX(std::int16_t X)
+DipT WindowConverterT::convertPixelToDipX(std::int16_t X)
 {
 	return X * mPixelToDipFactorX / 65536;
 }
 
-std::int32_t WindowConverterT::convertPixelToDipY(std::int16_t Y)
+DipT WindowConverterT::convertPixelToDipY(std::int16_t Y)
 {
 	return Y * mPixelToDipFactorY / 65536;
 }
@@ -63,7 +63,7 @@ std::int16_t WindowConverterT::scaleY(std::int16_t Y)
 	return convertDipToPixelY(Y * 65536);
 }
 
-WindowBaseT::WindowBaseT(Platform::ApplicationT & Application, std::int32_t Width, std::int32_t Height)
+WindowBaseT::WindowBaseT(Platform::ApplicationT & Application, DipT Width, DipT Height)
 :
 	WindowConverterT{Application},
 	Platform::WindowT{
@@ -197,7 +197,7 @@ void WindowBaseT::handleWindowUpdate()
 	if (b) swapBuffers();
 }
 
-void WindowBaseT::resize(std::int32_t Width, std::int32_t Height)
+void WindowBaseT::resize(DipT Width, DipT Height)
 {
 	resizePixels(
 		convertDipToPixelX(Width),

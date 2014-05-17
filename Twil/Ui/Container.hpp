@@ -2,6 +2,8 @@
 
 #include "ContainerFwd.hpp"
 
+#include "DipFwd.hpp"
+
 #include <cstdint>
 
 namespace Twil {
@@ -13,7 +15,7 @@ public:
 	virtual ~ContainerT() = default;
 
 	/// \brief Called from a child when it releases control of a mouse not within its bounds.
-	virtual void releaseMouse(std::int32_t X, std::int32_t Y) = 0;
+	virtual void releaseMouse(DipT X, DipT Y) = 0;
 
 	/// \brief Called from a child when its base width changes.
 	virtual void handleChildBaseWidthChanged(void *) = 0;

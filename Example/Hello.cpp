@@ -1,18 +1,18 @@
 #include "Ui/Application.hpp"
 #include "Ui/Button.hpp"
 #include "Ui/Centered.hpp"
+#include "Ui/Dip.hpp"
 #include "Ui/Grid.hpp"
 #include "Ui/Image.hpp"
 #include "Ui/Label.hpp"
 #include "Ui/Margin.hpp"
-#include "Ui/Operator.hpp"
 #include "Ui/PartitionBox.hpp"
 #include "Ui/SplitBox.hpp"
 #include "Ui/Window.hpp"
 
 #include <iostream>
 
-using namespace Twil::Operator;
+using namespace Twil::Ui::Operator;
 
 class HelloBaseT
 {

@@ -26,7 +26,6 @@ void handleDebug(
 }
 #endif
 
-
 namespace Twil {
 namespace Platform {
 

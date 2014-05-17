@@ -2,6 +2,8 @@
 
 #include "WindowHandlerFwd.hpp"
 
+#include "DipFwd.hpp"
+
 #include <cstdint>
 
 namespace Twil {
@@ -13,8 +15,8 @@ public:
 	virtual ~WindowHandlerT() = default;
 	virtual void handleWindowExposed() {}
 	virtual void handleWindowDeleted() {}
-	virtual void handleWindowResizeWidth(std::int32_t Width) {}
-	virtual void handleWindowResizeHeight(std::int32_t Height) {}
+	virtual void handleWindowResizeWidth(DipT Width) {}
+	virtual void handleWindowResizeHeight(DipT Height) {}
 };
 
 }

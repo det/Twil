@@ -1,6 +1,7 @@
 #pragma once
 
 #include "CenteredFwd.hpp"
+#include "DipFwd.hpp"
 
 #include <cstdint>
 
@@ -13,44 +14,44 @@ namespace Ui {
 class CenteredT
 {
 private:
-	std::int32_t mLeft = 0;
-	std::int32_t mRight = 0;
-	std::int32_t mBottom = 0;
-	std::int32_t mTop = 0;
-	std::int32_t mClipLeft = 0;
-	std::int32_t mClipRight = 0;
-	std::int32_t mClipBottom = 0;
-	std::int32_t mClipTop = 0;
+	DipT mLeft = 0;
+	DipT mRight = 0;
+	DipT mBottom = 0;
+	DipT mTop = 0;
+	DipT mClipLeft = 0;
+	DipT mClipRight = 0;
+	DipT mClipBottom = 0;
+	DipT mClipTop = 0;
 
 public:
-	std::int32_t getLayoutLeft(std::int32_t Width) const;
-	std::int32_t getLayoutBottom(std::int32_t Height) const;
+	DipT getLayoutLeft(DipT Width) const;
+	DipT getLayoutBottom(DipT Height) const;
 
-	std::int32_t getLayoutClipLeft() const;
-	std::int32_t getLayoutClipRight() const;
-	std::int32_t getLayoutClipBottom() const;
-	std::int32_t getLayoutClipTop() const;
+	DipT getLayoutClipLeft() const;
+	DipT getLayoutClipRight() const;
+	DipT getLayoutClipBottom() const;
+	DipT getLayoutClipTop() const;
 
-	void moveX(std::int32_t X);
-	void moveY(std::int32_t Y);
+	void moveX(DipT X);
+	void moveY(DipT Y);
 
-	void resizeWidth(std::int32_t X);
-	void resizeHeight(std::int32_t Y);
+	void resizeWidth(DipT X);
+	void resizeHeight(DipT Y);
 
-	void setClipLeft(std::int32_t X);
-	void setClipRight(std::int32_t X);
-	void setClipBottom(std::int32_t Y);
-	void setClipTop(std::int32_t Y);
+	void setClipLeft(DipT X);
+	void setClipRight(DipT X);
+	void setClipBottom(DipT Y);
+	void setClipTop(DipT Y);
 
-	std::int32_t getLeft() const;
-	std::int32_t getRight() const;
-	std::int32_t getBottom() const;
-	std::int32_t getTop() const;
+	DipT getLeft() const;
+	DipT getRight() const;
+	DipT getBottom() const;
+	DipT getTop() const;
 
-	std::int32_t getClipLeft() const;
-	std::int32_t getClipRight() const;
-	std::int32_t getClipBottom() const;
-	std::int32_t getClipTop() const;
+	DipT getClipLeft() const;
+	DipT getClipRight() const;
+	DipT getClipBottom() const;
+	DipT getClipTop() const;
 };
 
 }

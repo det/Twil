@@ -14,7 +14,7 @@ class OutlineGradientT
 {
 private:
 	Gl::ProgramT mProgram;
-	std::int32_t mScalingLoc;
+	GLint mScalingLoc;
 
 public:	
 	OutlineGradientT();

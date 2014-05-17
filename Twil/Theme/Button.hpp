@@ -3,6 +3,7 @@
 #include "ButtonFwd.hpp"
 
 #include "Drawable.hpp"
+#include "Ui/DipFwd.hpp"
 #include "Ui/WindowBaseFwd.hpp"
 #include "Vertex/OutlineGradient.hpp"
 
@@ -21,14 +22,14 @@ class ButtonT
 
 private:
 	Ui::WindowBaseT * mWindow;
-	std::int32_t mLeft = 0.0f;
-	std::int32_t mBottom = 0.0f;
-	std::int32_t mRight = 0.0f;
-	std::int32_t mTop = 0.0f;
-	std::int32_t mClipLeft = 0.0f;
-	std::int32_t mClipBottom = 0.0f;
-	std::int32_t mClipRight = 0.0f;
-	std::int32_t mClipTop = 0.0f;
+	Ui::DipT mLeft = 0;
+	Ui::DipT mBottom = 0;
+	Ui::DipT mRight = 0.0f;
+	Ui::DipT mTop = 0.0f;
+	Ui::DipT mClipLeft = 0.0f;
+	Ui::DipT mClipBottom = 0.0f;
+	Ui::DipT mClipRight = 0.0f;
+	Ui::DipT mClipTop = 0.0f;
 	bool mIsDown = false;
 
 public:
@@ -39,44 +40,44 @@ public:
 	void setIsDown(bool IsDown);
 
 	/// \returns The left margin for the theme.
-	std::int32_t getLeftMargin() const;
+	Ui::DipT getLeftMargin() const;
 
 	/// \returns The right margin for the theme.
-	std::int32_t getRightMargin() const;
+	Ui::DipT getRightMargin() const;
 
 	/// \returns The bottom margin for the theme.
-	std::int32_t getBottomMargin() const;
+	Ui::DipT getBottomMargin() const;
 
 	/// \returns The top margin for the theme.
-	std::int32_t getTopMargin() const;
+	Ui::DipT getTopMargin() const;
 
 	// Drawable
 	void draw(Vertex::OutlineGradientT *) const final;
 
 	// Widget
-	void moveX(std::int32_t);
-	void moveY(std::int32_t);
+	void moveX(Ui::DipT);
+	void moveY(Ui::DipT);
 
-	void resizeWidth(std::int32_t);
-	void resizeHeight(std::int32_t);
+	void resizeWidth(Ui::DipT);
+	void resizeHeight(Ui::DipT);
 
-	void setClipLeft(std::int32_t);
-	void setClipBottom(std::int32_t);
-	void setClipRight(std::int32_t);
-	void setClipTop(std::int32_t);
+	void setClipLeft(Ui::DipT);
+	void setClipBottom(Ui::DipT);
+	void setClipRight(Ui::DipT);
+	void setClipTop(Ui::DipT);
 
-	std::int32_t getLeft() const;
-	std::int32_t getBottom() const;
-	std::int32_t getRight() const;
-	std::int32_t getTop() const;
+	Ui::DipT getLeft() const;
+	Ui::DipT getBottom() const;
+	Ui::DipT getRight() const;
+	Ui::DipT getTop() const;
 
-	std::int32_t getClipLeft() const;
-	std::int32_t getClipRight() const;
-	std::int32_t getClipBottom() const;
-	std::int32_t getClipTop() const;
+	Ui::DipT getClipLeft() const;
+	Ui::DipT getClipRight() const;
+	Ui::DipT getClipBottom() const;
+	Ui::DipT getClipTop() const;
 
-	std::int32_t getBaseWidth(std::int32_t) const;
-	std::int32_t getBaseHeight(std::int32_t) const;
+	Ui::DipT getBaseWidth(Ui::DipT) const;
+	Ui::DipT getBaseHeight(Ui::DipT) const;
 };
 
 }

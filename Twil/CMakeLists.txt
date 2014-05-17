@@ -186,6 +186,9 @@ set (ui_sources
 	Ui/Centered.cpp
 	Ui/Centered.hpp
 	Ui/CenteredFwd.hpp
+	Ui/Dip.cpp
+	Ui/Dip.hpp
+	Ui/DipFwd.hpp
 	Ui/Grid.cpp
 	Ui/Grid.hpp
 	Ui/GridFwd.hpp
@@ -201,9 +204,6 @@ set (ui_sources
 	Ui/MouseHandler.cpp
 	Ui/MouseHandler.hpp
 	Ui/MouseHandlerFwd.hpp
-	Ui/Operator.cpp
-	Ui/Operator.hpp
-	Ui/OperatorFwd.hpp
 	Ui/PartitionBox.cpp
 	Ui/PartitionBox.hpp
 	Ui/PartitionBoxFwd.hpp

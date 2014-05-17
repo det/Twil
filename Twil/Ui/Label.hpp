@@ -32,7 +32,7 @@ private:
 private:
 	void layoutX()
 	{
-		std::int32_t Delta = mLayout.getLayoutLeft(getBaseWidth()) - mThemeLabel.getLeft();
+		DipT Delta = mLayout.getLayoutLeft(getBaseWidth()) - mThemeLabel.getLeft();
 		mThemeLabel.moveX(Delta);
 		mThemeLabel.setClipLeft(mLayout.getLayoutClipLeft());
 		mThemeLabel.setClipRight(mLayout.getLayoutClipRight());
@@ -40,13 +40,13 @@ private:
 
 	void layoutY()
 	{
-		std::int32_t Delta = mLayout.getLayoutBottom(getBaseHeight()) - mThemeLabel.getBottom();
+		DipT Delta = mLayout.getLayoutBottom(getBaseHeight()) - mThemeLabel.getBottom();
 		mThemeLabel.moveY(Delta);
 		mThemeLabel.setClipBottom(mLayout.getLayoutClipBottom());
 		mThemeLabel.setClipTop(mLayout.getLayoutClipTop());
 	}
 
-	bool checkThisContains(std::int32_t X, std::int32_t Y)
+	bool checkThisContains(DipT X, DipT Y)
 	{
 		return (
 			X >= getLeft() && X >= getClipLeft() &&
@@ -76,111 +76,111 @@ public:
 	}
 
 	// Widget
-	void moveX(std::int32_t X)
+	void moveX(DipT X)
 	{
 		mLayout.moveX(X);
 		mThemeLabel.moveX(X);
 	}
 
-	void moveY(std::int32_t Y)
+	void moveY(DipT Y)
 	{
 		mLayout.moveY(Y);
 		mThemeLabel.moveY(Y);
 	}
 
-	void resizeWidth(std::int32_t X)
+	void resizeWidth(DipT X)
 	{
 		mLayout.resizeWidth(X);
 		layoutX();
 	}
 
-	void resizeHeight(std::int32_t Y)
+	void resizeHeight(DipT Y)
 	{
 		mLayout.resizeHeight(Y);
 		layoutY();
 	}
 
-	void setClipLeft(std::int32_t X)
+	void setClipLeft(DipT X)
 	{
 		mLayout.setClipLeft(X);
 		mThemeLabel.setClipLeft(mLayout.getLayoutClipLeft());
 	}
 
-	void setClipRight(std::int32_t X)
+	void setClipRight(DipT X)
 	{
 		mLayout.setClipRight(X);
 		mThemeLabel.setClipRight(mLayout.getLayoutClipRight());
 	}
 
-	void setClipBottom(std::int32_t Y)
+	void setClipBottom(DipT Y)
 	{
 		mLayout.setClipBottom(Y);
 		mThemeLabel.setClipBottom(mLayout.getLayoutClipBottom());
 	}
 
-	void setClipTop(std::int32_t Y)
+	void setClipTop(DipT Y)
 	{
 		mLayout.setClipTop(Y);
 		mThemeLabel.setClipTop(mLayout.getLayoutClipTop());
 	}
 
-	std::int32_t getLeft() const
+	DipT getLeft() const
 	{
 		return mLayout.getLeft();
 	}
 
-	std::int32_t getBottom() const
+	DipT getBottom() const
 	{
 		return mLayout.getBottom();
 	}
 
-	std::int32_t getRight() const
+	DipT getRight() const
 	{
 		return mLayout.getRight();
 	}
 
-	std::int32_t getTop() const
+	DipT getTop() const
 	{
 		return mLayout.getTop();
 	}
 
-	std::int32_t getClipLeft() const
+	DipT getClipLeft() const
 	{
 		return mLayout.getClipLeft();
 	}
 
-	std::int32_t getClipBottom() const
+	DipT getClipBottom() const
 	{
 		return mLayout.getClipBottom();
 	}
 
-	std::int32_t getClipRight() const
+	DipT getClipRight() const
 	{
 		return mLayout.getClipRight();
 	}
 
-	std::int32_t getClipTop() const
+	DipT getClipTop() const
 	{
 		return mLayout.getClipTop();
 	}
 
-	std::int32_t getBaseWidth() const
+	DipT getBaseWidth() const
 	{
 		return mThemeLabel.getBaseWidth();
 	}
 
-	std::int32_t getBaseHeight() const
+	DipT getBaseHeight() const
 	{
 		return mThemeLabel.getBaseHeight();
 	}
 
-	void delegateMouse(std::int32_t, std::int32_t)
+	void delegateMouse(DipT, DipT)
 	{
 		mWindow->setMouseHandler(*this);
 	}
 
 	// MouseHandler
-	void handleMouseMotion(std::int32_t X, std::int32_t Y) final
+	void handleMouseMotion(DipT X, DipT Y) final
 	{
 		if (!checkThisContains(X, Y)) mParent->releaseMouse(X, Y);
 	}
