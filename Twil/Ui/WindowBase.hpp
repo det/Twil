@@ -25,12 +25,12 @@ private:
 public:
 	WindowConverterT(Platform::ApplicationT & Application);
 
-	std::int16_t convertDipToPixelX(DipT X);
-	std::int16_t convertDipToPixelY(DipT Y);
-	DipT convertPixelToDipX(std::int16_t X);
-	DipT convertPixelToDipY(std::int16_t X);
-	std::int16_t scaleX(std::int16_t X);
-	std::int16_t scaleY(std::int16_t Y);
+	PixelT convertDipToPixelX(DipT X);
+	PixelT convertDipToPixelY(DipT Y);
+	DipT convertPixelToDipX(PixelT X);
+	DipT convertPixelToDipY(PixelT X);
+	PixelT scaleX(PixelT X);
+	PixelT scaleY(PixelT Y);
 };
 
 class WindowBaseT
@@ -42,8 +42,8 @@ class WindowBaseT
 	WindowBaseT & operator =(WindowBaseT const &) = delete;
 
 private:
-	std::int16_t mPixelWidth;
-	std::int16_t mPixelHeight;
+	PixelT mPixelWidth;
+	PixelT mPixelHeight;
 	Ui::KeyboardHandlerT * mKeyboardHandler;
 	Ui::MouseHandlerT * mMouseHandler;
 	Ui::WindowHandlerT * mWindowHandler;
@@ -52,8 +52,8 @@ private:
 public:
 	WindowBaseT(Platform::ApplicationT & Application, DipT Width, DipT Height);
 
-	std::int16_t getPixelWidth();
-	std::int16_t getPixelHeight();
+	PixelT getPixelWidth();
+	PixelT getPixelHeight();
 
 	Ui::KeyboardHandlerT & getKeyboardHandler();
 	Ui::MouseHandlerT & getMouseHandler();
@@ -68,15 +68,15 @@ public:
 	void handleKeyPress(Platform::KeyT Key);
 	void handleKeyRelease(Platform::KeyT Key);
 
-	void handleMouseMotion(std::int16_t X, std::int16_t Y);
-	void handleButtonPress(std::int16_t X, std::int16_t Y, std::uint8_t Index);
-	void handleButtonRelease(std::int16_t X, std::int16_t Y, std::uint8_t Index);
-	void handleMouseLeaveWindow(std::int16_t X, std::int16_t Y);
-	void handleMouseEnterWindow(std::int16_t X, std::int16_t Y);
+	void handleMouseMotion(PixelT X, PixelT Y);
+	void handleButtonPress(PixelT X, PixelT Y, std::uint8_t Index);
+	void handleButtonRelease(PixelT X, PixelT Y, std::uint8_t Index);
+	void handleMouseLeaveWindow(PixelT X, PixelT Y);
+	void handleMouseEnterWindow(PixelT X, PixelT Y);
 
 	void handleWindowExposed();
 	void handleWindowDeleted();
-	void handleWindowResize(std::int16_t Width, std::int16_t Height);
+	void handleWindowResize(PixelT Width, PixelT Height);
 	void handleWindowUpdate();
 
 	void resize(DipT Width, DipT Height);

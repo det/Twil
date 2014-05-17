@@ -5,6 +5,7 @@
 #include "GlxFwd.hpp"
 #include "X11Fwd.hpp"
 #include "Data/Memory.hpp"
+#include "Ui/PixelFwd.hpp"
 
 #include <cassert>
 #include <cstdlib>
@@ -38,10 +39,10 @@ public:
 	ApplicationT();
 	~ApplicationT() noexcept;
 
-	std::int16_t getMillimeterWidth();
-	std::int16_t getMillimeterHeight();
-	std::int16_t getPixelWidth();
-	std::int16_t getPixelHeight();
+	Ui::PixelT getMillimeterWidth();
+	Ui::PixelT getMillimeterHeight();
+	Ui::PixelT getPixelWidth();
+	Ui::PixelT getPixelHeight();
 
 	/// \brief Run the event loop
 	void run();

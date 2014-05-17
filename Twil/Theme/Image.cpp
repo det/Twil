@@ -56,20 +56,20 @@ void ImageT::draw(Vertex::BitmapT * Vertices) const
 		return;
 	}
 
-	std::int16_t Left = mWindow->convertDipToPixelX(mLeft);
-	std::int16_t Right = Left + mWidth;
-	std::int16_t Bottom = mWindow->convertDipToPixelY(mBottom);
-	std::int16_t Top = Bottom + mHeight;
+	Ui::PixelT Left = mWindow->convertDipToPixelX(mLeft);
+	Ui::PixelT Right = Left + mWidth;
+	Ui::PixelT Bottom = mWindow->convertDipToPixelY(mBottom);
+	Ui::PixelT Top = Bottom + mHeight;
 
-	std::int16_t ClipLeft = mWindow->convertDipToPixelX(mClipLeft);
-	std::int16_t ClipRight = mWindow->convertDipToPixelX(mClipRight);
-	std::int16_t ClipBottom = mWindow->convertDipToPixelY(mClipBottom);
-	std::int16_t ClipTop = mWindow->convertDipToPixelY(mClipTop);
+	Ui::PixelT ClipLeft = mWindow->convertDipToPixelX(mClipLeft);
+	Ui::PixelT ClipRight = mWindow->convertDipToPixelX(mClipRight);
+	Ui::PixelT ClipBottom = mWindow->convertDipToPixelY(mClipBottom);
+	Ui::PixelT ClipTop = mWindow->convertDipToPixelY(mClipTop);
 
-	std::int16_t LeftClipped = Left;
-	std::int16_t RightClipped = Right;
-	std::int16_t BottomClipped = Bottom;
-	std::int16_t TopClipped = Top;
+	Ui::PixelT LeftClipped = Left;
+	Ui::PixelT RightClipped = Right;
+	Ui::PixelT BottomClipped = Bottom;
+	Ui::PixelT TopClipped = Top;
 
 	LeftClipped = std::max(LeftClipped, ClipLeft);
 	RightClipped = std::max(RightClipped, ClipLeft);

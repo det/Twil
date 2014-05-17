@@ -29,7 +29,7 @@ public:
 	/// \param Face The font face to load the size from.
 	/// \param Size The size to load in 26.6 fixpoint.
 	/// \throws std::runtime_error If the size cant be loaded for the font face.
-	SizeT(FaceT & Face, std::int16_t Width, std::int16_t Height);
+	SizeT(FaceT & Face, FT_UInt Width, FT_UInt Height);
 	~SizeT() noexcept;
 
 	/// \returns The height in 26.6 fixpoint.

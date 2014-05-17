@@ -1,5 +1,6 @@
 #include "Button.hpp"
 
+#include "Ui/PixelFwd.hpp"
 #include "Ui/WindowBase.hpp"
 #include "Settings.hpp"
 
@@ -101,34 +102,34 @@ void ButtonT::draw(Vertex::OutlineGradientT * Vertices) const
 	std::uint16_t HorizontalCornerSize = Manager.mButtonHorizontalCornerSize;
 	std::uint16_t VerticalCornerSize = Manager.mButtonVerticalCornerSize;
 
-	std::int16_t Left = mWindow->convertDipToPixelX(mLeft);
-	std::int16_t Right = mWindow->convertDipToPixelX(mRight);
-	std::int16_t MiddleLeft = Left + HorizontalCornerSize;
-	std::int16_t MiddleRight = Right - HorizontalCornerSize;
+	Ui::PixelT Left = mWindow->convertDipToPixelX(mLeft);
+	Ui::PixelT Right = mWindow->convertDipToPixelX(mRight);
+	Ui::PixelT MiddleLeft = Left + HorizontalCornerSize;
+	Ui::PixelT MiddleRight = Right - HorizontalCornerSize;
 
-	std::int16_t ClipLeft = mWindow->convertDipToPixelX(mClipLeft);
-	std::int16_t ClipRight = mWindow->convertDipToPixelX(mClipRight);
-	std::int16_t ClipBottom = mWindow->convertDipToPixelY(mClipBottom);
-	std::int16_t ClipTop = mWindow->convertDipToPixelY(mClipTop);
+	Ui::PixelT ClipLeft = mWindow->convertDipToPixelX(mClipLeft);
+	Ui::PixelT ClipRight = mWindow->convertDipToPixelX(mClipRight);
+	Ui::PixelT ClipBottom = mWindow->convertDipToPixelY(mClipBottom);
+	Ui::PixelT ClipTop = mWindow->convertDipToPixelY(mClipTop);
 
-	std::int16_t Bottom = mWindow->convertDipToPixelY(mBottom);
-	std::int16_t Top = mWindow->convertDipToPixelY(mTop);
-	std::int16_t MiddleBottom = Bottom + VerticalCornerSize;
-	std::int16_t MiddleTop = Top - VerticalCornerSize;
+	Ui::PixelT Bottom = mWindow->convertDipToPixelY(mBottom);
+	Ui::PixelT Top = mWindow->convertDipToPixelY(mTop);
+	Ui::PixelT MiddleBottom = Bottom + VerticalCornerSize;
+	Ui::PixelT MiddleTop = Top - VerticalCornerSize;
 
-	std::int16_t LeftClipped = Left;
-	std::int16_t MiddleLeftClipped = MiddleLeft;
-	std::int16_t MiddleRightClipped = MiddleRight;
-	std::int16_t RightClipped = Right;
+	Ui::PixelT LeftClipped = Left;
+	Ui::PixelT MiddleLeftClipped = MiddleLeft;
+	Ui::PixelT MiddleRightClipped = MiddleRight;
+	Ui::PixelT RightClipped = Right;
 
-	std::int16_t BottomClipped = Bottom;
-	std::int16_t MiddleBottomClipped = MiddleBottom;
-	std::int16_t MiddleTopClipped = MiddleTop;
-	std::int16_t TopClipped = Top;
+	Ui::PixelT BottomClipped = Bottom;
+	Ui::PixelT MiddleBottomClipped = MiddleBottom;
+	Ui::PixelT MiddleTopClipped = MiddleTop;
+	Ui::PixelT TopClipped = Top;
 
-	std::int16_t Height = Top - Bottom;
-	std::int16_t CenterX = (Left + Right) / 2;
-	std::int16_t CenterY = (Bottom + Top) / 2;
+	Ui::PixelT Height = Top - Bottom;
+	Ui::PixelT CenterX = (Left + Right) / 2;
+	Ui::PixelT CenterY = (Bottom + Top) / 2;
 
 	MiddleLeftClipped = std::min(MiddleLeftClipped, CenterX);
 	MiddleRightClipped = std::max(MiddleRightClipped, CenterX);

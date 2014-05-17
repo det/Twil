@@ -24,7 +24,7 @@ protected:
 	ContainerT * mParent;
 	ChildrenT mChildren;
 
-	static std::int16_t const mSize = std::tuple_size<ChildrenT>::value;
+	static PixelT const mSize = std::tuple_size<ChildrenT>::value;
 
 	bool checkThisContains(DipT X, DipT Y)
 	{

@@ -18,8 +18,8 @@ ManagerT::ManagerT(Ui::WindowBaseT & Window)
 	mLabelFace{mLibrary, Settings::Label::Font, 0},
 	mLabelSize{
 		mLabelFace,
-		mWindow.convertDipToPixelX(Theme::Settings::Label::Size),
-		mWindow.convertDipToPixelY(Theme::Settings::Label::Size)},
+		static_cast<FT_UInt32>(mWindow.convertDipToPixelX(Theme::Settings::Label::Size)),
+		static_cast<FT_UInt32>(mWindow.convertDipToPixelY(Theme::Settings::Label::Size))},
 	mRedTexture{GL_R8},
 	mRgbaTexture{GL_RGBA8},
 	mNeedsRedraw{false}
@@ -46,27 +46,27 @@ ManagerT::~ManagerT() noexcept
 
 void ManagerT::setupButton()
 {
-	std::int16_t HorizontalRoundness = mWindow.convertDipToPixelX(Settings::Button::Roundness);
-	std::int16_t VerticalRoundness = mWindow.convertDipToPixelY(Settings::Button::Roundness);
-	std::int16_t HorizontalBorderSize = mWindow.convertDipToPixelX(Settings::Button::BorderWidth);
-	std::int16_t VerticalBorderSize = mWindow.convertDipToPixelY(Settings::Button::BorderWidth);
+	Ui::PixelT HorizontalRoundness = mWindow.convertDipToPixelX(Settings::Button::Roundness);
+	Ui::PixelT VerticalRoundness = mWindow.convertDipToPixelY(Settings::Button::Roundness);
+	Ui::PixelT HorizontalBorderSize = mWindow.convertDipToPixelX(Settings::Button::BorderWidth);
+	Ui::PixelT VerticalBorderSize = mWindow.convertDipToPixelY(Settings::Button::BorderWidth);
 
-	std::int16_t HorizontalPos1 = 0;
-	std::int16_t HorizontalPos2 = HorizontalPos1 + HorizontalBorderSize;
-	std::int16_t HorizontalPos3 = HorizontalPos2 + HorizontalRoundness;
-	std::int16_t HorizontalPos4 = HorizontalPos3 + 1;
-	std::int16_t HorizontalPos5 = HorizontalPos4 + HorizontalRoundness;
+	Ui::PixelT HorizontalPos1 = 0;
+	Ui::PixelT HorizontalPos2 = HorizontalPos1 + HorizontalBorderSize;
+	Ui::PixelT HorizontalPos3 = HorizontalPos2 + HorizontalRoundness;
+	Ui::PixelT HorizontalPos4 = HorizontalPos3 + 1;
+	Ui::PixelT HorizontalPos5 = HorizontalPos4 + HorizontalRoundness;
 
-	std::int16_t VerticalPos1 = 0;
-	std::int16_t VerticalPos2 = VerticalPos1 + VerticalBorderSize;
-	std::int16_t VerticalPos3 = VerticalPos2 + VerticalRoundness;
-	std::int16_t VerticalPos4 = VerticalPos3 + 1;
-	std::int16_t VerticalPos5 = VerticalPos4 + VerticalRoundness;
+	Ui::PixelT VerticalPos1 = 0;
+	Ui::PixelT VerticalPos2 = VerticalPos1 + VerticalBorderSize;
+	Ui::PixelT VerticalPos3 = VerticalPos2 + VerticalRoundness;
+	Ui::PixelT VerticalPos4 = VerticalPos3 + 1;
+	Ui::PixelT VerticalPos5 = VerticalPos4 + VerticalRoundness;
 
-	std::int16_t BitmapWidth = HorizontalBorderSize * 2 + HorizontalRoundness * 2 + 1;
-	std::int16_t BitmapHeight = VerticalBorderSize * 2 + VerticalRoundness * 2 + 1;
-	std::int16_t HorizontalCornerSize = HorizontalBorderSize + HorizontalRoundness;
-	std::int16_t VerticalCornerSize = VerticalBorderSize + VerticalRoundness;
+	Ui::PixelT BitmapWidth = HorizontalBorderSize * 2 + HorizontalRoundness * 2 + 1;
+	Ui::PixelT BitmapHeight = VerticalBorderSize * 2 + VerticalRoundness * 2 + 1;
+	Ui::PixelT HorizontalCornerSize = HorizontalBorderSize + HorizontalRoundness;
+	Ui::PixelT VerticalCornerSize = VerticalBorderSize + VerticalRoundness;
 
 	FT_Pos HorizontalFix2 = HorizontalPos2 * 64;
 	FT_Pos HorizontalFix3 = HorizontalPos3 * 64;
@@ -213,7 +213,7 @@ void ManagerT::markNeedsRedraw()
 	mNeedsRedraw = true;
 }
 
-bool ManagerT::update(std::int16_t Width, std::int16_t Height)
+bool ManagerT::update(Ui::PixelT Width, Ui::PixelT Height)
 {
 	mNeedsRedraw |= mSolidArray.checkNeedsRedraw();
 	mNeedsRedraw |= mOutlineArray.checkNeedsRedraw();

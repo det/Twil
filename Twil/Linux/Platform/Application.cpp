@@ -61,22 +61,22 @@ ApplicationT::~ApplicationT() noexcept
 	XCloseDisplay(mDisplay);
 }
 
-std::int16_t ApplicationT::getMillimeterWidth()
+Ui::PixelT ApplicationT::getMillimeterWidth()
 {
 	return ScreenOfDisplay(mDisplay, DefaultScreen(mDisplay))->mwidth;
 }
 
-std::int16_t ApplicationT::getMillimeterHeight()
+Ui::PixelT ApplicationT::getMillimeterHeight()
 {
 	return ScreenOfDisplay(mDisplay, DefaultScreen(mDisplay))->mheight;
 }
 
-std::int16_t ApplicationT::getPixelWidth()
+Ui::PixelT ApplicationT::getPixelWidth()
 {
 	return ScreenOfDisplay(mDisplay, DefaultScreen(mDisplay))->width;
 }
 
-std::int16_t ApplicationT::getPixelHeight()
+Ui::PixelT ApplicationT::getPixelHeight()
 {
 	return ScreenOfDisplay(mDisplay, DefaultScreen(mDisplay))->height;
 }

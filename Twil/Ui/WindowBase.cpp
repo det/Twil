@@ -29,36 +29,36 @@ WindowConverterT::WindowConverterT(Platform::ApplicationT & Application)
 	mHalfPixelY{mPixelToDipFactorY / 131072}
 {}
 
-std::int16_t WindowConverterT::convertDipToPixelX(DipT X)
+PixelT WindowConverterT::convertDipToPixelX(DipT X)
 {
 	if (X > 0) X += mHalfPixelX;
 	else X -= mHalfPixelX;
 	return X * mDipToPixelFactorX / 281474976710656;
 }
 
-std::int16_t WindowConverterT::convertDipToPixelY(DipT Y)
+PixelT WindowConverterT::convertDipToPixelY(DipT Y)
 {
 	if (Y > 0) Y += mHalfPixelY;
 	else Y -= mHalfPixelY;
 	return Y * mDipToPixelFactorY / 281474976710656;
 }
 
-DipT WindowConverterT::convertPixelToDipX(std::int16_t X)
+DipT WindowConverterT::convertPixelToDipX(PixelT X)
 {
 	return X * mPixelToDipFactorX / 65536;
 }
 
-DipT WindowConverterT::convertPixelToDipY(std::int16_t Y)
+DipT WindowConverterT::convertPixelToDipY(PixelT Y)
 {
 	return Y * mPixelToDipFactorY / 65536;
 }
 
-std::int16_t WindowConverterT::scaleX(std::int16_t X)
+PixelT WindowConverterT::scaleX(PixelT X)
 {
 	return convertDipToPixelX(X * 65536);
 }
 
-std::int16_t WindowConverterT::scaleY(std::int16_t Y)
+PixelT WindowConverterT::scaleY(PixelT Y)
 {
 	return convertDipToPixelY(Y * 65536);
 }
@@ -74,12 +74,12 @@ WindowBaseT::WindowBaseT(Platform::ApplicationT & Application, DipT Width, DipT 
 	mTheme{*this}
 {}
 
-std::int16_t WindowBaseT::getPixelWidth()
+PixelT WindowBaseT::getPixelWidth()
 {
 	return mPixelWidth;
 }
 
-std::int16_t WindowBaseT::getPixelHeight()
+PixelT WindowBaseT::getPixelHeight()
 {
 	return mPixelHeight;
 }
@@ -129,14 +129,14 @@ void WindowBaseT::handleKeyRelease(Platform::KeyT Key)
 	getKeyboardHandler().handleKeyRelease(Key);
 }
 
-void WindowBaseT::handleMouseMotion(std::int16_t X, std::int16_t Y)
+void WindowBaseT::handleMouseMotion(PixelT X, PixelT Y)
 {
 	getMouseHandler().handleMouseMotion(
 		convertPixelToDipX(X),
 		convertPixelToDipY(mPixelHeight - Y));
 }
 
-void WindowBaseT::handleButtonPress(std::int16_t X, std::int16_t Y, std::uint8_t Index)
+void WindowBaseT::handleButtonPress(PixelT X, PixelT Y, std::uint8_t Index)
 {
 	getMouseHandler().handleButtonPress(
 		convertPixelToDipX(X),
@@ -144,7 +144,7 @@ void WindowBaseT::handleButtonPress(std::int16_t X, std::int16_t Y, std::uint8_t
 		Index);
 }
 
-void WindowBaseT::handleButtonRelease(std::int16_t X, std::int16_t Y, std::uint8_t Index)
+void WindowBaseT::handleButtonRelease(PixelT X, PixelT Y, std::uint8_t Index)
 {
 	getMouseHandler().handleButtonRelease(
 		convertPixelToDipX(X),
@@ -152,14 +152,14 @@ void WindowBaseT::handleButtonRelease(std::int16_t X, std::int16_t Y, std::uint8
 		Index);
 }
 
-void WindowBaseT::handleMouseLeaveWindow(std::int16_t X, std::int16_t Y)
+void WindowBaseT::handleMouseLeaveWindow(PixelT X, PixelT Y)
 {
 	getMouseHandler().handleMouseLeaveWindow(
 		convertPixelToDipX(X),
 		convertPixelToDipY(mPixelHeight - Y));
 }
 
-void WindowBaseT::handleMouseEnterWindow(std::int16_t X, std::int16_t Y)
+void WindowBaseT::handleMouseEnterWindow(PixelT X, PixelT Y)
 {
 	getMouseHandler().handleMouseEnterWindow(
 		convertPixelToDipX(X),
@@ -176,7 +176,7 @@ void WindowBaseT::handleWindowDeleted()
 	getWindowHandler().handleWindowDeleted();
 }
 
-void WindowBaseT::handleWindowResize(std::int16_t Width, std::int16_t Height)
+void WindowBaseT::handleWindowResize(PixelT Width, PixelT Height)
 {
 	if (mPixelWidth != Width)
 	{

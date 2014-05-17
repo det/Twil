@@ -18,6 +18,7 @@
 #include "Program/OutlineGradient.hpp"
 #include "Gl/Context.hpp"
 #include "Ui/WindowBaseFwd.hpp"
+#include "Ui/PixelFwd.hpp"
 #include "Vertex/Bitmap.hpp"
 #include "Vertex/FillSolid.hpp"
 #include "Vertex/OutlineGradient.hpp"
@@ -111,8 +112,8 @@ private:
 	std::uint32_t mButtonNeOut;
 	std::uint32_t mButtonNwOut;
 
-	std::int16_t mButtonHorizontalCornerSize;
-	std::int16_t mButtonVerticalCornerSize;
+	Ui::PixelT mButtonHorizontalCornerSize;
+	Ui::PixelT mButtonVerticalCornerSize;
 
 	BitmapEntryT const & loadBitmapEntry(char const *);
 	GlyphEntryT const & loadGlyphEntry(Ft::FaceT &, char32_t);
@@ -128,7 +129,7 @@ public:
 	/// \brief Draw the GUI if needed
 	///
 	/// \returns true if the GUI was drawn.
-	bool update(std::int16_t Width, std::int16_t Height);
+	bool update(Ui::PixelT Width, Ui::PixelT Height);
 };
 
 }

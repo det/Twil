@@ -207,6 +207,9 @@ set (ui_sources
 	Ui/PartitionBox.cpp
 	Ui/PartitionBox.hpp
 	Ui/PartitionBoxFwd.hpp
+	Ui/Pixel.cpp
+	Ui/Pixel.hpp
+	Ui/PixelFwd.hpp
 	Ui/SplitBox.cpp
 	Ui/SplitBox.hpp
 	Ui/SplitBoxFwd.hpp

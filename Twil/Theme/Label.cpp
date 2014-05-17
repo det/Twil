@@ -38,10 +38,10 @@ void LabelT::setText(std::u32string const & Text)
 		Pen.x += Delta.x;
 		Pen.y += Delta.y;
 
-		std::int16_t Left = (Pen.x + Entry.Bearings.x) / 64;
-		std::int16_t Bottom = (Pen.y + Entry.Bearings.y) / 64;
-		std::int16_t Right = Left + Entry.Width;
-		std::int16_t Top = Bottom + Entry.Height;
+		Ui::PixelT Left = (Pen.x + Entry.Bearings.x) / 64;
+		Ui::PixelT Bottom = (Pen.y + Entry.Bearings.y) / 64;
+		Ui::PixelT Right = Left + Entry.Width;
+		Ui::PixelT Top = Bottom + Entry.Height;
 
 		LabelGlyph Glyph;
 		Glyph.PositionMin = {Left, Bottom};
@@ -89,28 +89,28 @@ void LabelT::draw(Vertex::FillSolidT * Vertices) const
 {
 	auto & Manager = mWindow->getThemeManager();
 
-	std::int16_t Left = mWindow->convertDipToPixelX(mLeft);
-	std::int16_t Bottom = mWindow->convertDipToPixelY(mBottom);
+	Ui::PixelT Left = mWindow->convertDipToPixelX(mLeft);
+	Ui::PixelT Bottom = mWindow->convertDipToPixelY(mBottom);
 
 	for (std::size_t I = 0, E = mGlyphs.size(); I != E; ++I)
 	{
-		std::int16_t GlyphLeft = Left + mGlyphs[I].PositionMin.X;
-		std::int16_t GlyphRight = Left + mGlyphs[I].PositionMax.X;
-		std::int16_t GlyphBottom = Bottom + mGlyphs[I].PositionMin.Y;
-		std::int16_t GlyphTop = Bottom + mGlyphs[I].PositionMax.Y;
+		Ui::PixelT GlyphLeft = Left + mGlyphs[I].PositionMin.X;
+		Ui::PixelT GlyphRight = Left + mGlyphs[I].PositionMax.X;
+		Ui::PixelT GlyphBottom = Bottom + mGlyphs[I].PositionMin.Y;
+		Ui::PixelT GlyphTop = Bottom + mGlyphs[I].PositionMax.Y;
 
-		std::int16_t ClipLeft = mWindow->convertDipToPixelX(mClipLeft);
-		std::int16_t ClipRight = mWindow->convertDipToPixelX(mClipRight);
-		std::int16_t ClipBottom = mWindow->convertDipToPixelY(mClipBottom);
-		std::int16_t ClipTop = mWindow->convertDipToPixelY(mClipTop);
+		Ui::PixelT ClipLeft = mWindow->convertDipToPixelX(mClipLeft);
+		Ui::PixelT ClipRight = mWindow->convertDipToPixelX(mClipRight);
+		Ui::PixelT ClipBottom = mWindow->convertDipToPixelY(mClipBottom);
+		Ui::PixelT ClipTop = mWindow->convertDipToPixelY(mClipTop);
 
-		std::int16_t Width = GlyphRight - GlyphLeft;
-		std::int16_t Height = GlyphTop - GlyphBottom;
+		Ui::PixelT Width = GlyphRight - GlyphLeft;
+		Ui::PixelT Height = GlyphTop - GlyphBottom;
 
-		std::int16_t LeftClipped = GlyphLeft;
-		std::int16_t RightClipped = GlyphRight;
-		std::int16_t BottomClipped = GlyphBottom;
-		std::int16_t TopClipped = GlyphTop;
+		Ui::PixelT LeftClipped = GlyphLeft;
+		Ui::PixelT RightClipped = GlyphRight;
+		Ui::PixelT BottomClipped = GlyphBottom;
+		Ui::PixelT TopClipped = GlyphTop;
 
 		LeftClipped = std::max(LeftClipped, ClipLeft);
 		RightClipped = std::max(RightClipped, ClipLeft);

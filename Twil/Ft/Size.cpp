@@ -10,7 +10,7 @@
 namespace Twil {
 namespace Ft {
 
-SizeT::SizeT(FaceT & Face, std::int16_t Width, std::int16_t Height)
+SizeT::SizeT(FaceT & Face, FT_UInt Width, FT_UInt Height)
 :
 	mId{nullptr}
 {

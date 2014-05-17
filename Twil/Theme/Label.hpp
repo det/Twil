@@ -4,6 +4,7 @@
 
 #include "Drawable.hpp"
 #include "Ui/DipFwd.hpp"
+#include "Ui/PixelFwd.hpp"
 #include "Ui/WindowBaseFwd.hpp"
 #include "Vertex/FillSolid.hpp"
 
@@ -32,8 +33,8 @@ class LabelT
 private:
 	Ui::WindowBaseT * mWindow;
 	std::vector<LabelGlyph> mGlyphs;
-	std::int16_t mWidth = 0;
-	std::int16_t mHeight = 0;
+	Ui::PixelT mWidth = 0;
+	Ui::PixelT mHeight = 0;
 	Ui::DipT mLeft = 0.0f;
 	Ui::DipT mBottom = 0.0f;
 	Ui::DipT mClipLeft = 0.0f;

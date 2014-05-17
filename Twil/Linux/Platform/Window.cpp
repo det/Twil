@@ -29,7 +29,7 @@ void handleDebug(
 namespace Twil {
 namespace Platform {
 
-WindowT::WindowT(Ui::WindowBaseT & Window, ApplicationT & Application, std::int16_t Width, std::int16_t Height)
+WindowT::WindowT(Ui::WindowBaseT & Window, ApplicationT & Application, Ui::PixelT Width, Ui::PixelT Height)
 :
 	mApplication{&Application}
 {
@@ -145,7 +145,7 @@ void WindowT::hide()
 	XUnmapWindow(Display, mId);
 }
 
-void WindowT::resizePixels(std::int16_t Width, std::int16_t Height)
+void WindowT::resizePixels(Ui::PixelT Width, Ui::PixelT Height)
 {
 	auto Display = mApplication->mDisplay;
 	XResizeWindow(Display, mId, Width, Height);

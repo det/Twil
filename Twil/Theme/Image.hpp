@@ -4,6 +4,7 @@
 
 #include "Drawable.hpp"
 #include "Ui/DipFwd.hpp"
+#include "Ui/PixelFwd.hpp"
 #include "Ui/WindowBaseFwd.hpp"
 #include "Vertex/Bitmap.hpp"
 

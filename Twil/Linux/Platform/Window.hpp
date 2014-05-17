@@ -8,6 +8,7 @@
 #include "Theme/Manager.hpp"
 #include "Ui/KeyboardHandlerFwd.hpp"
 #include "Ui/MouseHandlerFwd.hpp"
+#include "Ui/PixelFwd.hpp"
 #include "Ui/WindowBaseFwd.hpp"
 #include "Ui/WindowHandlerFwd.hpp"
 
@@ -34,14 +35,14 @@ protected:
 
 public:
 	/// \throws std::runtime_error on error.
-	WindowT(Ui::WindowBaseT & Window, ApplicationT & Application, std::int16_t Width, std::int16_t Height);
+	WindowT(Ui::WindowBaseT & Window, ApplicationT & Application, Ui::PixelT Width, Ui::PixelT Height);
 	~WindowT() noexcept;
 
 	// Documented in Ui::Window
 	void show();
 	void hide();
 	void setFullscreen(bool IsFullScreen);
-	void resizePixels(std::int16_t Width, std::int16_t Height);
+	void resizePixels(Ui::PixelT Width, Ui::PixelT Height);
 	void setTitle(char const * String);
 };
 
