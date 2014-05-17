@@ -12,6 +12,8 @@
 #include <string>
 #include <stdexcept>
 
+
+#ifndef NDEBUG
 namespace {
 
 void handleDebug(
@@ -22,6 +24,8 @@ void handleDebug(
 }
 
 }
+#endif
+
 
 namespace Twil {
 namespace Platform {
