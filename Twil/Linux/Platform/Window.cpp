@@ -9,7 +9,19 @@
 
 #include <cstring>
 #include <cstdint>
+#include <string>
 #include <stdexcept>
+
+namespace {
+
+void handleDebug(
+	GLenum Source, GLenum Type, GLuint Id, GLenum Severity,
+	GLsizei Length, GLchar const * Message, void * UserParam)
+{
+	throw std::runtime_error{std::string{Message, static_cast<std::size_t>(Length)}};
+}
+
+}
 
 namespace Twil {
 namespace Platform {
@@ -64,6 +76,10 @@ WindowT::WindowT(Ui::WindowBaseT & Window, ApplicationT & Application, std::int1
 	int ContextAttribs[] = {
 		GLX_CONTEXT_MAJOR_VERSION_ARB, 3,
 		GLX_CONTEXT_MINOR_VERSION_ARB, 3,
+#ifndef NDEBUG
+		GLX_CONTEXT_FLAGS_ARB, GLX_CONTEXT_DEBUG_BIT_ARB,
+#endif
+		GLX_CONTEXT_PROFILE_MASK_ARB, GLX_CONTEXT_CORE_PROFILE_BIT_ARB,
 		None};
 
 	mContext = glXCreateContextAttribsARB(Display, Config, 0, True, ContextAttribs);
@@ -73,6 +89,8 @@ WindowT::WindowT(Ui::WindowBaseT & Window, ApplicationT & Application, std::int1
 	glXMakeCurrent(Display, mId, mContext);
 	SymbolLoaderT Loader;
 	Gl::Context::initialize(Loader);
+
+	glDebugMessageCallbackARB(handleDebug, nullptr);
 
 	SaveContextGuard.dismiss();
 	ContextGuard.dismiss();

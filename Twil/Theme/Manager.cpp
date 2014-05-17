@@ -219,7 +219,7 @@ bool ManagerT::update(std::int16_t Width, std::int16_t Height)
 	mNeedsRedraw |= mOutlineArray.checkNeedsRedraw();
 	mNeedsRedraw |= mBitmapArray.checkNeedsRedraw();
 
-	if (!mNeedsRedraw || Width == 0 || Height == 0) return false;
+	if (!mNeedsRedraw || Width <= 0 || Height <= 0) return false;
 
 	std::uint32_t Result = glClientWaitSync(mFences[mFenceIndex], 0, 10000000); // wait at most 10ms
 	if (Result == GL_WAIT_FAILED || Result == GL_TIMEOUT_EXPIRED) return false;
