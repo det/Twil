@@ -31,8 +31,6 @@ public:
 	XAtom mWmStateFullscreen;
 	XAtom mWmState;
 	GLXFBConfig * mConfigs;
-	float mDpiX;
-	float mDpiY;
 	bool mRunning;
 
 public:
@@ -40,8 +38,10 @@ public:
 	ApplicationT();
 	~ApplicationT() noexcept;
 
-	float getDpiX();
-	float getDpiY();
+	std::int16_t getMillimeterWidth();
+	std::int16_t getMillimeterHeight();
+	std::int16_t getPixelWidth();
+	std::int16_t getPixelHeight();
 
 	/// \brief Run the event loop
 	void run();

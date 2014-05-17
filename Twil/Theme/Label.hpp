@@ -34,12 +34,12 @@ private:
 	std::vector<LabelGlyph> mGlyphs;
 	std::int16_t mWidth = 0;
 	std::int16_t mHeight = 0;
-	float mLeft = 0.0f;
-	float mBottom = 0.0f;
-	float mClipLeft = 0.0f;
-	float mClipBottom = 0.0f;
-	float mClipRight = 0.0f;
-	float mClipTop = 0.0f;
+	std::int32_t mLeft = 0.0f;
+	std::int32_t mBottom = 0.0f;
+	std::int32_t mClipLeft = 0.0f;
+	std::int32_t mClipBottom = 0.0f;
+	std::int32_t mClipRight = 0.0f;
+	std::int32_t mClipTop = 0.0f;
 
 public:
 	LabelT() = default;
@@ -52,26 +52,26 @@ public:
 	void draw(Vertex::FillSolidT *) const final;
 
 	// Widget
-	void moveX(float);
-	void moveY(float);
+	void moveX(std::int32_t);
+	void moveY(std::int32_t);
 
-	void setClipLeft(float);
-	void setClipBottom(float);
-	void setClipRight(float);
-	void setClipTop(float);
+	void setClipLeft(std::int32_t);
+	void setClipBottom(std::int32_t);
+	void setClipRight(std::int32_t);
+	void setClipTop(std::int32_t);
 
-	float getLeft() const;
-	float getBottom() const;
-	float getRight() const;
-	float getTop() const;
+	std::int32_t getLeft() const;
+	std::int32_t getBottom() const;
+	std::int32_t getRight() const;
+	std::int32_t getTop() const;
 
-	float getClipLeft() const;
-	float getClipRight() const;
-	float getClipBottom() const;
-	float getClipTop() const;
+	std::int32_t getClipLeft() const;
+	std::int32_t getClipRight() const;
+	std::int32_t getClipBottom() const;
+	std::int32_t getClipTop() const;
 
-	float getBaseWidth() const;
-	float getBaseHeight() const;
+	std::int32_t getBaseWidth() const;
+	std::int32_t getBaseHeight() const;
 };
 
 }

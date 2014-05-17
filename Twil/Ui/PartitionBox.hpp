@@ -26,7 +26,7 @@ protected:
 
 	static std::int16_t const mSize = std::tuple_size<ChildrenT>::value;
 
-	bool checkThisContains(float X, float Y)
+	bool checkThisContains(std::int32_t X, std::int32_t Y)
 	{
 		return (
 			X >= getLeft() && X >= getClipLeft() &&
@@ -68,7 +68,7 @@ public:
 
 	// Widget
 
-	void moveX(float X)
+	void moveX(std::int32_t X)
 	{
 		Data::iterate(mChildren, [=](auto & Child)
 		{
@@ -76,7 +76,7 @@ public:
 		});
 	}
 
-	void moveY(float Y)
+	void moveY(std::int32_t Y)
 	{
 		Data::iterate(mChildren, [=](auto & Child)
 		{
@@ -84,7 +84,7 @@ public:
 		});
 	}
 
-	void setClipLeft(float X)
+	void setClipLeft(std::int32_t X)
 	{
 		Data::iterate(mChildren, [=](auto & Child)
 		{
@@ -92,7 +92,7 @@ public:
 		});
 	}
 
-	void setClipBottom(float Y)
+	void setClipBottom(std::int32_t Y)
 	{
 		Data::iterate(mChildren, [=](auto & Child)
 		{
@@ -100,7 +100,7 @@ public:
 		});
 	}
 
-	void setClipRight(float X)
+	void setClipRight(std::int32_t X)
 	{
 		Data::iterate(mChildren, [=](auto & Child)
 		{
@@ -108,7 +108,7 @@ public:
 		});
 	}
 
-	void setClipTop(float Y)
+	void setClipTop(std::int32_t Y)
 	{
 		Data::iterate(mChildren, [=](auto & Child)
 		{
@@ -116,49 +116,49 @@ public:
 		});
 	}
 
-	float getLeft() const
+	std::int32_t getLeft() const
 	{
 		return getChild<0>().getLeft();
 	}
 
-	float getBottom() const
+	std::int32_t getBottom() const
 	{
 		return getChild<0>().getBottom();
 	}
 
-	float getRight() const
+	std::int32_t getRight() const
 	{
 		return getChild<mSize - 1>().getRight();
 	}
 
-	float getTop() const
+	std::int32_t getTop() const
 	{
 		return getChild<mSize - 1>().getTop();
 	}
 
-	float getClipLeft() const
+	std::int32_t getClipLeft() const
 	{
 		return getChild<0>().getClipLeft();
 	}
 
-	float getClipBottom() const
+	std::int32_t getClipBottom() const
 	{
 		return getChild<0>().getClipBottom();
 	}
 
-	float getClipRight() const
+	std::int32_t getClipRight() const
 	{
 		return getChild<mSize - 1>().getClipRight();
 	}
 
-	float getClipTop() const
+	std::int32_t getClipTop() const
 	{
 		return getChild<mSize - 1>().getClipTop();
 	}
 
-	float getMaxWidth()
+	std::int32_t getMaxWidth()
 	{
-		float MaxWidth = 0;
+		std::int32_t MaxWidth = 0;
 		Data::iterate(mChildren, [&](auto & Child)
 		{
 			MaxWidth = std::max(MaxWidth, Child.getBaseWidth());
@@ -166,9 +166,9 @@ public:
 		return MaxWidth;
 	}
 
-	float getMaxHeight()
+	std::int32_t getMaxHeight()
 	{
-		float MaxHeight = 0;
+		std::int32_t MaxHeight = 0;
 		Data::iterate(mChildren, [&](auto & Child)
 		{
 			MaxHeight = std::max(MaxHeight, Child.getBaseHeight());
@@ -214,10 +214,10 @@ public:
 	using PartitionBoxBaseT<ChildrenT>::getTop;
 
 	// Widget
-	void resizeWidth(float X)
+	void resizeWidth(std::int32_t X)
 	{
-		float Width = getRight() + X - getLeft();
-		float BoxWidth = Width / mSize;
+		std::int32_t Width = getRight() + X - getLeft();
+		std::int32_t BoxWidth = Width / mSize;
 		auto Left = getLeft();
 
 		Data::iterate(mChildren, [&](auto & Child)
@@ -228,7 +228,7 @@ public:
 		});
 	}
 
-	void resizeHeight(float Y)
+	void resizeHeight(std::int32_t Y)
 	{
 		Data::iterate(mChildren, [&](auto & Child)
 		{
@@ -236,17 +236,17 @@ public:
 		});
 	}
 
-	float getBaseWidth() const
+	std::int32_t getBaseWidth() const
 	{
 		return getMaxWidth() * mSize;
 	}
 
-	float getBaseHeight() const
+	std::int32_t getBaseHeight() const
 	{
 		return getMaxHeight();
 	}
 
-	void delegateMouse(float X, float Y)
+	void delegateMouse(std::int32_t X, std::int32_t Y)
 	{
 		Data::iterateUntil(mChildren, [=](auto & Child)
 		{
@@ -260,7 +260,7 @@ public:
 	}
 
 	// Container
-	void releaseMouse(float X, float Y) final
+	void releaseMouse(std::int32_t X, std::int32_t Y) final
 	{
 		if (checkThisContains(X, Y)) delegateMouse(X, Y);
 		else mParent->releaseMouse(X, Y);
@@ -294,7 +294,7 @@ public:
 	using PartitionBoxBaseT<ChildrenT>::getTop;
 
 	// Widget
-	void resizeWidth(float X)
+	void resizeWidth(std::int32_t X)
 	{
 		Data::iterate(mChildren, [=](auto & Child)
 		{
@@ -302,10 +302,10 @@ public:
 		});
 	}
 
-	void resizeHeight(float Y)
+	void resizeHeight(std::int32_t Y)
 	{
-		float Height = getTop() + Y - getBottom();
-		float BoxHeight = Height / mSize;
+		std::int32_t Height = getTop() + Y - getBottom();
+		std::int32_t BoxHeight = Height / mSize;
 		auto Bottom = getBottom();
 
 		Data::iterate(mChildren, [&](auto & Child)
@@ -316,17 +316,17 @@ public:
 		});
 	}
 
-	float getBaseWidth() const
+	std::int32_t getBaseWidth() const
 	{
 		return getMaxWidth();
 	}
 
-	float getBaseHeight() const
+	std::int32_t getBaseHeight() const
 	{
 		return getMaxHeight() * mSize;
 	}
 
-	void delegateMouse(float X, float Y)
+	void delegateMouse(std::int32_t X, std::int32_t Y)
 	{
 		Data::iterateUntil(mChildren, [=](auto & Child)
 		{
@@ -340,7 +340,7 @@ public:
 	}
 
 	// Container
-	void releaseMouse(float X, float Y) final
+	void releaseMouse(std::int32_t X, std::int32_t Y) final
 	{
 		if (checkThisContains(X, Y)) delegateMouse(X, Y);
 		else mParent->releaseMouse(X, Y);

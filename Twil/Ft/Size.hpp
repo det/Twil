@@ -4,6 +4,8 @@
 
 #include "FaceFwd.hpp"
 
+#include <cstdint>
+
 #include <ft2build.h>
 #include FT_FREETYPE_H
 #include FT_SIZES_H
@@ -27,7 +29,7 @@ public:
 	/// \param Face The font face to load the size from.
 	/// \param Size The size to load in 26.6 fixpoint.
 	/// \throws std::runtime_error If the size cant be loaded for the font face.
-	SizeT(FaceT & Face, FT_F26Dot6 SizeT, FT_UInt HorizontalDpi, FT_UInt VerticalDpi);
+	SizeT(FaceT & Face, std::int16_t Width, std::int16_t Height);
 	~SizeT() noexcept;
 
 	/// \returns The height in 26.6 fixpoint.

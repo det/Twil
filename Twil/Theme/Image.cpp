@@ -21,25 +21,25 @@ void ImageT::setImage(char const * Path)
 	Manager.mBitmapArray.markNeedsRedraw(*this);
 }
 
-void ImageT::setClipLeft(float X)
+void ImageT::setClipLeft(std::int32_t X)
 {
 	mClipLeft = X;
 	mWindow->getThemeManager().mBitmapArray.markNeedsRedraw(*this);
 }
 
-void ImageT::setClipRight(float X)
+void ImageT::setClipRight(std::int32_t X)
 {
 	mClipRight = X;
 	mWindow->getThemeManager().mBitmapArray.markNeedsRedraw(*this);
 }
 
-void ImageT::setClipBottom(float Y)
+void ImageT::setClipBottom(std::int32_t Y)
 {
 	mClipBottom = Y;
 	mWindow->getThemeManager().mBitmapArray.markNeedsRedraw(*this);
 }
 
-void ImageT::setClipTop(float Y)
+void ImageT::setClipTop(std::int32_t Y)
 {
 	mClipTop = Y;
 	mWindow->getThemeManager().mBitmapArray.markNeedsRedraw(*this);
@@ -90,7 +90,7 @@ void ImageT::draw(Vertex::BitmapT * Vertices) const
 	Vertices[0].Offset = {mOffset};
 }
 
-void ImageT::moveX(float X)
+void ImageT::moveX(std::int32_t X)
 {
 	mLeft += X;
 	mClipLeft += X;
@@ -99,7 +99,7 @@ void ImageT::moveX(float X)
 	mWindow->getThemeManager().mBitmapArray.markNeedsRedraw(*this);
 }
 
-void ImageT::moveY(float Y)
+void ImageT::moveY(std::int32_t Y)
 {
 	mBottom += Y;
 	mClipBottom += Y;
@@ -108,52 +108,52 @@ void ImageT::moveY(float Y)
 	mWindow->getThemeManager().mBitmapArray.markNeedsRedraw(*this);
 }
 
-float ImageT::getLeft() const
+std::int32_t ImageT::getLeft() const
 {
 	return mLeft;
 }
 
-float ImageT::getBottom() const
+std::int32_t ImageT::getBottom() const
 {
 	return mBottom;
 }
 
-float ImageT::getRight() const
+std::int32_t ImageT::getRight() const
 {
 	return mLeft + getBaseWidth();
 }
 
-float ImageT::getTop() const
+std::int32_t ImageT::getTop() const
 {
 	return mBottom + getBaseHeight();
 }
 
-float ImageT::getClipLeft() const
+std::int32_t ImageT::getClipLeft() const
 {
 	return mClipLeft;
 }
 
-float ImageT::getClipRight() const
+std::int32_t ImageT::getClipRight() const
 {
 	return mClipRight;
 }
 
-float ImageT::getClipBottom() const
+std::int32_t ImageT::getClipBottom() const
 {
 	return mClipBottom;
 }
 
-float ImageT::getClipTop() const
+std::int32_t ImageT::getClipTop() const
 {
 	return mClipTop;
 }
 
-float ImageT::getBaseWidth() const
+std::int32_t ImageT::getBaseWidth() const
 {
 	return mWindow->convertPixelToDipX(mWidth);
 }
 
-float ImageT::getBaseHeight() const
+std::int32_t ImageT::getBaseHeight() const
 {
 	return mWindow->convertPixelToDipY(mHeight);
 }

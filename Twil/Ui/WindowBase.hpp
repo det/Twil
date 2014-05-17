@@ -14,19 +14,23 @@ namespace Ui {
 
 class WindowConverterT
 {
-private:
-	float mDipToPixelFactorX;
-	float mDipToPixelFactorY;
-	float mPixelToDipFactorX;
-	float mPixelToDipFactorY;
+private:	
+	std::int64_t mDipToPixelFactorX;
+	std::int64_t mDipToPixelFactorY;
+	std::int64_t mPixelToDipFactorX;
+	std::int64_t mPixelToDipFactorY;
+	std::int64_t mHalfPixelX;
+	std::int64_t mHalfPixelY;
 
 public:
-	WindowConverterT(float DpiX, float DpiY);
+	WindowConverterT(Platform::ApplicationT & Application);
 
-	std::int16_t convertDipToPixelX(float X);
-	std::int16_t convertDipToPixelY(float Y);
-	float convertPixelToDipX(std::int16_t X);
-	float convertPixelToDipY(std::int16_t X);
+	std::int16_t convertDipToPixelX(std::int32_t X);
+	std::int16_t convertDipToPixelY(std::int32_t Y);
+	std::int32_t convertPixelToDipX(std::int16_t X);
+	std::int32_t convertPixelToDipY(std::int16_t X);
+	std::int16_t scaleX(std::int16_t X);
+	std::int16_t scaleY(std::int16_t Y);
 };
 
 class WindowBaseT
@@ -46,7 +50,7 @@ private:
 	Theme::ManagerT mTheme;
 
 public:
-	WindowBaseT(Platform::ApplicationT & Application, float Width, float Height);
+	WindowBaseT(Platform::ApplicationT & Application, std::int32_t Width, std::int32_t Height);
 
 	std::int16_t getPixelWidth();
 	std::int16_t getPixelHeight();
@@ -75,7 +79,7 @@ public:
 	void handleWindowResize(std::int16_t Width, std::int16_t Height);
 	void handleWindowUpdate();
 
-	void resize(float Width, float Height);
+	void resize(std::int32_t Width, std::int32_t Height);
 };
 
 

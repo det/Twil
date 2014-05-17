@@ -6,12 +6,15 @@
 #include "Container.hpp"
 #include "KeyboardHandler.hpp"
 #include "MouseHandler.hpp"
+#include "Operator.hpp"
 #include "WindowBase.hpp"
 #include "WindowHandler.hpp"
 #include "Data/Event.hpp"
 
 namespace Twil {
 namespace Ui {
+
+using namespace Operator;
 
 /// \brief A resizable window that holds a single child widget.
 /// \param T The type of the child widget.
@@ -30,7 +33,7 @@ class WindowT
 private:
 	T mChild;
 
-	bool checkChildContains(float X, float Y)
+	bool checkChildContains(std::int32_t X, std::int32_t Y)
 	{
 		return X >= 0 && X <= mChild.getRight() && Y >= 0 && Y <= mChild.getTop();
 	}
@@ -41,7 +44,7 @@ public:
 
 	WindowT(Platform::ApplicationT & Application)
 	:
-		WindowBaseT{Application, 320, 240}
+		WindowBaseT{Application, 320_dips, 240_dips}
 	{}
 
 	void init()
@@ -53,13 +56,13 @@ public:
 	}
 
 	/// \returns The width.
-	float getWidth() const
+	std::int32_t getWidth() const
 	{
 		return mChild.getRight();
 	}
 
 	/// \returns The height.
-	float getHeight() const
+	std::int32_t getHeight() const
 	{
 		return mChild.getTop();
 	}
@@ -87,18 +90,18 @@ public:
 		Deleted();
 	}
 
-	void handleWindowResizeWidth(float Width) final
+	void handleWindowResizeWidth(std::int32_t Width) final
 	{
 		mChild.resizeWidth(Width - getWidth());
 	}
 
-	void handleWindowResizeHeight(float Height) final
+	void handleWindowResizeHeight(std::int32_t Height) final
 	{
 		mChild.resizeHeight(Height - getHeight());
 	}
 
 	// Container
-	void releaseMouse(float, float) final
+	void releaseMouse(std::int32_t, std::int32_t) final
 	{
 		setMouseHandler(*this);
 	}
@@ -110,7 +113,7 @@ public:
 	{}
 
 	// MouseHandler
-	void handleMouseMotion(float X, float Y) final
+	void handleMouseMotion(std::int32_t X, std::int32_t Y) final
 	{
 		if (checkChildContains(X, Y)) mChild.delegateMouse(X, Y);
 	}

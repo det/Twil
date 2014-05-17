@@ -61,25 +61,25 @@ void LabelT::setText(std::u32string const & Text)
 	Manager.mSolidArray.markNeedsRedraw(*this);
 }
 
-void LabelT::setClipLeft(float X)
+void LabelT::setClipLeft(std::int32_t X)
 {
 	mClipLeft = X;
 	mWindow->getThemeManager().mSolidArray.markNeedsRedraw(*this);
 }
 
-void LabelT::setClipRight(float X)
+void LabelT::setClipRight(std::int32_t X)
 {
 	mClipRight = X;
 	mWindow->getThemeManager().mSolidArray.markNeedsRedraw(*this);
 }
 
-void LabelT::setClipBottom(float Y)
+void LabelT::setClipBottom(std::int32_t Y)
 {
 	mClipBottom = Y;
 	mWindow->getThemeManager().mSolidArray.markNeedsRedraw(*this);
 }
 
-void LabelT::setClipTop(float Y)
+void LabelT::setClipTop(std::int32_t Y)
 {
 	mClipTop = Y;
 	mWindow->getThemeManager().mSolidArray.markNeedsRedraw(*this);
@@ -133,7 +133,7 @@ void LabelT::draw(Vertex::FillSolidT * Vertices) const
 	}
 }
 
-void LabelT::moveX(float X)
+void LabelT::moveX(std::int32_t X)
 {
 	mLeft += X;
 	mClipLeft += X;
@@ -141,7 +141,7 @@ void LabelT::moveX(float X)
 	mWindow->getThemeManager().mSolidArray.markNeedsRedraw(*this);
 }
 
-void LabelT::moveY(float Y)
+void LabelT::moveY(std::int32_t Y)
 {
 	mBottom += Y;
 	mClipBottom += Y;
@@ -149,52 +149,52 @@ void LabelT::moveY(float Y)
 	mWindow->getThemeManager().mSolidArray.markNeedsRedraw(*this);
 }
 
-float LabelT::getLeft() const
+std::int32_t LabelT::getLeft() const
 {
 	return mLeft;
 }
 
-float LabelT::getBottom() const
+std::int32_t LabelT::getBottom() const
 {
 	return mBottom;
 }
 
-float LabelT::getRight() const
+std::int32_t LabelT::getRight() const
 {
 	return mLeft + getBaseWidth();
 }
 
-float LabelT::getTop() const
+std::int32_t LabelT::getTop() const
 {
 	return mBottom + getBaseHeight();
 }
 
-float LabelT::getClipLeft() const
+std::int32_t LabelT::getClipLeft() const
 {
 	return mClipLeft;
 }
 
-float LabelT::getClipRight() const
+std::int32_t LabelT::getClipRight() const
 {
 	return mClipRight;
 }
 
-float LabelT::getClipBottom() const
+std::int32_t LabelT::getClipBottom() const
 {
 	return mClipBottom;
 }
 
-float LabelT::getClipTop() const
+std::int32_t LabelT::getClipTop() const
 {
 	return mClipTop;
 }
 
-float LabelT::getBaseWidth() const
+std::int32_t LabelT::getBaseWidth() const
 {
 	return mWindow->convertPixelToDipX(mWidth);
 }
 
-float LabelT::getBaseHeight() const
+std::int32_t LabelT::getBaseHeight() const
 {
 	return mWindow->convertPixelToDipY(mHeight);
 }

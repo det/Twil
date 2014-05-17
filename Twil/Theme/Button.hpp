@@ -6,6 +6,8 @@
 #include "Ui/WindowBaseFwd.hpp"
 #include "Vertex/OutlineGradient.hpp"
 
+#include <cstdint>
+
 namespace Twil {
 namespace Theme {
 
@@ -19,14 +21,14 @@ class ButtonT
 
 private:
 	Ui::WindowBaseT * mWindow;
-	float mLeft = 0.0f;
-	float mBottom = 0.0f;
-	float mRight = 0.0f;
-	float mTop = 0.0f;
-	float mClipLeft = 0.0f;
-	float mClipBottom = 0.0f;
-	float mClipRight = 0.0f;
-	float mClipTop = 0.0f;
+	std::int32_t mLeft = 0.0f;
+	std::int32_t mBottom = 0.0f;
+	std::int32_t mRight = 0.0f;
+	std::int32_t mTop = 0.0f;
+	std::int32_t mClipLeft = 0.0f;
+	std::int32_t mClipBottom = 0.0f;
+	std::int32_t mClipRight = 0.0f;
+	std::int32_t mClipTop = 0.0f;
 	bool mIsDown = false;
 
 public:
@@ -37,44 +39,44 @@ public:
 	void setIsDown(bool IsDown);
 
 	/// \returns The left margin for the theme.
-	float getLeftMargin() const;
+	std::int32_t getLeftMargin() const;
 
 	/// \returns The right margin for the theme.
-	float getRightMargin() const;
+	std::int32_t getRightMargin() const;
 
 	/// \returns The bottom margin for the theme.
-	float getBottomMargin() const;
+	std::int32_t getBottomMargin() const;
 
 	/// \returns The top margin for the theme.
-	float getTopMargin() const;
+	std::int32_t getTopMargin() const;
 
 	// Drawable
 	void draw(Vertex::OutlineGradientT *) const final;
 
 	// Widget
-	void moveX(float);
-	void moveY(float);
+	void moveX(std::int32_t);
+	void moveY(std::int32_t);
 
-	void resizeWidth(float);
-	void resizeHeight(float);
+	void resizeWidth(std::int32_t);
+	void resizeHeight(std::int32_t);
 
-	void setClipLeft(float);
-	void setClipBottom(float);
-	void setClipRight(float);
-	void setClipTop(float);
+	void setClipLeft(std::int32_t);
+	void setClipBottom(std::int32_t);
+	void setClipRight(std::int32_t);
+	void setClipTop(std::int32_t);
 
-	float getLeft() const;
-	float getBottom() const;
-	float getRight() const;
-	float getTop() const;
+	std::int32_t getLeft() const;
+	std::int32_t getBottom() const;
+	std::int32_t getRight() const;
+	std::int32_t getTop() const;
 
-	float getClipLeft() const;
-	float getClipRight() const;
-	float getClipBottom() const;
-	float getClipTop() const;
+	std::int32_t getClipLeft() const;
+	std::int32_t getClipRight() const;
+	std::int32_t getClipBottom() const;
+	std::int32_t getClipTop() const;
 
-	float getBaseWidth(float) const;
-	float getBaseHeight(float) const;
+	std::int32_t getBaseWidth(std::int32_t) const;
+	std::int32_t getBaseHeight(std::int32_t) const;
 };
 
 }

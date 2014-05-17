@@ -13,8 +13,8 @@ public:
 	virtual ~WindowHandlerT() = default;
 	virtual void handleWindowExposed() {}
 	virtual void handleWindowDeleted() {}
-	virtual void handleWindowResizeWidth(float Width) {}
-	virtual void handleWindowResizeHeight(float Height) {}
+	virtual void handleWindowResizeWidth(std::int32_t Width) {}
+	virtual void handleWindowResizeHeight(std::int32_t Height) {}
 };
 
 }

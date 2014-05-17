@@ -4,6 +4,7 @@
 #include "Ui/WindowBase.hpp"
 
 #include <algorithm>
+#include <iostream>
 #include <cmath>
 
 namespace Twil {
@@ -17,9 +18,8 @@ ManagerT::ManagerT(Ui::WindowBaseT & Window)
 	mLabelFace{mLibrary, Settings::Label::Font, 0},
 	mLabelSize{
 		mLabelFace,
-		Settings::Label::Size,
-		static_cast<FT_UInt>(mWindow.convertDipToPixelX(96)), //XXX
-		static_cast<FT_UInt>(mWindow.convertDipToPixelY(96))},
+		mWindow.convertDipToPixelX(Theme::Settings::Label::Size),
+		mWindow.convertDipToPixelY(Theme::Settings::Label::Size)},
 	mRedTexture{GL_R8},
 	mRgbaTexture{GL_RGBA8},
 	mNeedsRedraw{false}
@@ -164,8 +164,9 @@ BitmapEntryT const & ManagerT::loadBitmapEntry(char const * Path)
 	if (Iter != mBitmapEntries.end()) return Iter->second;
 
 	Loader::PngT Image{Path};
-	std::uint16_t Width = mWindow.convertDipToPixelX(Image.getWidth());
-	std::uint16_t Height = mWindow.convertDipToPixelY(Image.getHeight());
+
+	std::uint16_t Width = mWindow.scaleX(Image.getWidth());
+	std::uint16_t Height = mWindow.scaleY(Image.getHeight());
 	auto Allocation = mRgbaTexture.allocate(Width * Height * 4);
 	std::uint32_t Offset = Allocation.second / 4;
 

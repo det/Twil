@@ -9,7 +9,6 @@
 
 #include <cstring>
 #include <cstdint>
-#include <iostream>
 #include <stdexcept>
 
 namespace Twil {

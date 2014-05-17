@@ -14,7 +14,7 @@ namespace Ui {
 /// \param SpaceX Size of the left and right margins.
 /// \param SpaceY Size of the bottom and top margins.
 /// \param T Type of the child widget.
-template<std::uint16_t SpaceX, std::uint16_t SpaceY, typename T>
+template<std::int32_t SpaceX, std::int32_t SpaceY, typename T>
 class MarginT
 :
 	public ContainerT,
@@ -28,7 +28,7 @@ private:
 	WindowBaseT * mWindow;
 	T mChild;
 
-	bool checkThisContains(float X, float Y)
+	bool checkThisContains(std::int32_t X, std::int32_t Y)
 	{
 		return (
 			X >= getLeft() && X >= getClipLeft() &&
@@ -37,7 +37,7 @@ private:
 			Y <= getTop() && Y <= getClipTop());
 	}
 
-	bool checkChildContains(float X, float Y)
+	bool checkChildContains(std::int32_t X, std::int32_t Y)
 	{
 		return (
 			X >= mChild.getLeft() && X <= mChild.getRight() &&
@@ -73,97 +73,97 @@ public:
 	}
 
 	// Widget
-	void moveX(float X)
+	void moveX(std::int32_t X)
 	{
 		mChild.moveX(X);
 	}
 
-	void moveY(float Y)
+	void moveY(std::int32_t Y)
 	{
 		mChild.moveY(Y);
 	}
 
-	void resizeWidth(float X)
+	void resizeWidth(std::int32_t X)
 	{
 		mChild.resizeWidth(X);
 	}
 
-	void resizeHeight(float Y)
+	void resizeHeight(std::int32_t Y)
 	{
 		mChild.resizeHeight(Y);
 	}
 
-	void setClipLeft(float X)
+	void setClipLeft(std::int32_t X)
 	{
 		mChild.setClipLeft(X);
 	}
 
-	void setClipRight(float X)
+	void setClipRight(std::int32_t X)
 	{
 		mChild.setClipRight(X);
 	}
 
-	void setClipBottom(float Y)
+	void setClipBottom(std::int32_t Y)
 	{
 		mChild.setClipBottom(Y);
 	}
 
-	void setClipTop(float Y)
+	void setClipTop(std::int32_t Y)
 	{
 		mChild.setClipTop(Y);
 	}
 
-	float getLeft() const
+	std::int32_t getLeft() const
 	{
 		return mChild.getLeft() - SpaceX;
 	}
 
-	float getBottom() const
+	std::int32_t getBottom() const
 	{
 		return mChild.getBottom() - SpaceY;
 	}
 
-	float getRight() const
+	std::int32_t getRight() const
 	{
 		return mChild.getRight() + SpaceY;
 	}
 
-	float getTop() const
+	std::int32_t getTop() const
 	{
 		return mChild.getTop() + SpaceY;
 	}
 
-	float getClipLeft() const
+	std::int32_t getClipLeft() const
 	{
 		return mChild.getClipLeft();
 	}
 
-	float getClipBottom() const
+	std::int32_t getClipBottom() const
 	{
 		return mChild.getClipBottom();
 	}
 
-	float getClipRight() const
+	std::int32_t getClipRight() const
 	{
 		return mChild.getClipRight();
 	}
 
-	float getClipTop() const
+	std::int32_t getClipTop() const
 	{
 		return mChild.getClipTop();
 	}
 
-	float getBaseWidth() const
+	std::int32_t getBaseWidth() const
 	{
 		return mChild.getBaseWidth() + SpaceX + SpaceX;
 	}
 
-	float getBaseHeight() const
+	std::int32_t getBaseHeight() const
 	{
 		return mChild.getBaseHeight() + SpaceY + SpaceY;
 	}
 
-	void delegateMouse(float X, float Y)
+	void delegateMouse(std::int32_t X, std::int32_t Y)
 	{
 		if (checkChildContains(X, Y)) mChild.delegateMouse(X, Y);
 		else mWindow->setMouseHandler(*this);
@@ -180,14 +180,14 @@ public:
 		mParent->handleChildBaseHeightChanged(this);
 	}
 
-	void releaseMouse(float X, float Y) final
+	void releaseMouse(std::int32_t X, std::int32_t Y) final
 	{
 		if (checkThisContains(X, Y)) mWindow->setMouseHandler(*this);
 		else mParent->releaseMouse(X, Y);
 	}
 
 	// MouseHandler
-	void handleMouseMotion(float X, float Y) final
+	void handleMouseMotion(std::int32_t X, std::int32_t Y) final
 	{
 		if (checkChildContains(X, Y)) mChild.delegateMouse(X, Y);
 		if (!checkThisContains(X, Y)) mParent->releaseMouse(X, Y);

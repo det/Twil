@@ -20,61 +20,61 @@ public:
 	virtual void init(ContainerT & Parent, WindowBaseT & Window) = 0;
 
 	/// \brief Move the left and right position and clipping bounds.
-	virtual void moveX(float Delta) = 0;
+	virtual void moveX(std::int32_t Delta) = 0;
 
 	/// \brief Move the bottom and top position and clipping bounds.
-	virtual void moveY(float Delta) = 0;
+	virtual void moveY(std::int32_t Delta) = 0;
 
 	/// \brief Move the right position and clipping bound.
-	virtual void resizeWidth(float Delta) = 0;
+	virtual void resizeWidth(std::int32_t Delta) = 0;
 
 	/// \brief Move the top position and clipping bound.
-	virtual void resizeHeight(float Delta) = 0;
+	virtual void resizeHeight(std::int32_t Delta) = 0;
 
 	/// \brief Set the left clipping bound.
-	virtual void setClipLeft(float Absolute) = 0;
+	virtual void setClipLeft(std::int32_t Absolute) = 0;
 
 	/// \brief Set the right clipping bound.
-	virtual void setClipRight(float Absolute) = 0;
+	virtual void setClipRight(std::int32_t Absolute) = 0;
 
 	/// \brief Set the bottom clipping bound.
-	virtual void setClipBottom(float Absolute) = 0;
+	virtual void setClipBottom(std::int32_t Absolute) = 0;
 
 	/// \brief Set the top clipping bound.
-	virtual void setClipTop(float Absolute) = 0;
+	virtual void setClipTop(std::int32_t Absolute) = 0;
 
 	/// \returns The left position bound.
-	virtual float getLeft() const = 0;
+	virtual std::int32_t getLeft() const = 0;
 
 	/// \returns The bottom position bound.
-	virtual float getBottom() const = 0;
+	virtual std::int32_t getBottom() const = 0;
 
 	/// \returns The right position bound.
-	virtual float getRight() const = 0;
+	virtual std::int32_t getRight() const = 0;
 
 	/// \returns The top position bound.
-	virtual float getTop() const = 0;
+	virtual std::int32_t getTop() const = 0;
 
 	/// \returns The left clip line.
-	virtual float getClipLeft() const = 0;
+	virtual std::int32_t getClipLeft() const = 0;
 
 	/// \returns The right clip line.
-	virtual float getClipRight() const = 0;
+	virtual std::int32_t getClipRight() const = 0;
 
 	/// \returns The bottom clip line.
-	virtual float getClipBottom() const = 0;
+	virtual std::int32_t getClipBottom() const = 0;
 
 	/// \returns The top clip line.
-	virtual float getClipTop() const = 0;
+	virtual std::int32_t getClipTop() const = 0;
 
 	/// \returns The base width.
-	virtual float getBaseWidth() const = 0;
+	virtual std::int32_t getBaseWidth() const = 0;
 
 	/// \returns The base height.
-	virtual float getBaseHeight() const = 0;
+	virtual std::int32_t getBaseHeight() const = 0;
 
 	/// \brief Take control of the mouse or pass it to someone else.
-	virtual void delegateMouse(float X, float Y) = 0;
+	virtual void delegateMouse(std::int32_t X, std::int32_t Y) = 0;
 };
 
 template<typename T>
@@ -91,97 +91,97 @@ public:
 		mData.init(Parent, Window);
 	}
 
-	void moveX(float Delta) final
+	void moveX(std::int32_t Delta) final
 	{
 		mData.moveX(Delta);
 	}
 
-	void moveY(float Delta) final
+	void moveY(std::int32_t Delta) final
 	{
 		mData.moveY(Delta);
 	}
 
-	void resizeWidth(float Delta) final
+	void resizeWidth(std::int32_t Delta) final
 	{
 		mData.resizeWidth(Delta);
 	}
 
-	void resizeHeight(float Delta) final
+	void resizeHeight(std::int32_t Delta) final
 	{
 		mData.resizeHeight(Delta);
 	}
 
-	void setClipLeft(float Absolute) final
+	void setClipLeft(std::int32_t Absolute) final
 	{
 		mData.setClipLeft(Absolute);
 	}
 
-	void setClipRight(float Absolute) final
+	void setClipRight(std::int32_t Absolute) final
 	{
 		mData.setClipRight(Absolute);
 	}
 
-	void setClipBottom(float Absolute) final
+	void setClipBottom(std::int32_t Absolute) final
 	{
 		mData.setClipBottom(Absolute);
 	}
 
-	void setClipTop(float Absolute) final
+	void setClipTop(std::int32_t Absolute) final
 	{
 		mData.setClipTop(Absolute);
 	}
 
-	float getLeft() const final
+	std::int32_t getLeft() const final
 	{
 		return mData.getLeft();
 	}
 
-	float getBottom() const final
+	std::int32_t getBottom() const final
 	{
 		return mData.getBottom();
 	}
 
-	float getRight() const final
+	std::int32_t getRight() const final
 	{
 		return mData.getRight();
 	}
 
-	float getTop() const final
+	std::int32_t getTop() const final
 	{
 		return mData.getTop();
 	}
 
-	float getClipLeft() const final
+	std::int32_t getClipLeft() const final
 	{
 		return mData.getClipLeft();
 	}
 
-	float getClipRight() const final
+	std::int32_t getClipRight() const final
 	{
 		return mData.getClipRight();
 	}
 
-	float getClipBottom() const final
+	std::int32_t getClipBottom() const final
 	{
 		return mData.getClipBottom();
 	}
 
-	float getClipTop() const final
+	std::int32_t getClipTop() const final
 	{
 		return mData.getClipTop();
 	}
 
-	float getBaseWidth() const final
+	std::int32_t getBaseWidth() const final
 	{
 		return mData.getBaseWidth();
 	}
 
-	float getBaseHeight() const final
+	std::int32_t getBaseHeight() const final
 	{
 		return mData.getBaseHeight();
 	}
 
-	void delegateMouse(float X, float Y) final
+	void delegateMouse(std::int32_t X, std::int32_t Y) final
 	{
 		mData.delegateMouse(X, Y);
 	}
@@ -203,97 +203,97 @@ public:
 		getWidget().init(std::forward<ArgsT>(Args) ...);
 	}
 
-	void moveX(float X)
+	void moveX(std::int32_t X)
 	{
 		getWidget().moveX(X);
 	}
 
-	void moveY(float Y)
+	void moveY(std::int32_t Y)
 	{
 		getWidget().moveY(Y);
 	}
 
-	void resizeWidth(float X)
+	void resizeWidth(std::int32_t X)
 	{
 		getWidget().resizeWidth(X);
 	}
 
-	void resizeHeight(float Y)
+	void resizeHeight(std::int32_t Y)
 	{
 		getWidget().resizeHeight(Y);
 	}
 
-	void setClipLeft(float X)
+	void setClipLeft(std::int32_t X)
 	{
 		getWidget().setClipLeft(X);
 	}
 
-	void setClipRight(float X)
+	void setClipRight(std::int32_t X)
 	{
 		getWidget().setClipRight(X);
 	}
 
-	void setClipBottom(float Y)
+	void setClipBottom(std::int32_t Y)
 	{
 		getWidget().setClipBottom(Y);
 	}
 
-	void setClipTop(float Y)
+	void setClipTop(std::int32_t Y)
 	{
 		getWidget().setClipTop(Y);
 	}
 
-	float getLeft() const
+	std::int32_t getLeft() const
 	{
 		return getWidget().getLeft();
 	}
 
-	float getBottom() const
+	std::int32_t getBottom() const
 	{
 		return getWidget().getBottom();
 	}
 
-	float getRight() const
+	std::int32_t getRight() const
 	{
 		return getWidget().getRight();
 	}
 
-	float getTop() const
+	std::int32_t getTop() const
 	{
 		return getWidget().getTop();
 	}
 
-	float getClipLeft() const
+	std::int32_t getClipLeft() const
 	{
 		return getWidget().getClipLeft();
 	}
 
-	float getClipBottom() const
+	std::int32_t getClipBottom() const
 	{
 		return getWidget().getClipBottom();
 	}
 
-	float getClipRight() const
+	std::int32_t getClipRight() const
 	{
 		return getWidget().getClipRight();
 	}
 
-	float getClipTop() const
+	std::int32_t getClipTop() const
 	{
 		return getWidget().getClipTop();
 	}
 
-	float getBaseWidth() const
+	std::int32_t getBaseWidth() const
 	{
 		return getWidget().getBaseWidth();
 	}
 
-	float getBaseHeight() const
+	std::int32_t getBaseHeight() const
 	{
 		return getWidget().getBaseHeight();
 	}
 
-	void delegateMouse(float X, float Y)
+	void delegateMouse(std::int32_t X, std::int32_t Y)
 	{
 		getWidget().delegateMouse(X, Y);
 	}

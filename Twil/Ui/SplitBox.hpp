@@ -22,27 +22,27 @@ protected:
 	FirstT mFirst;
 	SecondT mSecond;
 
-	float getMouseLeft() const
+	std::int32_t getMouseLeft() const
 	{
-		return std::max<float>(getLeft(), getClipLeft());
+		return std::max<std::int32_t>(getLeft(), getClipLeft());
 	}
 
-	float getMouseRight() const
+	std::int32_t getMouseRight() const
 	{
-		return std::min<float>(getRight(), getClipRight());
+		return std::min<std::int32_t>(getRight(), getClipRight());
 	}
 
-	float getMouseBottom() const
+	std::int32_t getMouseBottom() const
 	{
-		return std::max<float>(getBottom(), getClipBottom());
+		return std::max<std::int32_t>(getBottom(), getClipBottom());
 	}
 
-	float getMouseTop() const
+	std::int32_t getMouseTop() const
 	{
-		return std::min<float>(getTop(), getClipTop());
+		return std::min<std::int32_t>(getTop(), getClipTop());
 	}
 
-	bool checkThisContains(float X, float Y) const
+	bool checkThisContains(std::int32_t X, std::int32_t Y) const
 	{
 		return (
 			X >= getMouseLeft() && X >= getClipLeft() &&
@@ -87,54 +87,54 @@ public:
 	}
 
 	// Widget
-	void moveX(float X)
+	void moveX(std::int32_t X)
 	{
 		mFirst.moveX(X);
 		mSecond.moveX(X);
 	}
 
-	void moveY(float Y)
+	void moveY(std::int32_t Y)
 	{
 		mFirst.moveY(Y);
 		mSecond.moveY(Y);
 	}
 
-	float getLeft() const
+	std::int32_t getLeft() const
 	{
 		return mFirst.getLeft();
 	}
 
-	float getBottom() const
+	std::int32_t getBottom() const
 	{
 		return mFirst.getBottom();
 	}
 
-	float getRight() const
+	std::int32_t getRight() const
 	{
 		return mSecond.getRight();
 	}
 
-	float getTop() const
+	std::int32_t getTop() const
 	{
 		return mSecond.getTop();
 	}
 
-	float getClipLeft() const
+	std::int32_t getClipLeft() const
 	{
 		return mFirst.getClipLeft();
 	}
 
-	float getClipBottom() const
+	std::int32_t getClipBottom() const
 	{
 		return mFirst.getClipBottom();
 	}
 
-	float getClipRight() const
+	std::int32_t getClipRight() const
 	{
 		return mSecond.getClipRight();
 	}
 
-	float getClipTop() const
+	std::int32_t getClipTop() const
 	{
 		return mSecond.getClipTop();
 	}
@@ -154,42 +154,42 @@ protected:
 
 public:
 	// Widget
-	void resizeHeight(float Y)
+	void resizeHeight(std::int32_t Y)
 	{
 		mFirst.resizeHeight(Y);
 		mSecond.resizeHeight(Y);
 	}
 
-	void setClipBottom(float Y)
+	void setClipBottom(std::int32_t Y)
 	{
 		mFirst.setClipBottom(Y);
 		mSecond.setClipBottom(Y);
 	}
 
-	void setClipTop(float Y)
+	void setClipTop(std::int32_t Y)
 	{
 		mFirst.setClipTop(Y);
 		mSecond.setClipTop(Y);
 	}
 
-	float getBaseWidth() const
+	std::int32_t getBaseWidth() const
 	{
 		return mFirst.getBaseWidth() + mSecond.getBaseWidth();
 	}
 
-	float getBaseHeight() const
+	std::int32_t getBaseHeight() const
 	{
 		return std::max(mFirst.getBaseHeight(), mSecond.getBaseHeight());
 	}
 
-	void delegateMouse(float X, float Y)
+	void delegateMouse(std::int32_t X, std::int32_t Y)
 	{
 		if (X < mSecond.getLeft()) mFirst.delegateMouse(X, Y);
 		else mSecond.delegateMouse(X, Y);
 	}
 
 	// Container
-	void releaseMouse(float X, float Y) final
+	void releaseMouse(std::int32_t X, std::int32_t Y) final
 	{
 		if (checkThisContains(X, Y)) delegateMouse(X, Y);
 		else mParent->releaseMouse(X, Y);
@@ -215,42 +215,42 @@ protected:
 
 public:
 	// Widget
-	void resizeWidth(float X)
+	void resizeWidth(std::int32_t X)
 	{
 		mFirst.resizeWidth(X);
 		mSecond.resizeWidth(X);
 	}
 
-	void setClipLeft(float X)
+	void setClipLeft(std::int32_t X)
 	{
 		mFirst.setClipLeft(X);
 		mSecond.setClipLeft(X);
 	}
 
-	void setClipRight(float X)
+	void setClipRight(std::int32_t X)
 	{
 		mFirst.setClipRight(X);
 		mSecond.setClipRight(X);
 	}
 
-	float getBaseWidth() const
+	std::int32_t getBaseWidth() const
 	{
 		return std::max(mFirst.getBaseWidth(), mSecond.getBaseWidth());
 	}
 
-	float getBaseHeight() const
+	std::int32_t getBaseHeight() const
 	{
 		return mFirst.getBaseHeight() + mSecond.getBaseHeight();
 	}
 
-	void delegateMouse(float X, float Y)
+	void delegateMouse(std::int32_t X, std::int32_t Y)
 	{
 		if (Y < mSecond.getBottom()) mFirst.delegateMouse(X, Y);
 		else mSecond.delegateMouse(X, Y);
 	}
 
 	// Container
-	void releaseMouse(float X, float Y) final
+	void releaseMouse(std::int32_t X, std::int32_t Y) final
 	{
 		if (checkThisContains(X, Y)) delegateMouse(X, Y);
 		else mParent->releaseMouse(X, Y);
@@ -281,7 +281,7 @@ protected:
 
 	void layout()
 	{
-		float Delta = mFirst.getLeft() + mFirst.getBaseWidth() - mFirst.getRight();
+		std::int32_t Delta = mFirst.getLeft() + mFirst.getBaseWidth() - mFirst.getRight();
 		mFirst.resizeWidth(Delta);
 		mSecond.moveX(Delta);
 		mSecond.resizeWidth(-Delta);
@@ -297,19 +297,19 @@ public:
 	}
 
 	// Widget
-	void resizeWidth(float X)
+	void resizeWidth(std::int32_t X)
 	{
 		mSecond.resizeWidth(X);
 		mFirst.setClipRight(getMouseRight());
 	}
 
-	void setClipLeft(float X)
+	void setClipLeft(std::int32_t X)
 	{
 		mFirst.setClipLeft(X);
 		mSecond.setClipLeft(X);
 	}
 
-	void setClipRight(float X)
+	void setClipRight(std::int32_t X)
 	{
 		mFirst.setClipRight(getMouseRight());
 		mSecond.setClipRight(X);
@@ -342,7 +342,7 @@ protected:
 
 	void layout()
 	{
-		float Delta = mSecond.getLeft() + mSecond.getBaseWidth() - mSecond.getRight();
+		std::int32_t Delta = mSecond.getLeft() + mSecond.getBaseWidth() - mSecond.getRight();
 		mFirst.resizeWidth(-Delta);
 		mSecond.moveX(-Delta);
 		mSecond.resizeWidth(Delta);
@@ -358,20 +358,20 @@ public:
 	}
 
 	// Widget
-	void resizeWidth(float X)
+	void resizeWidth(std::int32_t X)
 	{
 		mFirst.resizeWidth(X);
 		mSecond.moveX(X);
 		mSecond.setClipLeft(getMouseLeft());
 	}
 
-	void setClipLeft(float X)
+	void setClipLeft(std::int32_t X)
 	{
 		mFirst.setClipLeft(X);
 		mSecond.setClipLeft(getMouseLeft());
 	}
 
-	void setClipRight(float X)
+	void setClipRight(std::int32_t X)
 	{
 		mFirst.setClipRight(X);
 		mSecond.setClipRight(X);
@@ -404,7 +404,7 @@ protected:
 
 	void layout()
 	{
-		float Delta = mFirst.getBottom() + mFirst.getBaseHeight() - mFirst.getTop();
+		std::int32_t Delta = mFirst.getBottom() + mFirst.getBaseHeight() - mFirst.getTop();
 		mFirst.resizeHeight(Delta);
 		mSecond.moveY(Delta);
 		mSecond.resizeHeight(-Delta);
@@ -420,19 +420,19 @@ public:
 	}
 
 	// Widget
-	void resizeHeight(float Y)
+	void resizeHeight(std::int32_t Y)
 	{
 		mSecond.resizeHeight(Y);
 		mFirst.setClipTop(getMouseTop());
 	}
 
-	void setClipBottom(float Y)
+	void setClipBottom(std::int32_t Y)
 	{
 		mFirst.setClipBottom(Y);
 		mSecond.setClipBottom(Y);
 	}
 
-	void setClipTop(float Y)
+	void setClipTop(std::int32_t Y)
 	{
 		mFirst.setClipTop(getMouseTop());
 		mSecond.setClipTop(Y);
@@ -465,7 +465,7 @@ protected:
 
 	void layout()
 	{
-		float Delta = mSecond.getBottom() + mSecond.getBaseHeight() - mSecond.getTop();
+		std::int32_t Delta = mSecond.getBottom() + mSecond.getBaseHeight() - mSecond.getTop();
 		mFirst.resizeHeight(-Delta);
 		mSecond.moveY(-Delta);
 		mSecond.resizeHeight(Delta);
@@ -481,20 +481,20 @@ public:
 	}
 
 	// Widget
-	void resizeHeight(float Y)
+	void resizeHeight(std::int32_t Y)
 	{
 		mFirst.resizeHeight(Y);
 		mSecond.moveY(Y);
 		mSecond.setClipBottom(getMouseBottom());
 	}
 
-	void setClipBottom(float Y)
+	void setClipBottom(std::int32_t Y)
 	{
 		mFirst.setClipBottom(Y);
 		mSecond.setClipBottom(getMouseBottom());
 	}
 
-	void setClipTop(float Y)
+	void setClipTop(std::int32_t Y)
 	{
 		mFirst.setClipTop(Y);
 		mSecond.setClipTop(Y);

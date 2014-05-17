@@ -34,7 +34,6 @@ set (CMAKE_EXE_LINKER_FLAGS_RELWITHDEBINFO "${linker_symbol}")
 find_package (Freetype REQUIRED)
 find_package (OpenGL REQUIRED)
 find_package (PNG REQUIRED)
-find_package (X11 REQUIRED)
 
 include_directories (
 	Twil

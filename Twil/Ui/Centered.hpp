@@ -13,44 +13,44 @@ namespace Ui {
 class CenteredT
 {
 private:
-	float mLeft = 0;
-	float mRight = 0;
-	float mBottom = 0;
-	float mTop = 0;
-	float mClipLeft = 0;
-	float mClipRight = 0;
-	float mClipBottom = 0;
-	float mClipTop = 0;
+	std::int32_t mLeft = 0;
+	std::int32_t mRight = 0;
+	std::int32_t mBottom = 0;
+	std::int32_t mTop = 0;
+	std::int32_t mClipLeft = 0;
+	std::int32_t mClipRight = 0;
+	std::int32_t mClipBottom = 0;
+	std::int32_t mClipTop = 0;
 
 public:
-	float getLayoutLeft(float Width) const;
-	float getLayoutBottom(float Height) const;
+	std::int32_t getLayoutLeft(std::int32_t Width) const;
+	std::int32_t getLayoutBottom(std::int32_t Height) const;
 
-	float getLayoutClipLeft() const;
-	float getLayoutClipRight() const;
-	float getLayoutClipBottom() const;
-	float getLayoutClipTop() const;
+	std::int32_t getLayoutClipLeft() const;
+	std::int32_t getLayoutClipRight() const;
+	std::int32_t getLayoutClipBottom() const;
+	std::int32_t getLayoutClipTop() const;
 
-	void moveX(float X);
-	void moveY(float Y);
+	void moveX(std::int32_t X);
+	void moveY(std::int32_t Y);
 
-	void resizeWidth(float X);
-	void resizeHeight(float Y);
+	void resizeWidth(std::int32_t X);
+	void resizeHeight(std::int32_t Y);
 
-	void setClipLeft(float X);
-	void setClipRight(float X);
-	void setClipBottom(float Y);
-	void setClipTop(float Y);
+	void setClipLeft(std::int32_t X);
+	void setClipRight(std::int32_t X);
+	void setClipBottom(std::int32_t Y);
+	void setClipTop(std::int32_t Y);
 
-	float getLeft() const;
-	float getRight() const;
-	float getBottom() const;
-	float getTop() const;
+	std::int32_t getLeft() const;
+	std::int32_t getRight() const;
+	std::int32_t getBottom() const;
+	std::int32_t getTop() const;
 
-	float getClipLeft() const;
-	float getClipRight() const;
-	float getClipBottom() const;
-	float getClipTop() const;
+	std::int32_t getClipLeft() const;
+	std::int32_t getClipRight() const;
+	std::int32_t getClipBottom() const;
+	std::int32_t getClipTop() const;
 };
 
 }

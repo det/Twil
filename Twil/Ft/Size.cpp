@@ -10,7 +10,7 @@
 namespace Twil {
 namespace Ft {
 
-SizeT::SizeT(FaceT & Face, FT_F26Dot6 Points, FT_UInt HorizontalDpi, FT_UInt VerticalDpi)
+SizeT::SizeT(FaceT & Face, std::int16_t Width, std::int16_t Height)
 :
 	mId{nullptr}
 {
@@ -18,7 +18,7 @@ SizeT::SizeT(FaceT & Face, FT_F26Dot6 Points, FT_UInt HorizontalDpi, FT_UInt Ver
 	if (Error) throw std::runtime_error{"Unable to load font size"};
 
 	FT_Activate_Size(mId);
-	FT_Set_Char_Size(Face.mId, Points, Points, HorizontalDpi, VerticalDpi);
+	FT_Set_Pixel_Sizes(Face.mId, Width, Height);
 }
 
 SizeT::~SizeT() noexcept

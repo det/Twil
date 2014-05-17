@@ -15,7 +15,8 @@
 namespace Twil {
 namespace Platform {
 
-ApplicationT::ApplicationT() :
+ApplicationT::ApplicationT()
+:
 	mRunning{false}
 {
 	mDisplay = XOpenDisplay(0);
@@ -46,10 +47,6 @@ ApplicationT::ApplicationT() :
 	int FramebufferCount;
 	auto ScreenId = DefaultScreen(mDisplay);
 
-	auto Screen = ScreenOfDisplay(mDisplay, ScreenId);
-	mDpiX = 25.4 * Screen->width / Screen->mwidth;
-	mDpiY = 25.4 * Screen->height / Screen->mheight;
-
 	mConfigs = glXChooseFBConfig(mDisplay, ScreenId, VisualAttributes, &FramebufferCount);
 	if (mConfigs == nullptr) throw std::runtime_error{"Unable to find matching video mode"};
 	auto && ConfigsGuard = Data::makeScopeGuard([&] { XFree(mConfigs); });
@@ -64,14 +61,24 @@ ApplicationT::~ApplicationT() noexcept
 	XCloseDisplay(mDisplay);
 }
 
-float ApplicationT::getDpiX()
+std::int16_t ApplicationT::getMillimeterWidth()
 {
-	return mDpiX;
+	return ScreenOfDisplay(mDisplay, DefaultScreen(mDisplay))->mwidth;
 }
 
-float ApplicationT::getDpiY()
+std::int16_t ApplicationT::getMillimeterHeight()
 {
-	return mDpiY;
+	return ScreenOfDisplay(mDisplay, DefaultScreen(mDisplay))->mheight;
+}
+
+std::int16_t ApplicationT::getPixelWidth()
+{
+	return ScreenOfDisplay(mDisplay, DefaultScreen(mDisplay))->width;
+}
+
+std::int16_t ApplicationT::getPixelHeight()
+{
+	return ScreenOfDisplay(mDisplay, DefaultScreen(mDisplay))->height;
 }
 
 void ApplicationT::stop()

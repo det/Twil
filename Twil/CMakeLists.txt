@@ -201,6 +201,9 @@ set (ui_sources
 	Ui/MouseHandler.cpp
 	Ui/MouseHandler.hpp
 	Ui/MouseHandlerFwd.hpp
+	Ui/Operator.cpp
+	Ui/Operator.hpp
+	Ui/OperatorFwd.hpp
 	Ui/PartitionBox.cpp
 	Ui/PartitionBox.hpp
 	Ui/PartitionBoxFwd.hpp

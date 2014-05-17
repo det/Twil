@@ -18,27 +18,27 @@ void ButtonT::setIsDown(bool IsDown)
 	mWindow->getThemeManager().mOutlineArray.markNeedsRedraw(*this);
 }
 
-float ButtonT::getLeftMargin() const
+std::int32_t ButtonT::getLeftMargin() const
 {
 	return Settings::Button::LeftMargin;
 }
 
-float ButtonT::getRightMargin() const
+std::int32_t ButtonT::getRightMargin() const
 {
 	return Settings::Button::RightMargin;
 }
 
-float ButtonT::getBottomMargin() const
+std::int32_t ButtonT::getBottomMargin() const
 {
 	return Settings::Button::BottomMargin;
 }
 
-float ButtonT::getTopMargin() const
+std::int32_t ButtonT::getTopMargin() const
 {
 	return Settings::Button::TopMargin;
 }
 
-void ButtonT::moveX(float X)
+void ButtonT::moveX(std::int32_t X)
 {
 	mLeft += X;
 	mRight += X;
@@ -47,7 +47,7 @@ void ButtonT::moveX(float X)
 	mWindow->getThemeManager().mOutlineArray.markNeedsRedraw(*this);
 }
 
-void ButtonT::moveY(float Y)
+void ButtonT::moveY(std::int32_t Y)
 {
 	mBottom += Y;
 	mTop += Y;
@@ -56,39 +56,39 @@ void ButtonT::moveY(float Y)
 	mWindow->getThemeManager().mOutlineArray.markNeedsRedraw(*this);
 }
 
-void ButtonT::resizeWidth(float X)
+void ButtonT::resizeWidth(std::int32_t X)
 {
 	mRight += X;
 	mClipRight += X;
 	mWindow->getThemeManager().mOutlineArray.markNeedsRedraw(*this);
 }
 
-void ButtonT::resizeHeight(float Y)
+void ButtonT::resizeHeight(std::int32_t Y)
 {
 	mTop += Y;
 	mClipTop += Y;
 	mWindow->getThemeManager().mOutlineArray.markNeedsRedraw(*this);
 }
 
-void ButtonT::setClipLeft(float X)
+void ButtonT::setClipLeft(std::int32_t X)
 {
 	mClipLeft = X;
 	mWindow->getThemeManager().mOutlineArray.markNeedsRedraw(*this);
 }
 
-void ButtonT::setClipRight(float X)
+void ButtonT::setClipRight(std::int32_t X)
 {
 	mClipRight = X;
 	mWindow->getThemeManager().mOutlineArray.markNeedsRedraw(*this);
 }
 
-void ButtonT::setClipBottom(float Y)
+void ButtonT::setClipBottom(std::int32_t Y)
 {
 	mClipBottom = Y;
 	mWindow->getThemeManager().mOutlineArray.markNeedsRedraw(*this);
 }
 
-void ButtonT::setClipTop(float Y)
+void ButtonT::setClipTop(std::int32_t Y)
 {
 	mClipTop = Y;
 	mWindow->getThemeManager().mOutlineArray.markNeedsRedraw(*this);
@@ -301,52 +301,52 @@ void ButtonT::draw(Vertex::OutlineGradientT * Vertices) const
 	Vertices[8].OutIndex = {Manager.mButtonCenterOut};
 }
 
-float ButtonT::getLeft() const
+std::int32_t ButtonT::getLeft() const
 {
 	return mLeft;
 }
 
-float ButtonT::getBottom() const
+std::int32_t ButtonT::getBottom() const
 {
 	return mBottom;
 }
 
-float ButtonT::getRight() const
+std::int32_t ButtonT::getRight() const
 {
 	return mRight;
 }
 
-float ButtonT::getTop() const
+std::int32_t ButtonT::getTop() const
 {
 	return mTop;
 }
 
-float ButtonT::getClipLeft() const
+std::int32_t ButtonT::getClipLeft() const
 {
 	return mClipLeft;
 }
 
-float ButtonT::getClipRight() const
+std::int32_t ButtonT::getClipRight() const
 {
 	return mClipRight;
 }
 
-float ButtonT::getClipBottom() const
+std::int32_t ButtonT::getClipBottom() const
 {
 	return mClipBottom;
 }
 
-float ButtonT::getClipTop() const
+std::int32_t ButtonT::getClipTop() const
 {
 	return mClipTop;
 }
 
-float ButtonT::getBaseWidth(float Width) const
+std::int32_t ButtonT::getBaseWidth(std::int32_t Width) const
 {
 	return Width + Settings::Button::BaseWidthMargin;
 }
 
-float ButtonT::getBaseHeight(float Height) const
+std::int32_t ButtonT::getBaseHeight(std::int32_t Height) const
 {
 	return Height + Settings::Button::BaseHeightMargin;
 }
