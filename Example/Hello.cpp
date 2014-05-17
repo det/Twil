@@ -22,12 +22,12 @@ private:
 	using LabelT = Twil::Ui::LabelT<CenteredT>;
 	using ImageButtonT = Twil::Ui::ButtonT<ImageT>;
 	using LabelButtonT = Twil::Ui::ButtonT<LabelT>;
-	using SpacedImageButtonT = Twil::Ui::MarginT<4_dips, 4_dips, ImageButtonT>;
-	using SpacedLabelButtonT = Twil::Ui::MarginT<4_dips, 4_dips, LabelButtonT>;
+	using SpacedImageButtonT = Twil::Ui::MarginT<4_dip, 4_dip, ImageButtonT>;
+	using SpacedLabelButtonT = Twil::Ui::MarginT<4_dip, 4_dip, LabelButtonT>;
 	using GridT = Twil::Ui::GridT<3, 3, SpacedImageButtonT>;
 	using VerticalBox0T = Twil::Ui::SplitBoxT<false, false, GridT, SpacedLabelButtonT>;
 	using VerticalBox1T = Twil::Ui::SplitBoxT<false, true, LabelT, VerticalBox0T>;
-	using WindowT = Twil::Ui::WindowT<Twil::Ui::MarginT<4_dips, 4_dips, VerticalBox1T>>;
+	using WindowT = Twil::Ui::WindowT<Twil::Ui::MarginT<4_dip, 4_dip, VerticalBox1T>>;
 	using ApplicationT = Twil::Ui::ApplicationT<WindowT>;
 	ApplicationT mApplication;
 

@@ -44,7 +44,7 @@ public:
 
 	WindowT(Platform::ApplicationT & Application)
 	:
-		WindowBaseT{Application, 320_dips, 240_dips}
+		WindowBaseT{Application, 320_dip, 240_dip}
 	{}
 
 	void init()
