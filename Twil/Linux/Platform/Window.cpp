@@ -90,7 +90,9 @@ WindowT::WindowT(Ui::WindowBaseT & Window, ApplicationT & Application, std::int1
 	SymbolLoaderT Loader;
 	Gl::Context::initialize(Loader);
 
+#ifndef NDEBUG
 	glDebugMessageCallbackARB(handleDebug, nullptr);
+#endif
 
 	SaveContextGuard.dismiss();
 	ContextGuard.dismiss();

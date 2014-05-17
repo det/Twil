@@ -13,10 +13,18 @@ namespace Ui {
 
 WindowConverterT::WindowConverterT(Platform::ApplicationT & Application)
 :
-	mDipToPixelFactorX{17045651456 * Application.getPixelWidth() / (15 * Application.getMillimeterWidth())},
-	mDipToPixelFactorY{17045651456 * Application.getPixelHeight() / (15 * Application.getMillimeterHeight())},
-	mPixelToDipFactorX{2061584302080 * Application.getMillimeterWidth() / (127 * Application.getPixelWidth())},
-	mPixelToDipFactorY{2061584302080 * Application.getMillimeterHeight() / (127 * Application.getPixelHeight())},
+	mDipToPixelFactorX{
+		(Application.getPixelWidth() * 17045651456) /
+		(Application.getMillimeterWidth() * 15)},
+	mDipToPixelFactorY{
+		(Application.getPixelHeight() * 17045651456) /
+		(Application.getMillimeterHeight() * 15)},
+	mPixelToDipFactorX{
+		(Application.getMillimeterWidth() * 2061584302080) /
+		(Application.getPixelWidth() * 127)},
+	mPixelToDipFactorY{
+		(Application.getMillimeterHeight() * 2061584302080) /
+		(Application.getPixelHeight() * 127)},
 	mHalfPixelX{mPixelToDipFactorX / 131072},
 	mHalfPixelY{mPixelToDipFactorY / 131072}
 {}
