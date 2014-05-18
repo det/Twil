@@ -3,8 +3,7 @@
 #include "LabelFwd.hpp"
 
 #include "Drawable.hpp"
-#include "Ui/DipFwd.hpp"
-#include "Ui/PixelFwd.hpp"
+#include "Ui/UnitFwd.hpp"
 #include "Ui/WindowBaseFwd.hpp"
 #include "Vertex/FillSolid.hpp"
 

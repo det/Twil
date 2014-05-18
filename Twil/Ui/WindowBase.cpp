@@ -24,33 +24,27 @@ WindowConverterT::WindowConverterT(Platform::ApplicationT & Application)
 		(Application.getPixelWidth() * 127)},
 	mPixelToDipFactorY{
 		(Application.getMillimeterHeight() * 2061584302080) /
-		(Application.getPixelHeight() * 127)},
-	mHalfPixelX{mPixelToDipFactorX / 131072},
-	mHalfPixelY{mPixelToDipFactorY / 131072}
+		(Application.getPixelHeight() * 127)}
 {}
 
 PixelT WindowConverterT::convertDipToPixelX(DipT X)
 {
-	if (X > 0) X += mHalfPixelX;
-	else X -= mHalfPixelX;
-	return X * mDipToPixelFactorX / 281474976710656;
+	return (X + (mPixelToDipFactorX >> 17)) * mDipToPixelFactorX >> 48;
 }
 
 PixelT WindowConverterT::convertDipToPixelY(DipT Y)
 {
-	if (Y > 0) Y += mHalfPixelY;
-	else Y -= mHalfPixelY;
-	return Y * mDipToPixelFactorY / 281474976710656;
+	return (Y + (mPixelToDipFactorY >> 17)) * mDipToPixelFactorY >> 48;
 }
 
 DipT WindowConverterT::convertPixelToDipX(PixelT X)
 {
-	return X * mPixelToDipFactorX / 65536;
+	return X * mPixelToDipFactorX >> 16;
 }
 
 DipT WindowConverterT::convertPixelToDipY(PixelT Y)
 {
-	return Y * mPixelToDipFactorY / 65536;
+	return Y * mPixelToDipFactorY >> 16;
 }
 
 PixelT WindowConverterT::scaleX(PixelT X)

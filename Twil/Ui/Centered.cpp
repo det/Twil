@@ -17,22 +17,22 @@ DipT CenteredT::getLayoutBottom(DipT Height) const
 
 DipT CenteredT::getLayoutClipLeft() const
 {
-	return std::max<DipT>(mLeft, mClipLeft);
+	return std::max(mLeft, mClipLeft);
 }
 
 DipT CenteredT::getLayoutClipRight() const
 {
-	return std::min<DipT>(mRight, mClipRight);
+	return std::min(mRight, mClipRight);
 }
 
 DipT CenteredT::getLayoutClipBottom() const
 {
-	return std::max<DipT>(mBottom, mClipBottom);
+	return std::max(mBottom, mClipBottom);
 }
 
 DipT CenteredT::getLayoutClipTop() const
 {
-	return std::min<DipT>(mTop, mClipTop);
+	return std::min(mTop, mClipTop);
 }
 
 void CenteredT::setClipLeft(DipT X)

@@ -8,7 +8,7 @@
 #include "Theme/Manager.hpp"
 #include "Ui/KeyboardHandlerFwd.hpp"
 #include "Ui/MouseHandlerFwd.hpp"
-#include "Ui/PixelFwd.hpp"
+#include "Ui/UnitFwd.hpp"
 #include "Ui/WindowBaseFwd.hpp"
 #include "Ui/WindowHandlerFwd.hpp"
 

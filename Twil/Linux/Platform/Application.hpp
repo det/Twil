@@ -5,7 +5,7 @@
 #include "GlxFwd.hpp"
 #include "X11Fwd.hpp"
 #include "Data/Memory.hpp"
-#include "Ui/PixelFwd.hpp"
+#include "Ui/UnitFwd.hpp"
 
 #include <cassert>
 #include <cstdlib>

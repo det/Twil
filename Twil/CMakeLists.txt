@@ -186,9 +186,6 @@ set (ui_sources
 	Ui/Centered.cpp
 	Ui/Centered.hpp
 	Ui/CenteredFwd.hpp
-	Ui/Dip.cpp
-	Ui/Dip.hpp
-	Ui/DipFwd.hpp
 	Ui/Grid.cpp
 	Ui/Grid.hpp
 	Ui/GridFwd.hpp
@@ -207,12 +204,12 @@ set (ui_sources
 	Ui/PartitionBox.cpp
 	Ui/PartitionBox.hpp
 	Ui/PartitionBoxFwd.hpp
-	Ui/Pixel.cpp
-	Ui/Pixel.hpp
-	Ui/PixelFwd.hpp
 	Ui/SplitBox.cpp
 	Ui/SplitBox.hpp
 	Ui/SplitBoxFwd.hpp
+	Ui/Unit.cpp
+	Ui/Unit.hpp
+	Ui/UnitFwd.hpp
 	Ui/Widget.cpp
 	Ui/Widget.hpp
 	Ui/WidgetFwd.hpp

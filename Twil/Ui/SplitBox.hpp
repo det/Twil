@@ -24,22 +24,22 @@ protected:
 
 	DipT getMouseLeft() const
 	{
-		return std::max<DipT>(getLeft(), getClipLeft());
+		return std::max(getLeft(), getClipLeft());
 	}
 
 	DipT getMouseRight() const
 	{
-		return std::min<DipT>(getRight(), getClipRight());
+		return std::min(getRight(), getClipRight());
 	}
 
 	DipT getMouseBottom() const
 	{
-		return std::max<DipT>(getBottom(), getClipBottom());
+		return std::max(getBottom(), getClipBottom());
 	}
 
 	DipT getMouseTop() const
 	{
-		return std::min<DipT>(getTop(), getClipTop());
+		return std::min(getTop(), getClipTop());
 	}
 
 	bool checkThisContains(DipT X, DipT Y) const

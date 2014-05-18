@@ -18,7 +18,7 @@
 #include "Program/OutlineGradient.hpp"
 #include "Gl/Context.hpp"
 #include "Ui/WindowBaseFwd.hpp"
-#include "Ui/PixelFwd.hpp"
+#include "Ui/UnitFwd.hpp"
 #include "Vertex/Bitmap.hpp"
 #include "Vertex/FillSolid.hpp"
 #include "Vertex/OutlineGradient.hpp"

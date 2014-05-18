@@ -15,12 +15,10 @@ namespace Ui {
 class WindowConverterT
 {
 private:	
-	std::int64_t mDipToPixelFactorX;
-	std::int64_t mDipToPixelFactorY;
-	std::int64_t mPixelToDipFactorX;
-	std::int64_t mPixelToDipFactorY;
-	std::int64_t mHalfPixelX;
-	std::int64_t mHalfPixelY;
+	ScaleT mDipToPixelFactorX;
+	ScaleT mDipToPixelFactorY;
+	ScaleT mPixelToDipFactorX;
+	ScaleT mPixelToDipFactorY;
 
 public:
 	WindowConverterT(Platform::ApplicationT & Application);
