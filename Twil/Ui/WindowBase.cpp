@@ -8,6 +8,23 @@
 
 #include <iostream>
 
+namespace {
+
+template<typename T, typename CountT>
+constexpr auto shar(T Num, CountT Count)
+{
+	static_assert(-1 >> 1 == -1, "signed right shift is not arithmetic shift");
+	return Num >> Count;
+}
+
+template<typename T, typename CountT>
+constexpr auto shal(T Num, CountT Count)
+{
+	return Num * (1 << Count);
+}
+
+}
+
 namespace Twil {
 namespace Ui {
 
@@ -29,32 +46,32 @@ WindowConverterT::WindowConverterT(Platform::ApplicationT & Application)
 
 PixelT WindowConverterT::convertDipToPixelX(DipT X)
 {
-	return (X + (mPixelToDipFactorX >> 17)) * mDipToPixelFactorX >> 48;
+	return shar((X + shar(mPixelToDipFactorX, 17)) * mDipToPixelFactorX, 48);
 }
 
 PixelT WindowConverterT::convertDipToPixelY(DipT Y)
 {
-	return (Y + (mPixelToDipFactorY >> 17)) * mDipToPixelFactorY >> 48;
+	return shar((Y + shar(mPixelToDipFactorY, 17)) * mDipToPixelFactorY, 48);
 }
 
 DipT WindowConverterT::convertPixelToDipX(PixelT X)
 {
-	return X * mPixelToDipFactorX >> 16;
+	return shar(X * mPixelToDipFactorX, 16);
 }
 
 DipT WindowConverterT::convertPixelToDipY(PixelT Y)
 {
-	return Y * mPixelToDipFactorY >> 16;
+	return shar(Y * mPixelToDipFactorY, 16);
 }
 
 PixelT WindowConverterT::scaleX(PixelT X)
 {
-	return convertDipToPixelX(X * 65536);
+	return convertDipToPixelX(shal(X, 16));
 }
 
 PixelT WindowConverterT::scaleY(PixelT Y)
 {
-	return convertDipToPixelY(Y * 65536);
+	return convertDipToPixelY(shal(Y, 16));
 }
 
 WindowBaseT::WindowBaseT(Platform::ApplicationT & Application, DipT Width, DipT Height)

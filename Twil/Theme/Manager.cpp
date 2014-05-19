@@ -140,8 +140,10 @@ void ManagerT::setupButton()
 	mButtonVerticalCornerSize = VerticalCornerSize;
 }
 
+namespace {
+
 template<typename SourceT, typename DestT, std::size_t Channels = 4>
-void resize(
+void resizeNearest(
 	SourceT Source, std::size_t SourceWidth, std::size_t SourceHeight,
 	DestT Dest, std::size_t DestWidth, std::size_t DestHeight)
 {
@@ -158,6 +160,107 @@ void resize(
 	}
 }
 
+double clean(double X)
+{
+   double const Epsilon = .0000125;
+   if (std::abs(X) < Epsilon) return 0.0;
+   return X;
+}
+
+double sinc(double X)
+{
+	X *= std::atan(1) * 4;
+	if (X < 0.01 && X > -0.01) return 1.0 + X * X * (-1.0 / 6.0 + X * X * 1.0 / 120.0);
+	else return std::sin(X) / X;
+}
+
+double evalLanczos(double X, std::size_t FilterSize)
+{
+   if (X < 0.0) X = -X;
+   if (X < FilterSize) return clean(sinc(X) * sinc(X / FilterSize));
+   else return 0.0;
+}
+
+template<typename SourceT, typename DestT>
+void resizeLanzos(
+	SourceT Source, std::size_t SourceWidth, std::size_t SourceHeight,
+	DestT Dest, std::size_t DestWidth, std::size_t DestHeight,
+	std::size_t Channels = 4, std::size_t FilterSize = 3)
+{
+	double RatioX =
+		static_cast<double>(SourceWidth) /
+		static_cast<double>(DestWidth);
+
+	double RatioY =
+		static_cast<double>(SourceHeight) /
+		static_cast<double>(DestHeight);
+
+	double SourceMax = std::numeric_limits<typename std::iterator_traits<SourceT>::value_type>::max();
+	double DestMax = std::numeric_limits<typename std::iterator_traits<DestT>::value_type>::max();
+
+	auto HorizData = Data::makeUniqueArray<double>(SourceHeight * DestWidth * Channels);
+
+	for (std::size_t DestY = 0; DestY != SourceHeight; ++DestY)
+	{
+		for (std::size_t DestX = 0; DestX != DestWidth; ++DestX)
+		{
+			for (std::size_t C = 0; C != Channels; ++C)
+			{
+				double SourceX = RatioX * DestX;
+				std::size_t FloorX = SourceX;
+
+				double DestChannel = 0.0;
+				double Weight = 0.0;
+				for (std::size_t I = FloorX - FilterSize - 1; I != FloorX + FilterSize; ++I)
+				{
+					if (I < SourceWidth)
+					{
+						double Term = evalLanczos(SourceX - I, FilterSize);
+						DestChannel += Source[DestY * SourceWidth * Channels + I * Channels + C] / SourceMax * Term;
+						Weight += Term;
+					}
+				}
+
+				DestChannel /= Weight;
+				if (DestChannel > 1.0) DestChannel = 1.0;
+				if (DestChannel < 0.0) DestChannel = 0.0;
+				HorizData[DestY * DestWidth * Channels + DestX * Channels + C] = DestChannel;
+			}
+		}
+	}
+
+	for (std::size_t DestY = 0; DestY != DestHeight; ++DestY)
+	{
+		double SourceY = RatioY * DestY;
+		std::size_t FloorY = SourceY;
+		for (std::size_t DestX = 0; DestX != DestWidth; ++DestX)
+		{
+			for (std::size_t C = 0; C != Channels; ++C)
+			{
+				double DestChannel = 0.0;
+				double Weight = 0.0;
+				for (std::size_t I = FloorY - FilterSize - 1; I != FloorY + FilterSize; ++I)
+				{
+					if (I < SourceHeight)
+					{
+						double Term = evalLanczos(SourceY - I, FilterSize);
+						DestChannel += HorizData[I * DestWidth * Channels + DestX * Channels + C] * Term;
+						Weight += Term;
+					}
+				}
+
+				DestChannel /= Weight;
+				if (DestChannel > 1.0) DestChannel = 1.0;
+				if (DestChannel < 0.0) DestChannel = 0.0;
+
+				Dest[DestY * DestWidth * Channels + DestX * Channels + C] = DestChannel * DestMax + 0.5;
+			}
+		}
+	}
+}
+
+}
+
 BitmapEntryT const & ManagerT::loadBitmapEntry(char const * Path)
 {
 	auto Iter = mBitmapEntries.find(Path);
@@ -170,7 +273,7 @@ BitmapEntryT const & ManagerT::loadBitmapEntry(char const * Path)
 	auto Allocation = mRgbaTexture.allocate(Width * Height * 4);
 	std::uint32_t Offset = Allocation.second / 4;
 
-	resize(
+	resizeLanzos(
 		Image.begin(), Image.getWidth(), Image.getHeight(),
 		Allocation.first, Width, Height);
 
