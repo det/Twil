@@ -142,63 +142,75 @@ void ManagerT::setupButton()
 
 namespace {
 
-template<typename SourceT, typename DestT, std::size_t Channels = 4>
-void resizeNearest(
-	SourceT Source, std::size_t SourceWidth, std::size_t SourceHeight,
-	DestT Dest, std::size_t DestWidth, std::size_t DestHeight)
+float mitchell(float X, const float B, const float C)
 {
-	for (std::size_t DestY = 0; DestY != DestHeight; ++DestY)
+	float XX;
+
+	XX = X * X;
+
+	if (X < 0.0) X = -X;
+
+	if (X < 1.0)
 	{
-		for (std::size_t DestX = 0; DestX != DestWidth; ++DestX)
-		{
-			std::size_t SourceX = DestX * SourceWidth / DestWidth;
-			std::size_t SourceY = DestY * SourceHeight / DestHeight;
-			auto DestPtr = Dest + DestY * DestWidth * Channels + DestX * Channels;
-			auto SourcePtr = Source + SourceY * SourceWidth * Channels + SourceX * Channels;
-			std::copy(SourcePtr, SourcePtr + Channels, DestPtr);
-		}
+		X =
+			(((12.0 - 9.0 * B - 6.0 * C) * (X * XX)) +
+			((-18.0 + 12.0 * B + 6.0 * C) * XX) +
+			(6.0 - 2.0 * B));
+
+		return X / 6.0;
 	}
+	else if (X < 2.0)
+	{
+		X =
+			(((-1.0 * B - 6.0 * C) * (X * XX)) +
+			((6.0 * B + 30.0 * C) * XX) +
+			((-12.0 * B - 48.0 * C) * X) +
+			(8.0 * B + 24.0 * C));
+
+		return X / 6.0;
+	}
+
+	return 0.0;
 }
 
-double clean(double X)
+float filterCatmullRom(float t)
 {
-   double const Epsilon = .0000125;
-   if (std::abs(X) < Epsilon) return 0.0;
-   return X;
+   return mitchell(t, 0.0, 0.5);
 }
 
-double sinc(double X)
-{
-	X *= std::atan(1) * 4;
-	if (X < 0.01 && X > -0.01) return 1.0 + X * X * (-1.0 / 6.0 + X * X * 1.0 / 120.0);
-	else return std::sin(X) / X;
-}
+//float filterMitchell(float t)
+//{
+//   return mitchell(t, 1.0 / 3.0, 1.0 / 3.0);
+//}
 
-double evalLanczos(double X, std::size_t FilterSize)
-{
-   if (X < 0.0) X = -X;
-   if (X < FilterSize) return clean(sinc(X) * sinc(X / FilterSize));
-   else return 0.0;
-}
+//float filterRobidoux(float t)
+//{
+//   return mitchell(t, 0.3782, 0.3109);
+//}
 
-template<typename SourceT, typename DestT>
-void resizeLanzos(
+//float filterRobidouxSharp(float t)
+//{
+//   return mitchell(t, 0.2620, 0.3690);
+//}
+
+template<typename SourceT, typename DestT, typename FilterT>
+void resizeCubic(
 	SourceT Source, std::size_t SourceWidth, std::size_t SourceHeight,
 	DestT Dest, std::size_t DestWidth, std::size_t DestHeight,
-	std::size_t Channels = 4, std::size_t FilterSize = 3)
+	FilterT Filter, std::size_t Channels = 4)
 {
-	double RatioX =
-		static_cast<double>(SourceWidth) /
-		static_cast<double>(DestWidth);
+	float RatioX =
+		static_cast<float>(SourceWidth) /
+		static_cast<float>(DestWidth);
 
-	double RatioY =
-		static_cast<double>(SourceHeight) /
-		static_cast<double>(DestHeight);
+	float RatioY =
+		static_cast<float>(SourceHeight) /
+		static_cast<float>(DestHeight);
 
-	double SourceMax = std::numeric_limits<typename std::iterator_traits<SourceT>::value_type>::max();
-	double DestMax = std::numeric_limits<typename std::iterator_traits<DestT>::value_type>::max();
+	float constexpr SourceMax = std::numeric_limits<typename std::iterator_traits<SourceT>::value_type>::max();
+	float constexpr DestMax = std::numeric_limits<typename std::iterator_traits<DestT>::value_type>::max();
 
-	auto HorizData = Data::makeUniqueArray<double>(SourceHeight * DestWidth * Channels);
+	auto HorizData = Data::makeUniqueArray<float>(SourceHeight * DestWidth * Channels);
 
 	for (std::size_t DestY = 0; DestY != SourceHeight; ++DestY)
 	{
@@ -206,21 +218,21 @@ void resizeLanzos(
 		{
 			for (std::size_t C = 0; C != Channels; ++C)
 			{
-				double SourceX = RatioX * DestX;
-				std::size_t FloorX = SourceX;
+				float CenterX = (DestX + 0.5) * RatioX - 0.5;
+				std::size_t FloorX = CenterX;
 
-				double DestChannel = 0.0;
-				double Weight = 0.0;
-				for (std::size_t I = FloorX - FilterSize - 1; I != FloorX + FilterSize; ++I)
+				float DestChannel = 0.0;
+				float Weight = 0.0;
+				for (auto I = FloorX - 1; I != FloorX + 3; ++I)
 				{
 					if (I < SourceWidth)
 					{
-						double Term = evalLanczos(SourceX - I, FilterSize);
+						float Term = Filter(CenterX - I);
 						DestChannel += Source[DestY * SourceWidth * Channels + I * Channels + C] / SourceMax * Term;
 						Weight += Term;
 					}
-				}
 
+				}
 				DestChannel /= Weight;
 				if (DestChannel > 1.0) DestChannel = 1.0;
 				if (DestChannel < 0.0) DestChannel = 0.0;
@@ -231,19 +243,19 @@ void resizeLanzos(
 
 	for (std::size_t DestY = 0; DestY != DestHeight; ++DestY)
 	{
-		double SourceY = RatioY * DestY;
-		std::size_t FloorY = SourceY;
+		float CenterY = (DestY + 0.5) * RatioY - 0.5;
+		std::size_t FloorY = CenterY;
 		for (std::size_t DestX = 0; DestX != DestWidth; ++DestX)
 		{
 			for (std::size_t C = 0; C != Channels; ++C)
 			{
-				double DestChannel = 0.0;
-				double Weight = 0.0;
-				for (std::size_t I = FloorY - FilterSize - 1; I != FloorY + FilterSize; ++I)
+				float DestChannel = 0.0;
+				float Weight = 0.0;
+				for (auto I = FloorY - 1; I != FloorY + 3; ++I)
 				{
 					if (I < SourceHeight)
 					{
-						double Term = evalLanczos(SourceY - I, FilterSize);
+						float Term = Filter(CenterY - I);
 						DestChannel += HorizData[I * DestWidth * Channels + DestX * Channels + C] * Term;
 						Weight += Term;
 					}
@@ -252,7 +264,6 @@ void resizeLanzos(
 				DestChannel /= Weight;
 				if (DestChannel > 1.0) DestChannel = 1.0;
 				if (DestChannel < 0.0) DestChannel = 0.0;
-
 				Dest[DestY * DestWidth * Channels + DestX * Channels + C] = DestChannel * DestMax + 0.5;
 			}
 		}
@@ -273,9 +284,12 @@ BitmapEntryT const & ManagerT::loadBitmapEntry(char const * Path)
 	auto Allocation = mRgbaTexture.allocate(Width * Height * 4);
 	std::uint32_t Offset = Allocation.second / 4;
 
-	resizeLanzos(
+	resizeCubic(
 		Image.begin(), Image.getWidth(), Image.getHeight(),
-		Allocation.first, Width, Height);
+		Allocation.first, Width, Height,
+		filterCatmullRom);
+
+//	std::copy(Image.begin(), Image.end(), Allocation.first);
 
 	BitmapEntryT Entry{Offset, Width, Height};
 	auto Pair = mBitmapEntries.insert({Path, Entry});
