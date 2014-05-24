@@ -148,39 +148,39 @@ float mitchell(float X, const float B, const float C)
 
 	XX = X * X;
 
-	if (X < 0.0) X = -X;
+	if (X < 0.0f) X = -X;
 
-	if (X < 1.0)
+	if (X < 1.0f)
 	{
 		X =
-			(((12.0 - 9.0 * B - 6.0 * C) * (X * XX)) +
-			((-18.0 + 12.0 * B + 6.0 * C) * XX) +
-			(6.0 - 2.0 * B));
+			(((12.0f - 9.0f * B - 6.0f * C) * (X * XX)) +
+			((-18.0f + 12.0f * B + 6.0f * C) * XX) +
+			(6.0f - 2.0f * B));
 
-		return X / 6.0;
+		return X / 6.0f;
 	}
-	else if (X < 2.0)
+	else if (X < 2.0f)
 	{
 		X =
-			(((-1.0 * B - 6.0 * C) * (X * XX)) +
-			((6.0 * B + 30.0 * C) * XX) +
-			((-12.0 * B - 48.0 * C) * X) +
-			(8.0 * B + 24.0 * C));
+			(((-1.0f * B - 6.0f * C) * (X * XX)) +
+			((6.0f * B + 30.0f * C) * XX) +
+			((-12.0f * B - 48.0f * C) * X) +
+			(8.0f * B + 24.0f * C));
 
-		return X / 6.0;
+		return X / 6.0f;
 	}
 
-	return 0.0;
+	return 0.0f;
 }
 
 float filterCatmullRom(float t)
 {
-   return mitchell(t, 0.0, 0.5);
+   return mitchell(t, 0.0f, 0.5);
 }
 
 //float filterMitchell(float t)
 //{
-//   return mitchell(t, 1.0 / 3.0, 1.0 / 3.0);
+//   return mitchell(t, 1.0f / 3.0f, 1.0f / 3.0f);
 //}
 
 //float filterRobidoux(float t)
@@ -193,49 +193,82 @@ float filterCatmullRom(float t)
 //   return mitchell(t, 0.2620, 0.3690);
 //}
 
+template<std::size_t FilterSize>
+struct SampleT
+{
+	float Center;
+	std::size_t Left;
+	std::size_t Right;
+	std::array<float, FilterSize * 2> Terms;
+};
+
+template<std::size_t FilterSize, typename FilterT>
+void generateSamples(std::size_t Source, std::size_t Dest, FilterT Filter, SampleT<FilterSize> * Samples)
+{
+	float Ratio = static_cast<float>(Source) / static_cast<float>(Dest);
+
+	for (std::size_t Coord = 0; Coord != Dest; ++Coord)
+	{
+		SampleT<FilterSize> Sample;
+
+		Sample.Center = (Coord + 0.5) * Ratio - 0.5;
+		std::size_t Nearest = Sample.Center + 1;
+		Sample.Left = Nearest - FilterSize;
+		if (Sample.Left > Source) Sample.Left = 0;
+		Sample.Right = Nearest + FilterSize;
+		if (Sample.Right > Source) Sample.Right = Source;
+
+		float Weight = 0.0f;
+
+		for (std::size_t I = Sample.Left; I != Sample.Right; ++I)
+		{
+			auto Term = Filter(Sample.Center - I);
+			Weight += Term;
+			Sample.Terms[I - Sample.Left] = Term;
+		}
+
+		for (std::size_t I = Sample.Left; I != Sample.Right; ++I)
+		{
+			Sample.Terms[I - Sample.Left] /= Weight;
+		}
+
+		Samples[Coord] = Sample;
+	}
+
+}
+
 template<typename SourceT, typename DestT, typename FilterT>
 void resizeCubic(
 	SourceT Source, std::size_t SourceWidth, std::size_t SourceHeight,
 	DestT Dest, std::size_t DestWidth, std::size_t DestHeight,
 	FilterT Filter, std::size_t Channels = 4)
 {
-	float RatioX =
-		static_cast<float>(SourceWidth) /
-		static_cast<float>(DestWidth);
-
-	float RatioY =
-		static_cast<float>(SourceHeight) /
-		static_cast<float>(DestHeight);
-
 	float constexpr SourceMax = std::numeric_limits<typename std::iterator_traits<SourceT>::value_type>::max();
 	float constexpr DestMax = std::numeric_limits<typename std::iterator_traits<DestT>::value_type>::max();
 
+	std::size_t constexpr FilterSize = 2;
+
 	auto HorizData = Data::makeUniqueArray<float>(SourceHeight * DestWidth * Channels);
+	auto HorizSamples = Data::makeUniqueArray<SampleT<FilterSize>>(DestWidth * 4);
+	auto VertSamples = Data::makeUniqueArray<SampleT<FilterSize>>(DestWidth * 4);
+
+	generateSamples(SourceWidth, DestWidth, Filter, HorizSamples.get());
+	generateSamples(SourceHeight, DestHeight, Filter, VertSamples.get());
 
 	for (std::size_t DestY = 0; DestY != SourceHeight; ++DestY)
 	{
 		for (std::size_t DestX = 0; DestX != DestWidth; ++DestX)
 		{
+			auto Sample = HorizSamples[DestX];
 			for (std::size_t C = 0; C != Channels; ++C)
-			{
-				float CenterX = (DestX + 0.5) * RatioX - 0.5;
-				std::size_t FloorX = CenterX;
-
-				float DestChannel = 0.0;
-				float Weight = 0.0;
-				for (auto I = FloorX - 1; I != FloorX + 3; ++I)
+			{				
+				float DestChannel = 0.0f;				
+				for (auto I = Sample.Left; I != Sample.Right; ++I)
 				{
-					if (I < SourceWidth)
-					{
-						float Term = Filter(CenterX - I);
-						DestChannel += Source[DestY * SourceWidth * Channels + I * Channels + C] / SourceMax * Term;
-						Weight += Term;
-					}
-
+					float Term = Sample.Terms[I - Sample.Left];
+					DestChannel += Source[DestY * SourceWidth * Channels + I * Channels + C] / SourceMax * Term;
 				}
-				DestChannel /= Weight;
-				if (DestChannel > 1.0) DestChannel = 1.0;
-				if (DestChannel < 0.0) DestChannel = 0.0;
+
 				HorizData[DestY * DestWidth * Channels + DestX * Channels + C] = DestChannel;
 			}
 		}
@@ -243,27 +276,20 @@ void resizeCubic(
 
 	for (std::size_t DestY = 0; DestY != DestHeight; ++DestY)
 	{
-		float CenterY = (DestY + 0.5) * RatioY - 0.5;
-		std::size_t FloorY = CenterY;
 		for (std::size_t DestX = 0; DestX != DestWidth; ++DestX)
 		{
+			auto Sample = VertSamples[DestY];
 			for (std::size_t C = 0; C != Channels; ++C)
-			{
-				float DestChannel = 0.0;
-				float Weight = 0.0;
-				for (auto I = FloorY - 1; I != FloorY + 3; ++I)
+			{				
+				float DestChannel = 0.0f;
+				for (auto I = Sample.Left; I != Sample.Right; ++I)
 				{
-					if (I < SourceHeight)
-					{
-						float Term = Filter(CenterY - I);
-						DestChannel += HorizData[I * DestWidth * Channels + DestX * Channels + C] * Term;
-						Weight += Term;
-					}
+					float Term = Sample.Terms[I - Sample.Left];
+					DestChannel += HorizData[I * DestWidth * Channels + DestX * Channels + C] * Term;
 				}
 
-				DestChannel /= Weight;
-				if (DestChannel > 1.0) DestChannel = 1.0;
-				if (DestChannel < 0.0) DestChannel = 0.0;
+				if (DestChannel > 1.0f) DestChannel = 1.0f;
+				if (DestChannel < 0.0f) DestChannel = 0.0f;
 				Dest[DestY * DestWidth * Channels + DestX * Channels + C] = DestChannel * DestMax + 0.5;
 			}
 		}
@@ -348,12 +374,12 @@ bool ManagerT::update(Ui::PixelT Width, Ui::PixelT Height)
 	mOutlineArray.update(mFenceIndex);
 	mBitmapArray.update(mFenceIndex);
 
-	float ScalingX = 2.0 / Width;
-	float ScalingY = 2.0 / Height;
-	float Red = float(Settings::Window::BackgroundColor.Red) / 255.0;
-	float Green = float(Settings::Window::BackgroundColor.Green) / 255.0;
-	float Blue = float(Settings::Window::BackgroundColor.Blue) / 255.0;
-	float Alpha = float(Settings::Window::BackgroundColor.Alpha) / 255.0;
+	float ScalingX = 2.0f / Width;
+	float ScalingY = 2.0f / Height;
+	float Red = float(Settings::Window::BackgroundColor.Red) / 255.0f;
+	float Green = float(Settings::Window::BackgroundColor.Green) / 255.0f;
+	float Blue = float(Settings::Window::BackgroundColor.Blue) / 255.0f;
+	float Alpha = float(Settings::Window::BackgroundColor.Alpha) / 255.0f;
 	glViewport(0, 0, Width, Height);
 	glClearColor(Red, Green, Blue, Alpha);
 	glClear(GL_COLOR_BUFFER_BIT);
