@@ -1,11 +1,8 @@
 #include "Manager.hpp"
 
+#include "Scaling.hpp"
 #include "Loader/Png.hpp"
 #include "Ui/WindowBase.hpp"
-
-#include <algorithm>
-#include <iostream>
-#include <cmath>
 
 namespace Twil {
 namespace Theme {
@@ -140,164 +137,6 @@ void ManagerT::setupButton()
 	mButtonVerticalCornerSize = VerticalCornerSize;
 }
 
-namespace {
-
-float mitchell(float X, const float B, const float C)
-{
-	float XX;
-
-	XX = X * X;
-
-	if (X < 0.0f) X = -X;
-
-	if (X < 1.0f)
-	{
-		X =
-			(((12.0f - 9.0f * B - 6.0f * C) * (X * XX)) +
-			((-18.0f + 12.0f * B + 6.0f * C) * XX) +
-			(6.0f - 2.0f * B));
-
-		return X / 6.0f;
-	}
-	else if (X < 2.0f)
-	{
-		X =
-			(((-1.0f * B - 6.0f * C) * (X * XX)) +
-			((6.0f * B + 30.0f * C) * XX) +
-			((-12.0f * B - 48.0f * C) * X) +
-			(8.0f * B + 24.0f * C));
-
-		return X / 6.0f;
-	}
-
-	return 0.0f;
-}
-
-float filterCatmullRom(float t)
-{
-   return mitchell(t, 0.0f, 0.5);
-}
-
-//float filterMitchell(float t)
-//{
-//   return mitchell(t, 1.0f / 3.0f, 1.0f / 3.0f);
-//}
-
-//float filterRobidoux(float t)
-//{
-//   return mitchell(t, 0.3782, 0.3109);
-//}
-
-//float filterRobidouxSharp(float t)
-//{
-//   return mitchell(t, 0.2620, 0.3690);
-//}
-
-template<std::size_t FilterSize>
-struct SampleT
-{
-	float Center;
-	std::size_t Left;
-	std::size_t Right;
-	std::array<float, FilterSize * 2> Terms;
-};
-
-template<std::size_t FilterSize, typename FilterT>
-void generateSamples(std::size_t Source, std::size_t Dest, FilterT Filter, SampleT<FilterSize> * Samples)
-{
-	float Ratio = static_cast<float>(Source) / static_cast<float>(Dest);
-
-	for (std::size_t Coord = 0; Coord != Dest; ++Coord)
-	{
-		SampleT<FilterSize> Sample;
-
-		Sample.Center = (Coord + 0.5) * Ratio - 0.5;
-		std::size_t Nearest = Sample.Center + 1;
-		Sample.Left = Nearest - FilterSize;
-		if (Sample.Left > Source) Sample.Left = 0;
-		Sample.Right = Nearest + FilterSize;
-		if (Sample.Right > Source) Sample.Right = Source;
-
-		float Weight = 0.0f;
-
-		for (std::size_t I = Sample.Left; I != Sample.Right; ++I)
-		{
-			auto Term = Filter(Sample.Center - I);
-			Weight += Term;
-			Sample.Terms[I - Sample.Left] = Term;
-		}
-
-		for (std::size_t I = Sample.Left; I != Sample.Right; ++I)
-		{
-			Sample.Terms[I - Sample.Left] /= Weight;
-		}
-
-		Samples[Coord] = Sample;
-	}
-
-}
-
-template<typename SourceT, typename DestT, typename FilterT>
-void resizeCubic(
-	SourceT Source, std::size_t SourceWidth, std::size_t SourceHeight,
-	DestT Dest, std::size_t DestWidth, std::size_t DestHeight,
-	FilterT Filter, std::size_t Channels = 4)
-{
-	float constexpr SourceMax = std::numeric_limits<typename std::iterator_traits<SourceT>::value_type>::max();
-	float constexpr DestMax = std::numeric_limits<typename std::iterator_traits<DestT>::value_type>::max();
-
-	std::size_t constexpr FilterSize = 2;
-
-	auto HorizData = Data::makeUniqueArray<float>(SourceHeight * DestWidth * Channels);
-	auto HorizSamples = Data::makeUniqueArray<SampleT<FilterSize>>(DestWidth * 4);
-	auto VertSamples = Data::makeUniqueArray<SampleT<FilterSize>>(DestWidth * 4);
-
-	generateSamples(SourceWidth, DestWidth, Filter, HorizSamples.get());
-	generateSamples(SourceHeight, DestHeight, Filter, VertSamples.get());
-
-	for (std::size_t DestY = 0; DestY != SourceHeight; ++DestY)
-	{
-		for (std::size_t DestX = 0; DestX != DestWidth; ++DestX)
-		{
-			auto Sample = HorizSamples[DestX];
-			for (std::size_t C = 0; C != Channels; ++C)
-			{				
-				float DestChannel = 0.0f;				
-				for (auto I = Sample.Left; I != Sample.Right; ++I)
-				{
-					float Term = Sample.Terms[I - Sample.Left];
-					DestChannel += Source[DestY * SourceWidth * Channels + I * Channels + C] / SourceMax * Term;
-				}
-
-				HorizData[DestY * DestWidth * Channels + DestX * Channels + C] = DestChannel;
-			}
-		}
-	}
-
-	for (std::size_t DestY = 0; DestY != DestHeight; ++DestY)
-	{
-		for (std::size_t DestX = 0; DestX != DestWidth; ++DestX)
-		{
-			auto Sample = VertSamples[DestY];
-			for (std::size_t C = 0; C != Channels; ++C)
-			{				
-				float DestChannel = 0.0f;
-				for (auto I = Sample.Left; I != Sample.Right; ++I)
-				{
-					float Term = Sample.Terms[I - Sample.Left];
-					DestChannel += HorizData[I * DestWidth * Channels + DestX * Channels + C] * Term;
-				}
-
-				if (DestChannel > 1.0f) DestChannel = 1.0f;
-				if (DestChannel < 0.0f) DestChannel = 0.0f;
-				Dest[DestY * DestWidth * Channels + DestX * Channels + C] = DestChannel * DestMax + 0.5;
-			}
-		}
-	}
-}
-
-}
-
 BitmapEntryT const & ManagerT::loadBitmapEntry(char const * Path)
 {
 	auto Iter = mBitmapEntries.find(Path);
@@ -310,10 +149,9 @@ BitmapEntryT const & ManagerT::loadBitmapEntry(char const * Path)
 	auto Allocation = mRgbaTexture.allocate(Width * Height * 4);
 	std::uint32_t Offset = Allocation.second / 4;
 
-	resizeCubic(
+	scaleUp<CatmullRomFilterT>(
 		Image.begin(), Image.getWidth(), Image.getHeight(),
-		Allocation.first, Width, Height,
-		filterCatmullRom);
+		Allocation.first, Width, Height, 4);
 
 //	std::copy(Image.begin(), Image.end(), Allocation.first);
 

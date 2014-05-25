@@ -158,6 +158,9 @@ set (theme_sources
 	Theme/Manager.cpp
 	Theme/Manager.hpp
 	Theme/ManagerFwd.hpp
+	Theme/Scaling.cpp
+	Theme/Scaling.hpp
+	Theme/ScalingFwd.hpp
 	Theme/Settings.cpp
 	Theme/Settings.hpp
 	Theme/SettingsFwd.hpp
