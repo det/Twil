@@ -73,8 +73,6 @@ struct CubicFilterT
 				(((12.0f - 9.0f * B - 6.0f * C) * (X * XX)) +
 				((-18.0f + 12.0f * B + 6.0f * C) * XX) +
 				(6.0f - 2.0f * B));
-
-			return X / 6.0f;
 		}
 		else
 		{
@@ -83,9 +81,8 @@ struct CubicFilterT
 				((6.0f * B + 30.0f * C) * XX) +
 				((-12.0f * B - 48.0f * C) * X) +
 				(8.0f * B + 24.0f * C));
-
-			return X / 6.0f;
 		}
+		return X / 6.0f;
 	}
 };
 
@@ -142,7 +139,7 @@ void generateTapLists(std::size_t Source, std::size_t Dest, TapListT<NumTaps> * 
 		for (std::size_t I = 0; I != NumTaps; ++I)
 		{
 			std::size_t Current = Sample.First + I;
-			auto Weight = Filter(Sample.Center - Current);
+			float Weight = Filter(Sample.Center - Current);
 			TotalWeight += Weight;
 			Sample.Weights[I] = Weight;
 		}
@@ -156,63 +153,68 @@ void generateTapLists(std::size_t Source, std::size_t Dest, TapListT<NumTaps> * 
 	}
 }
 
-template<typename SourceT, std::size_t NumTaps>
-void resizeHorizontal(
-	SourceT Source, std::size_t SourceWidth, std::size_t SourceHeight,
-	float * Dest, std::size_t DestWidth,
-	std::size_t Channels, TapListT<NumTaps> * Samples)
+template<typename T>
+struct ScaleTraitsT;
+
+template<>
+struct ScaleTraitsT<std::uint8_t>
 {
-	float constexpr Max = std::numeric_limits<typename std::iterator_traits<SourceT>::value_type>::max();
+	static float convertFrom(std::uint8_t X)
+	{
+		return X / 255.0;
+	}
+
+	static std::uint8_t convertTo(float X)
+	{
+		X = std::max(std::min(X, 1.0f), 0.0f);
+		return X * 255.0f + 0.5f;
+	}
+};
+
+template<>
+struct ScaleTraitsT<float>
+{
+	static float convertFrom(float X)
+	{
+		return X;
+	}
+
+	static float convertTo(float X)
+	{
+		return X;
+	}
+};
+
+template<typename SourceT, typename DestT, std::size_t NumTaps>
+void scaleAxis(
+	SourceT Source, std::size_t SourceWidth, std::size_t SourceHeight,
+	DestT Dest, std::size_t DestWidth,
+	std::size_t Channels, TapListT<NumTaps> * TapLists)
+{
+	using SourceValueT = typename std::iterator_traits<SourceT>::value_type;
+	using DestValueT = typename std::iterator_traits<DestT>::value_type;
+	using SourceTraitsT = ScaleTraitsT<SourceValueT>;
+	using DestTraitsT = ScaleTraitsT<DestValueT>;
 
 	for (std::size_t DestY = 0; DestY != SourceHeight; ++DestY)
 	{
 		for (std::size_t DestX = 0; DestX != DestWidth; ++DestX)
 		{
-			auto Sample = Samples[DestX];
+			auto TapList = TapLists[DestX];
 			for (std::size_t C = 0; C != Channels; ++C)
 			{
 				float DestChannel = 0.0f;
-				std::size_t First = Sample.First;
+				std::size_t First = TapList.First;
 				for (std::size_t I = 0; I != NumTaps; ++I)
 				{
 					std::size_t Current = First + I;
-					float Weight = Sample.Weights[I];
-					DestChannel += Source[DestY * SourceWidth * Channels + Current * Channels + C] / Max * Weight;
+					float Weight = TapList.Weights[I];
+					SourceValueT X = Source[DestY * SourceWidth * Channels + Current * Channels + C];
+					DestChannel += SourceTraitsT::convertFrom(X) * Weight;
 				}
 
-				Dest[DestX * SourceHeight * Channels + DestY * Channels + C] = DestChannel;
-			}
-		}
-	}
-}
-
-template<typename DestT, std::size_t NumTaps>
-void resizeVertical(
-	float * Source, std::size_t SourceHeight,
-	DestT Dest, std::size_t DestWidth, std::size_t DestHeight,
-	std::size_t Channels, TapListT<NumTaps> * Samples)
-{
-	float constexpr Max = std::numeric_limits<typename std::iterator_traits<DestT>::value_type>::max();
-
-	for (std::size_t DestX = 0; DestX != DestWidth; ++DestX)
-	{
-		for (std::size_t DestY = 0; DestY != DestHeight; ++DestY)
-		{
-			auto Sample = Samples[DestY];
-			for (std::size_t C = 0; C != Channels; ++C)
-			{
-				float DestChannel = 0.0f;
-				std::size_t First = Sample.First;
-				for (std::size_t I = 0; I != NumTaps; ++I)
-				{
-					std::size_t Current = First + I;
-					auto Weight = Sample.Weights[I];
-					DestChannel += Source[DestX * SourceHeight * Channels + Current * Channels + C] * Weight;
-				}
-
-				if (DestChannel > 1.0f) DestChannel = 1.0f;
-				if (DestChannel < 0.0f) DestChannel = 0.0f;
-				Dest[DestY * DestWidth * Channels + DestX * Channels + C] = DestChannel * Max + 0.5f;
+				DestValueT X = DestTraitsT::convertTo(DestChannel);;
+				Dest[DestX * SourceHeight * Channels + DestY * Channels + C] = X;
 			}
 		}
 	}
@@ -231,8 +233,8 @@ void scaleUp(
 
 	generateTapLists(SourceWidth, DestWidth, HorizSamples.get(), Filter);
 	generateTapLists(SourceHeight, DestHeight, VertSamples.get(), Filter);
-	resizeHorizontal(Source, SourceWidth, SourceHeight, HorizData.get(), DestWidth, Channels, HorizSamples.get());
-	resizeVertical(HorizData.get(), SourceHeight, Dest, DestWidth, DestHeight, Channels, VertSamples.get());
+	scaleAxis(Source, SourceWidth, SourceHeight, HorizData.get(), DestWidth, Channels, HorizSamples.get());
+	scaleAxis(HorizData.get(), SourceHeight, DestWidth, Dest, DestHeight, Channels, VertSamples.get());
 }
 
 }
