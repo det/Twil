@@ -30,6 +30,11 @@ using RobidouxSharpFilterT = CubicFilterT<std::ratio<2620, 10000>, std::ratio<36
 template<std::size_t Lobes>
 struct LanczosFilterT;
 
+template<typename T>
+struct ScaleTraitsT;
+
+template<>
+struct ScaleTraitsT<float>;
 
 }
 }

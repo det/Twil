@@ -154,20 +154,22 @@ void generateTapLists(std::size_t Source, std::size_t Dest, TapListT<NumTaps> * 
 }
 
 template<typename T>
-struct ScaleTraitsT;
-
-template<>
-struct ScaleTraitsT<std::uint8_t>
+struct ScaleTraitsT
 {
-	static float convertFrom(std::uint8_t X)
+	static_assert(std::numeric_limits<T>::is_integer, "Expected integer type");
+	static_assert(!std::numeric_limits<T>::is_signed, "Expected unsigned type");
+
+	static constexpr float Max = std::numeric_limits<T>::max();
+
+	static float convertFrom(T X)
 	{
-		return X / 255.0;
+		return X / Max;
 	}
 
-	static std::uint8_t convertTo(float X)
+	static T convertTo(float X)
 	{
 		X = std::max(std::min(X, 1.0f), 0.0f);
-		return X * 255.0f + 0.5f;
+		return X * Max + 0.5f;
 	}
 };
 
@@ -227,9 +229,9 @@ void scaleUp(
 	std::size_t Channels, FilterT const & Filter = {})
 {
 	std::size_t constexpr NumTaps = FilterT::Support * 2;
-	auto HorizData = Data::makeUniqueArray<float>(SourceHeight * DestWidth * Channels);
-	auto HorizSamples = Data::makeUniqueArray<TapListT<NumTaps>>(DestWidth);
-	auto VertSamples = Data::makeUniqueArray<TapListT<NumTaps>>(DestHeight);
+	std::unique_ptr<float[]> HorizData{new float[SourceHeight * DestWidth * Channels]};
+	std::unique_ptr<TapListT<NumTaps>[]> HorizSamples{new TapListT<NumTaps>[DestWidth]};
+	std::unique_ptr<TapListT<NumTaps>[]> VertSamples{new TapListT<NumTaps>[DestHeight]};
 
 	generateTapLists(SourceWidth, DestWidth, HorizSamples.get(), Filter);
 	generateTapLists(SourceHeight, DestHeight, VertSamples.get(), Filter);
