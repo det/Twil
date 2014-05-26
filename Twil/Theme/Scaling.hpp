@@ -17,6 +17,9 @@ struct BoxFilterT
 
 	float operator ()(float X) const
 	{
+		if (X < 0.0f) X = -X;
+		if (X > Support) return 0.0f;
+
 		return 1.0f;
 	}
 };
@@ -28,6 +31,8 @@ struct TentFilterT
 	float operator ()(float X) const
 	{
 		if (X < 0.0f) X = -X;
+		if (X > Support) return 0.0f;
+
 		return 1.0f - X;
 	}
 };
@@ -41,6 +46,8 @@ struct QuadraticFilterT
 	float operator ()(float X) const
 	{
 		if (X < 0.0f) X = -X;
+		if (X > Support) return 0.0f;
+
 		float XX = X * X;
 		if (X <= .5f) return (-2.0f * R) * XX + .5f * (R + 1.0f);
 		else return (R * XX) + (-2.0f * R - .5f) * X + (3.0f / 4.0f) * (R + 1.0f);
@@ -55,11 +62,11 @@ struct CubicFilterT
 	static float constexpr C = static_cast<float>(RatioCT::num) / static_cast<float>(RatioCT::den);
 
 	float operator ()(float X) const
-	{
-		float XX = X * X;
-
+	{		
 		if (X < 0.0f) X = -X;
+		if (X > Support) return 0.0f;
 
+		float XX = X * X;
 		if (X < 1.0f)
 		{
 			X =
@@ -104,21 +111,18 @@ struct LanczosFilterT
 	float operator ()(float X) const
 	{
 		if (X < 0.0f) X = -X;
+		if (X > Support) return 0.0f;
+
 		return clean(sinc(X) * sinc(X / Support));
 	}
 };
 
-struct TapT
-{
-	std::uint32_t Index;
-	float Weight;
-};
-
 template<std::size_t NumTaps>
-struct TapListT
+struct alignas(16) TapListT
 {
+	std::array<float, NumTaps> Weights;
 	float Center;
-	std::array<TapT, NumTaps> Taps;
+	std::size_t First;
 };
 
 template<std::size_t NumTaps, typename FilterT>
@@ -130,30 +134,22 @@ void generateTapLists(std::size_t Source, std::size_t Dest, TapListT<NumTaps> * 
 	{
 		TapListT<NumTaps> Sample;
 		Sample.Center = (Coord + 0.5f) * Ratio - 0.5f;
-		std::size_t First = static_cast<int>(std::floor(Sample.Center - FilterT::Support + 1));
+		Sample.First = static_cast<int>(std::floor(Sample.Center - FilterT::Support + 1));
+		if (Sample.First > Source) Sample.First = 0;
+		else if (Sample.First + NumTaps > Source) Sample.First = Source - NumTaps;
 
 		float TotalWeight = 0.0f;
-
 		for (std::size_t I = 0; I != NumTaps; ++I)
 		{
-			std::size_t Current = First + I;
-			if (Current >= Source)
-			{
-				Sample.Taps[I].Index = 0;
-				Sample.Taps[I].Weight = 0.0f;
-				continue;
-			}
-			auto Distance = Sample.Center - Current;
-			assert(std::abs(Distance) <= FilterT::Support);
-			auto Weight = Filter(Distance);
+			std::size_t Current = Sample.First + I;
+			auto Weight = Filter(Sample.Center - Current);
 			TotalWeight += Weight;
-			Sample.Taps[I].Weight = Weight;
-			Sample.Taps[I].Index = Current;
+			Sample.Weights[I] = Weight;
 		}
 
 		for (std::size_t I = 0; I != NumTaps; ++I)
 		{
-			Sample.Taps[I].Weight /= TotalWeight;
+			Sample.Weights[I] /= TotalWeight;
 		}
 
 		Samples[Coord] = Sample;
@@ -176,13 +172,15 @@ void resizeHorizontal(
 			for (std::size_t C = 0; C != Channels; ++C)
 			{
 				float DestChannel = 0.0f;
+				std::size_t First = Sample.First;
 				for (std::size_t I = 0; I != NumTaps; ++I)
 				{
-					auto Tap = Sample.Taps[I];
-					DestChannel += Source[DestY * SourceWidth * Channels + Tap.Index * Channels + C] / Max * Tap.Weight;
+					std::size_t Current = First + I;
+					float Weight = Sample.Weights[I];
+					DestChannel += Source[DestY * SourceWidth * Channels + Current * Channels + C] / Max * Weight;
 				}
 
-				Dest[DestY * DestWidth * Channels + DestX * Channels + C] = DestChannel;
+				Dest[DestX * SourceHeight * Channels + DestY * Channels + C] = DestChannel;
 			}
 		}
 	}
@@ -190,24 +188,26 @@ void resizeHorizontal(
 
 template<typename DestT, std::size_t NumTaps>
 void resizeVertical(
-	float * Source,
+	float * Source, std::size_t SourceHeight,
 	DestT Dest, std::size_t DestWidth, std::size_t DestHeight,
 	std::size_t Channels, TapListT<NumTaps> * Samples)
 {
 	float constexpr Max = std::numeric_limits<typename std::iterator_traits<DestT>::value_type>::max();
 
-	for (std::size_t DestY = 0; DestY != DestHeight; ++DestY)
+	for (std::size_t DestX = 0; DestX != DestWidth; ++DestX)
 	{
-		for (std::size_t DestX = 0; DestX != DestWidth; ++DestX)
+		for (std::size_t DestY = 0; DestY != DestHeight; ++DestY)
 		{
 			auto Sample = Samples[DestY];
 			for (std::size_t C = 0; C != Channels; ++C)
 			{
 				float DestChannel = 0.0f;
+				std::size_t First = Sample.First;
 				for (std::size_t I = 0; I != NumTaps; ++I)
 				{
-					auto Tap = Sample.Taps[I];
-					DestChannel += Source[Tap.Index * DestWidth * Channels + DestX * Channels + C] * Tap.Weight;
+					std::size_t Current = First + I;
+					auto Weight = Sample.Weights[I];
+					DestChannel += Source[DestX * SourceHeight * Channels + Current * Channels + C] * Weight;
 				}
 
 				if (DestChannel > 1.0f) DestChannel = 1.0f;
@@ -232,7 +232,7 @@ void scaleUp(
 	generateTapLists(SourceWidth, DestWidth, HorizSamples.get(), Filter);
 	generateTapLists(SourceHeight, DestHeight, VertSamples.get(), Filter);
 	resizeHorizontal(Source, SourceWidth, SourceHeight, HorizData.get(), DestWidth, Channels, HorizSamples.get());
-	resizeVertical(HorizData.get(), Dest, DestWidth, DestHeight, Channels, VertSamples.get());
+	resizeVertical(HorizData.get(), SourceHeight, Dest, DestWidth, DestHeight, Channels, VertSamples.get());
 }
 
 }
