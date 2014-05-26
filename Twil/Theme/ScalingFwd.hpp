@@ -20,6 +20,7 @@ using QuadraticMixFilterT = QuadraticFilterT<std::ratio<8, 10>>;
 template<typename RatioBT, typename RatioCT>
 struct CubicFilterT;
 
+using HermiteFilterT = CubicFilterT<std::ratio<0, 1>, std::ratio<0, 1>>;
 using CatmullRomFilterT = CubicFilterT<std::ratio<0, 1>, std::ratio<1, 2>>;
 using BSplineFilterT = CubicFilterT<std::ratio<1, 1>, std::ratio<0, 1>>;
 using MitchellFilterT = CubicFilterT<std::ratio<1, 3>, std::ratio<1, 3>>;
