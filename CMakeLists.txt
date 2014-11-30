@@ -1,5 +1,5 @@
 cmake_minimum_required (VERSION 2.8)
-project (Twil)
+project (twil)
 include (FindPkgConfig)
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
@@ -35,13 +35,19 @@ find_package (Freetype REQUIRED)
 find_package (OpenGL REQUIRED)
 find_package (PNG REQUIRED)
 
+if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
+	set (system_name linux)
+else ()
+	message(FATAL_ERROR "Unsupported platform: ${CMAKE_SYSTEM_NAME}")
+endif ()
+
 include_directories (
-	Twil
-	Twil/${CMAKE_SYSTEM_NAME}
-	Twil/Header
+	twil
+	twil/${system_name}
+	twil/header
 	${FREETYPE_INCLUDE_DIRS}
 	${OPENGL_INCLUDE_DIRS}
 	${PNG_INCLUDE_DIRS})
 
-add_subdirectory (Twil)
-add_subdirectory (Example)
+add_subdirectory (twil)
+add_subdirectory (example)

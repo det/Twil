@@ -1,5 +1,5 @@
-Build/
-Scripts/
+build/
+scripts/
 CMakeLists.txt.user
 CMakeLists.txt.user.*
 *.kdev4
