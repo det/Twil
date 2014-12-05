@@ -262,15 +262,15 @@ void Scale(
 	auto num_y_taps = y_info.num_taps;
 	std::unique_ptr<Tap[]> x_taps{new Tap[num_x_taps * dest_width]};
 	std::unique_ptr<Tap[]> y_taps{new Tap[num_y_taps * dest_height]};
-	std::unique_ptr<float[]> inter{new float[source_height * dest_width * channels]};
-	auto x_ptr = x_taps.get();
-	auto y_ptr = y_taps.get();
-	auto inter_ptr = inter.get();
+	std::unique_ptr<float[]> x_data{new float[source_height * dest_width * channels]};
+	auto x_taps_ptr = x_taps.get();
+	auto y_taps_ptr = y_taps.get();
+	auto x_data_ptr = x_data.get();
 
-	GenerateTapLists(source_width, dest_width, x_info, x_ptr, filter);
-	GenerateTapLists(source_height, dest_height, y_info, y_ptr, filter);
-	ScaleAxis(source, source_width, source_height, inter_ptr, dest_width, channels, num_x_taps, x_ptr);
-	ScaleAxis(inter_ptr, source_height, dest_width, dest, dest_height, channels, num_y_taps, y_ptr);
+	GenerateTapLists(source_width, dest_width, x_info, x_taps_ptr, filter);
+	GenerateTapLists(source_height, dest_height, y_info, y_taps_ptr, filter);
+	ScaleAxis(source, source_width, source_height, x_data_ptr, dest_width, channels, num_x_taps, x_taps_ptr);
+	ScaleAxis(x_data_ptr, source_height, dest_width, dest, dest_height, channels, num_y_taps, y_taps_ptr);
 }
 
 }
