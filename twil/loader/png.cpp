@@ -2,6 +2,7 @@
 
 #include "data/scope_guard.hpp"
 
+#include <cassert>
 #include <fstream>
 #include <stdexcept>
 
@@ -44,17 +45,15 @@ Png::Png(char const * path)
 	file.read(reinterpret_cast<char *>(magic), sizeof(magic));
 	if (file.fail()) throw std::runtime_error{"Png read error"};
 	if (file.gcount() != sizeof(magic)) throw std::runtime_error{"Png read error"};
-	if (!png_check_sig(magic, sizeof(magic))) throw std::runtime_error{"PNG load error"};
+	if (!png_check_sig(magic, sizeof(magic))) throw std::runtime_error{"Png load error"};
 
 	auto png = png_create_read_struct(PNG_LIBPNG_VER_STRING, nullptr, nullptr, nullptr);
 	if (png == nullptr) throw std::runtime_error{"PNG load error"};
+	auto && png_guard = data::MakeScopeGuard([&] { png_destroy_read_struct(&png, nullptr, nullptr); });
 	auto info = png_create_info_struct(png);
-	if (info == nullptr)
-	{
-		png_destroy_read_struct(&png, nullptr, nullptr);
-		throw std::runtime_error{"PNG load error"};
-	}
-	auto && png_guard = data::MakeScopeGuard([&] { png_destroy_read_struct(&png, &info, nullptr); });
+	if (info == nullptr) throw std::runtime_error{"PNG load error"};
+	png_guard.Dismiss();
+	auto && png_info_guard = data::MakeScopeGuard([&] { png_destroy_read_struct(&png, &info, nullptr); });
 
 	png_set_read_fn(png, &file, ReadPngData);
 	png_set_error_fn(png, nullptr, ThrowPngError, nullptr);
@@ -69,24 +68,19 @@ Png::Png(char const * path)
 
 	switch (color_type) {
 	case PNG_COLOR_TYPE_PALETTE:
-	{
 		png_set_palette_to_rgb(png);
-		png_set_add_alpha(png, 255, PNG_FILLER_AFTER);
-	} break;
+		png_set_add_alpha(png, 65535, PNG_FILLER_AFTER);
+		break;
 	case PNG_COLOR_TYPE_GRAY:
-	{
-		if (bit_depth < 8) png_set_expand_gray_1_2_4_to_8(png);
 		png_set_gray_to_rgb(png);
-		png_set_add_alpha(png, 255, PNG_FILLER_AFTER);
-	} break;
+		png_set_add_alpha(png, 65535, PNG_FILLER_AFTER);
+		break;
 	case PNG_COLOR_TYPE_GRAY_ALPHA:
-	{
 		png_set_gray_to_rgb(png);
-	} break;
+		break;
 	case PNG_COLOR_TYPE_RGB:
-	{
-		png_set_add_alpha(png, 255, PNG_FILLER_AFTER);
-	} break;
+		png_set_add_alpha(png, 65535, PNG_FILLER_AFTER);
+		break;
 	}
 
 	if (png_get_valid(png, info, PNG_INFO_tRNS))
@@ -94,11 +88,10 @@ Png::Png(char const * path)
 		png_set_tRNS_to_alpha(png);
 	}
 
-	if (bit_depth == 16) png_set_strip_16(png);
-	else if (bit_depth < 8) png_set_packing(png);
+	if (bit_depth != 16) png_set_expand_16(png);
 
 	// Assume sRGB approximated input, output linear colorspace
-	png_set_gamma(png, 1, .45455);
+	png_set_alpha_mode(png, PNG_ALPHA_STANDARD, PNG_DEFAULT_sRGB);
 
 	// Update info structure to apply transformations
 	png_read_update_info(png, info);
@@ -113,16 +106,22 @@ Png::Png(char const * path)
 	width_ = width;
 	height_ = height;
 
+	assert(bit_depth == 16);
+	assert(color_type == PNG_COLOR_TYPE_RGBA);
+
 	// Setup a pointer array.  Each one points at the begening of a row
-	std::unique_ptr<std::uint8_t[]> bytes{new std::uint8_t[width * height * 4]};
+	std::unique_ptr<std::uint16_t[]> bytes{new std::uint16_t[width * height * 4]};
 	std::unique_ptr<std::uint8_t *[]> rows{new std::uint8_t *[height]};
-	for (std::size_t i = 0; i < height; ++i) rows[i] = &bytes[(height - i - 1) * width * 4];
+	for (std::size_t i = 0; i < height; ++i)
+	{
+		rows[i] = reinterpret_cast<std::uint8_t *>(&bytes[(height - i - 1) * width * 4]);
+	}
 
 	// Read pixel data using row pointers
 	png_read_image(png, rows.get());
 	png_read_end(png, nullptr);
 
-	bytes_.reset(bytes.release());
+	bytes_ = std::move(bytes);
 }
 
 std::uint16_t Png::GetWidth() const
@@ -135,12 +134,12 @@ std::uint16_t Png::GetHeight() const
 	return height_;
 }
 
-std::uint8_t const * Png::begin() const
+std::uint16_t const * Png::begin() const
 {
 	return bytes_.get();
 }
 
-std::uint8_t const * Png::end() const
+std::uint16_t const * Png::end() const
 {
 	return bytes_.get() + width_ * height_ * 4;
 }

@@ -108,7 +108,6 @@ Window::Window(ui::WindowBase & window, Application & application, ui::Pixel wid
 Window::~Window() noexcept
 {
 	auto display = application_->display_;
-
 	XDeleteContext(display, id_, application_->context_);
 	glXDestroyContext(display, context_);
 	XDestroyWindow(display, id_);
@@ -117,13 +116,11 @@ Window::~Window() noexcept
 
 void Window::SwapBuffers()
 {
-	auto display = application_->display_;
-	glXSwapBuffers(display, id_);
+	glXSwapBuffers(application_->display_, id_);
 }
 
 void Window::SetFullscreen(bool is_fullscreen)
 {
-	auto display = application_->display_;
 	XEvent event{};
 	event.type = ClientMessage;
 	event.xclient.window = id_;
@@ -132,31 +129,28 @@ void Window::SetFullscreen(bool is_fullscreen)
 	event.xclient.data.l[0] = is_fullscreen;
 	event.xclient.data.l[1] = application_->wm_state_fullscreen_;
 	event.xclient.data.l[2] = None;
+	auto display = application_->display_;
 	XSendEvent(display, DefaultRootWindow(display), False, SubstructureNotifyMask, &event);
 }
 
 void Window::Show()
 {
-	auto display = application_->display_;
-	XMapWindow(display, id_);
+	XMapWindow(application_->display_, id_);
 }
 
 void Window::Hide()
 {
-	auto display = application_->display_;
-	XUnmapWindow(display, id_);
+	XUnmapWindow(application_->display_, id_);
 }
 
 void Window::ResizePixels(ui::Pixel width, ui::Pixel height)
 {
-	auto display = application_->display_;
-	XResizeWindow(display, id_, width, height);
+	XResizeWindow(application_->display_, id_, width, height);
 }
 
 void Window::SetTitle(char const * string)
 {
-	auto display = application_->display_;
-	XStoreName(display, id_, string);
+	XStoreName(application_->display_, id_, string);
 }
 
 }

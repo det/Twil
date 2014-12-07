@@ -89,6 +89,7 @@ struct LanczosFilter
 {
 	static constexpr float support = lobes;
 	static constexpr float epsilon = .0000125f;
+	static constexpr float pi = 3.141592653589793238462643383f;
 
 	static float Clean(float x)
 	{
@@ -98,7 +99,7 @@ struct LanczosFilter
 
 	static float Sinc(float x)
 	{
-		x *= std::atan(1) * 4;
+		x *= pi;
 		if (x < 0.01f && x > -0.01f) return 1.0f + x * x * (-1.0f / 6.0f + x * x * 1.0f / 120.0f);
 		else return std::sin(x) / x;
 	}
