@@ -149,10 +149,15 @@ BitmapEntry const & Manager::LoadBitmapEntry(char const * path)
 	auto allocation = rgba_texture_.Allocate(width * height * 4);
 	std::uint32_t offset = allocation.second / 4;
 
+	Unsigned16Linear4Format source_format;
+	FloatLinear4Format transposed_format;
+	Unsigned8Linear4Format dest_format;
 	CatmullRomFilter filter;
+
 	Scale(
 		image.begin(), image.GetWidth(), image.GetHeight(),
-		allocation.first, width, height, 4, filter);
+		allocation.first, width, height,
+		source_format, transposed_format, dest_format, filter);
 
 	BitmapEntry entry{offset, width, height};
 	auto pair = bitmap_entries_.insert({path, entry});
