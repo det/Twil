@@ -14,12 +14,12 @@ namespace theme {
 
 struct BoxFilter
 {
-	static constexpr float k_support = 0.5f;
+	static constexpr float kSupport = 0.5f;
 
 	float operator ()(float x) const
 	{
 		if (x < 0.0f) x = -x;
-		if (x > k_support) return 0.0f;
+		if (x > kSupport) return 0.0f;
 
 		return 1.0f;
 	}
@@ -27,12 +27,12 @@ struct BoxFilter
 
 struct TentFilter
 {
-	static constexpr float k_support = 1.0f;
+	static constexpr float kSupport = 1.0f;
 
 	float operator ()(float x) const
 	{
 		if (x < 0.0f) x = -x;
-		if (x > k_support) return 0.0f;
+		if (x > kSupport) return 0.0f;
 
 		return 1.0f - x;
 	}
@@ -41,47 +41,47 @@ struct TentFilter
 template<typename RatioR>
 struct QuadraticFilter
 {
-	static constexpr float k_support = 1.5f;
-	static constexpr float k_r = static_cast<float>(RatioR::num) / static_cast<float>(RatioR::den);
+	static constexpr float kSupport = 1.5f;
+	static constexpr float kR = static_cast<float>(RatioR::num) / static_cast<float>(RatioR::den);
 
 	float operator ()(float x) const
 	{
 		if (x < 0.0f) x = -x;
-		if (x > k_support) return 0.0f;
+		if (x > kSupport) return 0.0f;
 
 		float xx = x * x;
-		if (x <= .5f) return (-2.0f * k_r) * xx + .5f * (k_r + 1.0f);
-		else return (k_r * xx) + (-2.0f * k_r - .5f) * x + (3.0f / 4.0f) * (k_r + 1.0f);
+		if (x <= .5f) return (-2.0f * kR) * xx + .5f * (kR + 1.0f);
+		else return (kR * xx) + (-2.0f * kR - .5f) * x + (3.0f / 4.0f) * (kR + 1.0f);
 	}
 };
 
 template<typename RatioB, typename RatioC>
 struct CubicFilter
 {
-	static constexpr float k_support = 2.0f;
-	static constexpr float k_b = static_cast<float>(RatioB::num) / static_cast<float>(RatioB::den);
-	static constexpr float k_c = static_cast<float>(RatioC::num) / static_cast<float>(RatioC::den);
+	static constexpr float kSupport = 2.0f;
+	static constexpr float kB = static_cast<float>(RatioB::num) / static_cast<float>(RatioB::den);
+	static constexpr float kC = static_cast<float>(RatioC::num) / static_cast<float>(RatioC::den);
 
 	float operator ()(float x) const
 	{
 		if (x < 0.0f) x = -x;
-		if (x > k_support) return 0.0f;
+		if (x > kSupport) return 0.0f;
 
 		float xx = x * x;
 		if (x < 1.0f)
 		{
 			x =
-				(((12.0f - 9.0f * k_b - 6.0f * k_c) * (x * xx)) +
-				((-18.0f + 12.0f * k_b + 6.0f * k_c) * xx) +
-				(6.0f - 2.0f * k_b));
+				(((12.0f - 9.0f * kB - 6.0f * kC) * (x * xx)) +
+				((-18.0f + 12.0f * kB + 6.0f * kC) * xx) +
+				(6.0f - 2.0f * kB));
 		}
 		else
 		{
 			x =
-				(((-1.0f * k_b - 6.0f * k_c) * (x * xx)) +
-				((6.0f * k_b + 30.0f * k_c) * xx) +
-				((-12.0f * k_b - 48.0f * k_c) * x) +
-				(8.0f * k_b + 24.0f * k_c));
+				(((-1.0f * kB - 6.0f * kC) * (x * xx)) +
+				((6.0f * kB + 30.0f * kC) * xx) +
+				((-12.0f * kB - 48.0f * kC) * x) +
+				(8.0f * kB + 24.0f * kC));
 		}
 		return x / 6.0f;
 	}
@@ -90,19 +90,19 @@ struct CubicFilter
 template<std::size_t lobes>
 struct LanczosFilter
 {
-	static constexpr float k_support = lobes;
-	static constexpr float k_epsilon = .0000125f;
-	static constexpr float k_pi = 3.141592653589793238462643383f;
+	static constexpr float kSupport = lobes;
+	static constexpr float kEpsilon = .0000125f;
+	static constexpr float kPi = 3.141592653589793238462643383f;
 
 	static float Clean(float x)
 	{
-		if (std::abs(x) < k_epsilon) return 0.0f;
+		if (std::abs(x) < kEpsilon) return 0.0f;
 		return x;
 	}
 
 	static float Sinc(float x)
 	{
-		x *= k_pi;
+		x *= kPi;
 		if (x < 0.01f && x > -0.01f) return 1.0f + x * x * (-1.0f / 6.0f + x * x * 1.0f / 120.0f);
 		else return std::sin(x) / x;
 	}
@@ -110,9 +110,9 @@ struct LanczosFilter
 	float operator ()(float x)
 	{
 		if (x < 0.0f) x = -x;
-		if (x > k_support) return 0.0f;
+		if (x > kSupport) return 0.0f;
 
-		return Clean(Sinc(x) * Sinc(x / k_support));
+		return Clean(Sinc(x) * Sinc(x / kSupport));
 	}
 };
 
@@ -124,18 +124,18 @@ struct UnsignedData
 	static_assert(std::numeric_limits<T>::is_integer, "Expected integer type");
 	static_assert(!std::numeric_limits<T>::is_signed, "Expected unsigned type");
 
-	static constexpr float k_max = std::numeric_limits<T>::max();
+	static constexpr float kMax = std::numeric_limits<T>::max();
 	using ValueT = T;
 
 	static float ToFloat(ValueT x)
 	{
-		return x / k_max;
+		return x / kMax;
 	}
 
 	static ValueT FromFloat(float x)
 	{
 		x = std::max(std::min(x, 1.0f), 0.0f);
-		return x * k_max + 0.5f;
+		return x * kMax + 0.5f;
 	}
 };
 
@@ -204,18 +204,18 @@ struct LinearChannel
 template<typename Ratio>
 struct ConstantChannel
 {
-	static constexpr float k_c = static_cast<float>(Ratio::num) / static_cast<float>(Ratio::den);
+	static constexpr float kC = static_cast<float>(Ratio::num) / static_cast<float>(Ratio::den);
 
 	template<typename Data, typename Source, typename Dest>
 	static void ToFloat(Source source, Dest dest)
 	{
-		*dest = k_c;
+		*dest = kC;
 	}
 
 	template<typename Data, typename Source, typename Dest>
 	static void FromFloat(Source source, Dest dest)
 	{
-		*dest = Data::FromFloat(k_c);
+		*dest = Data::FromFloat(kC);
 	}
 };
 
@@ -225,8 +225,8 @@ template<typename Data, std::size_t input_stride, typename ... Channels>
 struct UnpackedFormat
 {
 	using DataT = Data;
-	static constexpr std::size_t k_input_stride = input_stride;
-	static constexpr std::size_t k_output_stride = sizeof...(Channels);
+	static constexpr std::size_t kInputStride = input_stride;
+	static constexpr std::size_t kOutputStride = sizeof...(Channels);
 
 	template<std::size_t i, typename Source, typename Dest>
 	void ReadFloatsHelper(Source source, Dest dest)
@@ -352,25 +352,25 @@ void ScaleAxis(
 	{
 		for (std::size_t x = 0; x != dest_width; ++x)
 		{
-			std::array<float, SourceFormat::k_output_stride> dest_channels{};
+			std::array<float, SourceFormat::kOutputStride> dest_channels{};
 
 			for (std::size_t i = 0; i != num_taps; ++i)
 			{
 				auto tap = tap_list[x * num_taps + i];
-				auto offset_y = y * source_width * SourceFormat::k_input_stride;
-				auto offset_x = tap.index * SourceFormat::k_input_stride;
+				auto offset_y = y * source_width * SourceFormat::kInputStride;
+				auto offset_x = tap.index * SourceFormat::kInputStride;
 				auto source_ptr = source + offset_y + offset_x;
-				std::array<float, SourceFormat::k_output_stride> source_channels;
+				std::array<float, SourceFormat::kOutputStride> source_channels;
 				source_format.ReadFloats(source_ptr, source_channels.data());
 
-				for (std::size_t c = 0; c != SourceFormat::k_output_stride; ++c)
+				for (std::size_t c = 0; c != SourceFormat::kOutputStride; ++c)
 				{
 					dest_channels[c] += source_channels[c] * tap.weight;
 				}
 			}
 
-			auto offset_y = x * source_height * DestFormat::k_output_stride;
-			auto offset_x = y * DestFormat::k_output_stride;
+			auto offset_y = x * source_height * DestFormat::kOutputStride;
+			auto offset_x = y * DestFormat::kOutputStride;
 			auto dest_ptr = dest + offset_y + offset_x;
 			dest_format.WriteFloats(dest_channels.data(), dest_ptr);
 		}
@@ -379,25 +379,46 @@ void ScaleAxis(
 
 template<
 	typename Source, typename Dest,
-	typename SourceFormat, typename TransposedFormat, typename DestFormat,
+	typename SourceFormat, typename DestFormat>
+void Convert(
+	Source source, Dest dest, std::size_t size,
+	SourceFormat source_format, DestFormat dest_format)
+{
+	for (std::size_t i = 0; i != size; ++i)
+	{
+		std::array<float, SourceFormat::kOutputStride> channels;
+		source_format.ReadFloats(source + i * SourceFormat::kInputStride, channels.data());
+		dest_format.WriteFloats(channels.data(), dest + i * DestFormat::kOutputStride);
+	}
+}
+
+template<
+	typename Source, typename Dest,
+	typename SourceFormat, typename WorkingFormat, typename DestFormat,
 	typename Filter>
 void Scale(
 	Source source, std::size_t source_width, std::size_t source_height,
 	Dest dest, std::size_t dest_width, std::size_t dest_height,
-	SourceFormat source_format, TransposedFormat trandposed_format, DestFormat dest_format,
+	SourceFormat source_format, WorkingFormat working_format, DestFormat dest_format,
 	Filter filter)
 {
-	static_assert(SourceFormat::k_output_stride == TransposedFormat::k_input_stride, "");
-	static_assert(TransposedFormat::k_output_stride == DestFormat::k_input_stride, "");
+	static_assert(SourceFormat::kOutputStride == WorkingFormat::kInputStride, "");
+	static_assert(WorkingFormat::kOutputStride == DestFormat::kInputStride, "");
 
-	auto x_info = MakeTapInfo(source_width, dest_width, Filter::k_support);
-	auto y_info = MakeTapInfo(source_height, dest_height, Filter::k_support);
+	auto x_info = MakeTapInfo(source_width, dest_width, Filter::kSupport);
+	auto y_info = MakeTapInfo(source_height, dest_height, Filter::kSupport);
 
-	using Value = typename TransposedFormat::DataT::ValueT;
-	std::size_t transposed_size = source_height * dest_width * TransposedFormat::k_input_stride;
-	std::unique_ptr<Value[]> transposed{new Value[transposed_size]};
+	using ValueT = typename WorkingFormat::DataT::ValueT;
+	std::size_t initial_size = source_height * source_width * WorkingFormat::kInputStride;
+	std::size_t transposed_size = source_height * dest_width * WorkingFormat::kInputStride;
+	std::unique_ptr<ValueT[]> initial{new ValueT[initial_size]};
+	std::unique_ptr<ValueT[]> transposed{new ValueT[transposed_size]};
 	std::unique_ptr<Tap[]> x_taps{new Tap[x_info.num_taps * dest_width]};
 	std::unique_ptr<Tap[]> y_taps{new Tap[y_info.num_taps * dest_height]};
+
+	Convert(
+		source, initial.get(), source_height * source_width,
+		source_format, working_format);
 
 	GenerateTapLists(
 		source_width, dest_width,
@@ -412,31 +433,16 @@ void Scale(
 		filter);
 
 	ScaleAxis(
-		source, source_width, source_height,
+		initial.get(), source_width, source_height,
 		transposed.get(), dest_width,
 		x_info.num_taps, x_taps.get(),
-		source_format, trandposed_format);
+		working_format, working_format);
 
 	ScaleAxis(
 		transposed.get(), source_height, dest_width,
 		dest, dest_height,
 		y_info.num_taps, y_taps.get(),
-		trandposed_format, dest_format);
-}
-
-template<
-	typename Source, typename Dest,
-	typename SourceFormat, typename DestFormat>
-void Convert(
-	Source source, Dest dest, std::size_t size,
-	SourceFormat source_format, DestFormat dest_format)
-{
-	for (std::size_t i = 0; i != size; ++i)
-	{
-		std::array<float, SourceFormat::k_output_stride> channels;
-		source_format.ReadFloats(source + i * SourceFormat::k_input_stride, channels.data());
-		dest_format.WriteFloats(channels.data(), dest + i * DestFormat::k_output_stride);
-	}
+		working_format, dest_format);
 }
 
 }

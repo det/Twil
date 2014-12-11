@@ -150,14 +150,14 @@ BitmapEntry const & Manager::LoadBitmapEntry(char const * path)
 	std::uint32_t offset = allocation.second / 4;
 
 	Unsigned16Linear4Format source_format;
-	FloatLinear4Format transposed_format;
+	FloatLinear4Format working_format;
 	Unsigned8Linear4Format dest_format;
 	CatmullRomFilter filter;
 
 	Scale(
 		image.begin(), image.GetWidth(), image.GetHeight(),
 		allocation.first, width, height,
-		source_format, transposed_format, dest_format, filter);
+		source_format, working_format, dest_format, filter);
 
 	BitmapEntry entry{offset, width, height};
 	auto pair = bitmap_entries_.insert({path, entry});
