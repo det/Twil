@@ -18,7 +18,7 @@ Manager::Manager(ui::WindowBase & window)
 		static_cast<FT_UInt32>(window_.ConvertDipToPixelX(theme::settings::label::size)),
 		static_cast<FT_UInt32>(window_.ConvertDipToPixelY(theme::settings::label::size))},
 	red_texture_{GL_R8},
-	rgba_texture_{GL_RGBA8},
+	rgba_texture_{GL_RGBA16},
 	needs_redraw_{false}
 {
 	// We arent actually waiting for anything, but we need valid fences in the arrays
@@ -146,17 +146,17 @@ BitmapEntry const & Manager::LoadBitmapEntry(char const * path)
 
 	std::uint16_t width = window_.ScaleX(image.GetWidth());
 	std::uint16_t height = window_.ScaleY(image.GetHeight());
-	auto allocation = rgba_texture_.Allocate(width * height * 4);
-	std::uint32_t offset = allocation.second / 4;
+	auto allocation = rgba_texture_.Allocate(width * height * 8);
+	std::uint32_t offset = allocation.second / 8;
 
 	Unsigned16Linear4Format source_format;
 	FloatLinear4Format working_format;
-	Unsigned8Linear4Format dest_format;
+	Unsigned16Scrgb3Linear1Format dest_format;
 	CatmullRomFilter filter;
 
 	Scale(
 		image.begin(), image.GetWidth(), image.GetHeight(),
-		allocation.first, width, height,
+		reinterpret_cast<std::uint16_t *>(allocation.first), width, height,
 		source_format, working_format, dest_format, filter);
 
 	BitmapEntry entry{offset, width, height};

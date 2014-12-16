@@ -15,7 +15,8 @@ void main (void)
 {
 	int s = int(fragment.texcoord.s);
 	int t = int(fragment.texcoord.t);
-	color = texelFetch(texture, fragment.offset + s + t * fragment.pitch);
+	vec4 c = texelFetch(texture, fragment.offset + s + t * fragment.pitch);
+	color = vec4(c.rgb * 8.0f - 0.5f, c.a);
 }
 
 

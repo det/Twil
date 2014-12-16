@@ -186,6 +186,22 @@ struct SrgbChannel
 };
 
 template<std::size_t index>
+struct ScrgbChannel
+{
+	template<typename Data, typename Source, typename Dest>
+	static void ToFloat(Source source, Dest dest)
+	{
+		*dest = Data::ToFloat(source[index]) * 8.0f - 0.5f;
+	}
+
+	template<typename Data, typename Source, typename Dest>
+	static void FromFloat(Source source, Dest dest)
+	{
+		*dest = Data::FromFloat((source[index] + 0.5f) / 8.0f);
+	}
+};
+
+template<std::size_t index>
 struct LinearChannel
 {
 	template<typename Data, typename Source, typename Dest>

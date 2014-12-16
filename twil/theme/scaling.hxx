@@ -32,6 +32,10 @@ using RobidouxSharpFilter = CubicFilter<std::ratio<2620, 10000>, std::ratio<3690
 template<std::size_t lobes>
 struct LanczosFilter;
 
+using Lanczos1 = LanczosFilter<1>;
+using Lanczos2 = LanczosFilter<2>;
+using Lanczos3 = LanczosFilter<3>;
+
 // Data
 
 template<typename T>
@@ -43,6 +47,9 @@ struct FloatData;
 
 template<std::size_t index>
 struct SrgbChannel;
+
+template<std::size_t index>
+struct ScrgbChannel;
 
 template<std::size_t index>
 struct LinearChannel;
@@ -67,8 +74,12 @@ using Linear4Format = UnpackedFormat<
 	LinearChannel<2>,
 	LinearChannel<3>>;
 
+using Unsigned8Linear4Format = Linear4Format<UnsignedData<std::uint8_t>>;
+using Unsigned16Linear4Format = Linear4Format<UnsignedData<std::uint16_t>>;
+using FloatLinear4Format = Linear4Format<FloatData>;
+
 template<typename T>
-using Srgba3Linear1Format = UnpackedFormat<
+using Srgb3Linear1Format = UnpackedFormat<
 	T,
 	4,
 	SrgbChannel<0>,
@@ -76,14 +87,18 @@ using Srgba3Linear1Format = UnpackedFormat<
 	SrgbChannel<2>,
 	LinearChannel<3>>;
 
+using Unsigned8Srgb3Linear1Format = Srgb3Linear1Format<UnsignedData<std::uint8_t>>;
+
 template<typename T>
-using Srgba4Format = UnpackedFormat<
+using Scrgb3Linear1Format = UnpackedFormat<
 	T,
 	4,
-	SrgbChannel<0>,
-	SrgbChannel<1>,
-	SrgbChannel<2>,
-	SrgbChannel<3>>;
+	ScrgbChannel<0>,
+	ScrgbChannel<1>,
+	ScrgbChannel<2>,
+	LinearChannel<3>>;
+
+using Unsigned16Scrgb3Linear1Format = Scrgb3Linear1Format<UnsignedData<std::uint16_t>>;
 
 template<typename T>
 using Linear3Format = UnpackedFormat<
@@ -93,21 +108,49 @@ using Linear3Format = UnpackedFormat<
 	LinearChannel<1>,
 	LinearChannel<2>>;
 
+using Unsigned8Linear3Format = Linear3Format<UnsignedData<std::uint8_t>>;
+using Unsigned16Linear3Format = Linear3Format<UnsignedData<std::uint16_t>>;
+using FloatLinear3Format = Linear3Format<FloatData>;
+
 template<typename T>
-using Srgba2Linear1Format = UnpackedFormat<
+using Srgb2Linear1Format = UnpackedFormat<
 	T,
 	3,
 	SrgbChannel<0>,
 	SrgbChannel<1>,
 	LinearChannel<2>>;
 
+using Unsigned8Srgb2Linear1Format = Srgb2Linear1Format<UnsignedData<std::uint8_t>>;
+
 template<typename T>
-using Srgba3Format = UnpackedFormat<
+using Scrgb2Linear1Format = UnpackedFormat<
+	T,
+	3,
+	ScrgbChannel<0>,
+	ScrgbChannel<1>,
+	LinearChannel<2>>;
+
+using Unsigned16Scrgb2Linear1Format = Scrgb2Linear1Format<UnsignedData<std::uint16_t>>;
+
+template<typename T>
+using Srgb3Format = UnpackedFormat<
 	T,
 	3,
 	SrgbChannel<0>,
 	SrgbChannel<1>,
 	SrgbChannel<2>>;
+
+using Unsigned8Srgb3Format = Srgb3Format<UnsignedData<std::uint8_t>>;
+
+template<typename T>
+using Scrgb3Format = UnpackedFormat<
+	T,
+	3,
+	ScrgbChannel<0>,
+	ScrgbChannel<1>,
+	ScrgbChannel<2>>;
+
+using Unsigned16Scrgb3Format = Scrgb3Format<UnsignedData<std::uint16_t>>;
 
 template<typename T>
 using Linear2Format = UnpackedFormat<
@@ -116,19 +159,45 @@ using Linear2Format = UnpackedFormat<
 	LinearChannel<0>,
 	LinearChannel<1>>;
 
+using Unsigned8Linear2Format = Linear2Format<UnsignedData<std::uint8_t>>;
+using Unsigned16Linear2Format = Linear2Format<UnsignedData<std::uint16_t>>;
+using FloatLinear2Format = Linear2Format<FloatData>;
+
 template<typename T>
-using Srgba1Linear1Format = UnpackedFormat<
+using Srgb1Linear1Format = UnpackedFormat<
 	T,
 	2,
 	SrgbChannel<0>,
 	LinearChannel<1>>;
 
+using Unsigned8Srgb1Linear1Format = Srgb1Linear1Format<UnsignedData<std::uint8_t>>;
+
 template<typename T>
-using Srgba2Format = UnpackedFormat<
+using Scrgb1Linear1Format = UnpackedFormat<
+	T,
+	2,
+	ScrgbChannel<0>,
+	LinearChannel<1>>;
+
+using Unsigned16Scrgb1Linear1Format = Scrgb1Linear1Format<UnsignedData<std::uint16_t>>;
+
+template<typename T>
+using Srgb2Format = UnpackedFormat<
 	T,
 	2,
 	SrgbChannel<0>,
 	SrgbChannel<1>>;
+
+using Unsigned8Srgb2Format = Srgb2Format<UnsignedData<std::uint8_t>>;
+
+template<typename T>
+using Scrgb2Format = UnpackedFormat<
+	T,
+	2,
+	ScrgbChannel<0>,
+	ScrgbChannel<1>>;
+
+using Unsigned16Scrgb2Format = Scrgb2Format<UnsignedData<std::uint16_t>>;
 
 template<typename T>
 using Linear1Format = UnpackedFormat<
@@ -136,48 +205,25 @@ using Linear1Format = UnpackedFormat<
 	1,
 	LinearChannel<0>>;
 
+using Unsigned8Linear1Format = Linear1Format<UnsignedData<std::uint8_t>>;
+using Unsigned16Linear1Format = Linear1Format<UnsignedData<std::uint16_t>>;
+using FloatLinear1Format = Linear1Format<FloatData>;
+
 template<typename T>
-using Srgba1Format = UnpackedFormat<
+using Srgb1Format = UnpackedFormat<
 	T,
 	1,
 	SrgbChannel<0>>;
 
-using Unsigned8Srgba3Linear1Format = Srgba3Linear1Format<UnsignedData<std::uint8_t>>;
-using Unsigned16Srgba3Linear1Format = Srgba3Linear1Format<UnsignedData<std::uint16_t>>;
-using FloatSrgba3Linear1Format = Srgba3Linear1Format<FloatData>;
-using Unsigned8Linear4Format = Linear4Format<UnsignedData<std::uint8_t>>;
-using Unsigned16Linear4Format = Linear4Format<UnsignedData<std::uint16_t>>;
-using FloatLinear4Format = Linear4Format<FloatData>;
-using Unsigned8Srgba4Format = Srgba4Format<UnsignedData<std::uint8_t>>;
-using Unsigned16Srgba4Format = Srgba4Format<UnsignedData<std::uint16_t>>;
-using FloatSrgba4Format = Srgba4Format<FloatData>;
+using Unsigned8Srgb1Format = Srgb1Format<UnsignedData<std::uint8_t>>;
 
-using Unsigned8Srgba2Linear1Format = Srgba2Linear1Format<UnsignedData<std::uint8_t>>;
-using Unsigned16Srgba2Linear1Format = Srgba2Linear1Format<UnsignedData<std::uint16_t>>;
-using FloatSrgba2Linear1Format = Srgba2Linear1Format<FloatData>;
-using Unsigned8Linear3Format = Linear3Format<UnsignedData<std::uint8_t>>;
-using Unsigned16Linear3Format = Linear3Format<UnsignedData<std::uint16_t>>;
-using FloatLinear3Format = Linear3Format<FloatData>;
-using Unsigned8Srgba3Format = Srgba3Format<UnsignedData<std::uint8_t>>;
-using Unsigned16Srgba3Format = Srgba3Format<UnsignedData<std::uint16_t>>;
-using FloatSrgba3Format = Srgba3Format<FloatData>;
+template<typename T>
+using Scrgb1Format = UnpackedFormat<
+	T,
+	1,
+	ScrgbChannel<0>>;
 
-using Unsigned8Srgba1Linear1Format = Srgba1Linear1Format<UnsignedData<std::uint8_t>>;
-using Unsigned16Srgba1Linear1Format = Srgba1Linear1Format<UnsignedData<std::uint16_t>>;
-using FloatSrgba1Linear1Format = Srgba1Linear1Format<FloatData>;
-using Unsigned8Linear2Format = Linear2Format<UnsignedData<std::uint8_t>>;
-using Unsigned16Linear2Format = Linear2Format<UnsignedData<std::uint16_t>>;
-using FloatLinear2Format = Linear2Format<FloatData>;
-using Unsigned8Srgba1Format = Srgba1Format<UnsignedData<std::uint8_t>>;
-using Unsigned16Srgba1Format = Srgba1Format<UnsignedData<std::uint16_t>>;
-using FloatSrgba1Format = Srgba1Format<FloatData>;
-
-using Unsigned8Srgba1Format = Srgba1Format<UnsignedData<std::uint8_t>>;
-using Unsigned16Srgba1Format = Srgba1Format<UnsignedData<std::uint16_t>>;
-using FloatSrgba1Format = Srgba1Format<FloatData>;
-using Unsigned8Linear1Format = Linear1Format<UnsignedData<std::uint8_t>>;
-using Unsigned16Linear1Format = Linear1Format<UnsignedData<std::uint16_t>>;
-using FloatLinear1Format = Linear1Format<FloatData>;
+using Unsigned16Scrgb1Format = Scrgb1Format<UnsignedData<std::uint16_t>>;
 
 // Tap
 
