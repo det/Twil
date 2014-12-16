@@ -152,7 +152,7 @@ BitmapEntry const & Manager::LoadBitmapEntry(char const * path)
 	Unsigned16Linear4Format source_format;
 	FloatLinear4Format working_format;
 	Unsigned16Scrgb3Linear1Format dest_format;
-	CatmullRomFilter filter;
+	CatRomFilter filter;
 
 	Scale(
 		image.begin(), image.GetWidth(), image.GetHeight(),
