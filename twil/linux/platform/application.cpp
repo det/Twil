@@ -53,6 +53,17 @@ Application::Application()
 	if (configs_ == nullptr) throw std::runtime_error{"Unable to find matching video mode"};
 	auto && configs_guard = data::MakeScopeGuard([&] { XFree(configs_); });
 
+	auto info = XRRGetScreenInfo (display_, RootWindow(display_, DefaultScreen(display_)));
+	auto && info_guard = data::MakeScopeGuard([&] { XRRFreeScreenConfigInfo(info); });
+	Rotation current_rotation;
+	SizeID current_size = XRRConfigCurrentConfiguration(info, &current_rotation);
+	int nsize;
+	auto sizes = XRRConfigSizes(info, &nsize);
+	pixel_width_ = sizes[current_size].width;
+	pixel_height_ = sizes[current_size].height;
+	millimeter_width_ = sizes[current_size].mwidth;
+	millimeter_height_ = sizes[current_size].mheight;
+
 	configs_guard.Dismiss();
 	display_guard.Dismiss();
 }
@@ -63,24 +74,24 @@ Application::~Application() noexcept
 	XCloseDisplay(display_);
 }
 
-ui::Pixel Application::GetMillimeterWidth()
-{
-	return ScreenOfDisplay(display_, DefaultScreen(display_))->mwidth;
-}
-
-ui::Pixel Application::GetMillimeterHeight()
-{
-	return ScreenOfDisplay(display_, DefaultScreen(display_))->mheight;
-}
-
 ui::Pixel Application::GetPixelWidth()
 {
-	return ScreenOfDisplay(display_, DefaultScreen(display_))->width;
+	return pixel_width_;
 }
 
 ui::Pixel Application::GetPixelHeight()
 {
-	return ScreenOfDisplay(display_, DefaultScreen(display_))->height;
+	return pixel_height_;
+}
+
+ui::Pixel Application::GetMillimeterWidth()
+{
+	return millimeter_width_;
+}
+
+ui::Pixel Application::GetMillimeterHeight()
+{
+	return millimeter_height_;
 }
 
 void Application::Stop()

@@ -21,7 +21,7 @@ if ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
 
 	source_group(platform FILES ${platform_sources})
 
-	set (platform_libraries ${X11_LIBRARIES})
+	set (platform_libraries ${X11_LIBRARIES} Xrandr)
 else ()
 	message(FATAL_ERROR "Unsupported platform: ${CMAKE_SYSTEM_NAME}")
 endif ()

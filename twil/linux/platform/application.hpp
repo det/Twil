@@ -33,6 +33,10 @@ public:
 	XAtom wm_state_fullscreen_;
 	XAtom wm_state_;
 	GLXFBConfig * configs_;
+	ui::Pixel pixel_width_;
+	ui::Pixel pixel_height_;
+	ui::Pixel millimeter_width_;
+	ui::Pixel millimeter_height_;
 	bool running_;
 
 public:
@@ -40,10 +44,10 @@ public:
 	Application();
 	~Application() noexcept;
 
-	ui::Pixel GetMillimeterWidth();
-	ui::Pixel GetMillimeterHeight();
 	ui::Pixel GetPixelWidth();
 	ui::Pixel GetPixelHeight();
+	ui::Pixel GetMillimeterWidth();
+	ui::Pixel GetMillimeterHeight();
 
 	/// \brief Run the event loop
 	void Run();
