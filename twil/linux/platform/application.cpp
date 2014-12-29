@@ -78,12 +78,12 @@ Application::~Application() noexcept
 
 ui::Pixel Application::GetPixelWidth()
 {
-	return pixel_width_ * 2.2;
+	return pixel_width_;
 }
 
 ui::Pixel Application::GetPixelHeight()
 {
-	return pixel_height_ * 2.2;
+	return pixel_height_;
 }
 
 ui::Pixel Application::GetMillimeterWidth()
