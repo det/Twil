@@ -29,9 +29,9 @@ out Geometry
 
 void main(void)
 {
-	geometry.border_color = border_color;
-	geometry.bottom_color = bottom_color;
-	geometry.top_color = top_color;
+	geometry.border_color = border_color * 8 - 0.5;
+	geometry.bottom_color = bottom_color * 8 - 0.5;
+	geometry.top_color = top_color * 8 - 0.5;
 	geometry.texture_min = texture_size * clip_min;
 	geometry.texture_max = texture_size * clip_max;
 	geometry.position_min = position_min * scaling - 1;

@@ -218,10 +218,10 @@ bool Manager::Update(ui::Pixel width, ui::Pixel height)
 
 	float scaling_x = 2.0f / width;
 	float scaling_y = 2.0f / height;
-	float red = float(settings::window::background_color.red) / 255.0f;
-	float green = float(settings::window::background_color.green) / 255.0f;
-	float blue = float(settings::window::background_color.blue) / 255.0f;
-	float alpha = float(settings::window::background_color.alpha) / 255.0f;
+	float red = float(settings::window::background_color.red) / 8192.0f - 0.5f;
+	float green = float(settings::window::background_color.green) / 8192.0f - 0.5f;
+	float blue = float(settings::window::background_color.blue) / 8192.0f - 0.5f;
+	float alpha = float(settings::window::background_color.alpha) / 8192.0f - 0.5f;
 	glViewport(0, 0, width, height);
 	glClearColor(red, green, blue, alpha);
 	glClear(GL_COLOR_BUFFER_BIT);

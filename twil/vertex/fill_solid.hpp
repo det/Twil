@@ -2,7 +2,7 @@
 
 #include "fill_solid.hxx"
 
-#include "attribute/color4b.hpp"
+#include "attribute/color4h.hpp"
 #include "attribute/offset1i.hpp"
 #include "attribute/position2h.hpp"
 #include "attribute/size2h.hpp"
@@ -13,7 +13,7 @@ namespace vertex {
 
 struct FillSolid
 {
-	attribute::Color4B color;
+	attribute::Color4H color;
 	attribute::Texcoord2H clip_min;
 	attribute::Texcoord2H clip_max;
 	attribute::Position2H position_min;

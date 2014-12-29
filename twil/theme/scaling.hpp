@@ -4,6 +4,7 @@
 
 #include <cmath>
 #include <limits>
+#include <iostream>
 #include <memory>
 #include <utility>
 
@@ -281,12 +282,6 @@ struct UnpackedFormat
 
 // Tap
 
-struct Tap
-{
-	std::uint32_t index;
-	float weight;
-};
-
 struct TapInfo
 {
 	float coord_factor;
@@ -316,79 +311,31 @@ template<typename Filter>
 void GenerateTapLists(
 	std::size_t source, std::size_t dest,
 	float coord_factor, float scaled_support, float support_factor,
-	std::size_t num_taps, Tap * samples,
+	std::size_t num_taps, Tap * taps, Index * ranges,
 	Filter filter)
 {
 	for (std::size_t coord = 0; coord != dest; ++coord)
 	{
 		auto center = (coord + 0.5f) * coord_factor - 0.5f;
-		auto first = static_cast<std::int32_t>(std::floor(center - scaled_support + 1));
+		auto low = static_cast<int>(std::floor(center - scaled_support + 1));
+		auto high = low + num_taps;
+		std::size_t first = std::max(0, low);
+		std::size_t last = std::min(source, high);
 		float total_weight = 0.0f;
-		for (std::size_t i = 0; i != num_taps; ++i)
+		ranges[coord * 2] = first;
+		ranges[coord * 2 + 1] = last;
+
+		for (std::size_t i = 0, j = first; j != last; ++j, ++i)
 		{
-			Tap tap;
-			std::int32_t index = first + i;
-			std::int32_t min = 0;
-			std::int32_t max = source - 1;
-			if (index < min)
-			{
-				tap.index = 0;
-				tap.weight = 0.0f;
-			}
-			else if (index > max)
-			{
-				tap.index = max;
-				tap.weight = 0.0f;
-			}
-			else
-			{
-				tap.index = index;
-				auto distance = center - tap.index;
-				tap.weight = filter(distance * support_factor);
-				total_weight += tap.weight;
-			}
-			samples[coord * num_taps + i] = tap;
+			auto distance = center - j;
+			auto weight = filter(distance * support_factor);
+			taps[coord * num_taps + i] = weight;
+			total_weight += weight;
 		}
 
 		for (std::size_t i = 0; i != num_taps; ++i)
 		{
-			samples[coord * num_taps + i].weight /= total_weight;
-		}
-	}
-}
-
-template<typename Source, typename Dest, typename SourceFormat, typename DestFormat>
-void ScaleAxis(
-	Source source, std::size_t source_width, std::size_t source_height,
-	Dest dest, std::size_t dest_width,
-	std::size_t num_taps, Tap const * tap_list,
-	SourceFormat source_format, DestFormat dest_format)
-{
-	for (std::size_t y = 0; y != source_height; ++y)
-	{
-		for (std::size_t x = 0; x != dest_width; ++x)
-		{
-			std::array<float, SourceFormat::kOutputStride> dest_channels{};
-
-			for (std::size_t i = 0; i != num_taps; ++i)
-			{
-				auto tap = tap_list[x * num_taps + i];
-				auto offset_y = y * source_width * SourceFormat::kInputStride;
-				auto offset_x = tap.index * SourceFormat::kInputStride;
-				auto source_ptr = source + offset_y + offset_x;
-				std::array<float, SourceFormat::kOutputStride> source_channels;
-				source_format.ReadFloats(source_ptr, source_channels.data());
-
-				for (std::size_t c = 0; c != SourceFormat::kOutputStride; ++c)
-				{
-					dest_channels[c] += source_channels[c] * tap.weight;
-				}
-			}
-
-			auto offset_y = x * source_height * DestFormat::kOutputStride;
-			auto offset_x = y * DestFormat::kOutputStride;
-			auto dest_ptr = dest + offset_y + offset_x;
-			dest_format.WriteFloats(dest_channels.data(), dest_ptr);
+			taps[coord * num_taps + i] /= total_weight;
 		}
 	}
 }
@@ -408,6 +355,45 @@ void Convert(
 	}
 }
 
+template<typename Source, typename Dest, typename SourceFormat, typename DestFormat>
+void ScaleAxis(
+	Source source, std::size_t source_width, std::size_t source_height,
+	Dest dest, std::size_t dest_width,
+	std::size_t num_taps, Tap const * taps, Index const * ranges,
+	SourceFormat source_format, DestFormat dest_format)
+{
+	for (std::size_t y = 0; y != source_height; ++y)
+	{
+		for (std::size_t x = 0; x != dest_width; ++x)
+		{
+			std::array<float, SourceFormat::kOutputStride> dest_channels{};
+			std::size_t first = ranges[x * 2];
+			std::size_t last = ranges[x * 2 + 1];
+
+			for (std::size_t i = 0; i != last - first; ++i)
+			{
+				auto tap = taps[x * num_taps + i];
+				auto offset_y = y * source_width * SourceFormat::kInputStride;
+				auto offset_x = (first + i) * SourceFormat::kInputStride;
+				auto source_ptr = source + offset_y + offset_x;
+				std::array<float, SourceFormat::kOutputStride> source_channels;
+				source_format.ReadFloats(source_ptr, source_channels.data());
+
+				for (std::size_t c = 0; c != SourceFormat::kOutputStride; ++c)
+				{
+					dest_channels[c] += source_channels[c] * tap;
+				}
+			}
+
+			auto offset_y = x * source_height * DestFormat::kOutputStride;
+			auto offset_x = y * DestFormat::kOutputStride;
+			auto dest_ptr = dest + offset_y + offset_x;
+			dest_format.WriteFloats(dest_channels.data(), dest_ptr);
+		}
+	}
+}
+
+
 template<
 	typename Source, typename Dest,
 	typename SourceFormat, typename WorkingFormat, typename DestFormat,
@@ -418,19 +404,27 @@ void Scale(
 	SourceFormat source_format, WorkingFormat working_format, DestFormat dest_format,
 	Filter filter)
 {
+	using SourceValueT = typename SourceFormat::DataT::ValueT;
+	using WorkingValueT = typename WorkingFormat::DataT::ValueT;
+	using DestValueT = typename DestFormat::DataT::ValueT;
+	using SourceTraits = typename std::iterator_traits<Source>;
+	using DestTraits = typename std::iterator_traits<Dest>;
+	static_assert(std::is_same<typename SourceTraits::value_type, SourceValueT>::value, "");
+	static_assert(std::is_same<typename DestTraits::value_type, DestValueT>::value, "");
 	static_assert(SourceFormat::kOutputStride == WorkingFormat::kInputStride, "");
 	static_assert(WorkingFormat::kOutputStride == DestFormat::kInputStride, "");
 
 	auto x_info = MakeTapInfo(source_width, dest_width, Filter::kSupport);
 	auto y_info = MakeTapInfo(source_height, dest_height, Filter::kSupport);
 
-	using ValueT = typename WorkingFormat::DataT::ValueT;
 	std::size_t initial_size = source_height * source_width * WorkingFormat::kInputStride;
 	std::size_t transposed_size = source_height * dest_width * WorkingFormat::kInputStride;
-	std::unique_ptr<ValueT[]> initial{new ValueT[initial_size]};
-	std::unique_ptr<ValueT[]> transposed{new ValueT[transposed_size]};
+	std::unique_ptr<WorkingValueT[]> initial{new WorkingValueT[initial_size]};
+	std::unique_ptr<WorkingValueT[]> transposed{new WorkingValueT[transposed_size]};
 	std::unique_ptr<Tap[]> x_taps{new Tap[x_info.num_taps * dest_width]};
 	std::unique_ptr<Tap[]> y_taps{new Tap[y_info.num_taps * dest_height]};
+	std::unique_ptr<Index[]> x_ranges{new Index[dest_width * 2]};
+	std::unique_ptr<Index[]> y_ranges{new Index[dest_height * 2]};
 
 	Convert(
 		source, initial.get(), source_height * source_width,
@@ -439,25 +433,25 @@ void Scale(
 	GenerateTapLists(
 		source_width, dest_width,
 		x_info.coord_factor, x_info.scaled_support, x_info.support_factor,
-		x_info.num_taps, x_taps.get(),
+		x_info.num_taps, x_taps.get(), x_ranges.get(),
 		filter);
 
 	GenerateTapLists(
 		source_height, dest_height,
 		y_info.coord_factor, y_info.scaled_support, y_info.support_factor,
-		y_info.num_taps, y_taps.get(),
+		y_info.num_taps, y_taps.get(), y_ranges.get(),
 		filter);
 
 	ScaleAxis(
 		initial.get(), source_width, source_height,
 		transposed.get(), dest_width,
-		x_info.num_taps, x_taps.get(),
+		x_info.num_taps, x_taps.get(),  x_ranges.get(),
 		working_format, working_format);
 
 	ScaleAxis(
 		transposed.get(), source_height, dest_width,
 		dest, dest_height,
-		y_info.num_taps, y_taps.get(),
+		y_info.num_taps, y_taps.get(), y_ranges.get(),
 		working_format, dest_format);
 }
 

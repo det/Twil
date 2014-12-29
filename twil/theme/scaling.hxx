@@ -227,44 +227,9 @@ using Unsigned16Scrgb1Format = Scrgb1Format<UnsignedData<std::uint16_t>>;
 
 // Tap
 
-struct Tap;
-
 struct TapInfo;
-
-// Functions
-
-TapInfo MakeTapInfo(std::size_t source, std::size_t dest, float support);
-
-template<typename Filter>
-void GenerateTapLists(
-	std::size_t source, std::size_t dest,
-	float coord_factor, float scaled_support, float support_factor,
-	std::size_t num_taps, Tap * samples,
-	Filter filter);
-
-template<typename Source, typename Dest, typename SourceFormat, typename DestFormat>
-void ScaleAxis(
-	Source source, std::size_t source_width, std::size_t source_height,
-	Dest dest, std::size_t dest_width,
-	std::size_t num_taps, Tap const * tap_list,
-	SourceFormat source_format, DestFormat dest_format);
-
-template<
-	typename Source, typename Dest,
-	typename SourceFormat, typename TransposedFormat, typename DestFormat,
-	typename Filter>
-void Scale(
-	Source source, std::size_t source_width, std::size_t source_height,
-	Dest dest, std::size_t dest_width, std::size_t dest_height,
-	SourceFormat source_format, TransposedFormat trandposed_format, DestFormat dest_format,
-	Filter filter);
-
-template<
-	typename Source, typename Dest,
-	typename SourceFormat, typename DestFormat>
-void Convert(
-	Source source, Dest dest, std::size_t size,
-	SourceFormat source_format, DestFormat dest_format);
+using Tap = float;
+using Index = std::uint16_t;
 
 }
 }

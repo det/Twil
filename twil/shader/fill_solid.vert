@@ -23,7 +23,7 @@ out Geometry
 
 void main(void)
 {
-	geometry.color = color;
+	geometry.color = color * 8 - 0.5;
 	geometry.texture_min = texture_size * clip_min;
 	geometry.texture_max = texture_size * clip_max;
 	geometry.position_min = position_min * scaling - 1;

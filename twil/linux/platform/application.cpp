@@ -21,13 +21,13 @@ Application::Application()
 :
 	running_{false}
 {
-	display_ = XOpenDisplay(0);
-	if (display_ == nullptr) throw std::runtime_error{"Unable to open display"};
-	auto && display_guard = data::MakeScopeGuard([&] { XCloseDisplay(display_); });
+	auto display = XOpenDisplay(0);
+	if (display == nullptr) throw std::runtime_error{"Unable to open display"};
+	auto && display_guard = data::MakeScopeGuard([&] { XCloseDisplay(display); });
 
-	wm_delete_window_ = XInternAtom(display_, "WM_DELETE_WINDOW", False);
-	wm_state_fullscreen_ = XInternAtom(display_, "_NET_WM_STATE_FULLSCREEN", False);
-	wm_state_ = XInternAtom(display_, "_NET_WM_STATE", False);
+	wm_delete_window_ = XInternAtom(display, "WM_DELETE_WINDOW", False);
+	wm_state_fullscreen_ = XInternAtom(display, "_NET_WM_STATE_FULLSCREEN", False);
+	wm_state_ = XInternAtom(display, "_NET_WM_STATE", False);
 	context_ = XUniqueContext();
 
 	SymbolLoader loader;
@@ -47,13 +47,13 @@ Application::Application()
 		None};
 
 	int num_framebuffers;
-	auto screen_id = DefaultScreen(display_);
+	auto screen_id = DefaultScreen(display);
 
-	configs_ = glXChooseFBConfig(display_, screen_id, visual_attributes, &num_framebuffers);
-	if (configs_ == nullptr) throw std::runtime_error{"Unable to find matching video mode"};
-	auto && configs_guard = data::MakeScopeGuard([&] { XFree(configs_); });
+	auto configs = glXChooseFBConfig(display, screen_id, visual_attributes, &num_framebuffers);
+	if (configs == nullptr) throw std::runtime_error{"Unable to find matching video mode"};
+	auto && configs_guard = data::MakeScopeGuard([&] { XFree(configs); });
 
-	auto info = XRRGetScreenInfo (display_, RootWindow(display_, DefaultScreen(display_)));
+	auto info = XRRGetScreenInfo (display, RootWindow(display, DefaultScreen(display)));
 	auto && info_guard = data::MakeScopeGuard([&] { XRRFreeScreenConfigInfo(info); });
 	Rotation current_rotation;
 	SizeID current_size = XRRConfigCurrentConfiguration(info, &current_rotation);
@@ -64,6 +64,8 @@ Application::Application()
 	millimeter_width_ = sizes[current_size].mwidth;
 	millimeter_height_ = sizes[current_size].mheight;
 
+	configs_ = configs;
+	display_ = display;
 	configs_guard.Dismiss();
 	display_guard.Dismiss();
 }
@@ -76,12 +78,12 @@ Application::~Application() noexcept
 
 ui::Pixel Application::GetPixelWidth()
 {
-	return pixel_width_;
+	return pixel_width_ * 2.2;
 }
 
 ui::Pixel Application::GetPixelHeight()
 {
-	return pixel_height_;
+	return pixel_height_ * 2.2;
 }
 
 ui::Pixel Application::GetMillimeterWidth()

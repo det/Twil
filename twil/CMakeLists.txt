@@ -30,6 +30,9 @@ set (attribute_sources
 	attribute/color4b.cpp
 	attribute/color4b.hpp
 	attribute/color4b.hxx
+	attribute/color4h.cpp
+	attribute/color4h.hpp
+	attribute/color4h.hxx
 	attribute/offset1i.cpp
 	attribute/offset1i.hpp
 	attribute/offset1i.hxx

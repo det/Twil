@@ -1,5 +1,6 @@
 #include "label.hpp"
 
+#include "ui/unit.hpp"
 #include "ui/window_base.hpp"
 
 namespace twil {
@@ -87,6 +88,7 @@ void Label::SetClipTop(ui::Dip y)
 
 void Label::Draw(vertex::FillSolid * vertices) const
 {
+	using namespace ui::udl;
 	ui::Pixel left = window_->ConvertDipToPixelX(left_);
 	ui::Pixel bottom = window_->ConvertDipToPixelY(bottom_);
 
@@ -119,7 +121,7 @@ void Label::Draw(vertex::FillSolid * vertices) const
 		bottom_clipped = std::min(bottom_clipped, clip_top);
 		top_clipped = std::min(top_clipped, clip_top);
 
-		vertices[i].color = {0, 0, 0, 255};
+		vertices[i].color = {0.0_color, 0.0_color, 0.0_color, 1.0_color};
 		vertices[i].clip_min.s = (left_clipped - glyph_left) * 65535 / width;
 		vertices[i].clip_min.t = (bottom_clipped - glyph_bottom) * 65535 / height;
 		vertices[i].clip_max.s = (right_clipped - glyph_left) * 65535 / width;

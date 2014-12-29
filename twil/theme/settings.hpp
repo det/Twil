@@ -23,33 +23,33 @@ std::size_t const num_buffers = 4;
 
 namespace button {
 
-attribute::Color4B const border_color{95, 95, 95, 255};
-attribute::Color4B const top_down_color{191, 191, 191, 255};
-attribute::Color4B const bottom_down_color{111, 111, 111, 255};
-attribute::Color4B const top_up_color{255, 255, 255, 255};
-attribute::Color4B const bottom_up_color{159, 159, 159, 255};
+constexpr ui::Rgba border_color{0.37_color, 0.37_color, 0.37_color, 1.0_color};
+constexpr ui::Rgba top_down_color{0.75_color, 0.75_color, 0.75_color, 1.0_color};
+constexpr ui::Rgba bottom_down_color{0.44_color, 0.44_color, 0.44_color, 1.0_color};
+constexpr ui::Rgba top_up_color{1.0_color, 1.0_color, 1.0_color, 1.0_color};
+constexpr ui::Rgba bottom_up_color{0.62_color, 0.62_color, 0.62_color, 1.0_color};
 
-ui::Dip const border_width = 1_dip;
-ui::Dip const roundness = 4_dip;
-ui::Dip const left_margin = 3_dip;
-ui::Dip const right_margin = 3_dip;
-ui::Dip const top_margin = 3_dip;
-ui::Dip const bottom_margin = 3_dip;
-ui::Dip const base_width_margin = 12_dip;
-ui::Dip const base_height_margin = 12_dip;
+constexpr ui::Dip border_width = 1_dip;
+constexpr ui::Dip roundness = 4_dip;
+constexpr ui::Dip left_margin = 3_dip;
+constexpr ui::Dip right_margin = 3_dip;
+constexpr ui::Dip top_margin = 3_dip;
+constexpr ui::Dip bottom_margin = 3_dip;
+constexpr ui::Dip base_width_margin = 12_dip;
+constexpr ui::Dip base_height_margin = 12_dip;
 
 }
 
 namespace label {
 
-char const * const font{"../twil/font/deja_vu_sans-bold.ttf"};
-ui::Dip const size = 17_dip;
+constexpr char const * font{"../twil/font/deja_vu_sans-bold.ttf"};
+constexpr ui::Dip size = 17_dip;
 
 }
 
 namespace window {
 
-attribute::Color4B const background_color{223, 223, 223, 255};
+constexpr ui::Rgba background_color{0.87_color, 0.87_color, 0.87_color, 1.0_color};
 
 }
 

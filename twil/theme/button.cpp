@@ -156,10 +156,10 @@ void Button::Draw(vertex::OutlineGradient * vertices) const
 	middle_top_clipped = std::max(middle_top_clipped, clip_bottom);
 	top_clipped = std::max(top_clipped, clip_bottom);
 
-	attribute::Color4B top_color;
-	attribute::Color4B middle_bottom_color;
-	attribute::Color4B middle_top_color;
-	attribute::Color4B bottom_color;
+	attribute::Color4H top_color;
+	attribute::Color4H middle_bottom_color;
+	attribute::Color4H middle_top_color;
+	attribute::Color4H bottom_color;
 
 	// Avoid divide by 0, the colors dont matter for 0 size rectangles
 	if (height != 0)
