@@ -2,7 +2,7 @@
 
 #include "settings.hxx"
 
-#include "attribute/color4b.hpp"
+#include "ui/rgba.hpp"
 #include "ui/unit.hpp"
 
 #include <cstdint>
@@ -17,17 +17,17 @@ using namespace ui::udl;
 
 namespace manager {
 
-std::size_t const num_buffers = 4;
+constexpr std::size_t num_buffers = 4;
 
 }
 
 namespace button {
 
-constexpr ui::Rgba border_color{0.37_color, 0.37_color, 0.37_color, 1.0_color};
-constexpr ui::Rgba top_down_color{0.75_color, 0.75_color, 0.75_color, 1.0_color};
-constexpr ui::Rgba bottom_down_color{0.44_color, 0.44_color, 0.44_color, 1.0_color};
-constexpr ui::Rgba top_up_color{1.0_color, 1.0_color, 1.0_color, 1.0_color};
-constexpr ui::Rgba bottom_up_color{0.62_color, 0.62_color, 0.62_color, 1.0_color};
+constexpr ui::Rgba border_color{0.37, 0.37, 0.37, 1.0};
+constexpr ui::Rgba top_down_color{0.75, 0.75, 0.75, 1.0};
+constexpr ui::Rgba bottom_down_color{0.44, 0.44, 0.44, 1.0};
+constexpr ui::Rgba top_up_color{1.0, 1.0, 1.0, 1.0};
+constexpr ui::Rgba bottom_up_color{0.62, 0.62, 0.62, 1.0};
 
 constexpr ui::Dip border_width = 1_dip;
 constexpr ui::Dip roundness = 4_dip;
@@ -49,7 +49,7 @@ constexpr ui::Dip size = 17_dip;
 
 namespace window {
 
-constexpr ui::Rgba background_color{0.87_color, 0.87_color, 0.87_color, 1.0_color};
+constexpr ui::Rgba background_color{0.87, 0.87, 0.87, 1.0};
 
 }
 

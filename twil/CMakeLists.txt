@@ -204,6 +204,9 @@ set (ui_sources
 	ui/partition_box.cpp
 	ui/partition_box.hpp
 	ui/partition_box.hxx
+	ui/rgba.cpp
+	ui/rgba.hpp
+	ui/rgba.hxx
 	ui/split_box.cpp
 	ui/split_box.hpp
 	ui/split_box.hxx

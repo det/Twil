@@ -29,9 +29,9 @@ out Geometry
 
 void main(void)
 {
-	geometry.border_color = border_color * 8 - 0.5;
-	geometry.bottom_color = bottom_color * 8 - 0.5;
-	geometry.top_color = top_color * 8 - 0.5;
+	geometry.border_color = vec4(border_color.rgb * 8 - 0.5, border_color.a);
+	geometry.bottom_color = vec4(bottom_color.rgb * 8 - 0.5, bottom_color.a);
+	geometry.top_color = vec4(top_color.rgb * 8 - 0.5, top_color.a);
 	geometry.texture_min = texture_size * clip_min;
 	geometry.texture_max = texture_size * clip_max;
 	geometry.position_min = position_min * scaling - 1;
